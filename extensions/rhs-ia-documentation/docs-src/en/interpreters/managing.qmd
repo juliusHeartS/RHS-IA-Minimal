@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Managing Interpreters"
+---
+
+An interpreter identifies the Python or R installation used to start a runtime. Use the interpreter selector or Command Palette to view discovered installations and select one for the workspace.
+
+RHS-IA remembers suitable selections in workspace state. A newly created virtual environment or newly installed runtime may require a refresh or window reload before it appears.
+
+Choose project-local environments when possible, verify the displayed executable path, and restart active sessions after changing interpreters. Continue with [Python Installations](python.qmd) or [R Installations](r.qmd).

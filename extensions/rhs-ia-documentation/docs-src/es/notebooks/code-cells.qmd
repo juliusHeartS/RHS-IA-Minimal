@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Celdas de código"
+---
+
+Las celdas de código contienen código fuente ejecutable asociado a un kernel de cuaderno o a un tiempo de ejecución de Quarto. Ejecuta la celda activa desde su barra de herramientas o con el método abreviado de teclado; usa las acciones para ejecutar por encima o por debajo cuando el orden de ejecución sea importante.
+
+Una celda puede producir texto, datos estructurados, gráficos, errores o salida interactiva. Confía únicamente en la salida de cuaderno procedente de fuentes conocidas y borra los resultados sensibles antes de compartir un archivo.
+
+Después de cambiar dependencias o el estado global, reinicia el kernel y ejecuta todas las celdas para confirmar que el documento sea reproducible.

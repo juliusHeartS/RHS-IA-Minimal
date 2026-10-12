@@ -1,0 +1,10 @@
+{
+	"displayName": "Documentación de RHS-IA",
+	"description": "Documentación sin conexión incluida con RHS-IA.",
+	"command.open.title": "Abrir documentación",
+	"viewContainer.title": "Documentación de RHS-IA",
+	"view.title": "Documentación",
+	"view.contextualTitle": "Documentación de RHS-IA",
+	"command.home.title": "Abrir inicio de la documentación",
+	"command.search.title": "Buscar en la documentación"
+}

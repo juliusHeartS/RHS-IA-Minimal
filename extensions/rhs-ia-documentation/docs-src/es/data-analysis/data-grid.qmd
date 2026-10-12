@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Cuadrícula de Data Explorer"
+---
+
+La cuadrícula de datos muestra filas y columnas con cabeceras, indicadores de tipo y representaciones de valores faltantes. Desplázate para solicitar más datos visibles y cambia el tamaño de las columnas arrastrando los límites de las cabeceras.
+
+Selecciona una cabecera de columna para acceder a las operaciones de ordenación y filtrado compatibles. Al copiar una selección, sus valores mostrados se colocan en el portapapeles.
+
+La cuadrícula es una superficie de inspección. Realiza las transformaciones permanentes en código de Python o R para que sigan siendo reproducibles; después vuelve a abrir o actualiza el objeto para inspeccionar el resultado.

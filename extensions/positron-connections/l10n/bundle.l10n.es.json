@@ -1,0 +1,7 @@
+{
+	"Failed to execute code": "No se pudo ejecutar el código",
+	"Installing dependencies": "Instalando dependencias",
+	"Project ID is required": "El ID del proyecto es obligatorio",
+	"Service account keyfile path is required": "La ruta del archivo de claves de la cuenta de servicio es obligatoria",
+	"The following R packages are required for this connection: {0}. Would you like to install them now?": "Para esta conexión se requieren los siguientes paquetes R: {0}. ¿Desea instalarlos ahora?"
+}

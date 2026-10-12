@@ -1,0 +1,710 @@
+[
+	{
+		"c": "record ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.python keyword.operator.assignment.python",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.python punctuation.definition.dict.begin.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "    ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.python string.quoted.single.python punctuation.definition.string.begin.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "headers",
+		"t": "source.python string.quoted.single.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.python string.quoted.single.python punctuation.definition.string.end.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.python punctuation.separator.dict.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.python punctuation.definition.dict.begin.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "k",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.python punctuation.separator.dict.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "str",
+		"t": "source.python meta.function-call.python support.type.python",
+		"r": {
+			"hc_black": "support.type: #4EC9B0",
+			"2026-light": "support.type: #267F99",
+			"2026-dark": "support.type: #4EC9B0",
+			"rhs_ia_dark": "support.type: #4EC9B0",
+			"rhs_ia_light": "support.type.python: #66476B",
+			"hc_light": "support.type: #185E73"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.python meta.function-call.python punctuation.definition.arguments.begin.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.definition.arguments.begin.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "v",
+		"t": "source.python meta.function-call.python meta.function-call.arguments.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.python meta.function-call.python punctuation.definition.arguments.end.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.definition.arguments.end.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "for",
+		"t": "source.python keyword.control.flow.python",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " k",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.python punctuation.separator.element.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.element.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " v ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "in",
+		"t": "source.python keyword.control.flow.python",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "self",
+		"t": "source.python variable.language.special.self.python",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.language: #0550AE",
+			"2026-dark": "variable.language: #79C0FF",
+			"rhs_ia_dark": "variable.language: #569CD6",
+			"rhs_ia_light": "variable.language: #2D9BA9",
+			"hc_light": "variable.language: #0F4A85"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.python meta.member.access.python punctuation.separator.period.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.period.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "request",
+		"t": "source.python meta.member.access.python meta.attribute.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.python meta.member.access.python punctuation.separator.period.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.period.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "META",
+		"t": "source.python meta.member.access.python constant.other.caps.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "constant: #0550AE",
+			"2026-dark": "constant: #79C0FF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "constant: #E88023",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.python meta.member.access.python punctuation.separator.period.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.period.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "items",
+		"t": "source.python meta.member.access.python meta.function-call.python meta.function-call.generic.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.function-call.generic.python: #007BC4",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.python meta.member.access.python meta.function-call.python punctuation.definition.arguments.begin.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.definition.arguments.begin.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.python meta.member.access.python meta.function-call.python punctuation.definition.arguments.end.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.definition.arguments.end.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "if",
+		"t": "source.python keyword.control.flow.python",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " k",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.python meta.member.access.python punctuation.separator.period.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.period.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "startswith",
+		"t": "source.python meta.member.access.python meta.function-call.python meta.function-call.generic.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.function-call.generic.python: #007BC4",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.python meta.member.access.python meta.function-call.python punctuation.definition.arguments.begin.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.definition.arguments.begin.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "'",
+		"t": "source.python meta.member.access.python meta.function-call.python meta.function-call.arguments.python string.quoted.single.python punctuation.definition.string.begin.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "HTTP_",
+		"t": "source.python meta.member.access.python meta.function-call.python meta.function-call.arguments.python string.quoted.single.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "'",
+		"t": "source.python meta.member.access.python meta.function-call.python meta.function-call.arguments.python string.quoted.single.python punctuation.definition.string.end.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.python meta.member.access.python meta.function-call.python punctuation.definition.arguments.end.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.definition.arguments.end.python: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.python punctuation.definition.dict.end.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.python punctuation.definition.dict.end.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "cmd ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.python keyword.operator.assignment.python",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.python string.quoted.single.python punctuation.definition.string.begin.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "git-clang-format --style=",
+		"t": "source.python string.quoted.single.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\\"",
+		"t": "source.python string.quoted.single.python constant.character.escape.python",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "source.python string.quoted.single.python meta.format.brace.python constant.character.format.placeholder.other.python",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character: #CF222E",
+			"2026-dark": "constant.character: #FF7B72",
+			"rhs_ia_dark": "constant.character: #569CD6",
+			"rhs_ia_light": "constant.character.format.placeholder.other.python: #E88023",
+			"hc_light": "constant.character: #0F4A85"
+		}
+	},
+	{
+		"c": "BasedOnStyle: Google, ColumnLimit: 100, IndentWidth: 2, ",
+		"t": "source.python string.quoted.single.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.python string.quoted.single.python punctuation.definition.string.end.python",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.python punctuation.separator.continuation.line.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.python",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"AlignConsecutiveAssignments: true}}\\\" {COMMIT_SHA} -- ./**/*.proto > {OUTPUT}\".format(",
+		"t": "source.python invalid.illegal.line.continuation.python",
+		"r": {
+			"hc_black": "invalid: #F44747",
+			"2026-light": "invalid.illegal: #82071E",
+			"2026-dark": "invalid.illegal: #FFA198",
+			"rhs_ia_dark": "invalid: #F44747",
+			"rhs_ia_light": "invalid.illegal: #3D3D3D",
+			"hc_light": "invalid: #B5200D"
+		}
+	}
+]

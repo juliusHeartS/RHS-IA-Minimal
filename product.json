@@ -1,0 +1,740 @@
+{
+	"companyName": "RHS-IA",
+	"nameShort": "Napo",
+	"nameLong": "Napo",
+	"version": "",
+	"positronVersion": "2026.09.1",
+	"positronBuildNumber": 0,
+	"positronLlmsDocsUrl": "https://cdn.posit.co/positron/releases/docs",
+	"applicationName": "napo",
+	"dataFolderName": ".napo",
+	"sharedDataFolderName": ".napo-shared",
+	"win32MutexName": "napo",
+	"licenseName": "Elastic License 2.0",
+	"licenseUrl": "https://positron.posit.co/licensing",
+	"serverLicenseUrl": "https://posit.co/about/eula/",
+	"serverGreeting": [],
+	"serverLicense": [],
+	"serverLicensePrompt": "",
+	"serverApplicationName": "rhs-ia-server",
+	"serverDataFolderName": ".rhs-ia-server",
+	"serverDownloadUrlTemplate": "https://cdn.posit.co/positron/${quality}/reh/${arch-long}/positron-reh-${os}-${arch}-${version}.tar.gz",
+	"tunnelApplicationName": "rhs-ia-tunnel",
+	"win32DirName": "Napo",
+	"win32NameVersion": "Napo",
+	"win32RegValueName": "Napo",
+	"win32AppId": "{{F408D066-A2BC-437B-AF9B-7F7E84FE8D40}",
+	"win32x64AppId": "{{41462E5D-47A2-46A9-82B0-14FF6EB89468}",
+	"win32arm64AppId": "{{1BEE5EF9-2A8E-49C7-A307-2428B2BF818D}",
+	"win32UserAppId": "{{19B66443-6772-4AE8-8C76-D3BEE64516C8}",
+	"win32x64UserAppId": "{{1811FE4E-8C5B-4784-A3E1-81380923FC11}",
+	"win32arm64UserAppId": "{{AA833B44-3195-4DBE-B940-FAF06622146B}",
+	"win32AppUserModelId": "PAHO.RHSIA",
+	"win32ShellNameShort": "&Napo",
+	"win32TunnelServiceMutex": "rhs-ia-tunnelservice",
+	"win32TunnelMutex": "rhs-ia-tunnel",
+	"darwinBundleIdentifier": "co.posit.positron",
+	"darwinProfileUUID": "0501C5DF-0DC9-4217-9C18-A5595A125743",
+	"darwinProfilePayloadUUID": "BEA2CCD2-3F74-4174-9C0E-606A6F13B050",
+	"linuxIconName": "org.rhsia.napo",
+	"licenseFileName": "LICENSE.txt",
+	"reportIssueUrl": "https://github.com/juliusHeartS/RHS-IA/issues/new",
+	"nodejsRepository": "https://nodejs.org",
+	"nodejsArtifactFeed": "",
+	"electronArtifactFeed": "",
+	"urlProtocol": "napo",
+	"enableTelemetry": false,
+	"webviewContentExternalBaseUrlTemplate": "https://{{uuid}}.vscode-cdn.net/insider/ef65ac1ba57f57f2a3961bfe94aa20481caca4c6/out/vs/workbench/contrib/webview/browser/pre/",
+	"updateUrl": "",
+	"releaseNotesUrl": "",
+	"downloadUrl": "",
+	"builtInExtensions": [
+		{
+			"name": "ms-vscode.js-debug-companion",
+			"version": "1.1.3",
+			"sha256": "7380a890787452f14b2db7835dfa94de538caf358ebc263f9d46dd68ac52de93",
+			"repo": "https://github.com/microsoft/vscode-js-debug-companion",
+			"metadata": {
+				"id": "99cb0b7f-7354-4278-b8da-6cc79972169d",
+				"publisherId": {
+					"publisherId": "5f5636e7-69ed-4afe-b5d6-8d231fb3d3ee",
+					"publisherName": "ms-vscode",
+					"displayName": "Microsoft",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "Microsoft"
+			}
+		},
+		{
+			"name": "ms-vscode.js-debug",
+			"version": "1.117.0",
+			"sha256": "854eeb8a785b1f41ba2bd02d7ccd4fdbe10021b61473293973c7e96d036c7fb8",
+			"repo": "https://github.com/microsoft/vscode-js-debug",
+			"metadata": {
+				"id": "25629058-ddac-4e17-abba-74678e126c5d",
+				"publisherId": {
+					"publisherId": "5f5636e7-69ed-4afe-b5d6-8d231fb3d3ee",
+					"publisherName": "ms-vscode",
+					"displayName": "Microsoft",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "Microsoft"
+			}
+		},
+		{
+			"name": "ms-vscode.vscode-js-profile-table",
+			"version": "1.0.10",
+			"sha256": "7361748ddf9fd09d8a2ed1f2a2d7376a2cf9aae708692820b799708385c38e08",
+			"repo": "https://github.com/microsoft/vscode-js-profile-visualizer",
+			"metadata": {
+				"id": "7e52b41b-71ad-457b-ab7e-0620f1fc4feb",
+				"publisherId": {
+					"publisherId": "5f5636e7-69ed-4afe-b5d6-8d231fb3d3ee",
+					"publisherName": "ms-vscode",
+					"displayName": "Microsoft",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "Microsoft"
+			}
+		},
+		{
+			"name": "rstudio.rstudio-workbench",
+			"version": "2026.9.5",
+			"positUrl": "https://cdn.posit.co/pwb-components/extension",
+			"type": "reh-web-pwb",
+			"sha256": "a1e5729381b3f117e6c1bef492fe33f4e38bad9a12db7733e5170f7b667ef839",
+			"metadata": {
+				"publisherDisplayName": "Posit PBC"
+			}
+		},
+		{
+			"name": "posit.slc",
+			"version": "0.6.0",
+			"positUrl": "https://cdn.posit.co/pwb-components/slc-extension",
+			"type": "reh-web-pwb",
+			"sha256": "105cd11357bde4c330bf12aac856b0ee3eae2c967bab6037c3dedacd55f59e7d",
+			"metadata": {
+				"publisherDisplayName": "Posit PBC"
+			}
+		},
+		{
+			"name": "ms-ceintl.vscode-language-pack-es",
+			"version": "1.111.0",
+			"sha256": "35b5256b7ee58bfb7cd64def2ab7b36ff90a01cc69ba5f0e4b53a0a6a0defbfc",
+			"repo": "https://github.com/microsoft/vscode-loc.git",
+			"vsix": "language-packs/vscode-language-pack-es-1.111.0.vsix",
+			"metadata": {
+				"id": "47e020a1-33db-4cc0-a1b4-42f97781749a",
+				"publisherId": {
+					"publisherId": "0b0882c3-aee3-4d7c-b5f9-872f9be0a115",
+					"publisherName": "MS-CEINTL",
+					"displayName": "Microsoft",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "Microsoft"
+			}
+		}
+	],
+	"bootstrapExtensions": [
+		{
+			"name": "charliermarsh.ruff",
+			"version": "2026.76.0",
+			"repo": "https://github.com/astral-sh/ruff-vscode",
+			"metadata": {
+				"publisherId": {
+					"publisherName": "charliermarsh",
+					"displayName": "Ruff",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "charliermarsh",
+				"multiPlatformServiceUrl": "https://p3m.dev/openvsx/latest/vscode/asset"
+			}
+		},
+		{
+			"name": "ms-toolsai.vscode-jupyter-cell-tags",
+			"version": "0.1.9",
+			"sha256": "7cd43af55cf562a001dc475e92d9f3fd4b7173011adca0c02da22fbf891c274b",
+			"repo": "https://github.com/Microsoft/vscode-jupyter-cell-tags",
+			"metadata": {
+				"id": "ab4fb32a-befb-4102-adf9-1652d0cd6a5e",
+				"publisherId": {
+					"publisherId": "ac8eb7c9-3e59-4b39-8040-f0484d8170ce",
+					"publisherName": "ms-toolsai",
+					"displayName": "Jupyter Cell Tags",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "ms-toolsai"
+			}
+		},
+		{
+			"name": "ms-toolsai.jupyter-keymap",
+			"version": "1.1.2",
+			"sha256": "3d2998929bb43156f3b428116aee290543c437875df616ec755692219b4afa17",
+			"repo": "https://github.com/Microsoft/vscode-jupyter-keymap",
+			"metadata": {
+				"id": "9f6dc8db-620c-4844-b8c5-e74914f1be27",
+				"publisherId": {
+					"publisherId": "ac8eb7c9-3e59-4b39-8040-f0484d8170ce",
+					"publisherName": "ms-toolsai",
+					"displayName": "Jupyter Keymap",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "ms-toolsai"
+			}
+		},
+		{
+			"name": "ms-toolsai.vscode-jupyter-slideshow",
+			"version": "0.1.6",
+			"sha256": "5b8dee0d569b7e0990bb4847c34748cdc0102078779351ed415d9d71cfa3e945",
+			"repo": "https://github.com/Microsoft/vscode-jupyter-slideshow",
+			"metadata": {
+				"id": "e153ca70-b543-4865-b4c5-b31d34185948",
+				"publisherId": {
+					"publisherId": "ac8eb7c9-3e59-4b39-8040-f0484d8170ce",
+					"publisherName": "ms-toolsai",
+					"displayName": "Jupyter Slide Show",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "ms-toolsai"
+			}
+		},
+		{
+			"name": "ms-toolsai.jupyter-renderers",
+			"version": "1.3.0",
+			"sha256": "d09f6c517a8090a932bb4e2c31bcb2de34ddb2a71133477f6c47f28f36eb76ae",
+			"repo": "https://github.com/Microsoft/vscode-notebook-renderers",
+			"metadata": {
+				"id": "b15c72f8-d5fe-421a-a4f7-27ed9f6addbf",
+				"publisherId": {
+					"publisherId": "ac8eb7c9-3e59-4b39-8040-f0484d8170ce",
+					"publisherName": "ms-toolsai",
+					"displayName": "Microsoft",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "ms-toolsai"
+			}
+		},
+		{
+			"name": "ms-toolsai.jupyter",
+			"version": "2025.9.1",
+			"sha256": "110660656944c4ab0ff687db488c2e8c59c67ec121dcf09bcaa54b6edd9ce71f",
+			"repo": "https://github.com/Microsoft/vscode-jupyter",
+			"metadata": {
+				"id": "6c2f1801-1e7f-45b2-9b5c-7782f1e076e8",
+				"publisherId": {
+					"publisherId": "ac8eb7c9-3e59-4b39-8040-f0484d8170ce",
+					"publisherName": "ms-toolsai",
+					"displayName": "Jupyter",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "ms-toolsai"
+			}
+		},
+		{
+			"name": "meta.pyrefly",
+			"version": "1.2.0",
+			"repo": "https://github.com/facebook/pyrefly",
+			"metadata": {
+				"publisherId": {
+					"publisherName": "meta",
+					"displayName": "Pyrefly",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "meta",
+				"multiPlatformServiceUrl": "https://p3m.dev/openvsx/latest/vscode/asset"
+			}
+		},
+		{
+			"name": "ms-python.debugpy",
+			"version": "2026.6.0",
+			"repo": "https://github.com/microsoft/vscode-python-debugger",
+			"metadata": {
+				"id": "4bd5d2c9-9d65-401a-b0b2-7498d9f17615",
+				"publisherid": {
+					"publisherid": "998b010b-e2af-44a5-a6cd-0b5fd3b9b6f8",
+					"publishername": "ms-python",
+					"displayname": "python debugger",
+					"flags": "verified"
+				},
+				"publisherdisplayname": "ms-python",
+				"multiPlatformServiceUrl": "https://p3m.dev/openvsx/latest/vscode/asset"
+			}
+		},
+		{
+			"name": "quarto.quarto",
+			"version": "1.136.0",
+			"sha256": "76f705cf80a634a66c0fd7e3741d4da2ecb884c645d3dea28c591fd3fcb3bed1",
+			"repo": "https://github.com/quarto-dev/quarto/tree/main/apps/vscode",
+			"metadata": {
+				"id": "a1be81fc-0f3a-4f2e-92ee-3fdc7ab96c73",
+				"publisherId": {
+					"publisherId": "b21355c9-18d2-46e4-95da-d2d98de81e96",
+					"publisherName": "quarto",
+					"displayName": "Quarto",
+					"flags": "verified"
+				},
+				"publisherDisplayName": "Quarto"
+			}
+		},
+		{
+			"name": "posit.air-vscode",
+			"version": "0.28.0",
+			"repo": "https://github.com/posit-dev/air",
+			"metadata": {
+				"publisherId": "090804ff-7eb2-4fbd-bb61-583e34f2b070",
+				"displayName": "Air - R Language Support",
+				"multiPlatformServiceUrl": "https://p3m.dev/openvsx/latest/vscode/asset"
+			},
+			"publisherDisplayName": "Posit Software, PBC"
+		},
+		{
+			"name": "posit.shiny",
+			"version": "1.4.2",
+			"sha256": "3aae12e054a7c9317ddbc41eeea3d6e98c0634f70db14f32f8623da7dfcaff27",
+			"repo": "https://github.com/posit-dev/shiny-vscode",
+			"metadata": {
+				"id": "7ffa9a66-85ab-44de-ab80-2eecce45b0fe",
+				"publisherId": "090804ff-7eb2-4fbd-bb61-583e34f2b070",
+				"displayName": "Shiny"
+			},
+			"publisherDisplayName": "Posit Software, PBC"
+		}
+	],
+	"extensionsGallery": {
+		"serviceUrl": "https://p3m.dev/openvsx/latest/vscode/gallery",
+		"itemUrl": "https://p3m.dev/openvsx/latest/vscode/item",
+		"resourceUrlTemplate": "https://p3m.dev/openvsx/latest/vscode/asset/{publisher}/{name}/{version}/Microsoft.VisualStudio.Code.WebResources/{path}",
+		"controlUrl": "",
+		"recommendationsUrl": "",
+		"extensionUrlTemplate": "https://p3m.dev/openvsx/latest/vscode/gallery/{publisher}/{name}/latest",
+		"nlsBaseUrl": "",
+		"publisherUrl": ""
+	},
+	"linkProtectionTrustedDomains": [
+		"https://open-vsx.org",
+		"https://p3m.dev",
+		"https://github.com/posit-dev/positron",
+		"https://positron.posit.co",
+		"https://github.com/login/device",
+		"https://login.posit.cloud",
+		"https://connect.posit.cloud",
+		"https://login.staging.posit.cloud",
+		"https://staging.connect.posit.cloud",
+		"https://posit.co",
+		"https://support.posit.co",
+		"https://*.cloud.databricks.com",
+		"https://*.azuredatabricks.net",
+		"https://*.gcp.databricks.com"
+	],
+	"defaultChatAgent": {
+		"extensionId": "",
+		"chatExtensionId": "",
+		"chatExtensionOutputId": "",
+		"chatExtensionOutputExtensionStateCommand": "",
+		"documentationUrl": "",
+		"skusDocumentationUrl": "",
+		"optimizeUsageDocumentationUrl": "",
+		"publicCodeMatchesUrl": "",
+		"managePlanUrl": "",
+		"upgradePlanUrl": "",
+		"signUpUrl": "",
+		"termsStatementUrl": "",
+		"privacyStatementUrl": "",
+		"provider": {
+			"default": {
+				"id": "",
+				"name": ""
+			},
+			"enterprise": {
+				"id": "",
+				"name": ""
+			},
+			"google": {
+				"id": "",
+				"name": ""
+			},
+			"apple": {
+				"id": "",
+				"name": ""
+			}
+		},
+		"providerExtensionId": "",
+		"providerUriSetting": "",
+		"providerScopes": [],
+		"entitlementUrl": "",
+		"entitlementSignupLimitedUrl": "",
+		"tokenEntitlementUrl": "",
+		"mcpRegistryDataUrl": "",
+		"managedSettingsUrl": "",
+		"chatQuotaExceededContext": "",
+		"completionsQuotaExceededContext": "",
+		"walkthroughCommand": "",
+		"completionsMenuCommand": "",
+		"completionsRefreshTokenCommand": "",
+		"chatRefreshTokenCommand": "",
+		"generateCommitMessageCommand": "",
+		"resolveMergeConflictsCommand": "",
+		"completionsAdvancedSetting": "",
+		"completionsEnablementSetting": "",
+		"nextEditSuggestionsSetting": ""
+	},
+	"extensionsEnabledWithApiProposalVersion": [],
+	"extensionEnabledApiProposals": {
+		"ms-vscode.vscode-selfhost-test-provider": [
+			"testObserver",
+			"testRelatedCode",
+			"attributableCoverage"
+		],
+		"VisualStudioExptTeam.vscodeintellicode-completions": [
+			"inlineCompletionsAdditions"
+		],
+		"ms-vsliveshare.vsliveshare": [
+			"contribMenuBarHome",
+			"contribShareMenu",
+			"contribStatusBarItems",
+			"diffCommand",
+			"documentFiltersExclusive",
+			"fileSearchProvider",
+			"findTextInFiles",
+			"notebookCellExecutionState",
+			"notebookLiveShare",
+			"terminalDimensions",
+			"terminalDataWriteEvent",
+			"textSearchProvider"
+		],
+		"ms-vscode.js-debug": [
+			"portsAttributes",
+			"findTextInFiles",
+			"workspaceTrust",
+			"tunnels"
+		],
+		"ms-toolsai.vscode-ai-remote": [
+			"resolvers"
+		],
+		"ms-python.python": [
+			"contribEditorContentMenu",
+			"quickPickSortByLabel",
+			"portsAttributes",
+			"testObserver",
+			"quickPickItemTooltip",
+			"terminalDataWriteEvent",
+			"terminalExecuteCommandEvent",
+			"contribIssueReporter",
+			"terminalShellIntegration"
+		],
+		"ms-dotnettools.dotnet-interactive-vscode": [
+			"notebookMessaging"
+		],
+		"GitHub.codespaces": [
+			"contribEditSessions",
+			"contribMenuBarHome",
+			"contribRemoteHelp",
+			"contribViewsRemote",
+			"resolvers",
+			"tunnels",
+			"terminalDataWriteEvent",
+			"treeViewReveal",
+			"notebookKernelSource"
+		],
+		"ms-vscode.azure-repos": [
+			"extensionRuntime",
+			"fileSearchProvider",
+			"textSearchProvider"
+		],
+		"ms-vscode.remote-repositories": [
+			"canonicalUriProvider",
+			"contribEditSessions",
+			"contribRemoteHelp",
+			"contribMenuBarHome",
+			"contribViewsRemote",
+			"contribViewsWelcome",
+			"contribShareMenu",
+			"documentFiltersExclusive",
+			"editSessionIdentityProvider",
+			"extensionRuntime",
+			"fileSearchProvider",
+			"quickPickSortByLabel",
+			"workspaceTrust",
+			"shareProvider",
+			"scmActionButton",
+			"scmSelectedProvider",
+			"scmValidation",
+			"textSearchProvider",
+			"timeline"
+		],
+		"ms-vscode-remote.remote-wsl": [
+			"resolvers",
+			"contribRemoteHelp",
+			"contribViewsRemote",
+			"telemetry"
+		],
+		"ms-vscode-remote.remote-ssh": [
+			"resolvers",
+			"tunnels",
+			"terminalDataWriteEvent",
+			"contribRemoteHelp",
+			"contribViewsRemote",
+			"telemetry"
+		],
+		"ms-vscode.remote-server": [
+			"resolvers",
+			"tunnels",
+			"contribViewsWelcome"
+		],
+		"ms-vscode.remote-explorer": [
+			"contribRemoteHelp",
+			"contribViewsRemote",
+			"extensionsAny"
+		],
+		"ms-vscode-remote.remote-containers": [
+			"contribEditSessions",
+			"resolvers",
+			"portsAttributes",
+			"tunnels",
+			"workspaceTrust",
+			"terminalDimensions",
+			"contribRemoteHelp",
+			"contribViewsRemote"
+		],
+		"ms-vscode.js-debug-nightly": [
+			"portsAttributes",
+			"findTextInFiles",
+			"workspaceTrust",
+			"tunnels"
+		],
+		"ms-vscode.lsif-browser": [
+			"documentFiltersExclusive"
+		],
+		"ms-vscode.vscode-speech": [
+			"speech"
+		],
+		"GitHub.copilot": [
+			"authGetSessions",
+			"inlineCompletionsAdditions"
+		],
+		"GitHub.copilot-nightly": [
+			"inlineCompletionsAdditions"
+		],
+		"GitHub.remotehub": [
+			"contribRemoteHelp",
+			"contribMenuBarHome",
+			"contribViewsRemote",
+			"contribViewsWelcome",
+			"documentFiltersExclusive",
+			"extensionRuntime",
+			"fileSearchProvider",
+			"quickPickSortByLabel",
+			"workspaceTrust",
+			"scmSelectedProvider",
+			"scmValidation",
+			"textSearchProvider",
+			"timeline"
+		],
+		"ms-python.gather": [
+			"notebookCellExecutionState"
+		],
+		"ms-python.vscode-pylance": [
+			"notebookCellExecutionState"
+		],
+		"ms-python.debugpy": [
+			"contribIssueReporter",
+			"contribViewsWelcome",
+			"debugVisualization",
+			"portsAttributes"
+		],
+		"ms-toolsai.jupyter-renderers": [
+			"contribNotebookStaticPreloads"
+		],
+		"ms-toolsai.jupyter": [
+			"notebookDeprecated",
+			"notebookMessaging",
+			"notebookMime",
+			"notebookCellExecutionState",
+			"portsAttributes",
+			"quickPickSortByLabel",
+			"notebookKernelSource",
+			"interactiveWindow",
+			"notebookControllerAffinityHidden",
+			"contribNotebookStaticPreloads",
+			"quickPickItemTooltip",
+			"notebookExecution",
+			"notebookCellExecution",
+			"notebookVariableProvider"
+		],
+		"dbaeumer.vscode-eslint": [
+			"notebookCellExecutionState"
+		],
+		"ms-vscode.azure-sphere-tools-ui": [
+			"tunnels"
+		],
+		"ms-azuretools.vscode-azureappservice": [
+			"terminalDataWriteEvent"
+		],
+		"ms-azuretools.vscode-azureresourcegroups": [
+			"authGetSessions"
+		],
+		"ms-azuretools.vscode-azure-github-copilot": [
+			"chatParticipantAdditions",
+			"embeddings",
+			"languageModelSystem",
+			"lmTools"
+		],
+		"ms-vscode.anycode": [
+			"extensionsAny"
+		],
+		"ms-vscode.cpptools": [
+			"terminalDataWriteEvent"
+		],
+		"redhat.java": [
+			"documentPaste"
+		],
+		"ms-dotnettools.csdevkit": [
+			"inlineCompletionsAdditions"
+		],
+		"ms-dotnettools.vscodeintellicode-csharp": [
+			"inlineCompletionsAdditions"
+		],
+		"microsoft-IsvExpTools.powerplatform-vscode": [
+			"fileSearchProvider",
+			"textSearchProvider"
+		],
+		"microsoft-IsvExpTools.powerplatform-vscode-preview": [
+			"fileSearchProvider",
+			"textSearchProvider"
+		],
+		"TeamsDevApp.ms-teams-vscode-extension": [
+			"chatParticipantAdditions",
+			"languageModelSystem"
+		]
+	},
+	"trustedExtensionPublishers": [
+		"posit",
+		"rstudio"
+	],
+	"trustedExtensionAuthAccess": {
+		"github": [
+			"positron.authentication"
+		],
+		"posit-workbench": [
+			"positron.authentication"
+		],
+		"anthropic-api": [
+			"positron.authentication"
+		],
+		"posit-ai": [
+			"positron.authentication",
+			"positron.next-edit-suggestions"
+		],
+		"ms-foundry": [
+			"positron.authentication"
+		],
+		"amazon-bedrock": [
+			"positron.authentication"
+		],
+		"snowflake-cortex": [
+			"positron.authentication"
+		],
+		"openai-api": [
+			"positron.authentication"
+		],
+		"deepseek-api": [
+			"positron.authentication"
+		],
+		"openai-compatible": [
+			"positron.authentication"
+		],
+		"google": [
+			"positron.authentication"
+		],
+		"google-cloud": [
+			"positron.authentication"
+		],
+		"databricks": [
+			"positron.authentication"
+		],
+		"positron-custom-provider": [
+			"positron.authentication"
+		]
+	},
+	"onboardingKeymaps": [
+		{
+			"id": "vscode",
+			"label": "VS Code",
+			"description": "Default keyboard mapping"
+		},
+		{
+			"id": "sublime",
+			"label": "Sublime Text",
+			"extensionId": "ms-vscode.sublime-keybindings",
+			"description": "Keyboard mapping from Sublime Text"
+		},
+		{
+			"id": "intellij",
+			"label": "IntelliJ / JetBrains",
+			"extensionId": "k--kato.intellij-idea-keybindings",
+			"description": "Keyboard mapping from IntelliJ IDEA"
+		},
+		{
+			"id": "vim",
+			"label": "Vim",
+			"extensionId": "vscodevim.vim",
+			"description": "Vim modal editing"
+		},
+		{
+			"id": "eclipse",
+			"label": "Eclipse",
+			"extensionId": "alphabotsec.vscode-eclipse-keybindings",
+			"description": "Keyboard mapping from Eclipse"
+		},
+		{
+			"id": "notepadpp",
+			"label": "Notepad++",
+			"extensionId": "ms-vscode.notepadplusplus-keybindings",
+			"description": "Keyboard mapping from Notepad++"
+		}
+	],
+	"onboardingThemes": [
+		{
+			"id": "dark-2026",
+			"label": "Dark 2026",
+			"themeId": "Dark 2026",
+			"type": "dark"
+		},
+		{
+			"id": "hc-dark",
+			"label": "Dark High Contrast",
+			"themeId": "Default High Contrast",
+			"type": "hcDark"
+		},
+		{
+			"id": "solarized-dark",
+			"label": "Solarized Dark",
+			"themeId": "Solarized Dark",
+			"type": "dark"
+		},
+		{
+			"id": "light-2026",
+			"label": "Light 2026",
+			"themeId": "Light 2026",
+			"type": "light"
+		},
+		{
+			"id": "hc-light",
+			"label": "Light High Contrast",
+			"themeId": "Default High Contrast Light",
+			"type": "hcLight"
+		},
+		{
+			"id": "solarized-light",
+			"label": "Solarized Light",
+			"themeId": "Solarized Light",
+			"type": "light"
+		}
+	],
+	"builtInExtensionsEnabledWithAutoUpdates": [],
+	"sessionsWindowAllowedExtensions": [],
+	"voiceWsUrl": "wss://falcon-caas.mai.microsoft.com/voice-code/api/v1/realtime/voice",
+	"defaultLocale": "es",
+	"nativeChatSetupEnabled": false,
+	"rhsIaUseMockKeychain": true
+}

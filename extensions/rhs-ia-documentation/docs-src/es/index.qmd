@@ -1,0 +1,65 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Documentación de RHS-IA"
+---
+
+<img src="images/rhs-ia-logo.png" class="rhs-ia-logo rhs-ia-logo-light" alt="RHS-IA">
+
+<img src="images/rhs-ia-logo-dark.png" class="rhs-ia-logo rhs-ia-logo-dark" alt="RHS-IA">
+
+RHS-IA es un entorno de desarrollo integrado para el análisis de datos y la computación científica. Esta guía está incluida con la aplicación y permanece disponible sin conexión a internet.
+
+## Comienza aquí {#start-here}
+
+Empieza con [Primeros pasos](getting-started/overview.qmd).
+
+## Configuración {#configuration}
+
+- [Métodos abreviados de teclado](configuration/keyboard-shortcuts.qmd)
+- [Iniciador de línea de comandos](configuration/add-to-path.qmd)
+- [Git](configuration/git.qmd)
+- [Extensiones](configuration/extensions.qmd)
+
+## Interfaz de usuario {#user-interface}
+
+- [Distribución del espacio de trabajo](user-interface/layout.qmd)
+- [Paleta de comandos](user-interface/command-palette.qmd)
+- [Barras de acciones](user-interface/action-bars.qmd)
+- [Documentación y Language Help](user-interface/help.qmd)
+
+## Lenguajes e intérpretes {#languages-and-interpreters}
+
+- [Guías de lenguajes](languages/overview.qmd)
+- [Python](languages/python.qmd) y [R](languages/r.qmd)
+- [Depuración de R](languages/r-debugging.qmd), [enlaces de sesión de R](languages/r-session-hooks.qmd) y [Air para R](languages/r-air.qmd)
+- [Administración de intérpretes](interpreters/managing.qmd) y [inicio del intérprete](interpreters/startup.qmd)
+- [Administración de paquetes](interpreters/packages.qmd)
+- [Instalaciones de Python](interpreters/python.qmd) e [instalaciones de R](interpreters/r.qmd)
+- [Reticulate](interpreters/reticulate.qmd) y [módulos de entorno](interpreters/environment-modules.qmd)
+
+## Análisis de datos y conexiones {#data-analysis-and-connections}
+
+- [Data Explorer](data-analysis/data-explorer.qmd), [cuadrícula](data-analysis/data-grid.qmd), [barra de filtros](data-analysis/filter-bar.qmd) y [panel de resumen](data-analysis/summary-panel.qmd)
+- [Variables](data-analysis/variables.qmd) y [gráficos](data-analysis/plots.qmd)
+- [Conexiones a bases de datos](database-connections/overview.qmd), [extensiones de conexión](database-connections/extensions.qmd) y [Catalog Explorer](database-connections/catalog.qmd)
+
+## Documentos y aplicaciones {#documents-and-applications}
+
+- [Quarto](quarto/overview.qmd) y [salida insertada](quarto/inline-output.qmd)
+- [Cuadernos de Jupyter](notebooks/overview.qmd), [editor de cuadernos](notebooks/editor.qmd), [editor de cuadernos heredado](notebooks/legacy-editor.qmd) y [celdas de código](notebooks/code-cells.qmd)
+- [Desarrollo de aplicaciones de datos](applications/development.qmd)
+
+## Espacios de trabajo y desarrollo {#workspaces-and-development}
+
+- [Plantillas de carpetas](workspaces/folder-templates.qmd), [Remote SSH](workspaces/remote-ssh.qmd) y [Dev Containers](workspaces/dev-containers.qmd)
+- [Desarrollo de extensiones](extensions/development.qmd)
+
+## Tutoriales y referencia {#tutorials-and-reference}
+
+- [Tutoriales](tutorials/overview.qmd), [tutorial de Jupyter Notebook](tutorials/jupyter-notebook.qmd) y [tutorial de Quarto](tutorials/quarto.qmd)
+- [Solución de problemas](support/troubleshooting.qmd) y [preguntas frecuentes](support/faq.qmd)
+- [Acerca de RHS-IA](about/overview.qmd) y [atribución y licencia de la documentación](about/documentation-license.qmd)

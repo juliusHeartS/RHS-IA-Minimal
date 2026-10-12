@@ -1,0 +1,4 @@
+{
+	"description": "Proporciona controladores de conexión de datos ODBC para el panel de conexiones de datos, utilizando los controladores ODBC configurados en esta máquina.",
+	"displayName": "RHS-IA Controlador de conexión de datos ODBC"
+}

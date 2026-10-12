@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Editor de cuadernos"
+---
+
+El editor de cuadernos de RHS-IA integra las celdas del cuaderno con los tiempos de ejecución de lenguajes, **Variables**, **Plots** y **Data Explorer**. Usa las barras de herramientas de las celdas para ejecutar, detener, mover, añadir o eliminar celdas y la barra de herramientas del cuaderno para acciones de todo el documento.
+
+Elige el kernel antes de ejecutar. El estado de la celda de código muestra si está en cola, ejecutándose, completada o ha fallado. Al interrumpir el kernel se detiene la ejecución actual; al reiniciarlo se borra su estado.
+
+Usa celdas Markdown para las explicaciones y mantén las celdas de código enfocadas para que el cuaderno siga siendo comprensible al ejecutarlo de principio a fin.

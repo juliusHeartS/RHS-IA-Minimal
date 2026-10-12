@@ -1,0 +1,217 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2024 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.gettingStartedContainer .header {
+	display: flex;
+	flex-direction: column;
+	row-gap: clamp(12px, 2.5vh, 24px);
+	width: 100%;
+	min-width: 0;
+}
+
+.gettingStartedContainer .gettingStartedSlideCategories > .gettingStartedCategoriesContainer {
+	height: auto;
+	min-height: 100%;
+	align-content: start;
+	row-gap: clamp(24px, 5vh, 50px);
+}
+
+.gettingStartedContainer .gettingStartedSlideCategories {
+	box-sizing: border-box;
+}
+
+.gettingStartedContainer .product-logo.welcome-positron-logo::before {
+	content: ' ';
+	background-image: url('../../../../browser/media/positron-header.svg');
+	background-repeat: no-repeat;
+	height: 6em;
+	/* Maintains the 3.95:1 aspect ratio with 6em height */
+	width: 23.7em;
+	display: block;
+}
+
+.gettingStartedContainer .product-logo.welcome-positron-logo-dark::before {
+	content: ' ';
+	background-image: url('../../../../browser/media/positron-header-dark.svg');
+	background-repeat: no-repeat;
+	height: 6em;
+	/* Maintains the 3.95:1 aspect ratio with 6em height */
+	width: 23.7em;
+	display: block;
+}
+
+.welcome-help-links {
+	display: inline-grid;
+}
+
+.positron-welcome-page-start.buttons {
+	display: flex;
+	column-gap: 2px;
+	flex-flow: wrap;
+}
+
+.positron-welcome-page-start.buttons button.positron-welcome-button.action-button.action {
+	background-color: var(--vscode-positronWelcome-background);
+	display: block;
+	width: 115px;
+	text-wrap: nowrap;
+	color: var(--vscode-positronWelcome-foreground);
+	border-radius: 5%;
+	padding: 12px;
+	margin: 4px;
+}
+
+.positron-welcome-page-start.buttons button.positron-welcome-button.action-button.action:hover {
+	background-color: var(--vscode-positronWelcome-hoverBackground);
+}
+
+.positron-welcome-button .button-container {
+	display: grid;
+	text-align: center;
+	width: 96px;
+}
+
+.positron-welcome-button.positron-button .button-container .button-icon.codicon {
+	color: var(--vscode-positronWelcome-foreground);
+	font-size: 70px;
+}
+
+.welcome-page-start.menu-button-container {
+	display: grid;
+	width: 100%
+}
+
+.welcome-page-start .positron-welcome-menu-item {
+	display: grid;
+	column-gap: 10px;
+	grid-template-areas: "icon label";
+	grid-template-columns: 50px auto;
+	padding: 10px;
+}
+
+.welcome-page-start div.positron-welcome-menu-item:hover {
+	background-color: var(--vscode-positronWelcome-hoverBackground);
+}
+
+.welcome-page-start .positron-welcome-menu-item .label {
+	align-self: center;
+}
+
+.welcome-page-start div.icon {
+	width: 36px;
+	height: 36px;
+}
+
+.monaco-workbench .part.editor > .content .gettingStartedContainer .gettingStartedSlideCategories > .gettingStartedCategoriesContainer {
+	grid-template-rows: auto minmax(min-content, auto) min-content !important;
+}
+
+.monaco-workbench .part.editor > .content .gettingStartedContainer.width-constrained .gettingStartedSlideCategories > .gettingStartedCategoriesContainer > .header,
+.monaco-workbench .part.editor > .content .gettingStartedContainer.height-constrained .gettingStartedSlideCategories > .gettingStartedCategoriesContainer > .header {
+	display: flex;
+}
+
+.monaco-workbench .part.editor > .content .gettingStartedContainer .gettingStartedSlideCategories > .gettingStartedCategoriesContainer > .header,
+.monaco-workbench .part.editor > .content .gettingStartedContainer .gettingStartedSlideCategories > .gettingStartedCategoriesContainer > .footer {
+	overflow: visible;
+}
+
+.gettingStartedContainer .categories-column.categories-column-right {
+	display: none !important;
+}
+
+.gettingStartedContainer .header-logos {
+	display: flex;
+	align-items: center;
+	gap: clamp(12px, 3vw, 24px);
+	margin-bottom: clamp(12px, 2.5vh, 24px);
+	width: 100%;
+	min-width: 0;
+	flex-wrap: wrap;
+	flex-shrink: 1;
+}
+
+.gettingStartedContainer .logo-ops {
+	background-image: url('../../../../browser/media/logo-ops.png');
+	background-repeat: no-repeat;
+	/* Crop the combined artwork to OPS, stopping before the WHO/OMS mark. */
+	background-size: 152.8125% 100%;
+	background-position: left center;
+	height: auto;
+	width: 100%;
+	max-width: clamp(160px, 40vh, 320px);
+	max-height: clamp(32px, 8vh, 64px);
+	min-width: 0;
+	aspect-ratio: 1280 / 256;
+	display: block;
+	flex: 1280 1 260px;
+}
+
+.gettingStartedContainer .logo-rhs-ia {
+	background-image: url('../../../../browser/media/rhs-logo.svg');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: left center;
+	height: auto;
+	width: 100%;
+	max-width: 23.7em;
+	max-height: clamp(32px, 8vh, 64px);
+	min-width: 150px;
+	aspect-ratio: 3.95 / 1;
+	display: block;
+	flex: 1011 1 180px;
+}
+
+.gettingStartedContainer .logo-rhs-ia-dark {
+	background-image: url('../../../../browser/media/rhs-logo-dark.svg');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: left center;
+	height: auto;
+	width: 100%;
+	max-width: 23.7em;
+	max-height: clamp(32px, 8vh, 64px);
+	min-width: 150px;
+	aspect-ratio: 3.95 / 1;
+	display: block;
+	flex: 1011 1 180px;
+}
+
+.gettingStartedContainer .welcome-banner-wrapper {
+	width: 100%;
+	margin-bottom: clamp(20px, 5vh, 40px);
+	flex-shrink: 1;
+	min-width: 0;
+}
+
+.gettingStartedContainer .welcome-banner {
+	background-image: url('../../../../browser/media/welcome-banner.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: top center;
+	width: 100%;
+	height: clamp(140px, 32vh, 345px);
+	aspect-ratio: 1400 / 345;
+	max-height: 345px;
+	display: block;
+	border-radius: 8px;
+}
+
+.gettingStartedContainer.width-constrained .header-logos {
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.gettingStartedContainer.width-constrained .logo-ops,
+.gettingStartedContainer.width-constrained .logo-rhs-ia,
+.gettingStartedContainer.width-constrained .logo-rhs-ia-dark {
+	flex-basis: auto;
+	min-width: 0;
+	max-width: 100%;
+}
+
+.gettingStartedContainer.width-constrained .logo-ops {
+	max-width: clamp(160px, 40vh, 320px);
+}

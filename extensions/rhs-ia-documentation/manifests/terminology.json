@@ -1,0 +1,135 @@
+{
+	"schemaVersion": 1,
+	"terms": [
+		{
+			"en": "workspace",
+			"es": "espacio de trabajo",
+			"kind": "concept",
+			"forbidden": [
+				"área de trabajo"
+			]
+		},
+		{
+			"en": "interpreter",
+			"es": "intérprete",
+			"kind": "concept",
+			"forbidden": [
+				"interpretador"
+			]
+		},
+		{
+			"en": "notebook",
+			"es": "cuaderno",
+			"kind": "concept",
+			"forbidden": [
+				"libreta"
+			]
+		},
+		{
+			"en": "Command Palette",
+			"es": "Paleta de comandos",
+			"kind": "ui-label",
+			"rule": "Use the bundled Spanish UI label when verified; preserve English-only labels."
+		},
+		{
+			"en": "Keyboard Shortcuts",
+			"es": "Métodos abreviados de teclado",
+			"kind": "ui-label",
+			"evidence": "RHS-IA/.build/extensions/ms-ceintl.vscode-language-pack-es/translations/main.i18n.json:vs/workbench/contrib/preferences/browser/preferences.contribution.keyboardShortcuts"
+		},
+		{
+			"en": "Primary Side Bar",
+			"es": "Barra lateral principal",
+			"kind": "ui-label",
+			"evidence": "RHS-IA/.build/extensions/ms-ceintl.vscode-language-pack-es/translations/main.i18n.json:vs/workbench/browser/actions/layoutActions.primary sidebar"
+		},
+		{
+			"en": "Source Control",
+			"es": "Control de código fuente",
+			"kind": "ui-label",
+			"evidence": "RHS-IA/.build/extensions/ms-ceintl.vscode-language-pack-es/translations/main.i18n.json:vs/workbench/contrib/scm/browser/scm.contribution.source control"
+		},
+		{
+			"en": "Run and Debug",
+			"es": "Ejecutar y depurar",
+			"kind": "ui-label",
+			"evidence": "RHS-IA/.build/extensions/ms-ceintl.vscode-language-pack-es/translations/main.i18n.json:debug.hideSlowPreLaunchWarning"
+		},
+		{
+			"en": "View: Open View",
+			"es": "Ver: Abrir vista",
+			"kind": "ui-label",
+			"evidence": "RHS-IA/.build/extensions/ms-ceintl.vscode-language-pack-es/translations/main.i18n.json:vs/workbench/contrib/quickaccess/browser/viewQuickAccess.openView"
+		},
+		{
+			"en": "Open Folder",
+			"es": "Abrir carpeta",
+			"kind": "ui-label",
+			"evidence": "RHS-IA/.build/extensions/ms-ceintl.vscode-language-pack-es/translations/main.i18n.json:vs/platform/dialogs/electron-main/dialogMainService.openFolder"
+		},
+		{
+			"en": "New Folder",
+			"es": "Nueva carpeta...",
+			"kind": "ui-label",
+			"evidence": "RHS-IA/.build/extensions/ms-ceintl.vscode-language-pack-es/translations/main.i18n.json:vs/workbench/contrib/files/browser/fileActions.newFolder"
+		},
+		{
+			"en": "Data Explorer",
+			"es": "Data Explorer",
+			"kind": "ui-label",
+			"translate": false,
+			"rule": "The RHS-IA Data Explorer extension has no bundled Spanish package translation; preserve its displayed English label.",
+			"evidence": "RHS-IA/extensions/positron-python/positron/_data_explorer_internal.py; RHS-IA/src/positron-dts/positron.d.ts"
+		},
+		{
+			"en": "Documentation",
+			"es": "Documentación",
+			"kind": "ui-label",
+			"evidence": "RHS-IA/extensions/rhs-ia-documentation/package.nls.es.json:view.title"
+		},
+		{
+			"en": "RHS-IA Documentation",
+			"es": "Documentación de RHS-IA",
+			"kind": "ui-label",
+			"evidence": "RHS-IA/extensions/rhs-ia-documentation/package.nls.es.json:viewContainer.title,view.contextualTitle"
+		},
+		{
+			"en": "Language Help",
+			"es": "Language Help",
+			"kind": "ui-label",
+			"translate": false,
+			"rule": "The retained contextual help surface is English-only in the available extension package; preserve its displayed label.",
+			"evidence": "RHS-IA/src/vs/workbench/contrib/positronHelp/browser/positronHelp.contribution.ts"
+		},
+		{
+			"en": "RHS-IA",
+			"es": "RHS-IA",
+			"kind": "brand",
+			"translate": false
+		},
+		{
+			"en": "Python",
+			"es": "Python",
+			"kind": "brand",
+			"translate": false
+		},
+		{
+			"en": "editor.action.showCommands",
+			"es": "editor.action.showCommands",
+			"kind": "command-id",
+			"translate": false
+		},
+		{
+			"en": "editor.fontSize",
+			"es": "editor.fontSize",
+			"kind": "setting-key",
+			"translate": false
+		},
+		{
+			"en": "PATH",
+			"es": "PATH",
+			"kind": "code-identifier",
+			"translate": false
+		}
+	]
+}

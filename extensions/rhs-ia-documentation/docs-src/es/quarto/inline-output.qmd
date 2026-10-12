@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Salida insertada de Quarto"
+---
+
+Las celdas ejecutables de Quarto pueden mostrar resultados junto a su código fuente. Usa la barra de herramientas de la celda para ejecutar una celda o una secuencia aplicable. El texto, las tablas, las imágenes y los resultados interactivos compatibles aparecen en zonas de salida.
+
+Los resultados insertados pertenecen a la sesión actual del tiempo de ejecución y no sustituyen al documento renderizado. Borra la salida cuando esté obsoleta, reinicia el tiempo de ejecución cuando el estado sea importante y renderiza desde una sesión limpia antes de publicar.
+
+Si no se detecta una celda, verifica la sintaxis del bloque de código cercado y el identificador del lenguaje.

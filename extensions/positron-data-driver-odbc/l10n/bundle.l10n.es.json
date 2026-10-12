@@ -1,0 +1,21 @@
+{
+	"A full ODBC connection string, naming either a DSN or a driver.": "Una cadena de conexión ODBC completa, nombrando un DSN o un controlador.",
+	"Connect by pasting a full ODBC connection string.": "Conéctese pegando una cadena de conexión ODBC completa.",
+	"Connect to a {0} database over ODBC": "Conéctese a una base de datos {0} a través de ODBC",
+	"Connect to a data source already configured on this computer.": "Conéctese a una fuente de datos ya configurada en este equipo.",
+	"Connect to a database using an ODBC driver": "Conéctese a una base de datos utilizando un controlador ODBC",
+	"Connect to a server by supplying its address and your credentials.": "Conéctese a un servidor suministrando su dirección y sus credenciales.",
+	"Connect using an installed ODBC driver by supplying the connection details.": "Conéctese con un controlador ODBC instalado suministrando los detalles de la conexión.",
+	"Connection String": "Cadena de conexión",
+	"Data Source": "Origen de datos",
+	"Data Source (DSN)": "Origen de datos (DSN)",
+	"Database": "Base de datos",
+	"Leave empty if the data source does not require a password.": "Dejar vacío si la fuente de datos no requiere una contraseña.",
+	"Leave empty to use the credentials stored with the data source.": "Dejar vacío para usar las credenciales almacenadas con la fuente de datos.",
+	"ODBC Driver": "Controlador ODBC",
+	"Password": "Contraseña",
+	"Port": "Puerto",
+	"Server": "Servidor",
+	"The connection details are incomplete.": "Los detalles de la conexión están incompletos.",
+	"User": "Usuario"
+}

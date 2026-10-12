@@ -1,0 +1,119 @@
+name: 'Setup Jupyter Docker'
+description: 'Start Docker Compose services and install Jupyter with Positron in container'
+
+inputs:
+  github-token:
+    description: 'GitHub token for authentication'
+    required: true
+  run-id:
+    description: 'GitHub run ID for Docker Compose project name'
+    required: true
+  positron-license:
+    description: 'Positron license file content'
+    required: false
+    default: ''
+  server-tarball:
+    description: 'Host path to a pre-built positron-server tarball to install instead of downloading a published release'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Start Docker Compose Services
+      shell: bash
+      run: |
+        docker compose \
+          -p "${{ inputs.run-id }}" \
+          -f docker/environments/jupyter-local/docker-compose.ubuntu24.yml \
+          up -d
+
+    - name: Wait for container to be ready
+      shell: bash
+      run: |
+        echo "Waiting for systemd to initialize..."
+        sleep 10
+        # Wait for systemd to reach running or degraded state (both are functional)
+        for i in {1..30}; do
+          status=$(docker exec jupyter-test systemctl is-system-running 2>/dev/null || true)
+          echo "System status: $status"
+          if [[ "$status" == "running" || "$status" == "degraded" ]]; then
+            echo "Container is ready (status: $status)"
+            break
+          fi
+          echo "Waiting for container... ($i/30)"
+          sleep 2
+        done
+        # Verify container is responsive
+        docker exec jupyter-test echo "Container is responsive"
+
+    - name: Setup Jupyter scripts
+      shell: bash
+      run: |
+        # Scripts are checked out with the repo under docker/environments/jupyter-local
+        SCRIPTS_DIR="docker/environments/jupyter-local"
+
+        # Copy scripts into the container (use /opt instead of /tmp since /tmp is tmpfs)
+        docker cp "$SCRIPTS_DIR/install-jupyter-positron.sh" jupyter-test:/opt/install-jupyter-positron.sh
+        docker cp "$SCRIPTS_DIR/positronDownload.sh" jupyter-test:/opt/positronDownload.sh
+
+        # Make scripts executable
+        docker exec jupyter-test chmod +x /opt/install-jupyter-positron.sh
+        docker exec jupyter-test chmod +x /opt/positronDownload.sh
+
+    - name: Stage branch server tarball
+      shell: bash
+      if: inputs.server-tarball != ''
+      env:
+        SERVER_TARBALL: ${{ inputs.server-tarball }}
+      run: |
+        # Copy the branch-built server tarball into the container so the install
+        # script installs it instead of downloading a published positron-builds release.
+        docker cp "$SERVER_TARBALL" jupyter-test:/opt/positron-server-branch.tar.gz
+        echo "Staged branch server tarball at /opt/positron-server-branch.tar.gz"
+
+    - name: Install Jupyter with Positron in container
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        SERVER_TARBALL: ${{ inputs.server-tarball }}
+      run: |
+        EXEC_ARGS=(-e GITHUB_TOKEN="$GITHUB_TOKEN" -e ARCH_SUFFIX=amd64)
+        if [ -n "$SERVER_TARBALL" ]; then
+          EXEC_ARGS+=(-e POSITRON_SERVER_TARBALL=/opt/positron-server-branch.tar.gz)
+        fi
+        docker exec "${EXEC_ARGS[@]}" jupyter-test /bin/bash -c "/opt/install-jupyter-positron.sh --ci"
+
+    - name: Setup Positron license
+      shell: bash
+      if: inputs.positron-license != ''
+      run: |
+        # Create license file from secret
+        echo "${{ inputs.positron-license }}" > positron.lic
+
+        # Copy license into container at the POSITRON_LICENSE_KEY_FILE path the
+        # install script configured for sessions (license.lic next to license-manager)
+        ARCH=$(docker exec jupyter-test uname -m)
+        if [[ "$ARCH" == "aarch64" ]]; then
+          docker cp positron.lic jupyter-test:/opt/positron-server/resources/activation/linux/aarch64/license.lic
+        else
+          docker cp positron.lic jupyter-test:/opt/positron-server/resources/activation/linux/x86_64/license.lic
+        fi
+
+        # Clean up local copy
+        rm positron.lic
+
+        echo "Positron license file installed"
+
+    - name: Show container logs on failure
+      shell: bash
+      if: failure()
+      run: |
+        echo "=== Container Status ==="
+        docker ps -a
+        echo ""
+        echo "=== Container Logs ==="
+        docker logs jupyter-test || true
+        echo ""
+        echo "=== Container Inspect ==="
+        docker inspect jupyter-test || true

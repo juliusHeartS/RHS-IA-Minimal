@@ -1,0 +1,182 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as path from 'path';
+import * as vscode from 'vscode';
+import { log } from './extension.js';
+import minimatch from 'minimatch';
+
+const DEFAULT_BASE_URL = 'https://gateway.posit.ai';
+
+function matchesGlobPattern(fileName: string, pattern: string): boolean {
+	const baseName = fileName.substring(fileName.lastIndexOf('/') + 1);
+
+	if (pattern.startsWith('*.')) {
+		const extension = pattern.substring(1);
+		return baseName.toLowerCase().endsWith(extension.toLowerCase());
+	}
+
+	return baseName === pattern;
+}
+
+export function getGatewayBaseUrl(): string {
+	return vscode.workspace
+		.getConfiguration('authentication.positai')
+		.inspect<string>('baseUrl')?.globalValue
+		?? DEFAULT_BASE_URL;
+}
+
+export function getSelectedCompletionModelId(): string {
+	return vscode.workspace
+		.getConfiguration('nextEditSuggestions')
+		.get<string>('selectedCompletionModel') || '';
+}
+
+/**
+ * Whether Positron's AI features are enabled. Gated on the Positron-owned
+ * `ai.enabled` main switch. Next Edit Suggestions only work when AI is enabled.
+ */
+export function isAIEnabled(): boolean {
+	return vscode.workspace
+		.getConfiguration('ai')
+		.get<boolean>('enabled') === true;
+}
+
+function isFileExcludedFromAI(uri: vscode.Uri): boolean {
+	const config = vscode.workspace.getConfiguration('positron.assistant');
+
+	const patterns = config.get<string[]>('aiExcludes');
+	if (!patterns || patterns.length === 0) {
+		return false;
+	}
+
+	return patterns.some(pattern => {
+		if (!pattern.includes('/')) {
+			return minimatch(path.basename(uri.path), pattern, { dot: true });
+		}
+		return minimatch(uri.path, pattern, { dot: true });
+	});
+}
+
+export function isCompletionEnabledForFileType(document: vscode.TextDocument): boolean {
+	const enableConfig = vscode.workspace
+		.getConfiguration('nextEditSuggestions')
+		.get<Record<string, boolean>>('enabled');
+
+	if (!enableConfig) {
+		return true;
+	}
+
+	const languageId = document.languageId;
+
+	if (Object.hasOwn(enableConfig, languageId)) {
+		return enableConfig[languageId];
+	}
+
+	const fileName = document.fileName;
+	for (const key of Object.keys(enableConfig)) {
+		if (key !== '*' && matchesGlobPattern(fileName, key)) {
+			return enableConfig[key];
+		}
+	}
+
+	return enableConfig['*'] ?? true;
+}
+
+/**
+ * Whether Next Edit Suggestions could produce completions for any file type at
+ * all, based on `nextEditSuggestions.enabled`. When this is `false` the feature
+ * is off for every file (e.g. `{ "*": false }`), so there is no reason to run
+ * the language server.
+ */
+export function isCompletionEnabledForAnyFileType(): boolean {
+	const enableConfig = vscode.workspace
+		.getConfiguration('nextEditSuggestions')
+		.get<Record<string, boolean>>('enabled');
+
+	// No config, or the `*` wildcard left at its default, means unlisted file
+	// types are enabled.
+	if (!enableConfig || enableConfig['*'] !== false) {
+		return true;
+	}
+
+	// The `*` wildcard is off; the feature is still on if any specific file type
+	// is explicitly enabled.
+	return Object.values(enableConfig).some(enabled => enabled === true);
+}
+
+/**
+ * Derives the `signedIn` and `active` status context-key values from the feature
+ * gate and auth state. `signedIn` reflects Posit AI authentication alone, so the
+ * status UI can distinguish "signed in but turned off" (offer to re-enable) from
+ * "signed out" (prompt a sign-in). `active` additionally requires the feature to
+ * be enabled and a usable LLM configuration to have been resolved.
+ */
+export function deriveStatusContext(
+	enabled: boolean,
+	signedIn: boolean,
+	hasConfig: boolean,
+): { signedIn: boolean; active: boolean } {
+	return { signedIn, active: enabled && signedIn && hasConfig };
+}
+
+/** Determines whether inline completions are enabled for a document.
+ *
+ * Checks are evaluated in order:
+ * 1. `ai.enabled` -- main switch for Positron's AI features.
+ * 2. `positron.assistant.aiExcludes` -- file excluded from all AI features.
+ * 3. `nextEditSuggestions.enabled` -- per-language ID, then filename glob.
+ * 4. `nextEditSuggestions.enabled` -- `*` wildcard.
+ */
+export function isCompletionEnabled(document: vscode.TextDocument): boolean {
+	if (!isAIEnabled()) {
+		log.debug('Inline completions are disabled because the ai.enabled setting is off.');
+		return false;
+	}
+
+	if (isFileExcludedFromAI(document.uri)) {
+		log.debug(`AI features are disabled for ${document.uri.fsPath} based on positron.assistant.aiExcludes configuration.`);
+		return false;
+	}
+
+	const enabled = isCompletionEnabledForFileType(document);
+	if (!enabled) {
+		log.debug(`Inline completions are disabled for ${document.uri.fsPath} based on nextEditSuggestions.enabled configuration.`);
+	}
+	return enabled;
+}
+
+/**
+ * Migrates the renamed `nextEditSuggestions.enable` setting to `nextEditSuggestions.enabled`.
+ */
+export async function migrateEnabledSetting(log: vscode.LogOutputChannel): Promise<void> {
+	const config = vscode.workspace.getConfiguration('nextEditSuggestions');
+	const oldValue = config.inspect<Record<string, boolean>>('enable');
+	const newValue = config.inspect<Record<string, boolean>>('enabled');
+	if (!oldValue) {
+		return;
+	}
+
+	const scopes = [
+		{ old: oldValue.globalValue, current: newValue?.globalValue, target: vscode.ConfigurationTarget.Global },
+		{ old: oldValue.workspaceValue, current: newValue?.workspaceValue, target: vscode.ConfigurationTarget.Workspace },
+	];
+
+	for (const scope of scopes) {
+		if (scope.old === undefined) {
+			continue;
+		}
+		try {
+			if (scope.current === undefined) {
+				await config.update('enabled', scope.old, scope.target);
+			}
+			await config.update('enable', undefined, scope.target);
+			log.info(`Migrated nextEditSuggestions.enable to nextEditSuggestions.enabled.`);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			log.warn(`Failed to migrate nextEditSuggestions.enable: ${message}`);
+		}
+	}
+}

@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Connection Extensions"
+---
+
+Database and data-source extensions can contribute connection providers to RHS-IA. A provider defines how a connection is registered, browsed, refreshed, and closed.
+
+Install a provider only from a trusted publisher and follow its driver and credential setup. Provider behavior may depend on an active Python or R runtime.
+
+Extension authors should expose metadata lazily, avoid logging secrets, and dispose connections when a session ends. General development guidance is in [Extension Development](../extensions/development.qmd).

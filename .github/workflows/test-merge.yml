@@ -1,0 +1,130 @@
+name: "Test: Merge to branch"
+
+on:
+  push:
+    branches:
+      - main
+      - "prerelease/**"
+      - "release/**"
+
+jobs:
+  setup:
+    name: setup
+    uses: ./.github/workflows/test-e2e-ubuntu-build.yml
+    secrets: inherit
+
+  e2e-electron:
+    name: e2e
+    needs: [setup]
+    uses: ./.github/workflows/test-e2e-ubuntu-run.yml
+    with:
+      grep: ""
+      project: "e2e-electron"
+      display_name: "electron"
+      install_undetectable_interpreters: false
+      install_license: false
+      upload_logs: false
+      shards: 2
+      matrix: '{"shard":[1,2]}'
+      workers: 2
+      allow_soft_fail: true
+      max_failures: 10  # 20 max failures / 2 shards = 10
+    secrets: inherit
+
+  e2e-windows:
+    name: e2e
+    uses: ./.github/workflows/test-e2e-windows-run.yml
+    secrets: inherit
+    with:
+      save_cache: true
+      grep: ""
+      project: "e2e-windows"
+      display_name: "electron-win"
+      allow_soft_fail: true
+      upload_logs: false
+      shards: 3
+      matrix: '{"shard":[1,2,3]}'
+      max_failures: 7  # 20 max failures / 3 shards = 6.66, rounded up to 7
+
+  e2e-ubuntu-chromium:
+    name: e2e
+    needs: [setup]
+    uses: ./.github/workflows/test-e2e-ubuntu-run.yml
+    with:
+      grep: ""
+      display_name: "chromium"
+      project: "e2e-chromium"
+      install_undetectable_interpreters: false
+      install_license: true
+      upload_logs: true
+      shards: 2
+      matrix: '{"shard":[1,2]}'
+      workers: 2
+      allow_soft_fail: true
+      max_failures: 10  # 20 max failures / 2 shards = 10
+    secrets: inherit
+
+  unit-tests:
+    name: test
+    uses: ./.github/workflows/test-unit.yml
+    secrets: inherit
+    with:
+      save_cache: true  # Saves Ubuntu caches for subsequent runs
+
+  ext-host-tests:
+    name: test
+    uses: ./.github/workflows/test-ext-host.yml
+    secrets: inherit
+    with:
+      pull_request: false
+
+  slack-notify:
+    if: always()
+    needs:
+      [
+        setup,
+        unit-tests,
+        ext-host-tests,
+        e2e-electron,
+        e2e-windows,
+        e2e-ubuntu-chromium,
+      ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        if: always()
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: .github/actions/notify-e2e-insights
+
+      - name: Notify E2E Test Insights
+        if: always()
+        uses: ./.github/actions/notify-e2e-insights
+        with:
+          webhook_secret: ${{ secrets.E2E_INSIGHTS_WEBHOOK_SECRET }}
+          connect_api_key: ${{ secrets.CONNECT_API_KEY }}
+          repo_id: "positron"
+          filter_jobs: "(e2e / ([^0-9]*)|unit|ext-host)$"
+
+  slack-notify-win-extensions:
+    if: ${{ needs.e2e-windows-electron.outputs.extensions_failed == 'true' }}
+    needs:
+      - e2e-windows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Slack
+        uses: midleman/slack-workflow-status@v3.1.3
+        with:
+          gh_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_token: ${{ secrets.SLACK_TOKEN_TEST_STATUS }}
+          slack_channel: "#positron-rstats-test-results"
+          filter_jobs: "windows"
+          notify_on: "always"
+
+  analyze-e2e-failures:
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
+    needs: [e2e-electron, e2e-windows, e2e-ubuntu-chromium]
+    uses: ./.github/workflows/analyze-e2e-failures.yml
+    with:
+      run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    secrets: inherit

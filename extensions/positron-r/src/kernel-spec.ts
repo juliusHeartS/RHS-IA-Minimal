@@ -1,0 +1,585 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as positron from 'positron';
+import * as vscode from 'vscode';
+import * as path from 'path';
+import * as fs from 'fs';
+import { execSync } from 'child_process';
+
+import { JupyterKernelSpec } from './positron-supervisor';
+import { getArkKernelPath, getArkEnvironmentVariables } from './kernel';
+import { EXTENSION_ROOT_DIR } from './constants';
+import { findCondaExe } from './provider-conda';
+import { PackagerMetadata, isPixiMetadata, isCondaMetadata, isModuleMetadata, isRVersionsMetadata } from './r-installation';
+import { findPixiExe } from './provider-pixi';
+import { LOGGER } from './extension';
+
+/**
+ * Set speculative Conda environment variables. While it's preferable to capture
+ * them accurately, this is a fussy and error-prone process; this function at
+ * least ensures that key variables are set so that R and other tools can find
+ * the right libraries and executables.
+ *
+ * Only used when an error occurs during proper capture of the environment
+ * (using conda activate).
+ */
+function setSpeculativeCondaEnvVars(env: Record<string, string>, envPath: string, condaExe?: string): void {
+	env['CONDA_PREFIX'] = envPath;
+	env['CONDA_DEFAULT_ENV'] = path.basename(envPath);
+	env['CONDA_SHLVL'] = '1';
+	env['CONDA_CHANGEPS1'] = 'no';
+	env['CONDA_PROMPT_MODIFIER'] = '';
+	const pathParts: string[] = [];
+	if (condaExe) {
+		env['CONDA_EXE'] = condaExe;
+		// Find conda root from condaExe
+		const condaRoot = path.dirname(path.dirname(condaExe));
+		env['CONDA_PYTHON_EXE'] = path.join(condaRoot, 'python.exe');
+		// Add base paths to PATH
+		pathParts.push(
+			path.join(condaRoot, 'Scripts'),
+			condaRoot,
+			path.join(condaRoot, 'Library', 'bin')
+		);
+	}
+	// Add env paths to PATH
+	pathParts.push(
+		path.join(envPath, 'Scripts'),
+		envPath,
+		path.join(envPath, 'Library', 'bin'),
+		path.join(envPath, 'Lib', 'R', 'bin', 'x64')
+	);
+	// Prepend to PATH
+	const currentPath = process.env.PATH || '';
+	env['PATH'] = pathParts.join(';') + ';' + currentPath;
+}
+
+/**
+ * Capture conda environment variables on Windows by running the activation
+ * script and capturing its output. Shows a progress notification if activation
+ * takes longer than 2 seconds. If the user cancels, speculative environment
+ * variables are used instead.
+ *
+ * @param env The environment record to populate with conda variables
+ * @param rBinaryPath The R binary path to add to PATH
+ * @param envPath The path to the conda environment
+ * @param envName The name of the conda environment
+ * @returns A promise that resolves when activation is complete
+ */
+async function captureCondaEnvVarsWindows(env: Record<string, string>, rBinaryPath: string, envPath: string, envName: string): Promise<void> {
+	const condaExe = findCondaExe(envPath);
+	if (!condaExe) {
+		LOGGER.error('Could not find conda.exe for environment:', envPath);
+		setSpeculativeCondaEnvVars(env, envPath);
+		return;
+	}
+
+	let cancelled = false;
+
+	const doActivation = (): void => {
+		try {
+			// Form a command to get the activation script path
+			const command = `"${condaExe}" shell.cmd.exe activate ${envName}`;
+			LOGGER.debug(`Running to capture Conda variables: ${command}`);
+			const scriptPath = execSync(command, { encoding: 'utf8', timeout: 10000 }).trim();
+			if (fs.existsSync(scriptPath)) {
+				const scriptContent = fs.readFileSync(scriptPath, 'utf8');
+				// Try to delete the temp file to prevent Windows from opening it
+				try {
+					fs.unlinkSync(scriptPath);
+				} catch (e) {
+					LOGGER.warn('Failed to delete temp conda script file:', e);
+				}
+				// If cancelled while running, fall back to speculative values
+				if (cancelled) {
+					throw new Error('Conda activation cancelled by user');
+				}
+				const lines = scriptContent.split('\n');
+				if (lines.length === 0) {
+					throw new Error('Conda activation script is empty');
+				}
+				for (const line of lines) {
+					const trimmed = line.trim();
+					if (!trimmed || !trimmed.includes('=')) {
+						LOGGER.trace(`Skipping non-variable line: ${line}`);
+						continue; // skip empty or non-var lines
+					}
+					const eqIndex = trimmed.indexOf('=');
+					if (eqIndex === -1) {
+						LOGGER.trace(`Skipping line without '=': ${line}`);
+						continue;
+					}
+					let envKey = trimmed.substring(0, eqIndex).trim();
+					let envValue = trimmed.substring(eqIndex + 1).trim();
+					if (process.platform === 'win32') {
+						// On Windows, add the R binary path to PATH, if it is not already present
+						envKey = envKey.toUpperCase();
+						if (rBinaryPath &&
+							process.platform === 'win32' &&
+							envKey === 'PATH' &&
+							!envValue.includes(path.dirname(rBinaryPath))) {
+							envValue = path.dirname(rBinaryPath) + ';' + envValue;
+						}
+					}
+					LOGGER.trace(`Set ${envKey}=${envValue}`);
+					env[envKey] = envValue;
+				}
+			} else {
+				throw new Error(`Activation script not found at ${scriptPath}`);
+			}
+		} catch (e) {
+			// Log error and set speculative values
+			LOGGER.error('Failed to capture conda environment variables:', e.message);
+			if (e.stdout) {
+				LOGGER.error('stdout:', e.stdout);
+			}
+			if (e.stderr) {
+				LOGGER.error('stderr:', e.stderr);
+			}
+			setSpeculativeCondaEnvVars(env, envPath, condaExe);
+		}
+	};
+
+	const activationPromise = new Promise<void>((resolve) => {
+		doActivation();
+		resolve();
+	});
+
+	// Show progress toast if activation takes longer than 2 seconds
+	const progressDelay = 2000;
+	let showProgress = true;
+
+	const timeoutPromise = new Promise<void>((resolve) => {
+		setTimeout(() => {
+			if (showProgress) {
+				vscode.window.withProgress(
+					{
+						location: vscode.ProgressLocation.Notification,
+						title: vscode.l10n.t("Activating Conda environment '{0}'...", envName),
+						cancellable: true
+					},
+					async (_progress, token) => {
+						token.onCancellationRequested(() => {
+							cancelled = true;
+							LOGGER.info('User cancelled conda activation');
+						});
+						await activationPromise;
+					}
+				);
+			}
+			resolve();
+		}, progressDelay);
+	});
+
+	await Promise.race([activationPromise, timeoutPromise]);
+	showProgress = false;
+	await activationPromise;
+}
+
+/**
+ * JSON output format from `pixi shell-hook --json`
+ */
+interface PixiShellHookJson {
+	environment_variables: Record<string, string>;
+}
+
+/**
+ * Capture Pixi environment variables by running `pixi shell-hook --json` and parsing
+ * the JSON output. This is more reliable than parsing shell scripts.
+ *
+ * @param env The environment record to populate with pixi variables
+ * @param manifestPath The path to the pixi manifest file (pixi.toml or pyproject.toml)
+ * @param envName The name of the pixi environment
+ * @returns A promise that resolves when activation is complete
+ */
+async function capturePixiEnvVars(
+	env: Record<string, string>,
+	rBinaryPath: string,
+	manifestPath: string,
+	envName?: string
+): Promise<void> {
+	const pixiExe = await findPixiExe();
+	if (!pixiExe) {
+		// This shouldn't happen since we discovered the environment via pixi
+		LOGGER.error('Could not find pixi executable for environment activation');
+		return;
+	}
+
+	let cancelled = false;
+
+	const doActivation = (): void => {
+		try {
+			let command = `"${pixiExe}" shell-hook --manifest-path "${manifestPath}" --json`;
+			if (envName && envName !== 'default') {
+				command += ` --environment "${envName}"`;
+			}
+			LOGGER.debug(`Running to capture Pixi variables: ${command}`);
+			const output = execSync(command, { encoding: 'utf8', timeout: 30000 });
+
+			if (cancelled) {
+				throw new Error('Pixi activation cancelled by user');
+			}
+
+			// Parse JSON output
+			const hookData: PixiShellHookJson = JSON.parse(output);
+
+			// Apply environment variables
+			for (const [key, value] of Object.entries(hookData.environment_variables)) {
+				// On Windows, convert key to uppercase for consistency
+				const envKey = process.platform === 'win32' ? key.toUpperCase() : key;
+				let envValue = value;
+
+				// On Windows, add the R binary path to PATH. Pixi does not add this
+				// but it's needed for R to find its DLLs.
+				if (process.platform === 'win32' && envKey === 'PATH') {
+					envValue = path.dirname(rBinaryPath) + ';' + envValue;
+				}
+				env[envKey] = envValue;
+				LOGGER.trace(`Set ${envKey}=${envValue}`);
+			}
+		} catch (e) {
+			LOGGER.error('Failed to capture pixi environment variables:', e.message);
+			if (e.stdout) {
+				LOGGER.error('stdout:', e.stdout);
+			}
+			if (e.stderr) {
+				LOGGER.error('stderr:', e.stderr);
+			}
+			// Don't fall back to speculative values - if pixi shell-hook fails,
+			// the R session will start without environment activation.
+			// R_HOME is already set, so basic functionality should still work.
+		}
+	};
+
+	const activationPromise = new Promise<void>((resolve) => {
+		doActivation();
+		resolve();
+	});
+
+	// Show progress toast if activation takes longer than 2 seconds
+	const progressDelay = 2000;
+	let showProgress = true;
+
+	const timeoutPromise = new Promise<void>((resolve) => {
+		setTimeout(() => {
+			if (showProgress) {
+				vscode.window.withProgress(
+					{
+						location: vscode.ProgressLocation.Notification,
+						title: vscode.l10n.t("Activating Pixi environment '{0}'...", envName || 'default'),
+						cancellable: true
+					},
+					async (_progress, token) => {
+						token.onCancellationRequested(() => {
+							cancelled = true;
+							LOGGER.info('User cancelled pixi activation');
+						});
+						await activationPromise;
+					}
+				);
+			}
+			resolve();
+		}, progressDelay);
+	});
+
+	await Promise.race([activationPromise, timeoutPromise]);
+	showProgress = false;
+	await activationPromise;
+}
+
+/**
+ * Create a new Jupyter kernel spec.
+ *
+ * @param rHomePath The R_HOME path for the R version
+ * @param runtimeName The (display) name of the runtime
+ * @param sessionMode The mode in which to create the session
+ * @param options Additional options: specifically, the R binary path, architecture, and conda environment path
+ *
+ * @returns A JupyterKernelSpec definining the kernel's path, arguments, and
+ *  metadata.
+ */
+export async function createJupyterKernelSpec(
+	rHomePath: string,
+	runtimeName: string,
+	sessionMode: positron.LanguageRuntimeSessionMode,
+	options?: {
+		rBinaryPath?: string;
+		rArchitecture?: string;
+		packagerMetadata?: PackagerMetadata;
+	}): Promise<JupyterKernelSpec> {
+
+	// Path to the kernel executable
+	const kernelPath = getArkKernelPath({
+		rBinaryPath: options?.rBinaryPath,
+		rHomePath,
+		rArch: options?.rArchitecture
+	});
+	if (!kernelPath) {
+		throw new Error('Unable to find R kernel');
+	}
+
+	// Check the R kernel log level setting
+	const config = vscode.workspace.getConfiguration('positron.r');
+	const logLevel = config.get<string>('kernel.logLevel') ?? 'warn';
+	const logLevelForeign = config.get<string>('kernel.logLevelExternal') ?? 'warn';
+	const userEnv = config.get<object>('kernel.env') ?? {};
+	const profile = config.get<string>('kernel.profile');
+
+
+	/* eslint-disable */
+	const env = <Record<string, string>>{
+		'RUST_BACKTRACE': '1',
+		'RUST_LOG': logLevelForeign + ',ark=' + logLevel,
+		...getArkEnvironmentVariables(rHomePath),
+		...userEnv
+	};
+	/* eslint-enable */
+
+	if (profile) {
+		env['ARK_PROFILE'] = profile;
+	}
+
+	// If this R is from a packager environment (conda or pixi), activate it
+	// to ensure that compilation tools and other dependencies are available
+	let startup_command: string | undefined = undefined;
+	const packagerMetadata = options?.packagerMetadata;
+
+	if (packagerMetadata && isCondaMetadata(packagerMetadata)) {
+		const envPath = packagerMetadata.environmentPath;
+		const envName = path.basename(envPath);
+		if (process.platform === 'win32') {
+			// On Windows, capture environment variables directly instead of using a startup command;
+			// the startup command approach is unreliable on Windows
+			await captureCondaEnvVarsWindows(env, options?.rBinaryPath, envPath, envName);
+		} else {
+			// On Unix-like systems, use conda activate as startup command
+			startup_command = 'conda activate ' + envPath;
+		}
+	}
+
+	// If this R is from a pixi environment, activate the pixi environment
+	// to ensure that compilation tools and other dependencies are available
+	if (packagerMetadata && isPixiMetadata(packagerMetadata)) {
+		// For Pixi, we capture environment variables directly on all platforms
+		// since pixi shell-hook --json provides a consistent interface
+		await capturePixiEnvVars(env, options?.rBinaryPath, packagerMetadata.manifestPath, packagerMetadata.environmentName);
+	}
+
+	// If this R is from a module environment, use the pre-computed startup command
+	if (packagerMetadata && isModuleMetadata(packagerMetadata)) {
+		if (process.platform === 'win32' || process.platform === 'darwin') {
+			// Module systems are typically not available on Windows or macOS
+			LOGGER.warn('Module environments are not supported on Windows or macOS');
+		} else {
+			// Use the pre-computed startup command from the module resolver
+			startup_command = packagerMetadata.startupCommand;
+			LOGGER.info(`Using module startup command: ${startup_command}`);
+		}
+	}
+
+	// If this R is from an r-versions entry, handle module loading and/or script sourcing
+	if (packagerMetadata && isRVersionsMetadata(packagerMetadata)) {
+		// Handle module startup command and/or script
+		// If both are specified, module loads first, then script is sourced
+		if (packagerMetadata.moduleStartupCommand && packagerMetadata.script) {
+			startup_command = `${packagerMetadata.moduleStartupCommand} && . ${packagerMetadata.script}`;
+			LOGGER.info(`Using r-versions module and script: ${startup_command}`);
+		} else if (packagerMetadata.moduleStartupCommand) {
+			startup_command = packagerMetadata.moduleStartupCommand;
+			LOGGER.info(`Using r-versions module startup command: ${startup_command}`);
+		} else if (packagerMetadata.script) {
+			// Use POSIX-compatible source syntax (.) for portability
+			startup_command = `. ${packagerMetadata.script}`;
+			LOGGER.info(`Using r-versions startup script: ${packagerMetadata.script}`);
+		}
+		// Set custom library paths via R_LIBS environment variable
+		if (packagerMetadata.library) {
+			env['R_LIBS'] = packagerMetadata.library;
+			LOGGER.info(`Using r-versions library paths: ${packagerMetadata.library}`);
+		}
+	}
+
+	// R script to run on session startup
+	const startupFile = path.join(EXTENSION_ROOT_DIR, 'resources', 'scripts', 'startup.R');
+
+	const argv = [
+		kernelPath,
+		'--connection_file', '{connection_file}',
+		'--log', '{log_file}',
+		'--startup-file', `${startupFile}`,
+		'--session-mode', `${sessionMode}`,
+	];
+
+	// Only create profile if requested in configuration
+	if (profile) {
+		argv.push(...[
+			'--profile', '{profile_file}',
+		]);
+	}
+
+	// On Windows, we need to tell ark to use a different DLL search path when
+	// dealing with Conda/Pixi environments. These R installations have DLL
+	// dependencies in non-standard locations. These locations are part of the
+	// PATH set during environment activation, but by default Ark has a more limited set
+	// of directories it searches for DLLs. The `--standard-dll-search-order`
+	// option tells Ark to use Windows' standard DLL search path, which includes
+	// the PATH entries.
+	if (process.platform === 'win32' && packagerMetadata) {
+		argv.push('--standard-dll-search-order');
+	}
+
+	// Set the default repositories
+	// Check if r-versions entry specifies a repo (takes precedence over settings)
+	const rVersionsRepoArgs = getRVersionsRepoArgs(packagerMetadata);
+	if (rVersionsRepoArgs) {
+		argv.push(...rVersionsRepoArgs);
+	}
+
+	const defaultRepos = config.get<string>('defaultRepositories') ?? 'auto';
+	const ppmRepo = config.get<string>('packageManagerRepository');
+	if (!rVersionsRepoArgs && defaultRepos === 'auto') {
+		const reposConf = findReposConf();
+		if (reposConf) {
+			// If there's a `repos.conf` file in a well-known directory, use
+			// that.
+			argv.push(...['--repos-conf', reposConf]);
+		} else if (ppmRepo) {
+			// If the user has specified a custom Package Manager URL, use it
+			//
+			// Note: Ark can't handle trailing slashes, so strip them here
+			argv.push(...['--default-ppm-repo', ppmRepo.endsWith('/') ? ppmRepo.slice(0, -1) : ppmRepo]);
+		} else if (vscode.env.uiKind === vscode.UIKind.Web) {
+			// No repos.conf; if we're web mode use Posit's Public Package
+			// Manager
+			argv.push(...['--default-repos', 'posit-ppm']);
+		}
+		// In all other cases when `auto` is set, we don't specify
+		// `--default-repos` at all, and let Ark choose an appropriate
+		// repository (usually `cran.rstudio.com)
+	} else if (!rVersionsRepoArgs) {
+		// Warn the user about inconsistent PPM settings.
+		if (ppmRepo) {
+			const openSettings = vscode.l10n.t('Open Settings');
+			// Note: we don't `await` here to avoid stalling the kernel startup.
+			vscode.window.showWarningMessage(
+				vscode.l10n.t('The "Package Manager Repository" setting is ignored unless "Default Repositories" is set to "auto".'),
+				{ title: openSettings },
+				{ title: vscode.l10n.t('Dismiss'), isCloseAffordance: true },
+			).then((action) => {
+				if (action?.title === openSettings) {
+					vscode.commands.executeCommand(
+						'workbench.action.openSettings',
+						'positron.r.defaultRepositories'
+					);
+				}
+			});
+		}
+		// The remaining options map directly to Ark's `--default-repos`
+		// command line option
+		argv.push(...['--default-repos', defaultRepos]);
+	}
+
+	argv.push(...[
+		// The arguments after `--` are passed verbatim to R
+		'--',
+		'--interactive',
+	]);
+
+	// Create a kernel spec for this R installation
+	const kernelSpec: JupyterKernelSpec = {
+		'argv': argv,
+		'display_name': runtimeName,
+		'language': 'R',
+		'env': env,
+		'startup_command': startup_command,
+		// Protocol version 5.5 signals support for JEP 66
+		'kernel_protocol_version': '5.5'
+	};
+
+	// For temporary, approximate backward compatibility, check both
+	// 'saveAndRestoreWorkspace' and 'restoreWorkspace', which was deprecated in
+	// late October 2025. Remove the latter setting and check in a future release.
+	const shouldSaveAndRestore = config.get<boolean>('saveAndRestoreWorkspace') || config.get<boolean>('restoreWorkspace');
+
+	if (shouldSaveAndRestore) {
+		// '--restore-data' is the default but let's be explicit for clarity and
+		// symmetry with the other branch
+		kernelSpec.argv.push('--restore-data', '--save');
+	} else {
+		kernelSpec.argv.push('--no-restore-data', '--no-save');
+	}
+
+	// If the user has supplied extra arguments to R, pass them along.
+	const extraArgs = config.get<Array<string>>('extraArguments');
+	const quietMode = config.get<boolean>('quietMode');
+	if (quietMode && extraArgs?.indexOf('--quiet') === -1) {
+		extraArgs?.push('--quiet');
+	}
+	if (extraArgs) {
+		kernelSpec.argv.push(...extraArgs);
+	}
+
+	return kernelSpec;
+}
+
+/**
+ * Attempt to find a `repos.conf` file in Positron or RStudio XDG
+ * configuration directories.
+ *
+ * Exported so the PPM vulnerability lookup can mirror the repository
+ * resolution the kernel launch uses.
+ *
+ * Returns the path to the file if found, or `undefined` if not.
+ */
+export function findReposConf(): string | undefined {
+	const xdg = require('xdg-portable/cjs');
+	const configDirs: Array<string> = xdg.configDirs();
+	// on Unix-alikes, also check /etc; RStudio uses /etc/rstudio instead of the
+	// XDG dir /etc/xdg/rstudio
+	if (process.platform !== 'win32') {
+		configDirs.push('/etc');
+	}
+	for (const product of ['rstudio', 'positron']) {
+		for (const configDir of configDirs) {
+			const reposConf = path.join(configDir, product, 'repos.conf');
+			if (fs.existsSync(reposConf)) {
+				return reposConf;
+			}
+		}
+	}
+	return;
+}
+
+/**
+ * Get repository configuration args from r-versions metadata.
+ *
+ * The Repo field can be either a file path to a repos.conf file or a URL.
+ * For URLs, use ark's --default-cran-repo.
+ * For file paths, use ark's --repos-conf.
+ * Returns the appropriate argv entries, or `undefined` if no repo is specified.
+ */
+function getRVersionsRepoArgs(packagerMetadata?: PackagerMetadata): string[] | undefined {
+	if (!packagerMetadata || !isRVersionsMetadata(packagerMetadata) || !packagerMetadata.repo) {
+		return undefined;
+	}
+
+	const repo = packagerMetadata.repo;
+
+	// Check if this is a URL, to pass directly to ark's --default-cran-repo
+	if (repo.startsWith('http://') || repo.startsWith('https://')) {
+		LOGGER.info(`Using r-versions repo URL: ${repo}`);
+		return ['--default-cran-repo', repo];
+	}
+
+	// Otherwise treat as a file path, to use with --repos-conf
+	if (fs.existsSync(repo) && fs.statSync(repo).isFile()) {
+		LOGGER.info(`Using r-versions repos.conf: ${repo}`);
+		return ['--repos-conf', repo];
+	}
+
+	LOGGER.warn(`r-versions Repo field is not a valid URL or file path: ${repo}`);
+	return undefined;
+}

@@ -1,0 +1,17 @@
+# Runtime venv/project folders created at the workspace root by interpreter
+# tests. The e2e runner copies this dir into an ephemeral workspace and re-inits
+# git there, so only a .gitignore inside the workspace travels with it (the root
+# repo .gitignore does not). Without these, a leaked venv inflates SCM status and
+# flakes scm.test.ts.
+venv-creation-test/
+proj/
+.venv/
+
+# Bytecode the interpreter writes next to any module the app tests import. No one
+# spec owns it: several specs run the same python_apps, and the name carries the
+# CPython version, so it differs per lane.
+__pycache__/
+
+# CI sets PIP_CACHE_DIR to a relative .pip-cache, so every `pip install` a spec
+# runs in the console lands one here instead of in the runner's cache dir.
+.pip-cache/

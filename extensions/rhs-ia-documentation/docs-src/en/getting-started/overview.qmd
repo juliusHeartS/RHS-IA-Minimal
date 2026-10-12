@@ -1,0 +1,20 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Getting Started"
+---
+
+RHS-IA combines an editor, terminal, source control, language runtimes, and data-science tools in one workspace. Open a folder for an existing project, or use **File > New Folder** to begin from a template.
+
+## First session {#first-session}
+
+Install or select a [Python or R interpreter](../interpreters/managing.qmd), open a source file, and run code with the editor's Run action. Output appears in the Console; objects, plots, and data open in their dedicated views.
+
+Use **View > Command Palette** whenever you know an action but not its location. Open this guide from the Documentation icon in the Auxiliary Bar or with **Cmd/Ctrl+Shift+H**.
+
+## Next steps {#next-steps}
+
+Learn the [workspace layout](../user-interface/layout.qmd), configure [keyboard shortcuts](../configuration/keyboard-shortcuts.qmd), or follow a [tutorial](../tutorials/overview.qmd).

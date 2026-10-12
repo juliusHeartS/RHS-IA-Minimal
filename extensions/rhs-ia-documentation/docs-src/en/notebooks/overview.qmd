@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Jupyter Notebooks"
+---
+
+Open an `.ipynb` file to edit Markdown and executable code cells. Select a kernel that matches the notebook language and environment, then run individual cells or the entire notebook.
+
+Execution order matters because a notebook kernel keeps state. Restart the kernel and run all cells before relying on a result or sharing the file. Saved cell output can differ from the current kernel state.
+
+RHS-IA includes a [data-science notebook editor](editor.qmd) and the [legacy editor](legacy-editor.qmd) for compatibility.

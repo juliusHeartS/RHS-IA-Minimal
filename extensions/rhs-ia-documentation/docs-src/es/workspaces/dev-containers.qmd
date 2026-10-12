@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Development Containers"
+---
+
+Los contenedores de desarrollo proporcionan una cadena de herramientas específica del proyecto definida por la configuración del contenedor. Con un motor de contenedores compatible disponible, usa una acción de **Dev Containers** para volver a abrir o compilar el espacio de trabajo en su contenedor.
+
+La primera compilación puede tardar porque se deben preparar las imágenes y las dependencias. Los terminales, las extensiones y los tiempos de ejecución de lenguajes pueden ejecutarse dentro del contenedor mientras la interfaz permanece local.
+
+Revisa las definiciones del contenedor antes de compilarlo. Vuelve a compilar después de cambiar la imagen o los comandos de configuración y conserva los datos persistentes en ubicaciones montadas del espacio de trabajo o del volumen.

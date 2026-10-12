@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Solución de problemas"
+---
+
+Empieza reproduciendo el problema en el espacio de trabajo relevante más pequeño. Anota el intérprete activo, el contexto remoto, el tipo de archivo y la acción exacta que falló.
+
+Abre **Ver > Salida** y elige el canal relacionado. Los fallos de inicio del tiempo de ejecución suelen requerir comprobar el ejecutable y los archivos de inicio; los fallos de extensiones pueden requerir **Desarrollador: Mostrar extensiones en ejecución** o un registro del Extension Host. Usa **Desarrollador: Recargar ventana** después de cambiar la configuración o las extensiones.
+
+Si el problema persiste, registra las versiones de RHS-IA y del sistema operativo, pasos de reproducción concisos, el comportamiento esperado, el comportamiento real y fragmentos de registro saneados. Nunca incluyas credenciales ni datos confidenciales.

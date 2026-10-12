@@ -1,0 +1,9 @@
+{
+	"description": "Variables de entorno",
+	"displayName": "Entorno",
+	"environment.configuration.enabled.description": "Habilitar la colección de variables de entorno RHS-IA.",
+	"environment.configuration.title": "Variables de entorno",
+	"environment.configuration.variables.append.description": "Valores a añadir a las variables de entorno existentes, nombrando la variable a añadir y el valor a añadir.",
+	"environment.configuration.variables.prepend.description": "Valores a prepend a variables de entorno existentes, nombrando la variable a prepend y el valor a prepend.",
+	"environment.configuration.variables.set.description": "Variables de entorno a establecer en todos los terminales y consolas RHS-IA."
+}

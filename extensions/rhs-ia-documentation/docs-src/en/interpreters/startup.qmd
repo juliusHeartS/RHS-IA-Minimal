@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Interpreter Startup"
+---
+
+RHS-IA can start a runtime when code execution or another language feature needs it. Startup uses the selected interpreter, workspace directory, environment variables, and language-specific initialization files.
+
+The Console reports startup progress and errors. If a runtime does not start, confirm the executable still exists, test it in a terminal, and inspect the relevant output channel. Then select the interpreter again or restart the window.
+
+Startup code should not request interactive terminal input because the language session may initialize before a console prompt is available.

@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Cuadernos de Jupyter"
+---
+
+Abre un archivo `.ipynb` para editar celdas Markdown y de código ejecutables. Selecciona un kernel que coincida con el lenguaje y el entorno del cuaderno; después ejecuta celdas individuales o el cuaderno completo.
+
+El orden de ejecución importa porque un kernel de cuaderno conserva el estado. Reinicia el kernel y ejecuta todas las celdas antes de confiar en un resultado o compartir el archivo. La salida guardada de una celda puede diferir del estado actual del kernel.
+
+RHS-IA incluye un [editor de cuadernos de ciencia de datos](editor.qmd) y el [editor heredado](legacy-editor.qmd) para compatibilidad.

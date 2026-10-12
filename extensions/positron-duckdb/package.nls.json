@@ -1,0 +1,4 @@
+{
+	"displayName": "RHS-IA DuckDB Support",
+	"description": "Provides DuckDB support for headless data explorers for previewing data files."
+}

@@ -1,0 +1,23 @@
+{
+	"navigation": "Navegación de la documentación",
+	"back": "Atrás",
+	"forward": "Adelante",
+	"home": "Documentación de RHS-IA",
+	"fallback": "Esta página no está disponible en español. Se muestra la versión en inglés.",
+	"blockedLink": "La documentación de RHS-IA bloqueó un enlace no compatible.",
+	"httpsOnly": "La documentación de RHS-IA solo abre enlaces HTTPS.",
+	"loadError": "No se pudo cargar la página de documentación.",
+	"retry": "Reintentar",
+	"search": "Buscar en la documentación",
+	"searchHint": "Buscar en este idioma",
+	"searchEmpty": "No se encontraron resultados.",
+	"searchLoading": "Buscando…",
+	"searchError": "No se pudo cargar la búsqueda. Inténtelo de nuevo.",
+	"searchResults": "Resultados (hasta 20)",
+	"contents": "Contenido",
+	"onThisPage": "En esta página",
+	"previous": "Anterior",
+	"next": "Siguiente",
+	"closeSearch": "Cerrar búsqueda",
+	"actionError": "No se pudo abrir la acción de la aplicación."
+}

@@ -1,0 +1,266 @@
+[
+	{
+		"c": "---",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml entity.other.document.begin.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "entity: #0550AE",
+			"2026-dark": "entity: #79C0FF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "foo",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.key.yaml string.unquoted.plain.yaml entity.name.tag.yaml",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml punctuation.separator.map.value.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "1",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml string.unquoted.plain.out.yaml constant.numeric.integer.decimal.yaml",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "---",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml entity.other.document.begin.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "entity: #0550AE",
+			"2026-dark": "entity: #79C0FF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "This is highlighted as a YAML string",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml string.unquoted.plain.out.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.unquoted.plain.out.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.unquoted.plain.out.yaml: #0000FF",
+			"hc_light": "string.unquoted.plain.out.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml comment.line.number-sign.yaml punctuation.definition.comment.yaml",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": " This is highlighted as a YAML comment",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml comment.line.number-sign.yaml",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "This",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml invalid.illegal.unrecognized.yaml",
+		"r": {
+			"hc_black": "invalid: #F44747",
+			"2026-light": "invalid.illegal: #82071E",
+			"2026-dark": "invalid.illegal: #FFA198",
+			"rhs_ia_dark": "invalid: #F44747",
+			"rhs_ia_light": "invalid.illegal: #3D3D3D",
+			"hc_light": "invalid: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "is",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml invalid.illegal.unrecognized.yaml",
+		"r": {
+			"hc_black": "invalid: #F44747",
+			"2026-light": "invalid.illegal: #82071E",
+			"2026-dark": "invalid.illegal: #FFA198",
+			"rhs_ia_dark": "invalid: #F44747",
+			"rhs_ia_light": "invalid.illegal: #3D3D3D",
+			"hc_light": "invalid: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "highlighted",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml invalid.illegal.unrecognized.yaml",
+		"r": {
+			"hc_black": "invalid: #F44747",
+			"2026-light": "invalid.illegal: #82071E",
+			"2026-dark": "invalid.illegal: #FFA198",
+			"rhs_ia_dark": "invalid: #F44747",
+			"rhs_ia_light": "invalid.illegal: #3D3D3D",
+			"hc_light": "invalid: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "as",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml invalid.illegal.unrecognized.yaml",
+		"r": {
+			"hc_black": "invalid: #F44747",
+			"2026-light": "invalid.illegal: #82071E",
+			"2026-dark": "invalid.illegal: #FFA198",
+			"rhs_ia_dark": "invalid: #F44747",
+			"rhs_ia_light": "invalid.illegal: #3D3D3D",
+			"hc_light": "invalid: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml invalid.illegal.unrecognized.yaml",
+		"r": {
+			"hc_black": "invalid: #F44747",
+			"2026-light": "invalid.illegal: #82071E",
+			"2026-dark": "invalid.illegal: #FFA198",
+			"rhs_ia_dark": "invalid: #F44747",
+			"rhs_ia_light": "invalid.illegal: #3D3D3D",
+			"hc_light": "invalid: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "YAML",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml invalid.illegal.unrecognized.yaml",
+		"r": {
+			"hc_black": "invalid: #F44747",
+			"2026-light": "invalid.illegal: #82071E",
+			"2026-dark": "invalid.illegal: #FFA198",
+			"rhs_ia_dark": "invalid: #F44747",
+			"rhs_ia_light": "invalid.illegal: #3D3D3D",
+			"hc_light": "invalid: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "error",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml invalid.illegal.unrecognized.yaml",
+		"r": {
+			"hc_black": "invalid: #F44747",
+			"2026-light": "invalid.illegal: #82071E",
+			"2026-dark": "invalid.illegal: #FFA198",
+			"rhs_ia_dark": "invalid: #F44747",
+			"rhs_ia_light": "invalid.illegal: #3D3D3D",
+			"hc_light": "invalid: #B5200D"
+		}
+	}
+]

@@ -1,0 +1,386 @@
+[
+	{
+		"c": " last modified 1 April 2001 by John Doe",
+		"t": "comment.line.semicolon",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "[",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "owner",
+		"t": "entity.name.section.group-title",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "entity.name: #953800",
+			"2026-dark": "entity.name: #FFA657",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "entity.name.section: #007BC4",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "]",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "name",
+		"t": "keyword.other.definition",
+		"r": {
+			"hc_black": "keyword: #569CD6",
+			"2026-light": "keyword: #CF222E",
+			"2026-dark": "keyword: #FF7B72",
+			"rhs_ia_dark": "keyword: #569CD6",
+			"rhs_ia_light": "keyword: #BC729C",
+			"hc_light": "keyword: #0F4A85"
+		}
+	},
+	{
+		"c": "=",
+		"t": "punctuation.separator.key-value",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "John Doe",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "organization",
+		"t": "keyword.other.definition",
+		"r": {
+			"hc_black": "keyword: #569CD6",
+			"2026-light": "keyword: #CF222E",
+			"2026-dark": "keyword: #FF7B72",
+			"rhs_ia_dark": "keyword: #569CD6",
+			"rhs_ia_light": "keyword: #BC729C",
+			"hc_light": "keyword: #0F4A85"
+		}
+	},
+	{
+		"c": "=",
+		"t": "punctuation.separator.key-value",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "Acme Widgets Inc.",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "[",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "database",
+		"t": "entity.name.section.group-title",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "entity.name: #953800",
+			"2026-dark": "entity.name: #FFA657",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "entity.name.section: #007BC4",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "]",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " use IP address in case network name resolution is not working",
+		"t": "comment.line.semicolon",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "server",
+		"t": "keyword.other.definition",
+		"r": {
+			"hc_black": "keyword: #569CD6",
+			"2026-light": "keyword: #CF222E",
+			"2026-dark": "keyword: #FF7B72",
+			"rhs_ia_dark": "keyword: #569CD6",
+			"rhs_ia_light": "keyword: #BC729C",
+			"hc_light": "keyword: #0F4A85"
+		}
+	},
+	{
+		"c": "=",
+		"t": "punctuation.separator.key-value",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "192.0.2.62",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "port",
+		"t": "keyword.other.definition",
+		"r": {
+			"hc_black": "keyword: #569CD6",
+			"2026-light": "keyword: #CF222E",
+			"2026-dark": "keyword: #FF7B72",
+			"rhs_ia_dark": "keyword: #569CD6",
+			"rhs_ia_light": "keyword: #BC729C",
+			"hc_light": "keyword: #0F4A85"
+		}
+	},
+	{
+		"c": "=",
+		"t": "punctuation.separator.key-value",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "143",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "file",
+		"t": "keyword.other.definition",
+		"r": {
+			"hc_black": "keyword: #569CD6",
+			"2026-light": "keyword: #CF222E",
+			"2026-dark": "keyword: #FF7B72",
+			"rhs_ia_dark": "keyword: #569CD6",
+			"rhs_ia_light": "keyword: #BC729C",
+			"hc_light": "keyword: #0F4A85"
+		}
+	},
+	{
+		"c": "=",
+		"t": "punctuation.separator.key-value",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"payroll.dat\"",
+		"t": "string.quoted.double",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "user",
+		"t": "keyword.other.definition",
+		"r": {
+			"hc_black": "keyword: #569CD6",
+			"2026-light": "keyword: #CF222E",
+			"2026-dark": "keyword: #FF7B72",
+			"rhs_ia_dark": "keyword: #569CD6",
+			"rhs_ia_light": "keyword: #BC729C",
+			"hc_light": "keyword: #0F4A85"
+		}
+	},
+	{
+		"c": "=",
+		"t": "punctuation.separator.key-value",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "u#ser",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "test",
+		"t": "keyword.other.definition",
+		"r": {
+			"hc_black": "keyword: #569CD6",
+			"2026-light": "keyword: #CF222E",
+			"2026-dark": "keyword: #FF7B72",
+			"rhs_ia_dark": "keyword: #569CD6",
+			"rhs_ia_light": "keyword: #BC729C",
+			"hc_light": "keyword: #0F4A85"
+		}
+	},
+	{
+		"c": "=",
+		"t": "punctuation.separator.key-value",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "te;st",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "quote",
+		"t": "keyword.other.definition",
+		"r": {
+			"hc_black": "keyword: #569CD6",
+			"2026-light": "keyword: #CF222E",
+			"2026-dark": "keyword: #FF7B72",
+			"rhs_ia_dark": "keyword: #569CD6",
+			"rhs_ia_light": "keyword: #BC729C",
+			"hc_light": "keyword: #0F4A85"
+		}
+	},
+	{
+		"c": "=",
+		"t": "punctuation.separator.key-value",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "qu'ote",
+		"t": "",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	}
+]

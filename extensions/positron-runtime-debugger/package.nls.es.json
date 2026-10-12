@@ -1,0 +1,8 @@
+{
+	"category.notebook": "Cuaderno",
+	"commands.notebook.debugCell.title": "Celda de depuración",
+	"commands.positron-runtime-debugger.showRuntimeError": "Mostrar el error de ejecución",
+	"debuggers.notebook.label": "Cuaderno",
+	"description": "Soporte de depuración para RHS-IA tiempos de ejecución del idioma.",
+	"displayName": "Depuración"
+}

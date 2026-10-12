@@ -1,0 +1,759 @@
+{
+	"name": "rhs-agent4",
+	"displayName": "RHS-Agent",
+	"description": "Extensión de agente para Positron: análisis R/Python, conocimiento institucional y planificación reproducible.",
+	"publisher": "juliushearts",
+	"version": "4.0.0",
+	"license": "Apache-2.0",
+	"private": true,
+	"icon": "resources/capibara-icon.png",
+	"engines": {
+		"vscode": "^1.100.0",
+		"positron": "*",
+		"node": "20.20.2"
+	},
+	"main": "./dist/extension.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/juliushearts/rhs-agent4"
+	},
+	"categories": [
+		"AI",
+		"Chat",
+		"Programming Languages",
+		"Data Science"
+	],
+	"activationEvents": [
+		"onView:capibara.SidebarProvider"
+	],
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "capibara",
+					"title": "RHS-Agent",
+					"icon": "resources/capibara-icon.svg"
+				}
+			]
+		},
+		"views": {
+			"capibara": [
+				{
+					"type": "webview",
+					"id": "capibara.SidebarProvider",
+					"name": "RHS-Agent"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "capibara.diagnose",
+				"title": "%command.diagnose%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.listOllamaModels",
+				"title": "%command.listOllamaModels%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.openSettings",
+				"title": "%command.openSettings%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.newTask",
+				"title": "%command.newTask%",
+				"category": "%category.capibara%",
+				"icon": "$(add)"
+			},
+			{
+				"command": "capibara.historyButtonClicked",
+				"title": "%command.history.title%",
+				"category": "%category.capibara%",
+				"icon": "$(history)"
+			},
+			{
+				"command": "capibara.settingsButtonClicked",
+				"title": "%command.settings.title%",
+				"category": "%category.capibara%",
+				"icon": "$(settings-gear)"
+			},
+			{
+				"command": "capibara.positronDoctor",
+				"title": "%command.positronDoctor%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.pdfstructDoctor",
+				"title": "%command.pdfstructDoctor%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.ragDoctor",
+				"title": "%command.ragDoctor%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.okfDoctor",
+				"title": "%command.okfDoctor%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.obscuraDoctor",
+				"title": "%command.obscuraDoctor%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.canonicalStatus",
+				"title": "%command.canonicalStatus%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.canonicalDownload",
+				"title": "%command.canonicalDownload%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.skillsList",
+				"title": "%command.skillsList%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.skillOpenDir",
+				"title": "%command.skillOpenDir%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.initWorkspace",
+				"title": "%command.initWorkspace%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.sessionRecap",
+				"title": "%command.sessionRecap%",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.explainCode",
+				"title": "RHS-Agent: explicar código",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.fixCode",
+				"title": "RHS-Agent: corregir código",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.improveCode",
+				"title": "RHS-Agent: mejorar código",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.addToContext",
+				"title": "RHS-Agent: añadir código al contexto",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.terminalAddToContext",
+				"title": "RHS-Agent: añadir salida del terminal al contexto",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.terminalFixCommand",
+				"title": "RHS-Agent: corregir comando del terminal",
+				"category": "%category.capibara%"
+			},
+			{
+				"command": "capibara.terminalExplainCommand",
+				"title": "RHS-Agent: explicar comando del terminal",
+				"category": "%category.capibara%"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "capibara.addToContext",
+					"group": "rhs-agent@1"
+				},
+				{
+					"command": "capibara.explainCode",
+					"group": "rhs-agent@2"
+				},
+				{
+					"command": "capibara.fixCode",
+					"group": "rhs-agent@3"
+				},
+				{
+					"command": "capibara.improveCode",
+					"group": "rhs-agent@4"
+				}
+			],
+			"terminal/context": [
+				{
+					"command": "capibara.terminalAddToContext",
+					"group": "rhs-agent@1"
+				},
+				{
+					"command": "capibara.terminalFixCommand",
+					"group": "rhs-agent@2"
+				},
+				{
+					"command": "capibara.terminalExplainCommand",
+					"group": "rhs-agent@3"
+				}
+			],
+			"view/title": [
+				{
+					"command": "capibara.newTask",
+					"group": "navigation@1",
+					"when": "view == capibara.SidebarProvider"
+				},
+				{
+					"command": "capibara.settingsButtonClicked",
+					"group": "navigation@2",
+					"when": "view == capibara.SidebarProvider"
+				},
+				{
+					"command": "capibara.historyButtonClicked",
+					"group": "overflow@1",
+					"when": "view == capibara.SidebarProvider"
+				}
+			]
+		},
+		"configuration": {
+			"title": "%extension.title%",
+			"properties": {
+				"capibara.permissions.profile": {
+					"type": "string",
+					"enum": ["restricted", "workspace", "full"],
+					"enumDescriptions": ["Lectura limitada y herramientas seguras.", "Control dentro del proyecto autorizado.", "Acceso amplio a archivos, red, procesos, comandos y runtimes."],
+					"default": "workspace",
+					"description": "Perfil de acceso. Full Access no elimina CORE, Indicaciones ni las protecciones permanentes."
+				},
+				"capibara.permissions.approval": {
+					"type": "string",
+					"enum": ["always", "sensitive", "never"],
+					"enumDescriptions": ["Preguntar para toda operación no trivial.", "Preguntar solo para operaciones sensibles.", "No preguntar dentro del perfil concedido, salvo protecciones permanentes."],
+					"default": "sensitive",
+					"description": "Política de aprobación, independiente del perfil de acceso."
+				},
+				"capibara.llm.provider": {
+					"type": "string",
+					"enum": [
+						"ollama",
+						"anthropic",
+						"lmstudio",
+						"openai",
+						"openai-compatible",
+						"grok",
+						"gemini",
+						"deepseek",
+						"openai-codex",
+						"openai-native",
+						"mistral",
+						"zai",
+						"minimax",
+						"qwen-code"
+					],
+					"default": "ollama",
+					"description": "Proveedor LLM. Ollama es el primario (local)."
+				},
+				"capibara.llm.ollama.baseUrl": {
+					"type": "string",
+					"default": "http://127.0.0.1:11434",
+					"description": "URL del servidor Ollama."
+				},
+				"capibara.llm.ollama.modelId": {
+					"type": "string",
+					"default": "",
+					"description": "ID del modelo Ollama. Vacío = el usuario elige desde los modelos disponibles vía GET /api/tags."
+				},
+				"capibara.llm.ollama.numCtx": {
+					"type": "number",
+					"default": 0,
+					"description": "Tamaño del context window. 0 = default del modelo."
+				},
+				"capibara.llm.ollama.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key (opcional, para Ollama cloud o instancias autenticadas)."
+				},
+				"capibara.llm.anthropic.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "Anthropic API key."
+				},
+				"capibara.llm.anthropic.modelId": {
+					"type": "string",
+					"default": "claude-sonnet-4-5",
+					"description": "Modelo Anthropic."
+				},
+				"capibara.llm.lmstudio.baseUrl": {
+					"type": "string",
+					"default": "http://127.0.0.1:1234",
+					"description": "URL del servidor LM Studio."
+				},
+				"capibara.llm.lmstudio.modelId": {
+					"type": "string",
+					"default": "",
+					"description": "ID del modelo cargado en LM Studio."
+				},
+				"capibara.llm.openai.baseUrl": {
+					"type": "string",
+					"default": "https://api.openai.com/v1",
+					"description": "URL base OpenAI o endpoint OpenAI-compatible."
+				},
+				"capibara.llm.openai.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "OpenAI API key."
+				},
+				"capibara.llm.openai.modelId": {
+					"type": "string",
+					"default": "",
+					"description": "ID del modelo OpenAI."
+				},
+				"capibara.llm.grok.baseUrl": {
+					"type": "string",
+					"default": "https://api.x.ai/v1",
+					"description": "URL base de xAI/Grok."
+				},
+				"capibara.llm.grok.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key de xAI/Grok."
+				},
+				"capibara.llm.grok.modelId": {
+					"type": "string",
+					"default": "grok-4.20",
+					"description": "ID del modelo Grok."
+				},
+				"capibara.llm.gemini.baseUrl": {
+					"type": "string",
+					"default": "https://generativelanguage.googleapis.com",
+					"description": "URL base de la API nativa de Gemini."
+				},
+				"capibara.llm.gemini.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key de Gemini."
+				},
+				"capibara.llm.gemini.modelId": {
+					"type": "string",
+					"default": "gemini-3.1-pro-preview",
+					"description": "ID del modelo Gemini."
+				},
+				"capibara.llm.deepseek.baseUrl": {
+					"type": "string",
+					"default": "https://api.deepseek.com",
+					"description": "URL base de DeepSeek."
+				},
+				"capibara.llm.deepseek.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key de DeepSeek."
+				},
+				"capibara.llm.deepseek.modelId": {
+					"type": "string",
+					"default": "deepseek-v4-flash",
+					"description": "ID del modelo DeepSeek."
+				},
+				"capibara.llm.openai-codex.modelId": {
+					"type": "string",
+					"default": "gpt-5.6-sol",
+					"description": "ID del modelo OpenAI Codex."
+				},
+				"capibara.llm.openai-native.baseUrl": {
+					"type": "string",
+					"default": "https://api.openai.com/v1",
+					"description": "URL base de OpenAI Native."
+				},
+				"capibara.llm.openai-native.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key de OpenAI Native."
+				},
+				"capibara.llm.openai-native.modelId": {
+					"type": "string",
+					"default": "gpt-5.6-sol",
+					"description": "ID del modelo OpenAI Native."
+				},
+				"capibara.llm.mistral.baseUrl": {
+					"type": "string",
+					"default": "https://api.mistral.ai/v1",
+					"description": "URL base de Mistral."
+				},
+				"capibara.llm.mistral.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key de Mistral."
+				},
+				"capibara.llm.mistral.modelId": {
+					"type": "string",
+					"default": "codestral-latest",
+					"description": "ID del modelo Mistral."
+				},
+				"capibara.llm.zai.baseUrl": {
+					"type": "string",
+					"default": "https://api.z.ai/api/coding/paas/v4",
+					"description": "URL base de Z.ai."
+				},
+				"capibara.llm.zai.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key de Z.ai."
+				},
+				"capibara.llm.zai.modelId": {
+					"type": "string",
+					"default": "glm-4.7",
+					"description": "ID del modelo Z.ai."
+				},
+				"capibara.llm.minimax.baseUrl": {
+					"type": "string",
+					"default": "https://api.minimax.io/v1",
+					"description": "URL base de MiniMax."
+				},
+				"capibara.llm.minimax.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key de MiniMax."
+				},
+				"capibara.llm.minimax.modelId": {
+					"type": "string",
+					"default": "MiniMax-M2.7",
+					"description": "ID del modelo MiniMax."
+				},
+				"capibara.llm.qwen-code.baseUrl": {
+					"type": "string",
+					"default": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+					"description": "URL base de Qwen Code."
+				},
+				"capibara.llm.qwen-code.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key de Qwen Code."
+				},
+				"capibara.llm.qwen-code.modelId": {
+					"type": "string",
+					"default": "qwen3-coder-plus",
+					"description": "ID del modelo Qwen Code."
+				},
+				"capibara.apiRequestTimeout": {
+					"type": "integer",
+					"default": 600,
+					"minimum": 1,
+					"maximum": 3600,
+					"description": "Timeout (segundos) para llamadas al proveedor LLM."
+				},
+				"capibara.executeCodeTimeout": {
+					"type": "integer",
+					"default": 300,
+					"minimum": 0,
+					"maximum": 3600,
+					"description": "Timeout (segundos) para execute_code en sesiones R/Python de Positron. 0 = sin timeout."
+				},
+				"capibara.systemPrompt.language": {
+					"type": "string",
+					"enum": [
+						"es",
+						"en"
+					],
+					"default": "es",
+					"description": "Idioma del system prompt. ES primario."
+				},
+				"capibara.chat.fontSize": {
+					"type": "string",
+					"enum": [
+						"small",
+						"normal",
+						"large",
+						"xlarge"
+					],
+					"default": "normal",
+					"description": "Tamaño del texto del chat de RHS-Agent. Se aplica solo a la conversación y al campo de escritura."
+				},
+				"capibara.runner.pdfstruct.binaryPath": {
+					"type": "string",
+					"default": "",
+					"description": "Ruta absoluta al binario pdfstruct. Vacío = buscar en resources/bin/<plat>-<arch>/pdfstruct o PATH."
+				},
+				"capibara.runner.rag.binaryPath": {
+					"type": "string",
+					"default": "",
+					"description": "Ruta absoluta al binario rhs-rag. Vacío = buscar en resources/bin/<plat>-<arch>/rhs-rag o PATH."
+				},
+				"capibara.rag.rerankerEnabled": {
+					"type": "boolean",
+					"default": false,
+					"description": "Activa el reranker del RAG (usa el modelo configurado en rerankerModel). Requiere Ollama."
+				},
+				"capibara.rag.rerankerModel": {
+					"type": "string",
+					"default": "",
+					"description": "Modelo Ollama para el reranker del RAG. Vacío = usa el mismo modelo que el LLM principal (capibara.llm.ollama.modelId)."
+				},
+				"capibara.runner.okf.binaryPath": {
+					"type": "string",
+					"default": "",
+					"description": "Override opcional del CLI rhs-okf empaquetado."
+				},
+				"capibara.runner.okf.cliCommand": {
+					"type": "string",
+					"default": "node",
+					"description": "Comando para ejecutar el CLI rhs-okf (default: node)."
+				},
+				"capibara.runner.obscura.binaryPath": {
+					"type": "string",
+					"default": "",
+					"description": "Ruta absoluta al binario obscura. Vacío = buscar en resources/bin/<plat>-<arch>/obscura o PATH."
+				},
+				"capibara.canonicalRag.path": {
+					"type": "string",
+					"default": "",
+					"description": "Ruta opcional a una DB LanceDB canónica alternativa. Por defecto usa la DB incluida en la instalación; una copia del perfil sólo se usa después de una actualización explícita."
+				},
+				"capibara.canonicalRag.autoDownload": {
+					"type": "boolean",
+					"default": false,
+					"description": "Compatibilidad histórica. No se descarga nada automáticamente; las actualizaciones del RAG canónico sólo se realizan mediante una acción explícita del usuario."
+				},
+				"capibara.canonicalDownload.repoUrl": {
+					"type": "string",
+					"default": "",
+					"description": "Repo git+LFS de la DB canónica. Vacío = usar el remote registrado en el manifest empaquetado (.rhs-core-manifest.json)."
+				},
+				"capibara.skills.userDir": {
+					"type": "string",
+					"default": "",
+					"description": "Directorio de skills del usuario. Default: ~/.capibara/skills"
+				},
+				"capibara.skills.externalDirs": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"description": "Directorios adicionales de skills compartidos. Se leen con precedencia menor que los skills del proyecto y del usuario."
+				},
+				"capibara.skills.autoCreate": {
+					"type": "boolean",
+					"default": false,
+					"description": "Permite que el LLM proponga nuevos skills al finalizar tareas. SIEMPRE con aprobación del usuario (no hay sobrescritura silenciosa)."
+				},
+				"capibara.skills.requireApproval": {
+					"type": "boolean",
+					"default": true,
+					"description": "Si true, todo apply de skill requiere diff visible + 4 botones (Aplicar/Editar/Rechazar/Pospone)."
+				},
+				"capibara.context.compression.enabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Comprime automáticamente el contexto de sesiones largas."
+				},
+				"capibara.context.compression.threshold": {
+					"type": "number",
+					"default": 0.5,
+					"minimum": 0.1,
+					"maximum": 0.9,
+					"description": "Fracción de la ventana de contexto que dispara compresión."
+				},
+				"capibara.context.compression.targetRatio": {
+					"type": "number",
+					"default": 0.2,
+					"minimum": 0.1,
+					"maximum": 0.8,
+					"description": "Presupuesto relativo del tramo reciente que se conserva al compactar."
+				},
+				"capibara.context.compression.protectLastN": {
+					"type": "integer",
+					"default": 20,
+					"minimum": 1,
+					"description": "Número de mensajes recientes preservados sin resumir."
+				},
+				"capibara.preventCompletionWithOpenTodos": {
+					"type": "boolean",
+					"default": false,
+					"description": "Impide finalizar una tarea mientras su plan conserve pasos pendientes o en curso."
+				},
+				"capibara.autoApprove.readOnly": {
+					"type": "boolean",
+					"default": true,
+					"description": "Autoaprobar tools de solo lectura."
+				},
+				"capibara.autoApprove.write": {
+					"type": "boolean",
+					"default": false,
+					"description": "Autoaprobar cambios de escritura."
+				},
+				"capibara.autoApprove.execute": {
+					"type": "boolean",
+					"default": false,
+					"description": "Autoaprobar ejecución de código."
+				},
+				"capibara.autoApprove.modeSwitch": {
+					"type": "boolean",
+					"default": true,
+					"description": "Autoaprobar cambios de modo."
+				},
+				"capibara.autoApprove.subtasks": {
+					"type": "boolean",
+					"default": true,
+					"description": "Autoaprobar skills y subtareas."
+				},
+				"capibara.autoApprove.followupQuestions": {
+					"type": "boolean",
+					"default": true,
+					"description": "Permitir preguntas de seguimiento automáticas."
+				},
+				"capibara.autoApprove.requestLimit": {
+					"type": "integer",
+					"minimum": 1,
+					"default": 100,
+					"description": "Máximo de aprobaciones automáticas antes de pedir confirmación."
+				},
+				"capibara.autoApprove.costLimit": {
+					"type": "number",
+					"minimum": 0,
+					"default": 1,
+					"description": "Presupuesto estimado de autoaprobación por sesión."
+				},
+				"capibara.nudges.enabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Muestra avisos sobre preparación PDF, cambios en Docs/Data y salud del RAG canónico."
+				},
+				"capibara.commandApproval.allowedCommands": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"description": "Comandos auto-aprobados para execute_command (longest-prefix + wildcard '*'). Ej: [\"rhs-rag query\", \"git status\"]."
+				},
+				"capibara.commandApproval.deniedCommands": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"description": "Comandos auto-rechazados (precede a allowedCommands). Mismo formato longest-prefix + wildcard."
+				},
+				"capibara.terminalShellIntegrationDisabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Si true, execute_command usa el backend execa (sin shell-integration de VS Code). Si false, usa el terminal integrado con shell-integration cuando sea posible."
+				},
+				"capibara.commandExecutionTimeout": {
+					"type": "number",
+					"default": 0,
+					"minimum": 0,
+					"description": "Timeout de usuario en segundos para execute_command (0 = sin timeout). Al expirar, el comando se aborta (kill)."
+				},
+				"capibara.commandTimeoutAllowlist": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"description": "Prefijos de comando exentos del timeout de usuario (longest-prefix). Ej: [\"rhs-okf ingest\", \"dev server\"]."
+				},
+				"capibara.terminalOutputPreviewSize": {
+					"type": "string",
+					"enum": [
+						"small",
+						"medium",
+						"large"
+					],
+					"default": "medium",
+					"description": "Tamaño del preview de salida de terminal antes de spillear a disco (small/medium/large → TERMINAL_PREVIEW_BYTES)."
+				},
+				"capibara.codeIndex.enabled": {
+					"type": "boolean",
+					"default": false,
+					"description": "Habilitar el índice de código (requiere Ollama y Qdrant local)."
+				},
+				"capibara.codeIndex.ollamaBaseUrl": {
+					"type": "string",
+					"default": "http://localhost:11434",
+					"description": "URL de Ollama para embeddings de code-index."
+				},
+				"capibara.codeIndex.ollamaModelId": {
+					"type": "string",
+					"default": "nomic-embed-text-v2-moe:latest",
+					"description": "Modelo de embeddings para code-index."
+				},
+				"capibara.codeIndex.modelDimension": {
+					"type": "number",
+					"default": 768,
+					"description": "Dimensión del vector de embeddings."
+				},
+				"capibara.codeIndex.qdrantUrl": {
+					"type": "string",
+					"default": "http://localhost:6333",
+					"description": "URL del servidor Qdrant para code-index."
+				},
+				"capibara.codeIndex.qdrantApiKey": {
+					"type": "string",
+					"default": "",
+					"description": "API key de Qdrant (opcional)."
+				},
+				"capibara.codeIndex.searchMinScore": {
+					"type": "number",
+					"default": 0.4,
+					"description": "Score mínimo para resultados de búsqueda."
+				},
+				"capibara.codeIndex.searchMaxResults": {
+					"type": "number",
+					"default": 10,
+					"description": "Máximo de resultados de búsqueda."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"lint": "eslint \"**/*.ts\" --max-warnings=0",
+		"check-types": "tsc --noEmit",
+		"test": "vitest run --passWithNoTests",
+		"bundle": "node esbuild.mjs",
+		"vsix": "mkdirp ../bin && vsce package --no-dependencies --follow-symlinks --out ../bin"
+	},
+	"dependencies": {
+		"@anthropic-ai/sdk": "^0.106.0",
+		"@google/genai": "^1.29.1",
+		"@qdrant/js-client-rest": "^1.14.0",
+		"@capibara/types": "workspace:^",
+		"async-mutex": "^0.5.0",
+		"delay": "^6.0.0",
+		"execa": "9.6.1",
+		"gray-matter": "4.0.3",
+		"ignore": "^7.0.6",
+		"isbinaryfile": "4.0.2",
+		"ollama": "^0.6.0",
+		"openai": "^5.12.2",
+		"p-limit": "^6.2.0",
+		"p-wait-for": "^5.0.2",
+		"ps-tree": "^1.2.0",
+		"shell-quote": "^1.8.2",
+		"simple-git": "^3.27.0",
+		"tiktoken": "^1.0.21",
+		"tree-sitter-wasms": "^0.1.12",
+		"undici": "7.29.0",
+		"uuid": "^9.0.0",
+		"web-tree-sitter": "^0.25.6",
+		"zod": "3.25.76"
+	},
+	"devDependencies": {
+		"@capibara/config-eslint": "workspace:^",
+		"@types/ps-tree": "^1.1.6",
+		"@types/shell-quote": "1.7.5",
+		"@types/uuid": "^9.0.0",
+		"@types/vscode": "1.100.0",
+		"@vscode/vsce": "3.9.2",
+		"esbuild": "0.28.1",
+		"mkdirp": "3.0.1",
+		"rimraf": "6.0.1",
+		"typescript": "5.9.2",
+		"vitest": "4.1.9"
+	}
+}

@@ -1,0 +1,15 @@
+{
+	"Allows other sessions to open the same database file while this connection is open.": "Permite que otras sesiones abran el mismo archivo de base de datos mientras esta conexión está abierta.",
+	"Connect to a DuckDB database file": "Conectarse a un archivo de base de datos DuckDB",
+	"Connect to a DuckDB database file on disk": "Conectarse a un archivo de base de datos DuckDB en el disco",
+	"Could not open the DuckDB database \"{0}\" because another session has it locked. DuckDB allows a database file to be open in more than one session only when every one of them opens it read-only, so either close the other connection or open the database read-only in both places. {1}": "No se pudo abrir la base de datos DuckDB \"{0}\" porque otra sesión la tiene bloqueada. DuckDB permite que un archivo de base de datos esté abierto en más de una sesión solo cuando cada una de ellas lo abre sólo de lectura, así que cierre la otra conexión o abra la base de datos sólo de lectura en ambos lugares. {1}",
+	"Database connection is closed": "La conexión de la base de datos está cerrada",
+	"Database File": "Archivo de base de datos",
+	"Database file path is required": "Ruta del archivo de base de datos es obligatoria",
+	"DuckDB Files": "Archivos DuckDB",
+	"example: /path/to/database.duckdb": "ejemplo: /path/to/database.duckdb",
+	"example: C:\\path\\to\\database.duckdb": "ejemplo: C:\\path\\to\\database.duckdb",
+	"Failed to open DuckDB database: {0}. {1}": "Falló al abrir la base de datos DuckDB: {0}. {1}",
+	"Read Only": "Solo lectura",
+	"Unknown connection mechanism '{0}'.": "Mecanismo de conexión desconocido '{0}'."
+}

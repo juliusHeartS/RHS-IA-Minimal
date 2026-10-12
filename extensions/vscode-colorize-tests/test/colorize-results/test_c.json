@@ -1,0 +1,3050 @@
+[
+	{
+		"c": "/*",
+		"t": "source.c comment.block.c punctuation.definition.comment.begin.c",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": " C Program to find roots of a quadratic equation when coefficients are entered by user. ",
+		"t": "source.c comment.block.c",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "*/",
+		"t": "source.c comment.block.c punctuation.definition.comment.end.c",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "/*",
+		"t": "source.c comment.block.c punctuation.definition.comment.begin.c",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": " Library function sqrt() computes the square root. ",
+		"t": "source.c comment.block.c",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "*/",
+		"t": "source.c comment.block.c punctuation.definition.comment.end.c",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.c meta.preprocessor.include.c keyword.control.directive.include.c punctuation.definition.directive.c",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "include",
+		"t": "source.c meta.preprocessor.include.c keyword.control.directive.include.c",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.preprocessor.include.c",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "<",
+		"t": "source.c meta.preprocessor.include.c string.quoted.other.lt-gt.include.c punctuation.definition.string.begin.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "stdio.h",
+		"t": "source.c meta.preprocessor.include.c string.quoted.other.lt-gt.include.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "source.c meta.preprocessor.include.c string.quoted.other.lt-gt.include.c punctuation.definition.string.end.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.c meta.preprocessor.include.c keyword.control.directive.include.c punctuation.definition.directive.c",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "include",
+		"t": "source.c meta.preprocessor.include.c keyword.control.directive.include.c",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.preprocessor.include.c",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "<",
+		"t": "source.c meta.preprocessor.include.c string.quoted.other.lt-gt.include.c punctuation.definition.string.begin.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "math.h",
+		"t": "source.c meta.preprocessor.include.c string.quoted.other.lt-gt.include.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "source.c meta.preprocessor.include.c string.quoted.other.lt-gt.include.c punctuation.definition.string.end.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.preprocessor.include.c",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "/*",
+		"t": "source.c comment.block.c punctuation.definition.comment.begin.c",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": " This is needed to use sqrt() function.",
+		"t": "source.c comment.block.c",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "*/",
+		"t": "source.c comment.block.c punctuation.definition.comment.end.c",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "int",
+		"t": "source.c storage.type.built-in.primitive.c",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "main",
+		"t": "source.c meta.function.c meta.function.definition.parameters.c entity.name.function.c",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.function.c meta.function.definition.parameters.c punctuation.section.parameters.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parameters.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.function.c meta.function.definition.parameters.c punctuation.section.parameters.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parameters.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.c meta.block.c punctuation.section.block.begin.bracket.curly.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.begin.bracket.curly.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "float",
+		"t": "source.c meta.block.c storage.type.built-in.primitive.c",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " a",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " b",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " c",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " determinant",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " r1",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "r2",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " real",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " imag",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "printf",
+		"t": "source.c meta.block.c meta.function-call.c entity.name.function.c",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.begin.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "Enter coefficients a, b and c: ",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.end.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "scanf",
+		"t": "source.c meta.block.c meta.function-call.c entity.name.function.c",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.begin.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "%f%f%f",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c constant.other.placeholder.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "constant.other.placeholder: #CF222E",
+			"2026-dark": "constant.other.placeholder: #FF7B72",
+			"rhs_ia_dark": "constant.other.placeholder: #9CDCFE",
+			"rhs_ia_light": "constant.other.placeholder: #001080",
+			"hc_light": "constant.other.placeholder: #001080"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.end.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "&",
+		"t": "source.c meta.block.c meta.function-call.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "&",
+		"t": "source.c meta.block.c meta.function-call.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "b",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "&",
+		"t": "source.c meta.block.c meta.function-call.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "c",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  determinant",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.c meta.block.c keyword.operator.assignment.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "b",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "b",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "-",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "4",
+		"t": "source.c meta.block.c constant.numeric.decimal.c",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "c",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "if",
+		"t": "source.c meta.block.c keyword.control.c",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "determinant",
+		"t": "source.c meta.block.c meta.parens.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ">",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.comparison.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.comparison.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "0",
+		"t": "source.c meta.block.c meta.parens.block.c constant.numeric.decimal.c",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.c meta.block.c punctuation.section.block.begin.bracket.curly.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.begin.bracket.curly.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "      r1",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.c meta.block.c keyword.operator.assignment.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "-",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "b",
+		"t": "source.c meta.block.c meta.parens.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "+",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "sqrt",
+		"t": "source.c meta.block.c meta.parens.block.c meta.function-call.c entity.name.function.c",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c meta.function-call.c punctuation.section.arguments.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "determinant",
+		"t": "source.c meta.block.c meta.parens.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c meta.function-call.c punctuation.section.arguments.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "/",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "2",
+		"t": "source.c meta.block.c meta.parens.block.c constant.numeric.decimal.c",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.c meta.block.c meta.parens.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "      r2",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.c meta.block.c keyword.operator.assignment.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "-",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "b",
+		"t": "source.c meta.block.c meta.parens.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "-",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "sqrt",
+		"t": "source.c meta.block.c meta.parens.block.c meta.function-call.c entity.name.function.c",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c meta.function-call.c punctuation.section.arguments.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "determinant",
+		"t": "source.c meta.block.c meta.parens.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c meta.function-call.c punctuation.section.arguments.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "/",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "2",
+		"t": "source.c meta.block.c meta.parens.block.c constant.numeric.decimal.c",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.c meta.block.c meta.parens.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "      ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "printf",
+		"t": "source.c meta.block.c meta.function-call.c entity.name.function.c",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.begin.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "Roots are: ",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "%.2f",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c constant.other.placeholder.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "constant.other.placeholder: #CF222E",
+			"2026-dark": "constant.other.placeholder: #FF7B72",
+			"rhs_ia_dark": "constant.other.placeholder: #9CDCFE",
+			"rhs_ia_light": "constant.other.placeholder: #001080",
+			"hc_light": "constant.other.placeholder: #001080"
+		}
+	},
+	{
+		"c": " and ",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "%.2f",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c constant.other.placeholder.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "constant.other.placeholder: #CF222E",
+			"2026-dark": "constant.other.placeholder: #FF7B72",
+			"rhs_ia_dark": "constant.other.placeholder: #9CDCFE",
+			"rhs_ia_light": "constant.other.placeholder: #001080",
+			"hc_light": "constant.other.placeholder: #001080"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.end.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "r1 ",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " r2",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.c meta.block.c punctuation.section.block.end.bracket.curly.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.end.bracket.curly.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "else",
+		"t": "source.c meta.block.c keyword.control.c",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "if",
+		"t": "source.c meta.block.c keyword.control.c",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "determinant",
+		"t": "source.c meta.block.c meta.parens.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "==",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.comparison.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.comparison.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "0",
+		"t": "source.c meta.block.c meta.parens.block.c constant.numeric.decimal.c",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.c meta.block.c punctuation.section.block.begin.bracket.curly.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.begin.bracket.curly.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "    r1 ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.c meta.block.c keyword.operator.assignment.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " r2 ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.c meta.block.c keyword.operator.assignment.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "-",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "b",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "/",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "2",
+		"t": "source.c meta.block.c meta.parens.block.c constant.numeric.decimal.c",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.c meta.block.c meta.parens.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "    ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "printf",
+		"t": "source.c meta.block.c meta.function-call.c entity.name.function.c",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.begin.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "Roots are: ",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "%.2f",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c constant.other.placeholder.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "constant.other.placeholder: #CF222E",
+			"2026-dark": "constant.other.placeholder: #FF7B72",
+			"rhs_ia_dark": "constant.other.placeholder: #9CDCFE",
+			"rhs_ia_light": "constant.other.placeholder: #001080",
+			"hc_light": "constant.other.placeholder: #001080"
+		}
+	},
+	{
+		"c": " and ",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "%.2f",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c constant.other.placeholder.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "constant.other.placeholder: #CF222E",
+			"2026-dark": "constant.other.placeholder: #FF7B72",
+			"rhs_ia_dark": "constant.other.placeholder: #9CDCFE",
+			"rhs_ia_light": "constant.other.placeholder: #001080",
+			"hc_light": "constant.other.placeholder: #001080"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.end.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " r1",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " r2",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.c meta.block.c punctuation.section.block.end.bracket.curly.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.end.bracket.curly.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "else",
+		"t": "source.c meta.block.c keyword.control.c",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.c meta.block.c punctuation.section.block.begin.bracket.curly.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.begin.bracket.curly.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "    real",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.c meta.block.c keyword.operator.assignment.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "-",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "b",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "/",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "2",
+		"t": "source.c meta.block.c meta.parens.block.c constant.numeric.decimal.c",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.c meta.block.c meta.parens.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "    imag ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.c meta.block.c keyword.operator.assignment.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "sqrt",
+		"t": "source.c meta.block.c meta.function-call.c entity.name.function.c",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "-",
+		"t": "source.c meta.block.c meta.function-call.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "determinant",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "/",
+		"t": "source.c meta.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.begin.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "2",
+		"t": "source.c meta.block.c meta.parens.block.c constant.numeric.decimal.c",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.c meta.block.c meta.parens.block.c keyword.operator.c",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.c: #BC729C",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.c meta.block.c meta.parens.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.parens.block.c punctuation.section.parens.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.parens.end.bracket.round.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "    ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "printf",
+		"t": "source.c meta.block.c meta.function-call.c entity.name.function.c",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.begin.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.begin.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "Roots are: ",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "%.2f",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c constant.other.placeholder.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "constant.other.placeholder: #CF222E",
+			"2026-dark": "constant.other.placeholder: #FF7B72",
+			"rhs_ia_dark": "constant.other.placeholder: #9CDCFE",
+			"rhs_ia_light": "constant.other.placeholder: #001080",
+			"hc_light": "constant.other.placeholder: #001080"
+		}
+	},
+	{
+		"c": "+",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "%.2f",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c constant.other.placeholder.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "constant.other.placeholder: #CF222E",
+			"2026-dark": "constant.other.placeholder: #FF7B72",
+			"rhs_ia_dark": "constant.other.placeholder: #9CDCFE",
+			"rhs_ia_light": "constant.other.placeholder: #001080",
+			"hc_light": "constant.other.placeholder: #001080"
+		}
+	},
+	{
+		"c": "i and ",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "%.2f",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c constant.other.placeholder.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "constant.other.placeholder: #CF222E",
+			"2026-dark": "constant.other.placeholder: #FF7B72",
+			"rhs_ia_dark": "constant.other.placeholder: #9CDCFE",
+			"rhs_ia_light": "constant.other.placeholder: #001080",
+			"hc_light": "constant.other.placeholder: #001080"
+		}
+	},
+	{
+		"c": "-",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "%.2f",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c constant.other.placeholder.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "constant.other.placeholder: #CF222E",
+			"2026-dark": "constant.other.placeholder: #FF7B72",
+			"rhs_ia_dark": "constant.other.placeholder: #9CDCFE",
+			"rhs_ia_light": "constant.other.placeholder: #001080",
+			"hc_light": "constant.other.placeholder: #001080"
+		}
+	},
+	{
+		"c": "i",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.c meta.block.c meta.function-call.c string.quoted.double.c punctuation.definition.string.end.c",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " real",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " imag",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " real",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.separator.delimiter.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " imag",
+		"t": "source.c meta.block.c meta.function-call.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.c meta.block.c meta.function-call.c punctuation.section.arguments.end.bracket.round.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.c meta.block.c punctuation.section.block.end.bracket.curly.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.end.bracket.curly.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "return",
+		"t": "source.c meta.block.c keyword.control.c",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.c meta.block.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "0",
+		"t": "source.c meta.block.c constant.numeric.decimal.c",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.c meta.block.c punctuation.terminator.statement.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.terminator.statement.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.c meta.block.c punctuation.section.block.end.bracket.curly.c",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.end.bracket.curly.c: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	}
+]

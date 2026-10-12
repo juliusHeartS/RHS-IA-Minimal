@@ -1,0 +1,309 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+// CSS.
+import './InlineDataExplorer.css';
+
+// React.
+import React, { useEffect, useState, useRef } from 'react';
+
+// Other dependencies.
+import { localize } from '../../../../../nls.js';
+import { PositronReactServices } from '../../../../../base/browser/positronReactServices.js';
+import { InlineTableDataGridInstance } from '../../../../services/positronDataExplorer/browser/inlineTableDataGridInstance.js';
+import { TableDataCache } from '../../../../services/positronDataExplorer/common/tableDataCache.js';
+import { PositronDataGrid } from '../../../../browser/positronDataGrid/positronDataGrid.js';
+import { ParsedDataExplorerOutput } from '../PositronNotebookCells/IPositronNotebookCell.js';
+import { DisposableStore } from '../../../../../base/common/lifecycle.js';
+import { POSITRON_NOTEBOOK_INLINE_DATA_EXPLORER_MAX_HEIGHT_KEY } from '../../common/positronNotebookConfig.js';
+import { isMacintosh } from '../../../../../base/common/platform.js';
+import { useNotebookInstance } from '../NotebookInstanceProvider.js';
+import { MenuId, MenuItemAction } from '../../../../../platform/actions/common/actions.js';
+import type { IContextKeyService } from '../../../../../platform/contextkey/common/contextkey.js';
+import { useMenu } from '../useMenu.js';
+import { useMenuActions } from '../useMenuActions.js';
+import { useCodeCell } from './CellProvider.js';
+import type { IInlineDataExplorerActionContext } from './InlineDataExplorerActions.js';
+import { InlineDataExplorerActionButton } from './InlineDataExplorerActionButton.js';
+
+// Height calculation constants (from inlineTableDataGridInstance.tsx constructor options)
+const HEADER_HEIGHT = 28;  // columnHeadersHeight
+const ROW_HEIGHT = 22;     // defaultRowHeight
+const TOOLBAR_HEIGHT = 32; // Component header with row/col counts
+const PADDING = 8;
+
+const calculateHeight = (rowCount: number, maxHeight: number): number => {
+	// Calculate natural height based on content
+	const naturalHeight = TOOLBAR_HEIGHT + HEADER_HEIGHT + (rowCount * ROW_HEIGHT) + PADDING;
+
+	// Apply max constraint (no min to allow very small tables)
+	return Math.min(naturalHeight, maxHeight);
+};
+
+/**
+ * InlineDataExplorerProps interface.
+ */
+interface InlineDataExplorerProps extends ParsedDataExplorerOutput {
+	/** Called when the data explorer instance can't be found quickly, signaling
+	 *  the parent to render a fallback (e.g. HTML table) instead. */
+	onFallback?: () => void;
+}
+
+/**
+ * State for the inline data explorer component.
+ */
+type InlineDataExplorerState =
+	| { status: 'loading' }
+	| { status: 'connected'; gridInstance: InlineTableDataGridInstance }
+	| { status: 'disconnected' }
+	| { status: 'error'; message: string };
+
+// MenuItemAction.run drops caller-supplied args unless shouldForwardArgs is set;
+// without this, the rich IInlineDataExplorerActionContext we pass at click time
+// never reaches the registered Action2.
+const HEADER_MENU_OPTIONS = { shouldForwardArgs: true } as const;
+
+/**
+ * InlineDataExplorerHeader component.
+ *
+ * Renders title, shape, and any actions registered against
+ * {@link MenuId.PositronNotebookInlineDataExplorerHeader}. Action buttons appear
+ * only when the parent provides an `actionContext` -- typically when the inline
+ * grid is connected and not stale.
+ */
+export function InlineDataExplorerHeader({ title, shape, actionContext, contextKeyService }: {
+	title: string;
+	shape: { rows: number; columns: number };
+	actionContext: IInlineDataExplorerActionContext | undefined;
+	contextKeyService?: IContextKeyService;
+}) {
+	const menu = useMenu(MenuId.PositronNotebookInlineDataExplorerHeader, contextKeyService);
+	const actionGroups = useMenuActions(menu, HEADER_MENU_OPTIONS);
+
+	return (
+		<div className='inline-data-explorer-header'>
+			<div className='inline-data-explorer-info'>
+				<span className='inline-data-explorer-title'>{title}</span>
+				<span className='inline-data-explorer-shape'>
+					{shape.rows.toLocaleString()} {localize('rows', 'rows')} x {shape.columns.toLocaleString()} {localize('columns', 'columns')}
+				</span>
+			</div>
+			<div className='inline-data-explorer-header-actions'>
+				{actionContext && actionGroups.flatMap(([_group, actions]) =>
+					actions
+						.filter((action): action is MenuItemAction => action instanceof MenuItemAction)
+						.map(action => (
+							<InlineDataExplorerActionButton
+								key={action.id}
+								action={action}
+								context={actionContext}
+							/>
+						))
+				)}
+			</div>
+		</div>
+	);
+}
+
+/**
+ * InlineDataExplorer component.
+ *
+ * Renders a simplified data explorer inline in notebook cell outputs.
+ */
+export function InlineDataExplorer(props: InlineDataExplorerProps) {
+	const { commId, shape, title, variablePath, onFallback } = props;
+	const services = PositronReactServices.services;
+	const notebookInstance = useNotebookInstance();
+	const cell = useCodeCell();
+	const [state, setState] = useState<InlineDataExplorerState>({ status: 'loading' });
+	const containerRef = useRef<HTMLDivElement>(null);
+	// Don't create DisposableStore in useRef - it will leak on remount.
+	// The store is created in the effect below.
+	const disposablesRef = useRef<DisposableStore | null>(null);
+
+	// Get data explorer service
+	const dataExplorerService = services.positronDataExplorerService;
+
+	// Get max height from configuration
+	const maxHeight = services.configurationService.getValue<number>(
+		POSITRON_NOTEBOOK_INLINE_DATA_EXPLORER_MAX_HEIGHT_KEY
+	) ?? 300;
+
+	useEffect(() => {
+		// Create a fresh disposable store for this mount cycle
+		const disposables = new DisposableStore();
+		disposablesRef.current = disposables;
+
+		// Clean up on unmount or when commId changes
+		return () => {
+			disposables.dispose();
+			disposablesRef.current = null;
+		};
+	}, [commId]);
+
+	useEffect(() => {
+		const disposables = disposablesRef.current;
+		let cancelled = false;
+
+		async function initializeGrid() {
+			try {
+				// Check if store is already disposed (race condition protection)
+				if (!disposables || disposables.isDisposed) {
+					return;
+				}
+
+				// When a fallback is available, use a short timeout since comms
+				// register within milliseconds during normal execution. On reload,
+				// the comm won't exist so we fall back quickly instead of waiting.
+				const timeout = onFallback ? 500 : 10000;
+				const instance = await dataExplorerService.getInstanceAsync(commId, timeout);
+
+				if (cancelled || !disposables || disposables.isDisposed) {
+					return;
+				}
+
+				if (!instance) {
+					if (onFallback) {
+						onFallback();
+						return;
+					}
+					setState({
+						status: 'error',
+						message: localize('instanceNotFound', 'Data explorer instance not found. Re-run the cell to view the data.')
+					});
+					return;
+				}
+
+				// Do NOT dispose the client on unmount. The inline view may unmount
+				// temporarily (e.g., when switching editor tabs) and remount when
+				// the notebook becomes active again. The comm lifecycle is managed
+				// by the kernel (closed on cell re-execution or kernel restart)
+				// and by the DataExplorerRuntime (closed on session end).
+
+				// Create the table data cache for this inline view
+				const clientInstance = instance.dataExplorerClientInstance;
+				const tableDataCache = disposables.add(new TableDataCache(clientInstance));
+
+				// Create the inline grid instance
+				const gridInstance = disposables.add(new InlineTableDataGridInstance(
+					clientInstance,
+					tableDataCache
+				));
+
+				// Listen for close event
+				disposables.add(gridInstance.onDidClose(() => {
+					if (!cancelled) {
+						setState({ status: 'disconnected' });
+					}
+				}));
+
+				// Initialize the grid - this fetches backend state and sets up layout before fetching data
+				await gridInstance.initialize();
+
+				if (cancelled || disposables.isDisposed) {
+					return;
+				}
+
+				setState({
+					status: 'connected',
+					gridInstance
+				});
+			} catch (error) {
+				if (!cancelled) {
+					setState({
+						status: 'error',
+						message: error instanceof Error ? error.message : String(error)
+					});
+				}
+			}
+		}
+
+		initializeGrid();
+
+		return () => {
+			cancelled = true;
+		};
+	}, [commId, dataExplorerService, onFallback]);
+
+	// Check if grid instance has become stale (no data but still "connected")
+	const isGridStale = state.status === 'connected' &&
+		(state.gridInstance.columns === 0 || state.gridInstance.rows === 0);
+
+	// Build the rich context object that header actions receive on click. Populated
+	// only when we have a cell and the grid is connected and non-stale -- this is
+	// the canonical "ready" state for any registered action.
+	const actionContext: IInlineDataExplorerActionContext | undefined =
+		state.status === 'connected' && !isGridStale
+			? {
+				documentUri: notebookInstance.uri,
+				sourceLanguage: cell.model.language,
+				commId,
+				variablePath,
+				title,
+				shape,
+				gridInstance: state.gridInstance,
+				cell,
+				notebookInstance,
+			}
+			: undefined;
+
+	// Handle keyboard events for copy (Cmd+C / Ctrl+C)
+	const handleKeyDown = async (e: React.KeyboardEvent<HTMLDivElement>) => {
+		// Check for Cmd+C (Mac) or Ctrl+C (Windows/Linux)
+		if (e.code === 'KeyC' && (isMacintosh ? e.metaKey : e.ctrlKey)) {
+			if (state.status === 'connected' && !isGridStale) {
+				e.preventDefault();
+				e.stopPropagation();
+				await state.gridInstance.copyToClipboard();
+			}
+		}
+	};
+
+	// Calculate dynamic height based on row count
+	const dynamicHeight = calculateHeight(shape.rows, maxHeight);
+
+	// Render based on state
+	return (
+		<div ref={containerRef} className='inline-data-explorer-container inline-data-explorer-container--clears-output-actions' style={{ height: `${dynamicHeight}px` }}>
+			<InlineDataExplorerHeader
+				actionContext={actionContext}
+				contextKeyService={cell.scopedContextKeyService}
+				shape={shape}
+				title={title}
+			/>
+			<div className='inline-data-explorer-content' onKeyDownCapture={handleKeyDown}>
+				{state.status === 'loading' && (
+					<div className='inline-data-explorer-loading'>
+						<span className='codicon codicon-loading codicon-modifier-spin' />
+						{localize('loading', 'Loading...')}
+					</div>
+				)}
+				{state.status === 'connected' && !isGridStale && (
+					<PositronDataGrid
+						instance={state.gridInstance}
+					/>
+				)}
+				{state.status === 'connected' && isGridStale && (
+					<div className='inline-data-explorer-disconnected'>
+						<span className='codicon codicon-warning' />
+						{localize('dataStale', 'Data connection lost. Re-run cell to view.')}
+					</div>
+				)}
+				{state.status === 'disconnected' && (
+					<div className='inline-data-explorer-disconnected'>
+						<span className='codicon codicon-warning' />
+						{localize('dataUnavailable', 'Data unavailable. Re-run cell to view.')}
+					</div>
+				)}
+				{state.status === 'error' && (
+					<div className='inline-data-explorer-error'>
+						<span className='codicon codicon-error' />
+						{state.message}
+					</div>
+				)}
+			</div>
+		</div>
+	);
+}

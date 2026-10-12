@@ -1,0 +1,602 @@
+[
+	{
+		"c": "const",
+		"t": "storage.type.ts",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": "a",
+		"t": "variable.ts",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "keyword.operator.assignment.ts",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "\\\\\\xFF",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": ";",
+		"t": "punctuation.delimiter.ts",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "const",
+		"t": "storage.type.ts",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": "b",
+		"t": "variable.ts",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "keyword.operator.assignment.ts",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "[.*+\\-?^${}()|[\\]\\\\]",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": ";",
+		"t": "punctuation.delimiter.ts",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "const",
+		"t": "storage.type.ts",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": "c",
+		"t": "variable.ts",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "keyword.operator.assignment.ts",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "\\r\\n|\\r|\\n",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": ";",
+		"t": "punctuation.delimiter.ts",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "const",
+		"t": "storage.type.ts",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": "d",
+		"t": "variable.ts",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "keyword.operator.assignment.ts",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "\\/\\/# sourceMappingURL=[^ ]+$",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": ";",
+		"t": "punctuation.delimiter.ts",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "const",
+		"t": "storage.type.ts",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": "e",
+		"t": "variable.ts",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "keyword.operator.assignment.ts",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "<%=\\s*([^\\s]+)\\s*%>",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": ";",
+		"t": "punctuation.delimiter.ts",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "const",
+		"t": "storage.type.ts",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": "f",
+		"t": "variable.ts",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "keyword.operator.assignment.ts",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "```suggestion(\\u0020*(\\r\\n|\\n))((?<suggestion>[\\s\\S]*?)(\\r\\n|\\n))?```",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": ";",
+		"t": "punctuation.delimiter.ts",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "const",
+		"t": "storage.type.ts",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": "g",
+		"t": "variable.ts",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "keyword.operator.assignment.ts",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "(?<=^|\\s)(?=[a-z])([a-z])(?=.*\\1$)\\(([^()]*0+)(?<!password|token)\\)(?!.*?(password|token))\\p{L}(?:(?<=\\(\\d{3}\\))-\\1|-\\1)(?!\\s)",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "/",
+		"t": "string.regexp.ts",
+		"r": {
+			"hc_black": "string.regexp: #D16969",
+			"2026-light": "string.regexp: #0A3069",
+			"2026-dark": "string.regexp: #A5D6FF",
+			"rhs_ia_dark": "string.regexp: #D16969",
+			"rhs_ia_light": "string.regexp: #66476B",
+			"hc_light": "string.regexp: #811F3F"
+		}
+	},
+	{
+		"c": "u",
+		"t": "string.regexp.ts keyword.ts",
+		"r": {
+			"hc_black": "keyword: #569CD6",
+			"2026-light": "keyword: #CF222E",
+			"2026-dark": "keyword: #FF7B72",
+			"rhs_ia_dark": "keyword: #569CD6",
+			"rhs_ia_light": "keyword: #BC729C",
+			"hc_light": "keyword: #0F4A85"
+		}
+	},
+	{
+		"c": ";",
+		"t": "punctuation.delimiter.ts",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	}
+]

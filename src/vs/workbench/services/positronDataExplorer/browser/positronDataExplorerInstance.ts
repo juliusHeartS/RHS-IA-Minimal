@@ -1,0 +1,671 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { localize } from '../../../../nls.js';
+import { Emitter } from '../../../../base/common/event.js';
+import { TableDataCache } from '../common/tableDataCache.js';
+import { Disposable } from '../../../../base/common/lifecycle.js';
+import { onUnexpectedError } from '../../../../base/common/errors.js';
+import { TableSummaryCache } from '../common/tableSummaryCache.js';
+import { TableDataDataGridInstance } from './tableDataDataGridInstance.js';
+import { PositronDataExplorerUri } from '../common/positronDataExplorerUri.js';
+import { TableSummaryDataGridInstance } from './tableSummaryDataGridInstance.js';
+import { Severity } from '../../../../platform/notification/common/notification.js';
+import { PositronDataExplorerLayout } from './interfaces/positronDataExplorerService.js';
+import { PositronReactServices } from '../../../../base/browser/positronReactServices.js';
+import { CodeSyntaxName } from '../../languageRuntime/common/positronDataExplorerComm.js';
+import { IPositronDataExplorerInstance } from './interfaces/positronDataExplorerInstance.js';
+import { buildDataImportView } from '../common/positronDataImportView.js';
+import { IDataImportView } from '../common/positronDataImporterRegistry.js';
+import { DataExplorerClientInstance } from '../../languageRuntime/common/languageRuntimeDataExplorerClient.js';
+import { DataExplorerSummaryCollapseEnabled, DefaultDataExplorerSummaryLayout } from './positronDataExplorerSummary.js';
+import { ClipboardCell, ClipboardCellIndexes, ClipboardColumnIndexes, ClipboardRowIndexes } from '../../../browser/positronDataGrid/classes/dataGridInstance.js';
+
+/**
+ * Constants.
+ */
+const MAX_CLIPBOARD_CELLS = 10_000;
+
+/**
+ * PositronDataExplorerInstance class.
+ */
+export class PositronDataExplorerInstance extends Disposable implements IPositronDataExplorerInstance {
+	//#region Private Properties
+
+	/**
+	 * Gets the Positron React services.
+	 */
+	private readonly _services = PositronReactServices.services;
+
+	/**
+	 * Gets the table summary cache.
+	 */
+	private readonly _tableSummaryCache: TableSummaryCache;
+
+	/**
+	 * Gets the table data cache.
+	 */
+	private readonly _tableDataCache: TableDataCache;
+
+	/**
+	 * Gets or sets the layout.
+	 */
+	private _layout: PositronDataExplorerLayout;
+
+	/**
+	 * Gets or sets a value which indicates whether the summary is collapsed.
+	 */
+	private _isSummaryCollapsed: boolean;
+
+	/**
+	 * Gets or sets the summary width in pixels.
+	 */
+	private _summaryWidth = 0;
+
+	/**
+	 * Gets the TableSchemaDataGridInstance.
+	 */
+	private readonly _tableSchemaDataGridInstance: TableSummaryDataGridInstance;
+
+	/**
+	 * Gets the TableDataDataGridInstance.
+	 */
+	private readonly _tableDataDataGridInstance: TableDataDataGridInstance;
+
+	/**
+	 * The onDidClose event emitter.
+	 */
+	private readonly _onDidCloseEmitter = this._register(new Emitter<void>);
+
+	/**
+	 * The onDidChangeLayout event emitter.
+	 */
+	private readonly _onDidChangeLayoutEmitter = this._register(
+		new Emitter<PositronDataExplorerLayout>
+	);
+
+	/**
+	 * The onDidChangeSummaryWidth event emitter.
+	 */
+	private readonly _onDidChangeSummaryWidthEmitter = this._register(new Emitter<number>);
+
+	/**
+	 * The onDidChangeColumnsScrollOffset event emitter.
+	 */
+	private readonly _onDidChangeColumnsScrollOffsetEmitter = this._register(new Emitter<number>);
+
+	/**
+	 * The onDidRequestFocus event emitter.
+	 */
+	private readonly _onDidRequestFocusEmitter = this._register(new Emitter<void>());
+
+	/**
+	 * The onDidCollapseSummary event emitter.
+	 */
+	private readonly _onDidCollapseSummaryEmitter = this._register(new Emitter<void>());
+
+	/**
+	 * The onDidExpandSummary event emitter.
+	 */
+	private readonly _onDidExpandSummaryEmitter = this._register(new Emitter<void>());
+
+	/**
+	 * The onDidChangeColumnSorting event emitter.
+	 */
+	private readonly _onDidChangeColumnSortingEmitter = this._register(new Emitter<boolean>());
+
+	/**
+	 * The onDidChangeFileHasHeaderRow event emitter.
+	 */
+	private readonly _onDidChangeFileHasHeaderRowEmitter = this._register(new Emitter<boolean>());
+
+	/**
+	 * Tracks the current "has header row" state for delimited text files and
+	 * Excel workbooks (default true).
+	 */
+	private _fileHasHeaderRow = true;
+
+	/**
+	 * Tracks the explicitly selected worksheet for Excel workbooks. Undefined
+	 * means the default (first) sheet; see {@link fileSelectedSheet}.
+	 */
+	private _fileSheetName: string | undefined;
+
+	/**
+	 * The number of editor panes currently showing this instance.
+	 *
+	 * A single data explorer instance can be rendered by multiple editors
+	 * (for example, after splitting the editor). We only mark the internal
+	 * data grids hidden when the last visible editor detaches.
+	 */
+	private _visibleEditorCount = 0;
+
+	//#endregion Private Properties
+
+	//#region Constructor & Dispose
+
+	/**
+	 * Constructor.
+	 * @param _languageName The language name.
+	 * @param _dataExplorerClientInstance The DataExplorerClientInstance. The data explorer takes
+	 * ownership of the client instance and will dispose it when it is disposed.
+	 * @param _isInline Whether this instance backs an inline/embedded view (e.g. a notebook
+	 * cell output) whose comm is shared and runtime-owned.
+	 */
+	constructor(
+		private readonly _languageName: string,
+		private readonly _dataExplorerClientInstance: DataExplorerClientInstance,
+		private readonly _isInline: boolean = false
+	) {
+		// Call the base class's constructor.
+		super();
+
+		// Initialize the layout and summary collapsed state.
+		this._layout = DefaultDataExplorerSummaryLayout(this._services.configurationService);
+		this._isSummaryCollapsed = DataExplorerSummaryCollapseEnabled(this._services.configurationService);
+
+		// Take ownership of the client instance.
+		this._register(this._dataExplorerClientInstance);
+
+		// Create the table summary cache.
+		this._register(this._tableSummaryCache = new TableSummaryCache(
+			this._dataExplorerClientInstance
+		));
+
+		// Create the table summary data grid instance.
+		this._register(this._tableSchemaDataGridInstance = new TableSummaryDataGridInstance(
+			this._dataExplorerClientInstance,
+			this._tableSummaryCache
+		));
+
+		// Create the table data cache.
+		this._register(this._tableDataCache = new TableDataCache(this._dataExplorerClientInstance));
+
+		// Create the table data data grid instance.
+		this._register(this._tableDataDataGridInstance = new TableDataDataGridInstance(
+			this._dataExplorerClientInstance,
+			this._tableDataCache
+		));
+		// Add the onDidClose event handler.
+		this._register(this._dataExplorerClientInstance.onDidClose(() => {
+			this._onDidCloseEmitter.fire();
+		}));
+
+		// Add the onDidSelectColumn event handler.
+		this._register(this._tableSchemaDataGridInstance.onDidSelectColumn(columnIndex => {
+			this._tableDataDataGridInstance.selectColumn(columnIndex);
+			this._tableDataDataGridInstance.scrollToColumn(columnIndex);
+		}));
+
+		// Add the onDidChangeColumnSorting event handler.
+		this._register(
+			this._tableDataDataGridInstance.onDidChangeColumnSorting(isColumnSorting =>
+				this._onDidChangeColumnSortingEmitter.fire(isColumnSorting)
+			)
+		);
+
+		// Add the onDidChangePinnedColumns event handler.
+		this._register(
+			this._tableDataDataGridInstance.onDidChangePinnedColumns(async pinnedColumns => {
+				// Update the pinned rows in the summary data grid instance.
+				await this._tableSchemaDataGridInstance.updatePinnedRows(pinnedColumns);
+			})
+		);
+
+		// Add the onDidSetRowFilters event handler.
+		// Refresh summary panel column profiles after row filters change.
+		this._register(
+			this._tableDataDataGridInstance.onDidSetRowFilters(async () => {
+				await this._tableSchemaDataGridInstance.fetchData(true);
+			})
+		);
+
+		// Add the onDidRequestFocus event handler.
+		this._register(this.onDidRequestFocus(() => {
+			const uri = PositronDataExplorerUri.generate(this._dataExplorerClientInstance.identifier);
+			this._services.editorService.openEditor({ resource: uri });
+		}));
+	}
+
+	/**
+	 * Dispose method.
+	 */
+	public override dispose(): void {
+		// Fire the onDidClose event.
+		this._onDidCloseEmitter.fire();
+
+		// Call the base class's dispose method.
+		super.dispose();
+	}
+
+	//#endregion Constructor & Dispose
+
+	//#region IPositronDataExplorerInstance Implementation
+
+	/**
+	 * Gets the language name.
+	 */
+	get languageName() {
+		return this._languageName;
+	}
+
+	/**
+	 * Gets the data explorer client instance.
+	 */
+	get dataExplorerClientInstance() {
+		return this._dataExplorerClientInstance;
+	}
+
+	/**
+	 * Gets whether this instance backs an inline/embedded view (e.g. a notebook
+	 * cell output). Inline comms are shared with the embedding view, whose
+	 * lifetime outlives any editor tab opened against the same comm; their
+	 * lifecycle is owned by the runtime (closed on cell re-execution or session
+	 * end). An editor tab must not dispose the client for an inline instance.
+	 */
+	get isInline() {
+		return this._isInline;
+	}
+
+	/**
+	 * Gets the layout.
+	 */
+	get layout() {
+		return this._layout;
+	}
+
+	/**
+	 * Sets the layout.
+	 */
+	set layout(layout: PositronDataExplorerLayout) {
+		this._layout = layout;
+		this._onDidChangeLayoutEmitter.fire(this._layout);
+	}
+
+	/**
+	 * Gets a value which indicates whether the summary is collapsed.
+	 */
+	get isSummaryCollapsed() {
+		return this._isSummaryCollapsed;
+	}
+
+	/**
+	 * Gets the summary width in pixels.
+	 */
+	get summaryWidth() {
+		return this._summaryWidth;
+	}
+
+	/**
+	 * Sets the summary width in pixels.
+	 */
+	set summaryWidth(summaryWidth: number) {
+		this._summaryWidth = summaryWidth;
+		this._onDidChangeSummaryWidthEmitter.fire(this._summaryWidth);
+	}
+
+	/**
+	 * Gets the TableSchemaDataGridInstance.
+	 */
+	get tableSchemaDataGridInstance() {
+		return this._tableSchemaDataGridInstance;
+	}
+
+	/**
+	 * Gets the TableDataDataGridInstance.
+	 */
+	get tableDataDataGridInstance() {
+		return this._tableDataDataGridInstance;
+	}
+
+	/**
+	 * Gets a value which indicates whether one or more columns are sorted.
+	 */
+	get isColumnSorting() {
+		return this._tableDataDataGridInstance.isColumnSorting;
+	}
+
+	/**
+	 * Requests focus.
+	 */
+	requestFocus(): void {
+		this._onDidRequestFocusEmitter.fire();
+	}
+
+	/**
+	 * Collapses the summary.
+	 */
+	collapseSummary(): void {
+		this._isSummaryCollapsed = true;
+		this._onDidCollapseSummaryEmitter.fire();
+	}
+
+	/**
+	 * Expands the summary.
+	 */
+	expandSummary(): void {
+		this._isSummaryCollapsed = false;
+		this._onDidExpandSummaryEmitter.fire();
+	}
+
+	/**
+	 * Clears column sorting.
+	 * @returns A Promise<void> that resolves when column sorting has been cleared.
+	 */
+	async clearColumnSorting(): Promise<void> {
+		await this._tableDataDataGridInstance.clearColumnSortKeys();
+	}
+
+	/**
+	 * Copies the selection or cursor cell to the clipboard.
+	 */
+	async copyToClipboard(): Promise<void> {
+		/**
+		 * Notifies the user that there is nothing to copy to the clipboard.
+		 */
+		const notifyUserNothingToCopy = () => {
+			this._services.notificationService.info(
+				localize(
+					'positron.dataExplorer.nothingToCopy',
+					'There is nothing to copy to the clipboard.'
+				)
+			);
+		};
+
+		// Get the clipboard data.
+		const clipboardData = this._tableDataDataGridInstance.getClipboardData();
+		if (!clipboardData) {
+			notifyUserNothingToCopy();
+			return;
+		}
+
+		// Calculate the number of selected clipboard cells.
+		let selectedClipboardCells;
+		if (clipboardData instanceof ClipboardCell) {
+			selectedClipboardCells = 1;
+		} else if (clipboardData instanceof ClipboardCellIndexes) {
+			selectedClipboardCells = clipboardData.columnIndexes.length * clipboardData.rowIndexes.length;
+		} else if (clipboardData instanceof ClipboardColumnIndexes) {
+			selectedClipboardCells = clipboardData.indexes.length * this._tableDataCache.rows;
+		} else if (clipboardData instanceof ClipboardRowIndexes) {
+			selectedClipboardCells = clipboardData.indexes.length * this._tableDataCache.columns;
+		} else {
+			// This indicates a bug.
+			selectedClipboardCells = 0;
+		}
+
+		// If there are no clipboard cells selected, notify the user.
+		if (!selectedClipboardCells) {
+			notifyUserNothingToCopy();
+			return;
+		}
+
+		// If there are too many clipboard cells selected, notify the user.
+		if (selectedClipboardCells > MAX_CLIPBOARD_CELLS) {
+			this._services.notificationService.error(
+				localize(
+					'positron.dataExplorer.tooMuchDataToCopy',
+					'There is too much data selected to copy to the clipboard.'
+				)
+			);
+			return;
+		}
+
+		// Copy the clipboard data.
+		const text = await this._tableDataDataGridInstance.copyClipboardData(clipboardData);
+		if (!text) {
+			notifyUserNothingToCopy();
+			return;
+		}
+
+		// Write the clipboard data to the clipboard.
+		this._services.clipboardService.writeText(text);
+	}
+
+	/**
+	 * Copies the table data to the clipboard.
+	 */
+	async copyTableDataToClipboard(): Promise<void> {
+		// Inform the user that the table data is being prepared.
+		const notificationHandle = this._services.notificationService.notify({
+			severity: Severity.Info,
+			message: localize(
+				'positron.dataExplorer.preparingTableDate',
+				'Preparing table data'
+			),
+			progress: {
+				infinite: true
+			}
+		});
+
+		// Get the table data in TSV format.
+		const tableDataTSV = await this._tableDataCache.getTableDataTSV();
+
+		// Inform the user that the table data is being copied to the clipboard..
+		notificationHandle.updateMessage(localize(
+			'positron.dataExplorer.copyingToClipboard',
+			'Copying table data to the clipboard'
+		));
+
+		// Write the table data to the clipboard.
+		this._services.clipboardService.writeText(tableDataTSV);
+
+		// Inform the user that the operation is done.
+		notificationHandle.updateMessage(localize(
+			'positron.dataExplorer.copiedToClipboard',
+			'Table data copied to the clipboard'
+		));
+
+		// Done.
+		notificationHandle.progress.done();
+	}
+
+	/**
+	 * Converts the data explorer view to code in the desired syntax.
+	 * @returns A Promise<string> that resolves when converted code is returned.
+	 */
+	async convertToCode(desiredSyntax: CodeSyntaxName): Promise<string | undefined> {
+		const generatedCode = await this._dataExplorerClientInstance.convertToCode(desiredSyntax);
+		return generatedCode.converted_code.join('\n');
+	}
+
+	/**
+	 * Builds the Import Data view of the current filters and sorts. See the interface JSDoc.
+	 */
+	async getImportView(): Promise<IDataImportView | undefined> {
+		// Waits for tasks already in flight, so a filter or sort the user applied a moment before
+		// opening the dialog is in the view rather than one state behind it. This is a cache read
+		// unless there is a pending task, and it answers with the disconnected state (no filters,
+		// no sorts, so no checkbox) rather than throwing if the backend is gone.
+		const state = await this._dataExplorerClientInstance.getBackendState(true);
+		return buildDataImportView(
+			state,
+			columnIndices => this._dataExplorerClientInstance.getSchema(columnIndices)
+		);
+	}
+
+	/**
+	 * Applies file import options (header row and, for Excel workbooks, the
+	 * worksheet to read) and reloads the data. Only applicable for files opened
+	 * with the DuckDB backend. Options are sent together because the backend
+	 * replaces the full set on each call.
+	 * @param options The file options to apply.
+	 */
+	async applyFileOptions(options: { hasHeaderRow: boolean; sheetName?: string }): Promise<void> {
+		const backendClient = this._dataExplorerClientInstance.backendClient;
+
+		// Check if this is a DuckDB backend
+		if (!this.isFileBacked) {
+			this._services.notificationService.warn(
+				localize(
+					'positron.dataExplorer.fileOptions.notDuckDB',
+					'File options are only available for files opened with DuckDB.'
+				)
+			);
+			return;
+		}
+
+		// Import the DuckDB backend type and call the method
+		const duckdbBackend = backendClient as import('../common/positronDataExplorerDuckDBBackend.js').PositronDataExplorerDuckDBBackend;
+
+		try {
+			const result = await duckdbBackend.setDatasetImportOptions({
+				has_header_row: options.hasHeaderRow,
+				sheet_name: options.sheetName
+			});
+
+			if (result.error_message) {
+				this._services.notificationService.error(
+					localize(
+						'positron.dataExplorer.fileOptions.failed',
+						'Failed to update file options: {0}',
+						result.error_message
+					)
+				);
+				return;
+			}
+
+			// Success - update our tracked state.
+			this._fileSheetName = options.sheetName;
+			if (this._fileHasHeaderRow !== options.hasHeaderRow) {
+				this._fileHasHeaderRow = options.hasHeaderRow;
+				// Fire event so the header-row context key can be updated.
+				this._onDidChangeFileHasHeaderRowEmitter.fire(options.hasHeaderRow);
+			}
+		} catch (error) {
+			this._services.notificationService.error(
+				localize(
+					'positron.dataExplorer.fileOptions.error',
+					'Error updating file options: {0}',
+					error instanceof Error ? error.message : String(error)
+				)
+			);
+		}
+	}
+
+	/**
+	 * Toggles the "has header row" option and reloads the data, preserving the
+	 * currently selected worksheet. Only applicable for files opened with DuckDB.
+	 */
+	async toggleFileHasHeaderRow(): Promise<void> {
+		await this.applyFileOptions({
+			hasHeaderRow: !this._fileHasHeaderRow,
+			sheetName: this.fileSelectedSheet
+		});
+	}
+
+	/**
+	 * Sets the visibility state of the data explorer.
+	 * When not visible, expensive operations are deferred until visible again.
+	 * @param visible Whether the data explorer is currently visible.
+	 */
+	setVisible(visible: boolean): void {
+		if (visible) {
+			this._visibleEditorCount++;
+
+			// Instance was already visible from another editor.
+			if (this._visibleEditorCount > 1) {
+				return;
+			}
+
+			// Transitioned from hidden -> visible.
+			this._tableSchemaDataGridInstance.setVisible(true).catch(onUnexpectedError);
+			this._tableDataDataGridInstance.setVisible(true).catch(onUnexpectedError);
+			return;
+		}
+
+		// Guard against mismatched visibility calls.
+		this._visibleEditorCount = Math.max(0, this._visibleEditorCount - 1);
+
+		// Another editor is still showing this instance.
+		if (this._visibleEditorCount !== 0) {
+			return;
+		}
+
+		// Transitioned from visible -> hidden.
+		this._tableSchemaDataGridInstance.setVisible(false);
+		this._tableDataDataGridInstance.setVisible(false);
+	}
+
+	/**
+	 * onDidClose event.
+	 */
+	readonly onDidClose = this._onDidCloseEmitter.event;
+
+	/**
+	 * onDidChangeLayout event.
+	 */
+	readonly onDidChangeLayout = this._onDidChangeLayoutEmitter.event;
+
+	/**
+	 * onDidChangeSummaryWidth event.
+	 */
+	readonly onDidChangeSummaryWidth = this._onDidChangeSummaryWidthEmitter.event;
+
+	/**
+	 * onDidChangeColumnsScrollOffset event.
+	 */
+	readonly onDidChangeColumnsScrollOffset = this._onDidChangeColumnsScrollOffsetEmitter.event;
+
+	/**
+	 * onDidRequestFocus event.
+	 */
+	readonly onDidRequestFocus = this._onDidRequestFocusEmitter.event;
+
+	/**
+	 * onDidCollapseSummary event.
+	 */
+	readonly onDidCollapseSummary = this._onDidCollapseSummaryEmitter.event;
+
+	/**
+	 * onDidExpandSummary event.
+	 */
+	readonly onDidExpandSummary = this._onDidExpandSummaryEmitter.event;
+
+	/**
+	 * The onDidChangeColumnSorting event.
+	 */
+	readonly onDidChangeColumnSorting = this._onDidChangeColumnSortingEmitter.event;
+
+	/**
+	 * Gets whether this Data Explorer is backed by a file on disk (the DuckDB extension
+	 * backend) rather than a kernel object.
+	 */
+	get isFileBacked() {
+		return this._dataExplorerClientInstance.backendClient.clientId.startsWith('duckdb:');
+	}
+
+	/**
+	 * Gets the current "has header row" state for delimited text files and Excel
+	 * workbooks.
+	 */
+	get fileHasHeaderRow() {
+		return this._fileHasHeaderRow;
+	}
+
+	/**
+	 * Gets the worksheet names available in the open Excel workbook, in workbook
+	 * order. Empty for non-Excel data sources.
+	 */
+	get fileAvailableSheets(): string[] {
+		return this._dataExplorerClientInstance.cachedBackendState?.available_sheets ?? [];
+	}
+
+	/**
+	 * Gets the currently selected worksheet for an Excel workbook. Defaults to
+	 * the first available sheet (which is what the backend reads when no sheet is
+	 * explicitly selected). Undefined when no sheets are known.
+	 */
+	get fileSelectedSheet(): string | undefined {
+		return this._fileSheetName ?? this.fileAvailableSheets[0];
+	}
+
+	/**
+	 * The onDidChangeFileHasHeaderRow event.
+	 */
+	readonly onDidChangeFileHasHeaderRow = this._onDidChangeFileHasHeaderRowEmitter.event;
+
+	//#endregion IPositronDataExplorerInstance Implementation
+}

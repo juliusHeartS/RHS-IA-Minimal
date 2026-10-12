@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Extensiones de conexión"
+---
+
+Las extensiones de bases de datos y fuentes de datos pueden aportar proveedores de conexión a RHS-IA. Un proveedor define cómo se registra, explora, actualiza y cierra una conexión.
+
+Instala un proveedor solo de un publicador de confianza y sigue su configuración de controladores y credenciales. El comportamiento del proveedor puede depender de un tiempo de ejecución activo de Python o R.
+
+Los autores de extensiones deben exponer los metadatos de forma diferida, evitar registrar secretos y eliminar las conexiones cuando termine una sesión. La orientación general de desarrollo está en [Desarrollo de extensiones](../extensions/development.qmd).

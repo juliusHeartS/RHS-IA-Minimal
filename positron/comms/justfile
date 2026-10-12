@@ -1,0 +1,2 @@
+gen +args="":
+	npx tsx generate-comms.ts {{args}}

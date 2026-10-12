@@ -1,0 +1,16 @@
+Package: @@NAME@@
+Version: @@POSITRONVERSION@@
+Section: devel
+Depends: @@DEPENDS@@
+Recommends: @@RECOMMENDS@@
+Priority: optional
+Architecture: @@ARCHITECTURE@@
+Maintainer: @@MAINTAINER@@
+Homepage: https://github.com/juliusHeartS/RHS-IA
+Installed-Size: @@INSTALLEDSIZE@@
+Provides: rhs-ia-@@NAME@@
+Conflicts: rhs-ia-@@NAME@@
+Replaces: rhs-ia-@@NAME@@
+Description: An environment for health workforce data and planning.
+ RHS-IA is an extensible tool for writing code and exploring health workforce data
+ in Python, R, and other languages.

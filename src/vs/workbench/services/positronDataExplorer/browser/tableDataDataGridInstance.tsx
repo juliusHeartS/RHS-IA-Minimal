@@ -1,0 +1,1061 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+// React.
+import { JSX } from 'react';
+
+// Other dependencies.
+import { localize } from '../../../../nls.js';
+import { Emitter } from '../../../../base/common/event.js';
+import { onUnexpectedError } from '../../../../base/common/errors.js';
+import { Severity } from '../../../../platform/notification/common/notification.js';
+import { PositronActionBarHoverManager } from '../../../../platform/positronActionBar/browser/positronActionBarHoverManager.js';
+import { IColumnSortKey } from '../../../browser/positronDataGrid/interfaces/columnSortKey.js';
+import { TableDataCell } from './components/tableDataCell.js';
+import { AnchorPoint } from '../../../browser/positronComponents/positronModalPopup/positronModalPopup.js';
+import { TableDataRowHeader } from './components/tableDataRowHeader.js';
+import { CustomContextMenuItem } from '../../../browser/positronComponents/customContextMenu/customContextMenuItem.js';
+import { PositronDataExplorerColumn } from './positronDataExplorerColumn.js';
+import { DataExplorerClientInstance } from '../../languageRuntime/common/languageRuntimeDataExplorerClient.js';
+import { CustomContextMenuSeparator } from '../../../browser/positronComponents/customContextMenu/customContextMenuSeparator.js';
+import { MAX_ADVANCED_LAYOUT_ENTRY_COUNT } from '../../../browser/positronDataGrid/classes/layoutManager.js';
+import { PositronDataExplorerCommandId } from '../../../contrib/positronDataExplorerEditor/browser/positronDataExplorerActions.js';
+import { InvalidateCacheFlags, TableDataCache, ColumnWidthCalculators } from '../common/tableDataCache.js';
+import { CustomContextMenuEntry, showCustomContextMenu } from '../../../browser/positronComponents/customContextMenu/customContextMenu.js';
+import { BackendState, ColumnSchema, ExportFormat, RowFilter, SupportStatus } from '../../languageRuntime/common/positronDataExplorerComm.js';
+import { ClipboardData, ColumnSelectionState, ColumnSortKeyDescriptor, DataGridInstance, MouseSelectionType, RowSelectionState } from '../../../browser/positronDataGrid/classes/dataGridInstance.js';
+import { PositronReactServices } from '../../../../base/browser/positronReactServices.js';
+import { buildTableSelectionFromClipboardData } from './utils.js';
+
+/**
+ * Constants.
+ */
+const OVERSCAN_FACTOR = 3;
+
+/**
+ * Localized strings.
+ */
+const addFilterTitle = localize('positron.addFilter', "Add Filter");
+
+/**
+ * TableDataDataGridInstance class.
+ */
+export class TableDataDataGridInstance extends DataGridInstance {
+	//#region Private Properties
+
+	/**
+	 * Gets the Positron React services.
+	 */
+	private readonly _services = PositronReactServices.services;
+
+	/**
+	 * The onAddFilter event emitter.
+	 */
+	private readonly _onAddFilterEmitter = this._register(new Emitter<ColumnSchema>);
+
+	/**
+	 * The hover manager for data cell tooltips and corner reset button.
+	 */
+	private readonly _hoverManager: PositronActionBarHoverManager;
+
+	/**
+	 * The onDidChangePinnedColumns event emitter.
+	 * This event is fired when the pinned columns change.
+	 * This event returns the array of pinned column indexes.
+	 */
+	private readonly _onDidChangePinnedColumns = this._register(new Emitter<number[]>());
+
+	/**
+	 * The onDidSetRowFilters event emitter.
+	 * Fired after row filters are applied so the coordinator can refresh
+	 * the summary panel's column profiles.
+	 */
+	private readonly _onDidSetRowFilters = this._register(new Emitter<void>());
+
+	/**
+	 * Whether the data explorer is currently visible.
+	 * When not visible, expensive operations are deferred.
+	 */
+	private _visible = true;
+
+	/**
+	 * Whether a schema update is pending because we were not visible when it occurred.
+	 */
+	private _pendingSchemaUpdate = false;
+
+	/**
+	 * Whether a data update is pending because we were not visible when it occurred.
+	 */
+	private _pendingDataUpdate = false;
+
+	/**
+	 * Whether the initial data load has been completed.
+	 * Used to trigger initial load when first becoming visible.
+	 */
+	private _initialLoadComplete = false;
+
+	/**
+	 * Whether the initial data load is running. Used to keep other layout updates from duplicating
+	 * the work it is already doing, and to keep it from being started twice.
+	 */
+	private _initialLoadInProgress = false;
+
+	/**
+	 * Counts the column width calculations that have been started. A calculation compares the
+	 * generation it started in against this before applying its widths, so that a slower
+	 * calculation cannot overwrite the widths of a later one that has already finished.
+	 */
+	private _columnWidthsGeneration = 0;
+
+	//#endregion Private Properties
+
+	//#region Constructor
+
+	/**
+	 * Constructor.
+	 * @param _dataExplorerClientInstance The data explorer client instance.
+	 * @param _tableDataCache The table data cache.
+	 */
+	constructor(
+		private readonly _dataExplorerClientInstance: DataExplorerClientInstance,
+		private readonly _tableDataCache: TableDataCache,
+	) {
+		// Call the base class's constructor.
+		super({
+			columnHeaders: true,
+			columnHeadersHeight: 34,
+			rowHeaders: true,
+			rowHeadersWidth: 55,
+			rowHeadersResize: true,
+			defaultColumnWidth: 200,
+			defaultRowHeight: 24,
+			columnResize: true,
+			minimumColumnWidth: 80,
+			maximumColumnWidth: 800,
+			rowResize: false,
+			columnPinning: true,
+			maximumPinnedColumns: 10,
+			rowPinning: true,
+			maximumPinnedRows: 10,
+			horizontalScrollbar: true,
+			verticalScrollbar: true,
+			scrollbarThickness: 14,
+			scrollbarOverscroll: 14,
+			useEditorFont: true,
+			automaticLayout: true,
+			cellBorders: true,
+			horizontalCellPadding: 7,
+			internalCursor: true,
+			cursorOffset: 0.5,
+		});
+
+		this._hoverManager = this._register(new PositronActionBarHoverManager(false, this._services.configurationService, this._services.hoverService));
+		this._hoverManager.setCustomHoverDelay(500);
+
+		// Add the data explorer client onDidSchemaUpdate event handler.
+		this._register(this._dataExplorerClientInstance.onDidSchemaUpdate(async () => {
+			// If not visible, defer the update until we become visible.
+			if (!this._visible) {
+				this._pendingSchemaUpdate = true;
+				return;
+			}
+			// Clear pending flags since we're doing the work now.
+			this._pendingSchemaUpdate = false;
+			this._pendingDataUpdate = false;
+			await this.handleSchemaUpdate();
+		}));
+
+		// Add the data explorer client onDidDataUpdate event handler.
+		this._register(this._dataExplorerClientInstance.onDidDataUpdate(async () => {
+			// If not visible, defer the update until we become visible.
+			if (!this._visible) {
+				this._pendingDataUpdate = true;
+				return;
+			}
+			// Clear pending flag since we're doing the work now.
+			this._pendingDataUpdate = false;
+			await this.handleDataUpdate();
+		}));
+
+		// Add the data explorer client onDidUpdateBackendState event handler.
+		this._register(this._dataExplorerClientInstance.onDidUpdateBackendState(async state => {
+			// If not visible, skip layout and sort key updates. Backend-
+			// initiated events will also fire onDidSchemaUpdate or
+			// onDidDataUpdate, which set the pending flags and will
+			// rebuild everything when we become visible again.
+			if (!this._visible) {
+				return;
+			}
+
+			// Skip while the initial load is running. It updates the layout entries and rebuilds
+			// the sort keys itself, so doing it here as well duplicates the schema and data round
+			// trips that calculating the column widths makes -- and the initial load reads the
+			// backend state fresh, so it picks up this state anyway.
+			if (this._initialLoadInProgress) {
+				return;
+			}
+
+			await this.updateLayoutEntries(state);
+
+			// Rebuild sort keys on every backend state change to keep the
+			// data grid's sort indicators in sync with the backend's sort
+			// state (e.g., sort keys may be affected by schema changes).
+			this.rebuildSortKeysFromCache();
+
+			// Do not fetch data here. For backend-initiated events,
+			// onDidUpdateBackendState fires before onDidSchemaUpdate /
+			// onDidDataUpdate. Fetching here would compute data twice --
+			// once here and again in the schema/data handler.
+			// UI-initiated operations (setRowFilters, sortData) handle
+			// their own cache updates explicitly.
+		}));
+
+		// Add the table data cache onDidUpdate event handler.
+		this._register(this._tableDataCache.onDidUpdate(() =>
+			// Fire the onDidUpdate event.
+			this.fireOnDidUpdateEvent()
+		));
+	}
+
+	//#endregion Constructor
+
+	//#region DataGridInstance Properties
+
+	/**
+	 * Gets the number of columns.
+	 */
+	get columns() {
+		return this._tableDataCache.columns;
+	}
+
+	/**
+	 * Gets the number of rows.
+	 */
+	get rows() {
+		return this._tableDataCache.rows;
+	}
+
+	/**
+	 * Gets the page height.
+	 */
+	override get pageHeight() {
+		return this.layoutHeight - this.defaultRowHeight;
+	}
+
+	//#endregion DataGridInstance Properties
+
+	//#region DataGridInstance Methods
+
+	/**
+	 * Pins a column and fires the onDidPinnedColumnsChange event.
+	 *
+	 * This allows the summary panel to keep the pinned/unpinned
+	 * columns in sync with the data grid.
+	 *
+	 * @param columnIndex The index of the column to pin.
+	 */
+	override pinColumn(columnIndex: number) {
+		// Call the parent method
+		super.pinColumn(columnIndex);
+
+		// Fire the event with current pinned column indices
+		this._onDidChangePinnedColumns.fire(this._columnLayoutManager.pinnedIndexes);
+	}
+
+	/**
+	 * Unpins a column and fires the onDidPinnedColumnsChange event.
+	 *
+	 * This allows the summary panel to keep the pinned/unpinned
+	 * columns in sync with the data grid.
+	 *
+	 * @param columnIndex The index of the column to unpin.
+	 */
+	override unpinColumn(columnIndex: number) {
+		// Call the parent method
+		super.unpinColumn(columnIndex);
+
+		// Fire the event with current pinned column indices
+		this._onDidChangePinnedColumns.fire(this._columnLayoutManager.pinnedIndexes);
+	}
+
+	/**
+	 * Sorts the data.
+	 * @returns A Promise<void> that resolves when the data is sorted.
+	 */
+	override async sortData(columnSorts: IColumnSortKey[]): Promise<void> {
+		// Clear pinned rows whenever a sort is applied to avoid
+		// the bug where pinned row data is in the wrong position.
+		// See https://github.com/posit-dev/positron/issues/9344
+		this.clearPinnedRows();
+
+		// Set the sort columns.
+		await this._dataExplorerClientInstance.setSortColumns(columnSorts.map(columnSort => ({
+			column_index: columnSort.columnIndex,
+			ascending: columnSort.ascending
+		})));
+
+		// Synchronize the backend state.
+		await this._dataExplorerClientInstance.updateBackendState();
+
+		// Update the cache with the visible data range, or invalidate with empty arrays
+		// if there's no visible data (e.g., zero rows after filtering).
+		const columnDescriptor = this.firstColumn;
+		const rowDescriptor = this.firstRow;
+		await this._tableDataCache.update({
+			invalidateCache: InvalidateCacheFlags.Data,
+			columnIndices: columnDescriptor && rowDescriptor
+				? this._columnLayoutManager.getLayoutIndexes(this.horizontalScrollOffset, this.layoutWidth, OVERSCAN_FACTOR)
+				: [],
+			rowIndices: columnDescriptor && rowDescriptor
+				? this._rowLayoutManager.getLayoutIndexes(this.verticalScrollOffset, this.layoutHeight, OVERSCAN_FACTOR)
+				: []
+		});
+	}
+
+	/**
+	 * Fetches data.
+	 * @param invalidateCacheFlags The invalidate cache flags.
+	 * @returns A Promise<void> that resolves when the operation is complete.
+	 */
+	override async fetchData(invalidateCacheFlags?: InvalidateCacheFlags) {
+		const columnDescriptor = this.firstColumn;
+		const rowDescriptor = this.firstRow;
+
+		// We update the cache as long as there is a column in the dataset.
+		// This allows datasets with column headers but zero rows to render
+		// the column headers in the data grid.
+		// See https://github.com/posit-dev/positron/issues/9619
+		if (columnDescriptor) {
+			// Update the cache.
+			await this._tableDataCache.update({
+				invalidateCache: invalidateCacheFlags ?? InvalidateCacheFlags.None,
+				columnIndices: this._columnLayoutManager.getLayoutIndexes(this.horizontalScrollOffset, this.layoutWidth, OVERSCAN_FACTOR),
+				rowIndices: rowDescriptor ? this._rowLayoutManager.getLayoutIndexes(this.verticalScrollOffset, this.layoutHeight, OVERSCAN_FACTOR) : []
+			});
+		}
+	}
+
+	/**
+	 * Gets a column.
+	 * @param columnIndex The column index.
+	 * @returns The column.
+	 */
+	override column(columnIndex: number) {
+		// Get the column schema.
+		const columnSchema = this._tableDataCache.getColumnSchema(columnIndex);
+		if (!columnSchema) {
+			return undefined;
+		}
+
+		// Return the column.
+		return new PositronDataExplorerColumn(columnSchema);
+	}
+
+	/**
+	 * Gets a row header.
+	 * @param rowIndex The row index.
+	 * @returns The row label, or, undefined.
+	 */
+	override rowHeader(rowIndex: number) {
+		return (
+			<TableDataRowHeader value={this._tableDataCache.getRowLabel(rowIndex)} />
+		);
+	}
+
+	/**
+	 * Gets a data cell.
+	 * @param columnIndex The column index.
+	 * @param rowIndex The row index.
+	 * @returns The cell value.
+	 */
+	/**
+	 * Override base class to provide hover manager.
+	 */
+	override get hoverManager(): PositronActionBarHoverManager {
+		return this._hoverManager;
+	}
+
+	/**
+	 * Gets the profile format options.
+	 */
+	get profileFormatOptions() {
+		return this._dataExplorerClientInstance.profileFormatOptions;
+	}
+
+	/**
+	 * Gets a data cell.
+	 * @param columnIndex The column index.
+	 * @param rowIndex The row index.
+	 * @returns The cell value.
+	 */
+	cell(columnIndex: number, rowIndex: number): JSX.Element | undefined {
+		// Get the column.
+		const column = this.column(columnIndex);
+		if (!column) {
+			return undefined;
+		}
+
+		// Get the data cell.
+		const dataCell = this._tableDataCache.getDataCell(columnIndex, rowIndex);
+		if (!dataCell) {
+			return undefined;
+		}
+
+		// Return the TableDataCell.
+		return (
+			<TableDataCell
+				column={column}
+				dataCell={dataCell}
+				hoverManager={this._hoverManager}
+			/>
+		);
+	}
+
+	/**
+	 * Shows the column context menu.
+	 * @param columnIndex The column index.
+	 * @param anchorElement The anchor element.
+	 * @param anchorPoint The anchor point.
+	 */
+	override async showColumnContextMenu(
+		columnIndex: number,
+		anchorElement: HTMLElement,
+		anchorPoint?: AnchorPoint
+	): Promise<void> {
+		// Ensure the column is selected (handles both right-click and dropdown button cases)
+		await this.mouseSelectColumn(columnIndex, MouseSelectionType.Single);
+
+		// Get the supported features.
+		const features = this._dataExplorerClientInstance.getSupportedFeatures();
+		const copySupported = this.isFeatureEnabled(features.export_data_selection?.support_status);
+		const exceedsLimits = await this.exceedsAdvancedLayoutLimits();
+		const sortSupported = this.isFeatureEnabled(features.set_sort_columns?.support_status) && !exceedsLimits;
+		const filterSupported = this.isFeatureEnabled(features.set_row_filters?.support_status) && !exceedsLimits;
+
+		// Get the column sort key for the column.
+		const columnSortKey = sortSupported ? this.columnSortKey(columnIndex) : undefined;
+
+		// Build the entries.
+		const entries: CustomContextMenuEntry[] = [];
+		entries.push(new CustomContextMenuItem({
+			commandId: PositronDataExplorerCommandId.CopyAction,
+			checked: false,
+			disabled: !copySupported,
+			icon: 'copy',
+			label: localize('positron.dataExplorer.copyColumn', "Copy Column"),
+			onSelected: () => console.log('Copy Column')
+		}));
+		entries.push(new CustomContextMenuSeparator());
+		entries.push(new CustomContextMenuItem({
+			checked: false,
+			icon: 'positron-select-column',
+			label: localize('positron.dataExplorer.selectColumn', "Select Column"),
+			disabled: this.columnSelectionState(columnIndex) !== ColumnSelectionState.None,
+			onSelected: () => this.selectColumn(columnIndex)
+		}));
+		if (this.columnPinning) {
+			entries.push(new CustomContextMenuSeparator());
+			if (!this.isColumnPinned(columnIndex)) {
+				entries.push(new CustomContextMenuItem({
+					checked: false,
+					disabled: false,
+					icon: 'positron-pin',
+					label: localize('positron.dataExplorer.pinColumn', "Pin Column"),
+					onSelected: () => this.pinColumn(columnIndex)
+				}));
+			} else {
+				entries.push(new CustomContextMenuItem({
+					checked: false,
+					icon: 'positron-unpin',
+					label: localize('positron.dataExplorer.unpinColumn', "Unpin Column"),
+					onSelected: () => this.unpinColumn(columnIndex)
+				}));
+			}
+		}
+		entries.push(new CustomContextMenuSeparator());
+		entries.push(new CustomContextMenuItem({
+			checked: columnSortKey !== undefined && columnSortKey.ascending,
+			icon: 'arrow-up',
+			disabled: !sortSupported,
+			label: localize('positron.sortAscending', "Sort Ascending"),
+			onSelected: async () => this.setColumnSortKey(
+				columnIndex,
+				true
+			)
+		}));
+		entries.push(new CustomContextMenuItem({
+			checked: columnSortKey !== undefined && !columnSortKey.ascending,
+			icon: 'arrow-down',
+			disabled: !sortSupported,
+			label: localize('positron.sortDescending', "Sort Descending"),
+			onSelected: async () => this.setColumnSortKey(
+				columnIndex,
+				false
+			)
+		}));
+		entries.push(new CustomContextMenuSeparator());
+		entries.push(new CustomContextMenuItem({
+			checked: false,
+			icon: 'positron-clear-sorting',
+			label: localize('positron.clearSorting', "Clear Sorting"),
+			disabled: !columnSortKey,
+			onSelected: async () =>
+				this.removeColumnSortKey(columnIndex)
+		}));
+		entries.push(new CustomContextMenuSeparator());
+		entries.push(new CustomContextMenuItem({
+			checked: false,
+			icon: 'positron-add-filter',
+			label: addFilterTitle,
+			disabled: !filterSupported,
+			onSelected: () => {
+				const columnSchema = this._tableDataCache.getColumnSchema(columnIndex);
+				if (columnSchema) {
+					this._onAddFilterEmitter.fire(columnSchema);
+				}
+			}
+		}));
+
+		// Show the context menu.
+		await showCustomContextMenu({
+			anchorElement,
+			anchorPoint,
+			popupPosition: 'auto',
+			popupAlignment: 'auto',
+			width: 200,
+			entries
+		});
+	}
+
+	/**
+	 * Shows the row context menu.
+	 * @param rowIndex The row index.
+	 * @param anchorElement The anchor element.
+	 * @param anchorPoint The anchor point.
+	 * @returns A Promise<void> that resolves when the context menu is complete.
+	 */
+	override async showRowContextMenu(
+		rowIndex: number,
+		anchorElement: HTMLElement,
+		anchorPoint: AnchorPoint
+	): Promise<void> {
+		// Ensure the row is selected (handles both right-click and keyboard shortcut cases)
+		await this.mouseSelectRow(rowIndex, MouseSelectionType.Single);
+
+		const features = this._dataExplorerClientInstance.getSupportedFeatures();
+		const copySupported = this.isFeatureEnabled(features.export_data_selection.support_status);
+
+		// Build the entries.
+		const entries: CustomContextMenuEntry[] = [];
+		entries.push(new CustomContextMenuItem({
+			commandId: PositronDataExplorerCommandId.CopyAction,
+			checked: false,
+			disabled: !copySupported,
+			icon: 'copy',
+			label: localize('positron.dataExplorer.copyRow', "Copy Row"),
+			onSelected: () => console.log('Copy Row')
+		}));
+		entries.push(new CustomContextMenuSeparator());
+		entries.push(new CustomContextMenuItem({
+			checked: false,
+			icon: 'positron-select-row',
+			label: localize('positron.dataExplorer.selectRow', "Select Row"),
+			disabled: this.rowSelectionState(rowIndex) !== RowSelectionState.None,
+			onSelected: () => this.selectRow(rowIndex)
+		}));
+		if (this.rowPinning) {
+			entries.push(new CustomContextMenuSeparator());
+			if (!this.isRowPinned(rowIndex)) {
+				entries.push(new CustomContextMenuItem({
+					checked: false,
+					disabled: false,
+					icon: 'positron-pin',
+					label: localize('positron.dataExplorer.pinRow', "Pin Row"),
+					onSelected: () => this.pinRow(rowIndex)
+				}));
+			} else {
+				entries.push(new CustomContextMenuItem({
+					checked: false,
+					icon: 'positron-unpin',
+					label: localize('positron.dataExplorer.unpinRow', "Unpin Row"),
+					onSelected: () => this.unpinRow(rowIndex)
+				}));
+			}
+		}
+
+		// Show the context menu.
+		await showCustomContextMenu({
+			anchorElement,
+			anchorPoint,
+			popupPosition: 'auto',
+			popupAlignment: 'auto',
+			width: 200,
+			entries
+		});
+	}
+
+	/**
+	 * Shows the cell context menu.
+	 * @param columnIndex The column index.
+	 * @param rowIndex The row index.
+	 * @param anchorElement The anchor element.
+	 * @param anchorPoint The anchor point.
+	 */
+	override async showCellContextMenu(
+		columnIndex: number,
+		rowIndex: number,
+		anchorElement: HTMLElement,
+		anchorPoint: AnchorPoint
+	): Promise<void> {
+		/**
+		 * Get the column sort key for the column.
+		 */
+		const columnSortKey = this.columnSortKey(columnIndex);
+
+		const features = this._dataExplorerClientInstance.getSupportedFeatures();
+		const copySupported = this.isFeatureEnabled(features.export_data_selection.support_status);
+		const exceedsLimits = await this.exceedsAdvancedLayoutLimits();
+		const sortSupported = this.isFeatureEnabled(features.set_sort_columns.support_status) && !exceedsLimits;
+		const filterSupported = this.isFeatureEnabled(features.set_row_filters.support_status) && !exceedsLimits;
+
+		// Build the entries.
+		const entries: CustomContextMenuEntry[] = [];
+		entries.push(new CustomContextMenuItem({
+			checked: false,
+			disabled: !copySupported,
+			commandId: PositronDataExplorerCommandId.CopyAction,
+			icon: 'copy',
+			label: localize('positron.dataExplorer.copy', "Copy"),
+			onSelected: () => console.log('Copy')
+		}));
+		entries.push(new CustomContextMenuSeparator());
+		entries.push(new CustomContextMenuItem({
+			checked: false,
+			icon: 'positron-select-column',
+			label: localize('positron.dataExplorer.selectColumn', "Select Column"),
+			disabled: this.columnSelectionState(columnIndex) !== ColumnSelectionState.None,
+			onSelected: () => this.selectColumn(columnIndex)
+		}));
+		entries.push(new CustomContextMenuItem({
+			checked: false,
+			icon: 'positron-select-row',
+			label: localize('positron.dataExplorer.selectRow', "Select Row"),
+			disabled: this.rowSelectionState(rowIndex) !== RowSelectionState.None,
+			onSelected: () => this.selectRow(rowIndex)
+		}));
+		if (this.columnPinning) {
+			entries.push(new CustomContextMenuSeparator());
+			if (!this.isColumnPinned(columnIndex)) {
+				entries.push(new CustomContextMenuItem({
+					checked: false,
+					disabled: false,
+					icon: 'positron-pin',
+					label: localize('positron.dataExplorer.pinColumn', "Pin Column"),
+					onSelected: () => this.pinColumn(columnIndex)
+				}));
+			} else {
+				entries.push(new CustomContextMenuItem({
+					checked: false,
+					icon: 'positron-unpin',
+					label: localize('positron.dataExplorer.unpinColumn', "Unpin Column"),
+					onSelected: () => this.unpinColumn(columnIndex)
+				}));
+			}
+		}
+		if (this.rowPinning) {
+			if (!this.columnPinning) {
+				entries.push(new CustomContextMenuSeparator());
+			}
+			if (!this.isRowPinned(rowIndex)) {
+				entries.push(new CustomContextMenuItem({
+					checked: false,
+					icon: 'positron-pin',
+					label: localize('positron.dataExplorer.pinRow', "Pin Row"),
+					onSelected: () => this.pinRow(rowIndex)
+				}));
+			} else {
+				entries.push(new CustomContextMenuItem({
+					checked: false,
+					icon: 'positron-unpin',
+					label: localize('positron.dataExplorer.unpinRow', "Unpin Row"),
+					onSelected: () => this.unpinRow(rowIndex)
+				}));
+			}
+		}
+		entries.push(new CustomContextMenuSeparator());
+		entries.push(new CustomContextMenuItem({
+			checked: columnSortKey !== undefined && columnSortKey.ascending,
+			icon: 'arrow-up',
+			disabled: !sortSupported,
+			label: localize('positron.sortAscending', "Sort Ascending"),
+			onSelected: async () => this.setColumnSortKey(
+				columnIndex,
+				true
+			)
+		}));
+		entries.push(new CustomContextMenuItem({
+			checked: columnSortKey !== undefined && !columnSortKey.ascending,
+			icon: 'arrow-down',
+			disabled: !sortSupported,
+			label: localize('positron.sortDescending', "Sort Descending"),
+			onSelected: async () => this.setColumnSortKey(
+				columnIndex,
+				false
+			)
+		}));
+		entries.push(new CustomContextMenuSeparator());
+		entries.push(new CustomContextMenuItem({
+			checked: false,
+			icon: 'positron-clear-sorting',
+			label: localize('positron.clearSorting', "Clear Sorting"),
+			disabled: !columnSortKey,
+			onSelected: async () =>
+				this.removeColumnSortKey(columnIndex)
+		}));
+		entries.push(new CustomContextMenuSeparator());
+		entries.push(new CustomContextMenuItem({
+			checked: false,
+			icon: 'positron-add-filter',
+			label: addFilterTitle,
+			disabled: !filterSupported,
+			onSelected: () => {
+				const columnSchema = this._tableDataCache.getColumnSchema(columnIndex);
+				if (columnSchema) {
+					this._onAddFilterEmitter.fire(columnSchema);
+				}
+			}
+		}));
+
+		// Show the context menu.
+		await showCustomContextMenu({
+			anchorElement,
+			anchorPoint,
+			popupPosition: 'auto',
+			popupAlignment: 'auto',
+			width: 200,
+			entries
+		});
+	}
+
+	//#endregion DataGridInstance Methods
+
+	//#region Public Events
+
+	/**
+	 * The onAddFilter event.
+	 */
+	readonly onAddFilter = this._onAddFilterEmitter.event;
+
+	/**
+	 * The onDidChangePinnedColumns event.
+	 */
+	readonly onDidChangePinnedColumns = this._onDidChangePinnedColumns.event;
+
+	/**
+	 * The onDidSetRowFilters event.
+	 */
+	readonly onDidSetRowFilters = this._onDidSetRowFilters.event;
+
+	//#region Public Methods
+
+	/**
+	 * Sets the column width calculators.
+	 * @param columnWidthCalculators The column width calculators.
+	 */
+	setColumnWidthCalculators(columnWidthCalculators?: ColumnWidthCalculators) {
+		this._tableDataCache.setColumnWidthCalculators(columnWidthCalculators);
+
+		// Recalculate the column widths with the new calculators. Supplying calculators means the
+		// columns are to be measured with them, whether they are arriving for the first time -- the
+		// panel mounts asynchronously, so the initial load can run before they are here -- or
+		// replacing an earlier set that measured with a font the user has since changed.
+		if (columnWidthCalculators && this._initialLoadComplete) {
+			this.recalculateColumnWidths().catch(onUnexpectedError);
+		}
+	}
+
+	/**
+	 * Copies the specified clipboard data.
+	 * @param clipboardData The clipboard data to copy.
+	 * @returns The clipboard data, or undefined, if it could not be copied.
+	 */
+	async copyClipboardData(clipboardData: ClipboardData): Promise<string | undefined> {
+		const dataSelection = buildTableSelectionFromClipboardData(clipboardData);
+		if (!dataSelection) {
+			return undefined;
+		}
+
+		// Export the data selection.
+		const exportedData = await this._dataExplorerClientInstance.exportDataSelection(
+			dataSelection,
+			ExportFormat.Tsv
+		);
+
+		// If successful, return the exported data; otherwise, return undefined.
+		return exportedData.data ?? undefined;
+	}
+
+	/**
+	 * Sets row filters.
+	 * @param rowFilters The row filters.
+	 * @returns A Promise<FilterResult> that resolves when the operation is complete.
+	 */
+	async setRowFilters(filters: Array<RowFilter>): Promise<void> {
+		// Clear pinned rows whenever a filter is applied to avoid
+		// the bug where pinned row data is in the wrong position.
+		// See https://github.com/posit-dev/positron/issues/9344
+		this.clearPinnedRows();
+
+		// Set the row filters.
+		await this._dataExplorerClientInstance.setRowFilters(filters);
+
+		// Synchronize the backend state.
+		await this._dataExplorerClientInstance.updateBackendState();
+
+		// Update layout entries to reflect the new row count after filtering.
+		// Note: The onDidUpdateBackendState handler also does this, but since the
+		// handler runs asynchronously we need to ensure it's done before we proceed.
+		await this.updateLayoutEntries();
+
+		// Update the data cache with the visible data range, or invalidate with empty arrays
+		// if there's no visible data (e.g., zero rows after filtering).
+		const columnDescriptor = this.firstColumn;
+		const rowDescriptor = this.firstRow;
+		const columnIndices = columnDescriptor && rowDescriptor
+			? this._columnLayoutManager.getLayoutIndexes(this.horizontalScrollOffset, this.layoutWidth, OVERSCAN_FACTOR)
+			: [];
+		await this._tableDataCache.update({
+			invalidateCache: InvalidateCacheFlags.Data,
+			columnIndices,
+			rowIndices: columnDescriptor && rowDescriptor
+				? this._rowLayoutManager.getLayoutIndexes(this.verticalScrollOffset, this.layoutHeight, OVERSCAN_FACTOR)
+				: []
+		});
+
+		// Notify the coordinator to refresh the summary panel's column
+		// profiles now that the data cache has been updated.
+		this._onDidSetRowFilters.fire();
+	}
+
+	/**
+	 * Given a status check if the feature is enabled.
+	 */
+	isFeatureEnabled(status: SupportStatus): boolean {
+		return status === SupportStatus.Supported;
+	}
+
+	/**
+	 * Sets the visibility state.
+	 * When becoming visible with pending updates, triggers deferred refresh operations.
+	 * @param visible Whether the data explorer is currently visible.
+	 */
+	async setVisible(visible: boolean): Promise<void> {
+		const wasHidden = !this._visible;
+		this._visible = visible;
+
+		if (!visible) {
+			return;
+		}
+
+		// Initial load: first time becoming visible, no data loaded yet.
+		if (!this._initialLoadComplete) {
+			// Don't start a second initial load on top of one that's still running.
+			if (this._initialLoadInProgress) {
+				return;
+			}
+
+			this._initialLoadInProgress = true;
+			this._initialLoadComplete = true;
+			this._pendingSchemaUpdate = false;
+			this._pendingDataUpdate = false;
+			try {
+				await this.updateLayoutEntries();
+				this.rebuildSortKeysFromCache();
+				await this.fetchData(InvalidateCacheFlags.All);
+			} catch (error) {
+				// The load didn't finish, so let becoming visible again retry it. Without this the
+				// grid keeps whatever it had -- for a first load, no data at all -- and nothing
+				// would ask for the rest of it again.
+				this._initialLoadComplete = false;
+				throw error;
+			} finally {
+				this._initialLoadInProgress = false;
+			}
+			return;
+		}
+
+		// Deferred updates: becoming visible after being hidden with pending updates.
+		// Schema updates take precedence since they're more comprehensive.
+		if (wasHidden) {
+			if (this._pendingSchemaUpdate) {
+				this._pendingSchemaUpdate = false;
+				this._pendingDataUpdate = false;
+				await this.handleSchemaUpdate();
+			} else if (this._pendingDataUpdate) {
+				this._pendingDataUpdate = false;
+				await this.handleDataUpdate();
+			}
+		}
+	}
+
+	/**
+	 * Updates the layout entries.
+	 * @param state The backend state, if known; otherwise, undefined.
+	 */
+	private async updateLayoutEntries(state?: BackendState): Promise<void> {
+		// Get the backend state, if it was not provided.
+		if (!state) {
+			state = await this._dataExplorerClientInstance.getBackendState();
+		}
+
+		// Notify the user if the dataset exceeds the advanced layout limits which will
+		// cause advanced features to be disabled to improve performance.
+		// See https://github.com/posit-dev/positron/issues/9265
+		const exceedsColumnLimit = await this.exceedsAdvancedLayoutLimits(state);
+		if (exceedsColumnLimit) {
+			const message = localize(
+				'positron.dataExplorer.largeDatasetNotificationColumns',
+				"Dataset '{0}' has {1} columns, which exceeds the size to fully support all features for the Data Explorer. Advanced features such as filtering, sorting, and row resizing will be disabled to improve performance.",
+				state.display_name,
+				state.table_shape.num_columns.toLocaleString()
+			);
+
+			// Show a sticky notification that persists until dismissed
+			this._services.notificationService.notify({
+				id: `dataExplorer.largeDataset.${this._dataExplorerClientInstance.identifier}`,
+				severity: Severity.Warning,
+				message: message,
+				sticky: true,
+				source: localize('positron.dataExplorer.source', 'Data Explorer')
+			});
+		}
+
+		// Calculate column widths.
+		const columnWidths = await this._tableDataCache.calculateColumnWidths(
+			this.minimumColumnWidth,
+			this.maximumColumnWidth
+		);
+
+		// Set the layout entries. These widths are the newest, so a column width calculation still
+		// awaiting the backend is now stale and drops its result rather than overwriting them.
+		this._columnWidthsGeneration++;
+		this._columnLayoutManager.setEntries(state.table_shape.num_columns, columnWidths);
+		this._rowLayoutManager.setEntries(state.table_shape.num_rows);
+
+		// For zero-row case (e.g., after filtering), ensure a full reset of scroll positions
+		if (state.table_shape.num_rows === 0) {
+			this._verticalScrollOffset = 0;
+			this._horizontalScrollOffset = 0;
+			// Force a layout recomputation and repaint
+			this.softReset();
+			this.fireOnDidUpdateEvent();
+		} else {
+			// Adjust the vertical scroll offset, if needed.
+			if (!this.firstRow) {
+				this._verticalScrollOffset = 0;
+			} else if (this._verticalScrollOffset > this.maximumVerticalScrollOffset) {
+				this._verticalScrollOffset = this.maximumVerticalScrollOffset;
+			}
+
+			// Adjust the horizontal scroll offset, if needed.
+			if (!this.firstColumn) {
+				this._horizontalScrollOffset = 0;
+			} else if (this._horizontalScrollOffset > this.maximumHorizontalScrollOffset) {
+				this._horizontalScrollOffset = this.maximumHorizontalScrollOffset;
+			}
+		}
+	}
+
+	/**
+	 * Handles a schema update from the backend.
+	 */
+	private async handleSchemaUpdate(): Promise<void> {
+		await this.updateLayoutEntries();
+		this.rebuildSortKeysFromCache();
+		this.softReset();
+		await this.fetchData(InvalidateCacheFlags.All);
+	}
+
+	/**
+	 * Handles a data update from the backend.
+	 */
+	private async handleDataUpdate(): Promise<void> {
+		await this.updateLayoutEntries();
+		this.rebuildSortKeysFromCache();
+		await this.fetchData(InvalidateCacheFlags.Data);
+	}
+
+	/**
+	 * Recalculates the column widths and applies them to the column layout entries.
+	 *
+	 * Deliberately narrower than updateLayoutEntries: it doesn't re-read the backend state or
+	 * re-run the advanced layout limits check, which would re-raise the sticky notification for a
+	 * wide dataset that the user may have dismissed.
+	 */
+	private async recalculateColumnWidths(): Promise<void> {
+		// Calculate the column widths.
+		const generation = ++this._columnWidthsGeneration;
+		const columnWidths = await this._tableDataCache.calculateColumnWidths(
+			this.minimumColumnWidth,
+			this.maximumColumnWidth
+		);
+
+		// If newer widths have been applied while this calculation was awaiting the backend, these
+		// ones are stale -- two editor font changes in quick succession start two calculations, and
+		// the slower one must not win. If the widths could not be calculated, leave the layout
+		// entries as they are.
+		if (generation !== this._columnWidthsGeneration || !columnWidths) {
+			return;
+		}
+
+		// Take the column count from the backend state the calculation itself worked from:
+		// calculateColumnWidths awaits getBackendState, which leaves its result in
+		// cachedBackendState, so reading it here pairs the count with the widths rather than with a
+		// state that may have moved on since. The initial load populated it, so the guard is for
+		// completeness rather than a real case.
+		const state = this._dataExplorerClientInstance.cachedBackendState;
+		if (!state) {
+			return;
+		}
+
+		// Set the column layout entries and repaint with the new widths.
+		this._columnLayoutManager.setEntries(state.table_shape.num_columns, columnWidths);
+		this.fireOnDidUpdateEvent();
+	}
+
+	/**
+	 * Rebuilds the column sort keys from the cached backend state.
+	 * Called after schema/data updates to sync sort keys with backend state.
+	 */
+	private rebuildSortKeysFromCache(): void {
+		const state = this._dataExplorerClientInstance.cachedBackendState;
+		if (!state) {
+			return;
+		}
+
+		// Clear and rebuild column sort keys from the cached state.
+		this._columnSortKeys.clear();
+		state.sort_keys.forEach((key, sortIndex) => {
+			this._columnSortKeys.set(
+				key.column_index,
+				new ColumnSortKeyDescriptor(sortIndex, key.column_index, key.ascending)
+			);
+		});
+	}
+
+	/**
+	 * Checks if the dataset exceeds the advanced layout limits.
+	 * @returns true if the dataset exceeds the limits, false otherwise.
+	 */
+	private async exceedsAdvancedLayoutLimits(state?: BackendState): Promise<boolean> {
+		// Get the backend state, if was not provided.
+		if (!state) {
+			state = await this._dataExplorerClientInstance.getBackendState();
+		}
+		return state.table_shape.num_columns >= MAX_ADVANCED_LAYOUT_ENTRY_COUNT;
+	}
+
+	//#endregion Public Methods
+}

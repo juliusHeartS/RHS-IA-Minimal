@@ -1,0 +1,207 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import os from 'os';
+import { DataExplorerShortcutOptions } from './metric-data-explorer.js';
+import type { SessionStartShortcutOptions } from './metric-sessions.js';
+import type { ConsoleShortcutOptions } from './metric-console.js';
+// The leaf module, not test-setup: that one reaches electron.ts and its `ncp`
+// dependency, which does not resolve in the root vitest lane.
+import { getPositronVersion } from '../../infra/test-runner/positron-version.js';
+import { readArkVersion } from '../ark-version.js';
+
+export const CONNECT_API_KEY = process.env.CONNECT_API_KEY!;
+export const PROD_API_URL = 'https://connect.posit.it/e2e-test-insights-api/metrics';
+export const LOCAL_API_URL = 'http://127.0.0.1:8000/metrics';
+
+//-----------------------
+// Platform Information
+//-----------------------
+
+export const platformOs = (() => {
+	const osMap = {
+		darwin: 'macOS',
+		win32: 'Windows',
+		linux: 'Linux'
+	};
+	const platform = os.platform();
+	return osMap[platform as keyof typeof osMap] || platform;
+})();
+
+export const platformVersion = os.release();
+
+export const positronVersion = getPositronVersion();
+
+/**
+ * Which ark the build under test bundles, or undefined when it shipped no
+ * sidecar to read it from.
+ *
+ * Read once at module load, beside positronVersion and from the same BUILD
+ * root, so every metric row of a run reports the same value and the read is not
+ * repeated per metric.
+ */
+export const arkVersion = readArkVersion();
+
+//-----------------------
+// Base Metric Types
+//-----------------------
+
+export type GhBranch = 'main' | 'local';
+export type MetricRuntimeEnv = 'electron' | 'chromium';
+export type MetricStatus = 'success' | 'error';
+export type MetricContext = {
+	language?: string;
+	data_rows?: number;
+	data_cols?: number;
+	sort_applied?: boolean;
+	filter_applied?: boolean;
+	preview_enabled?: boolean;
+
+	// General: a named sub-scenario that shares one (action, target_type) but
+	// exercises a different code path. Rides in context_json; the
+	// e2e-test-insights dashboard groups the Duration Distribution box plot by
+	// it. Keep values short, stable, snake_case, low-cardinality.
+	variant?: string;
+
+	// Which ark the build under test bundles, e.g. `0.1.252+209.885fac4`. Set
+	// centrally in api.ts for every feature area, so a call site does not have to
+	// remember it; the e2e-test-insights dashboard promotes it out of context_json
+	// and marks the date it changes on Performance Trends. A call site may still
+	// set it explicitly, and an explicit value wins.
+	ark_version?: string;
+
+	// Language runtime session fields
+	runtime_version?: string;
+	interpreter_kind?: 'system' | 'venv' | 'conda' | 'uv' | 'renv' | 'other';
+};
+
+export type MetricResult<T> = {
+	result: T;
+	duration_ms: number;
+};
+
+/**
+ * Input for recording assistant evaluation metrics.
+ */
+export type AssistantEvalMetricInput = {
+	testId: string;
+	description: string;
+	category: string;
+	prompt: string;
+	mode: 'Ask' | 'Edit' | 'Agent';
+	language?: 'R' | 'Python';
+	tags?: string[];
+	modelKey: string;
+	modelDisplayName: string;
+	response: string;
+	toolsCalled?: string[];
+	grade: 'C' | 'P' | 'I';
+	gradeExplanation: string;
+	requiredCriteriaCount?: number;
+	optionalCriteriaCount?: number;
+	failIfCriteriaCount?: number;
+};
+
+export type RecordMetric = {
+	dataExplorer: {
+		loadData: <T>(operation: () => Promise<T>, targetType: MetricTargetType, options?: DataExplorerShortcutOptions) => Promise<MetricResult<T>>;
+		filter: <T>(operation: () => Promise<T>, targetType: MetricTargetType, options?: DataExplorerShortcutOptions) => Promise<MetricResult<T>>;
+		sort: <T>(operation: () => Promise<T>, targetType: MetricTargetType, options?: DataExplorerShortcutOptions) => Promise<MetricResult<T>>;
+		toCode: <T>(operation: () => Promise<T>, targetType: MetricTargetType, options?: DataExplorerShortcutOptions) => Promise<MetricResult<T>>;
+	};
+	notebooks: {
+		runCell: <T>(operation: () => Promise<T>, targetType: MetricTargetType, language?: string, description?: string, context?: MetricContext | (() => Promise<MetricContext>)) => Promise<MetricResult<T>>;
+		renderOnColdOpen: <T>(operation: () => Promise<T>, targetType: MetricTargetType, options?: { description?: string; additionalContext?: MetricContext | (() => Promise<MetricContext>) }) => Promise<MetricResult<T>>;
+		renderOnOpen: <T>(operation: () => Promise<T>, targetType: MetricTargetType, options?: { description?: string; additionalContext?: MetricContext | (() => Promise<MetricContext>) }) => Promise<MetricResult<T>>;
+		renderOnNavBack: <T>(operation: () => Promise<T>, targetType: MetricTargetType, options?: { description?: string; additionalContext?: MetricContext | (() => Promise<MetricContext>) }) => Promise<MetricResult<T>>;
+	};
+	sessions: {
+		start: <T>(
+			operation: () => Promise<T>,
+			targetType: MetricTargetType,
+			options?: SessionStartShortcutOptions
+		) => Promise<MetricResult<T>>;
+	};
+	console: {
+		executeCode: <T>(operation: () => Promise<T>, targetType: MetricTargetType, options?: ConsoleShortcutOptions) => Promise<MetricResult<T>>;
+	};
+	assistant: {
+		evalResponse: (input: AssistantEvalMetricInput, durationMs: number) => Promise<void>;
+	};
+};
+
+export interface MetricResponse {
+	statusCode: number;
+	ok: boolean;
+	body: string;
+}
+
+export type MetricTargetType =
+	// In-memory data structures
+	| 'r.data.frame'          // Base R data.frame
+	| 'r.tibble'              // R tibble (tbl_df)
+	| 'r.dplyr'               // R dplyr (tbl_dplyr)
+	| 'r.data.table'          // R data.table
+	| 'py.pandas.DataFrame'   // Python pandas DataFrame
+	| 'py.polars.DataFrame'   // Python polars DataFrame
+
+	// File formats - uncompressed
+	| 'file.parquet'          // Parquet files
+	| 'file.csv'              // Comma-separated values
+	| 'file.tsv'              // Tab-separated values
+	| 'file.psv'              // Pipe-separated values
+	| 'file.json'             // JSON files
+	| 'file.xlsx'             // Excel files
+	| 'file.feather'          // Feather/Arrow files
+
+	// File formats - compressed
+	| 'file.csv.gz'           // Gzipped CSV
+	| 'file.tsv.gz'           // Gzipped TSV
+	| 'file.json.gz'          // Gzipped JSON
+	| 'file.parquet.snappy'   // Snappy-compressed Parquet
+	| 'file.parquet.gzip'     // Gzip-compressed Parquet
+
+	// Delimited variants
+	| 'file.psv'              // Pipe-separated (|)
+	| 'file.dsv'              // Custom delimiter-separated
+
+	// Database connections
+	| 'db.sqlite'             // SQLite database
+	| 'db.postgres'           // PostgreSQL
+	| 'db.mysql'              // MySQL
+
+	// Remote/cloud sources
+	| 'url.csv'               // Remote CSV URL
+	| 'url.parquet'           // Remote Parquet URL
+	| 's3.parquet'            // S3 object
+
+	// Notebook cells
+	| 'cell.r'                // R notebook cell
+	| 'cell.python'           // Python notebook cell
+
+	// Notebook files
+	| 'file.ipynb'            // Jupyter notebook file
+
+	// Assistant eval categories
+	| 'eval.notebooks'        // Notebook-related assistant evals
+	| 'eval.tools'            // Tool usage evals
+	| 'eval.hallucination'    // Hallucination detection evals
+	| 'eval.general'          // General assistant evals
+
+	// Language runtime sessions
+	| 'console.python'        // Python console session
+	| 'console.r'             // R console session
+	| 'notebook.python'       // Python notebook kernel
+	| 'notebook.r';           // R notebook kernel
+
+export interface BaseMetric {
+	branch?: GhBranch;
+	runtime?: MetricRuntimeEnv;
+	target_type: MetricTargetType;
+	duration_ms: number;
+	status?: MetricStatus;
+	target_description?: string;
+	context_json?: MetricContext;
+}

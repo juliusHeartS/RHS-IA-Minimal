@@ -1,0 +1,42 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { RuntimeCodeExecutionMode } from '../../../languageRuntime/common/languageRuntimeService.js';
+import { IConsoleCodeAttribution } from '../../common/positronConsoleCodeExecution.js';
+import { RuntimeItemStandard } from './runtimeItemStandard.js';
+
+/**
+ * RuntimeItemPendingInput class.
+ */
+export class RuntimeItemPendingInput extends RuntimeItemStandard {
+	//#region Constructor
+
+	/**
+	 * Constructor.
+	 * @param id The identifier.
+	 * @param inputPrompt The input prompt.
+	 * @param attribution The attribution for the code.
+	 * @param executionId The execution identifier for the code.
+	 * @param code The code.
+	 * @param mode The code execution mode.
+	 * @param submitting Whether this item represents code that is actively being
+	 *   submitted (checked for completeness), as opposed to code queued behind
+	 *   it. Submitting items render the green barber pole and are not dimmed.
+	 */
+	constructor(
+		id: string,
+		readonly inputPrompt: string,
+		readonly attribution: IConsoleCodeAttribution,
+		readonly executionId: string | undefined,
+		readonly code: string,
+		readonly mode: RuntimeCodeExecutionMode = RuntimeCodeExecutionMode.Interactive,
+		readonly submitting: boolean = false
+	) {
+		// Call the base class's constructor.
+		super(id, code);
+	}
+
+	//#endregion Constructor
+}

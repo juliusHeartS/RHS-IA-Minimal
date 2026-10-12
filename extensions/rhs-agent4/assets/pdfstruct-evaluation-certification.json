@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "corpus_id": "rhs-agent-pdfstruct-controlled-v1",
+  "evaluated_at": "2026-08-14T07:00:31.170Z",
+  "corpus_manifest_sha256": "3f5e96b5f207ed7771134023a905f88b43017ab90ec8776882c6d4ad91dfe61a",
+  "binary_sha256": "f0189d80775141961b732d5bc3b119ca4be18ad971a328fed49fd3b70c90ba9e",
+  "human_reference_status": "approved",
+  "aggregate": {
+    "pass_rate": 1,
+    "mean_score": 0.9759,
+    "thresholds": {
+      "minimum_pass_rate": 1,
+      "minimum_mean_score": 0.9
+    }
+  },
+  "cases": [
+    {
+      "id": "digital-structured",
+      "class": "born-digital",
+      "pass": true,
+      "score": 0.9785
+    },
+    {
+      "id": "two-column",
+      "class": "layout-two-column",
+      "pass": true,
+      "score": 1
+    },
+    {
+      "id": "scanned-memo",
+      "class": "image-only-ocr",
+      "pass": true,
+      "score": 0.9922
+    },
+    {
+      "id": "rotated-annex",
+      "class": "rotated-page-table",
+      "pass": true,
+      "score": 1
+    },
+    {
+      "id": "mixed-report",
+      "class": "mixed-digital-scan-figure",
+      "pass": true,
+      "score": 0.9925
+    },
+    {
+      "id": "long-report",
+      "class": "long-document",
+      "pass": true,
+      "score": 0.8922
+    }
+  ]
+}

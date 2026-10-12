@@ -1,0 +1,143 @@
+name: "E2E: Build Postiron (Ubuntu)"
+
+on:
+  workflow_call:
+    inputs:
+      commit:
+        description: "Commit SHA to test"
+        required: false
+        default: ""
+        type: string
+      skip_cache:
+        description: "Skip restoring caches (use when testing a specific commit)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  id-token: write
+  contents: read
+  packages: read
+
+jobs:
+  build:
+    name: build-ubuntu
+    timeout-minutes: 35
+    runs-on: ubuntu-latest-8x
+    container:
+      image: ghcr.io/posit-dev/positron-ubuntu24:24.18.0
+      options: --user 0:0 --init
+      # Static PAT is needed because the bot can't pass a token to the job for security reasons
+      credentials:
+        username: ${{ secrets.POSITRON_GITHUB_RO_USER }}
+        password: ${{ secrets.POSITRON_GITHUB_RO_PAT }}
+    services:
+      postgres:
+        image: ghcr.io/posit-dev/positron-postgres:24.18.0
+        credentials:
+          username: ${{ secrets.POSITRON_GITHUB_RO_USER }}
+          password: ${{ secrets.POSITRON_GITHUB_RO_PAT }}
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: ${{ secrets.E2E_POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.E2E_POSTGRES_PASSWORD }}
+          POSTGRES_DB: postgres
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DOCKER_CONFIG: /tmp/.docker # Ensure Docker client doesn't try to read a root-owned config file in the container
+      POSITRON_BUILD_NUMBER: 0 # CI skips building releases
+      _R_CHECK_FUTURE_FILE_TIMESTAMPS_: false # this check can be flaky in the R pkg tests
+      _R_CHECK_CRAN_INCOMING_: false
+      _R_CHECK_SYSTEM_CLOCK_: false
+      AWS_S3_BUCKET: positron-test-reports
+      E2E_POSTGRES_USER: ${{ secrets.E2E_POSTGRES_USER }}
+      E2E_POSTGRES_PASSWORD: ${{ secrets.E2E_POSTGRES_PASSWORD }}
+      R_LIBS_SITE: /usr/local/lib/R/site-library
+      R_LIBS_USER: /usr/local/lib/R/site-library
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      RETICULATE_PYTHON: /root/.venv/bin/python
+      HOME: /root
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Checkout specific commit
+        if: ${{ inputs.commit != '' }}
+        run: git checkout ${{ inputs.commit }}
+
+      - name: Ensure Docker config dir is writable
+        run: |
+          mkdir -p /tmp/.docker
+          chmod 700 /tmp/.docker
+
+      - name: Setup build environment
+        id: setup-build
+        uses: ./.github/actions/setup-build-env
+        with:
+          distro: ubuntu
+          skip-cache: ${{ inputs.skip_cache }}
+          install-playwright: 'true'
+          github-token: ${{ github.token }}
+
+      - name: Move RHS-IA License
+        run: |
+          mv /positron-license /__w/positron || true
+          printf "%s" "${{ secrets.POSITRON_DEV_LICENSE }}" > /__w/positron/positron-license/pdol/target/debug/pdol_rsa || true
+
+      - name: Create Build Artifact
+        run: |
+          # The e2e test content lives in-repo at test/e2e/test-files and is included
+          # in the tarball below, so downstream runners get it without network access.
+
+          # Create a tarball of the entire positron workspace. Exclude .git to avoid including repository history.
+          mkdir -p /tmp/artifacts
+          # Install zstd and pigz if apt is available so we can produce fast zstd archives.
+          if command -v apt-get >/dev/null 2>&1; then
+            echo "Installing pigz and zstd for faster compression (if not already present)"
+            DEBIAN_FRONTEND=noninteractive apt-get update -y || true
+            DEBIAN_FRONTEND=noninteractive apt-get install -y pigz zstd || true
+          fi
+
+          # Prefer zstd for best compress+decompress speed and smaller output (requires zstd on unpack side).
+          # Fall back to pigz (parallel gzip) if zstd is not available, else gzip -1 as a final fallback.
+          if command -v zstd >/dev/null 2>&1; then
+            echo "Using zstd (multithreaded) for compression"
+            # Place options (exclude) before the filenames so tar respects them.
+            # Only exclude the root .git repository history.
+            tar -C /__w \
+              --exclude='positron/.git' \
+              --exclude='positron/.npm-cache' \
+              --exclude='positron/.pip-cache' \
+              --use-compress-program='zstd -T0 -1' \
+              -cf /tmp/artifacts/positron-build.tar.zst positron || true
+          elif command -v pigz >/dev/null 2>&1; then
+            echo "zstd not available; using pigz (parallel gzip) for compression"
+            tar -C /__w \
+              --exclude='positron/.git' \
+              --exclude='positron/.npm-cache' \
+              --exclude='positron/.pip-cache' \
+              --use-compress-program=pigz \
+              -cf /tmp/artifacts/positron-build.tar.gz positron || true
+          else
+            echo "zstd and pigz not available; using gzip -1 for faster compression"
+            # Use gzip -1 via a pipe to avoid using the deprecated GZIP env var
+            tar -C /__w \
+              --exclude='positron/.git' \
+              --exclude='positron/.npm-cache' \
+              --exclude='positron/.pip-cache' \
+              -cf - positron | gzip -1 > /tmp/artifacts/positron-build.tar.gz || true
+          fi
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: "positron-build"
+          path: /tmp/artifacts
+          retention-days: 1
+          compression-level: 0  # Skip GitHub compression since we use tar.zst

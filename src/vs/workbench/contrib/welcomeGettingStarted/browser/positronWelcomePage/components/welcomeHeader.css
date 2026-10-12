@@ -1,0 +1,152 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+/*
+ * The restored identity reads from top to bottom: partner marks, then the
+ * healthcare illustration. Keeping the banner in normal flow makes the whole
+ * composition participate in the welcome page's existing vertical scrollbar.
+ */
+.positron-welcome-page-header {
+	display: flex;
+	flex-direction: column;
+	gap: clamp(12px, 2.5vh, 24px);
+	min-width: 0;
+}
+
+.positron-welcome-page-header .welcome-header-toolbar {
+	align-items: center;
+	display: flex;
+	gap: 16px;
+	justify-content: space-between;
+	min-width: 0;
+}
+
+.positron-welcome-page-header .welcome-header-logos {
+	align-items: center;
+	display: flex;
+	flex: 1 1 auto;
+	flex-wrap: wrap;
+	gap: clamp(12px, 3vw, 24px);
+	min-width: 0;
+}
+
+.positron-welcome-page-header .welcome-header-ops-logo,
+.positron-welcome-page-header .welcome-header-rhs-logo {
+	background-position: left center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	display: block;
+	height: auto;
+	max-height: clamp(32px, 8vh, 64px);
+	max-width: 100%;
+	min-width: 0;
+}
+
+.positron-welcome-page-header .welcome-header-ops-logo {
+	/* The first 1280 columns contain OPS and end in the gap before WHO/OMS. */
+	aspect-ratio: 1280 / 256;
+	background-image: url('../../../../../browser/media/logo-ops.png');
+	background-size: 152.8125% 100%;
+	flex: 1280 1 260px;
+	max-width: clamp(160px, 40vh, 320px);
+}
+
+.positron-welcome-page-header .welcome-header-rhs-logo {
+	aspect-ratio: 1011 / 256;
+	background-image: url('../../../../../browser/media/rhs-logo.svg');
+	flex: 1011 1 180px;
+}
+
+.vs-dark .positron-welcome-page-header .welcome-header-rhs-logo,
+.hc-black .positron-welcome-page-header .welcome-header-rhs-logo {
+	background-image: url('../../../../../browser/media/rhs-logo-dark.svg');
+}
+
+.positron-welcome-page-header .welcome-header-banner {
+	aspect-ratio: 1400 / 345;
+	background-image: url('../../../../../browser/media/welcome-banner.png');
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-radius: 8px;
+	display: block;
+	max-height: 345px;
+	min-height: 140px;
+	width: 100%;
+}
+
+/*
+ * The visible marks already identify the product. This heading preserves the
+ * page outline for assistive technology without adding duplicate title copy.
+ */
+.positron-welcome-page-header .welcome-header-title {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+/*
+ * gettingStarted.css resets every button in the slide. Match the top action
+ * bar's quiet outline so Documentation stays available without outweighing the
+ * environment remediation controls below it.
+ */
+.monaco-workbench .part.editor > .content .gettingStartedContainer
+.gettingStartedSlideCategories
+.positron-welcome-page-header {
+	& .welcome-header-help {
+		align-items: center;
+		background-color: transparent;
+		border: 1px solid var(--vscode-positronWelcome-headerButtonBorder);
+		border-radius: 4px;
+		color: var(--vscode-foreground);
+		column-gap: 6px;
+		display: flex;
+		flex: 0 0 auto;
+		font-size: 12px;
+		line-height: 16px;
+		margin: 0;
+		padding: 3px 8px;
+		white-space: nowrap;
+	}
+
+	& .welcome-header-help:hover {
+		background-color: var(--vscode-toolbar-hoverBackground);
+	}
+
+	& .welcome-header-help-icon.codicon {
+		color: inherit;
+		font-size: 14px;
+	}
+}
+
+/* Stack the brands before either becomes too small to recognize. */
+@media (max-width: 600px) {
+	.positron-welcome-page-header .welcome-header-toolbar {
+		align-items: flex-start;
+	}
+
+	.positron-welcome-page-header .welcome-header-logos {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.positron-welcome-page-header .welcome-header-ops-logo,
+	.positron-welcome-page-header .welcome-header-rhs-logo {
+		flex-basis: auto;
+		width: 100%;
+	}
+}
+
+@media (forced-colors: active) {
+	.positron-welcome-page-header .welcome-header-banner {
+		border: 1px solid CanvasText;
+	}
+}

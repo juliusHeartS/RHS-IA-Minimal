@@ -1,0 +1,1130 @@
+[
+	{
+		"c": "let",
+		"t": "source.rust keyword.other.rust storage.type.rust",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.rust",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "_",
+		"t": "source.rust variable.other.rust",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.rust",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.rust keyword.operator.assignment.equal.rust",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.assignment: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.rust",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "b",
+		"t": "source.rust string.quoted.double.rust string.quoted.byte.raw.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.rust string.quoted.double.rust punctuation.definition.string.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x00",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x01",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x02",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x03",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x04",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x05",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x06",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x07",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x08",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x09",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x0a",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x0b",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x0c",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x0d",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x0e",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x0f",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.bit.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a0",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a1",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a2",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a3",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a4",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a5",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a6",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a7",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a8",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "a9",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "aa",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "ab",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "ac",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "ad",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "ae",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "x",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "af\\",
+		"t": "source.rust string.quoted.double.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust constant.character.escape.backslash.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "n",
+		"t": "source.rust string.quoted.double.rust constant.character.escape.rust",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.rust string.quoted.double.rust punctuation.definition.string.rust",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.rust punctuation.semi.rust",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	}
+]

@@ -1,0 +1,26 @@
+* text=auto
+
+LICENSE.txt eol=crlf
+ThirdPartyNotices.txt eol=crlf
+*.bat eol=crlf
+*.cmd eol=crlf
+*.ps1 eol=lf
+*.sh eol=lf
+*.rtf -text
+**/*.json linguist-language=jsonc
+# Bundled extension release assets.
+bundled-extensions/*.vsix filter=lfs diff=lfs merge=lfs -text
+bundled-extensions/**/*.vsix filter=lfs diff=lfs merge=lfs -text
+# --- Start PWB ---
+# Disable LFS for screenshot baselines so downstream forks (e.g. Positron) can clone without access to the upstream LFS server. Files are stored as regular blobs.
+# test/componentFixtures/.screenshots/**/*.png filter=lfs diff=lfs merge=lfs -text
+# --- End PWB ---
+# --- Start Positron ---
+.devcontainer/ci-arm/*.sh text eol=lf
+# --- End Positron ---
+extensions/rhs-agent4/resources/bin/darwin-arm64/yolov8_doclaynet.onnx filter=lfs diff=lfs merge=lfs -text
+extensions/rhs-agent4/resources/bin/darwin-arm64/rhs-rag filter=lfs diff=lfs merge=lfs -text
+extensions/rhs-agent4/resources/bin/darwin-arm64/pdfstruct filter=lfs diff=lfs merge=lfs -text
+extensions/rhs-agent4/resources/bin/darwin-arm64/obscura filter=lfs diff=lfs merge=lfs -text
+extensions/rhs-agent4/resources/bin/darwin-arm64/obscura-worker filter=lfs diff=lfs merge=lfs -text
+reports/rea-napo-host-evidence.json filter=lfs diff=lfs merge=lfs -text

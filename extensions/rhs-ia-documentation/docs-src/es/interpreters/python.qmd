@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Instalaciones de Python"
+---
+
+RHS-IA detecta instalaciones de Python del sistema y entornos virtuales y de administradores de entornos habituales. El ejecutable seleccionado determina el tiempo de ejecución y el conjunto de paquetes de los archivos de Python.
+
+Crea entornos con tu herramienta de Python preferida y usa el selector de intérprete para elegir el ejecutable resultante. En macOS y Linux suele estar en `bin/python`; en Windows suele estar en `Scripts` o en la raíz del entorno.
+
+Evita modificar el Python administrado por el sistema operativo. Un entorno local del proyecto reduce los conflictos de dependencias y facilita identificar el intérprete seleccionado.

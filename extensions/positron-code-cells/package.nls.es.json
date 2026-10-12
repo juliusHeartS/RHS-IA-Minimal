@@ -1,0 +1,21 @@
+{
+	"description": "Células de código similares a Jupyter en RHS-IA",
+	"displayName": "RHS-IA Celdas de código",
+	"positron.codeCells.command.goToNextCell.title": "Ir a la celda siguiente",
+	"positron.codeCells.command.goToPreviousCell.title": "Ir a la celda anterior",
+	"positron.codeCells.command.insertCodeCell.title": "Insertar celda de código",
+	"positron.codeCells.command.runAllCells.title": "Ejecutar todas las celdas",
+	"positron.codeCells.command.runCellsAbove.title": "Ejecutar celdas arriba",
+	"positron.codeCells.command.runCellsBelow.title": "Ejecutar celdas debajo",
+	"positron.codeCells.command.runCurrentAdvance.title": "Ejecutar la celda y avanzar",
+	"positron.codeCells.command.runCurrentAndBelow.title": "Ejecutar celda y por debajo",
+	"positron.codeCells.command.runCurrentCell.title": "Ejecutar celda",
+	"positron.codeCells.command.runNextCell.title": "Ejecutar siguiente celda",
+	"positron.codeCells.command.runPreviousCell.title": "Ejecutar celda anterior",
+	"positron.codeCells.configuration.additionalCellDelimiter": "Texto adicional que marca el inicio de una nueva celda (por ejemplo, para los cuadernos Databricks)",
+	"positron.codeCells.configuration.cellStyle": "Controla el estilo de las decoraciones de las celdas de código. Los colores son configurables con los colores del tema `notebook.selectedCellBackground` y `interactive.activeCodeBorder`. Vea https://code.visualstudio.com/api/references/theme-color para obtener más información sobre los colores del tema disponibles y cómo anularlos.",
+	"positron.codeCells.configuration.cellStyle.background": "Resaltar el fondo de la célula activa.",
+	"positron.codeCells.configuration.cellStyle.border": "Resalta el borde de la célula activa.",
+	"positron.codeCells.configuration.cellStyle.both": "Resaltar el borde y el fondo de la célula activa.",
+	"positron.codeCells.configuration.title": "Celdas de código"
+}

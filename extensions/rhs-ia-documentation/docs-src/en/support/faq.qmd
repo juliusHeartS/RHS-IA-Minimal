@@ -1,0 +1,24 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Frequently Asked Questions"
+---
+
+## Does Documentation require internet access? {#does-documentation-require-internet-access}
+
+No. Product pages, styles, and images are bundled with RHS-IA. Only explicitly selected external HTTPS references use your browser.
+
+## Why is my interpreter missing? {#why-is-my-interpreter-missing}
+
+Confirm that it runs in a terminal, refresh interpreter discovery, and reload the window. Remote workspaces discover interpreters on the remote host.
+
+## Where did my variables or plots go? {#where-did-my-variables-or-plots-go}
+
+They belong to a runtime session. Select the correct session, or rerun the source after a restart.
+
+## How do I reset the interface? {#how-do-i-reset-the-interface}
+
+Use the layout reset action from the Command Palette, then reopen the required view by name.

@@ -1,0 +1,2138 @@
+[
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "h1",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "Comments",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "h1",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "div",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.tag.block.any.html",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.tag: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "id",
+		"t": "text.html.handlebars meta.tag.block.any.html meta.attribute-with-value.id.html entity.other.attribute-name.id.html",
+		"r": {
+			"hc_black": "entity.other.attribute-name: #9CDCFE",
+			"2026-light": "entity.other.attribute-name: #E50000",
+			"2026-dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_light": "entity.other.attribute-name.id: #007BC4",
+			"hc_light": "entity.other.attribute-name: #264F78"
+		}
+	},
+	{
+		"c": "=",
+		"t": "text.html.handlebars meta.tag.block.any.html meta.attribute-with-value.id.html punctuation.separator.key-value.html",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.tag.block.any.html string.quoted.double.handlebars punctuation.definition.string.begin.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "comments",
+		"t": "text.html.handlebars meta.tag.block.any.html string.quoted.double.handlebars",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.double.handlebars: #0000FF",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.tag.block.any.html string.quoted.double.handlebars punctuation.definition.string.end.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.block.start.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "#each",
+		"t": "text.html.handlebars meta.function.block.start.handlebars support.constant.handlebars keyword.control",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.function.block.start.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "comments",
+		"t": "text.html.handlebars meta.function.block.start.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.block.start.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "h2",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.inline.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "a",
+		"t": "text.html.handlebars meta.tag.inline.any.html entity.name.tag.inline.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.tag.inline.any.html",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.tag: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "href",
+		"t": "text.html.handlebars meta.tag.inline.any.html entity.other.attribute-name.html entity.other.attribute-name.generic.html",
+		"r": {
+			"hc_black": "entity.other.attribute-name: #9CDCFE",
+			"2026-light": "entity.other.attribute-name: #E50000",
+			"2026-dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_light": "entity.other.attribute-name: #E88023",
+			"hc_light": "entity.other.attribute-name: #264F78"
+		}
+	},
+	{
+		"c": "=",
+		"t": "text.html.handlebars meta.tag.inline.any.html entity.other.attribute-name.html punctuation.separator.key-value.html",
+		"r": {
+			"hc_black": "entity.other.attribute-name: #9CDCFE",
+			"2026-light": "entity.other.attribute-name: #E50000",
+			"2026-dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "entity.other.attribute-name: #264F78"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars punctuation.definition.string.begin.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "/posts/",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.double.handlebars: #0000FF",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "../permalink",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "string variable: #0550AE",
+			"2026-dark": "string variable: #79C0FF",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "#",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.double.handlebars: #0000FF",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "id",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "string variable: #0550AE",
+			"2026-dark": "string variable: #79C0FF",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.tag.inline.any.html string.quoted.double.handlebars punctuation.definition.string.end.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.inline.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "title",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.inline.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "a",
+		"t": "text.html.handlebars meta.tag.inline.any.html entity.name.tag.inline.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.inline.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "h2",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "div",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "body",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "div",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.block.end.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "/each",
+		"t": "text.html.handlebars meta.function.block.end.handlebars support.constant.handlebars keyword.control",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.block.end.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "p",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "./name",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": " or ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "this/name",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": " or ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "this.name",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "p",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "div",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "div",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.tag.block.any.html",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.tag: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "class",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.other.attribute-name.html entity.other.attribute-name.generic.html",
+		"r": {
+			"hc_black": "entity.other.attribute-name: #9CDCFE",
+			"2026-light": "entity.other.attribute-name: #E50000",
+			"2026-dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_light": "entity.other.attribute-name: #E88023",
+			"hc_light": "entity.other.attribute-name: #264F78"
+		}
+	},
+	{
+		"c": "=",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.other.attribute-name.html punctuation.separator.key-value.html",
+		"r": {
+			"hc_black": "entity.other.attribute-name: #9CDCFE",
+			"2026-light": "entity.other.attribute-name: #E50000",
+			"2026-dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "entity.other.attribute-name: #264F78"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.tag.block.any.html string.quoted.double.handlebars punctuation.definition.string.begin.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "entry",
+		"t": "text.html.handlebars meta.tag.block.any.html string.quoted.double.handlebars",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.double.handlebars: #0000FF",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.tag.block.any.html string.quoted.double.handlebars punctuation.definition.string.end.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{!-- only output author name if an author exists --}}",
+		"t": "text.html.handlebars comment.block.handlebars",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.block.start.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "#if",
+		"t": "text.html.handlebars meta.function.block.start.handlebars support.constant.handlebars keyword.control",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.function.block.start.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "author",
+		"t": "text.html.handlebars meta.function.block.start.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.block.start.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "    ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "h1",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "firstName",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "lastName",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "h1",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.block.end.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "/if",
+		"t": "text.html.handlebars meta.function.block.end.handlebars support.constant.handlebars keyword.control",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.block.end.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "div",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "div",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.tag.block.any.html",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.tag: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "class",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.other.attribute-name.html entity.other.attribute-name.generic.html",
+		"r": {
+			"hc_black": "entity.other.attribute-name: #9CDCFE",
+			"2026-light": "entity.other.attribute-name: #E50000",
+			"2026-dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_light": "entity.other.attribute-name: #E88023",
+			"hc_light": "entity.other.attribute-name: #264F78"
+		}
+	},
+	{
+		"c": "=",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.other.attribute-name.html punctuation.separator.key-value.html",
+		"r": {
+			"hc_black": "entity.other.attribute-name: #9CDCFE",
+			"2026-light": "entity.other.attribute-name: #E50000",
+			"2026-dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "entity.other.attribute-name: #264F78"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.tag.block.any.html string.quoted.double.handlebars punctuation.definition.string.begin.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "post",
+		"t": "text.html.handlebars meta.tag.block.any.html string.quoted.double.handlebars",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.double.handlebars: #0000FF",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.tag.block.any.html string.quoted.double.handlebars punctuation.definition.string.end.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{>",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "userMessage",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "tagName",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars entity.other.attribute-name.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars entity.other.attribute-name.handlebars",
+		"r": {
+			"hc_black": "entity.other.attribute-name: #9CDCFE",
+			"2026-light": "entity.other.attribute-name: #E50000",
+			"2026-dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_light": "entity.other.attribute-name: #E88023",
+			"hc_light": "entity.other.attribute-name: #264F78"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars string.quoted.double.handlebars punctuation.definition.string.begin.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "h1",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars string.quoted.double.handlebars",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.double.handlebars: #0000FF",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars string.quoted.double.handlebars punctuation.definition.string.end.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "h1",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "Comments",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "h1",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.block.start.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "#each",
+		"t": "text.html.handlebars meta.function.block.start.handlebars support.constant.handlebars keyword.control",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.function.block.start.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "comments",
+		"t": "text.html.handlebars meta.function.block.start.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.block.start.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "    ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{>",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "userMessage",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "tagName",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars entity.other.attribute-name.handlebars variable.parameter.handlebars",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars entity.other.attribute-name.handlebars",
+		"r": {
+			"hc_black": "entity.other.attribute-name: #9CDCFE",
+			"2026-light": "entity.other.attribute-name: #E50000",
+			"2026-dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_dark": "entity.other.attribute-name: #9CDCFE",
+			"rhs_ia_light": "entity.other.attribute-name: #E88023",
+			"hc_light": "entity.other.attribute-name: #264F78"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars string.quoted.double.handlebars punctuation.definition.string.begin.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "h2",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars string.quoted.double.handlebars",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.double.handlebars: #0000FF",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars string.quoted.double.handlebars punctuation.definition.string.end.html",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.double.handlebars: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string.quoted.double.handlebars: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.inline.other.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "text.html.handlebars",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{{",
+		"t": "text.html.handlebars meta.function.block.end.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "/each",
+		"t": "text.html.handlebars meta.function.block.end.handlebars support.constant.handlebars keyword.control",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "}}",
+		"t": "text.html.handlebars meta.function.block.end.handlebars support.constant.handlebars",
+		"r": {
+			"hc_black": "support.constant.handlebars: #DCDCAA",
+			"2026-light": "support.constant.handlebars: #795E26",
+			"2026-dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_dark": "support.constant.handlebars: #DCDCAA",
+			"rhs_ia_light": "support.constant.handlebars: #795E26",
+			"hc_light": "support.constant.handlebars: #5E2CBC"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "div",
+		"t": "text.html.handlebars meta.tag.block.any.html entity.name.tag.block.any.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.handlebars meta.tag.block.any.html punctuation.definition.tag.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	}
+]

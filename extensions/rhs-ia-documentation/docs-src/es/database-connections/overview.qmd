@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Conexiones a bases de datos"
+---
+
+La vista **Conexiones** representa fuentes de datos registradas por un tiempo de ejecución o una extensión compatibles. Expande una conexión para explorar catálogos, esquemas, tablas y campos proporcionados por su proveedor.
+
+Las acciones de conexión pueden abrir objetos, previsualizar datos, actualizar metadatos o desconectar. Las credenciales y los controladores son responsabilidad del cliente de base de datos o del proveedor; no coloques secretos directamente en archivos del proyecto.
+
+Cierra las conexiones que no uses y utiliza credenciales de solo lectura cuando la exploración no requiera escrituras. Consulta [Extensiones de conexión](extensions.qmd) para la integración de proveedores.

@@ -1,0 +1,95 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-notebook {
+	/*
+	 * Color variables are registered as theme colors in src/vs/workbench/common/theme.ts
+	 * (search for POSITRON_NOTEBOOK_*) and surfaced here automatically as
+	 * --vscode-positronNotebook-<field>. Do not redefine those custom properties in CSS —
+	 * overrides here would mask the theme contribution.
+	 */
+
+	/* Size variables used throughout notebooks */
+	--vscode-positronNotebook-cell-radius: 8px;
+	--vscode-positronNotebook-action-bar-h: 22px;
+	--vscode-positronNotebook-action-bar-inset: calc(
+		var(--vscode-positronNotebook-action-bar-h) / 2
+	);
+	--_positron-notebook-cell-gap: 4px;
+	/* Match the top/bottom padding to the cell gap */
+	--_positron-notebook-cells-padding-block: var(--_positron-notebook-cell-gap);
+	--_positron-notebook-add-cell-buttons-height: 26px; /* Icon 18px + padding 8px */
+	/* Gap between buttons in cell and output action bars */
+	--_positron-notebook-cell-action-bar-button-gap: 0.25rem;
+
+	color: var(--vscode-positronNotebook-foreground);
+	user-select: text;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	span {
+		cursor: text;
+	}
+
+	.colorpicker-color-decoration,
+	.colorpicker-header span {
+		cursor: pointer;
+	}
+}
+
+.monaco-workbench .positron-notebook-editor {
+	/* Position relative to establish positioning context for absolutely positioned children (e.g., find widget) */
+	position: relative;
+}
+
+.monaco-workbench .positron-notebook-container {
+	/* Fill parent, otherwise there's no scroll bar */
+	height: 100%;
+}
+
+.monaco-workbench .positron-notebook-shell {
+	/* Fill parent so the per-entry notebook container inside can also fill. */
+	height: 100%;
+}
+
+/**
+* Override the global keyoard focus outline style for notebook containers.
+* This prevents focus outline from showing when a user clicks on the notebook.
+* This prevents empty notebooks from showing an outline when they are focused.
+*/
+.monaco-workbench .positron-notebook-container[tabindex="-1"]:focus{
+	outline: none;
+}
+
+.positron-notebook-cells-container {
+	padding-block-start: var(--_positron-notebook-cells-padding-block);
+	padding-block-end: var(--_positron-notebook-cells-padding-block);
+	padding-inline: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: var(--_positron-notebook-cell-gap);
+
+	height: 100%;
+	overflow: auto;
+}
+
+.positron-notebook .scroll-decoration {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 6px;
+	z-index: 10;
+	pointer-events: none;
+	box-shadow: var(--vscode-scrollbar-shadow) 0 6px 6px -6px inset;
+}

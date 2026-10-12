@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Barra de filtros de Data Explorer"
+---
+
+La barra de filtros reduce las filas mostradas sin cambiar el objeto de origen. Añade un filtro, elige una columna y una condición e introduce el valor de comparación. El visor combina los filtros activos.
+
+Las condiciones varían según el tipo de datos. Los valores de texto, numéricos, lógicos, de fecha y faltantes exponen operaciones distintas. Los valores no válidos se informan antes de aplicar un filtro.
+
+Deshabilita o quita un filtro para restaurar las filas. Convierte los filtros exploratorios importantes en código fuente antes de compartir o volver a ejecutar un análisis.

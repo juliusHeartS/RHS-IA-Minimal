@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Air for R"
+---
+
+RHS-IA includes Air-based R language tooling when the bundled extension is enabled. It provides editor features such as diagnostics and formatting without requiring an active R console for every operation.
+
+Use **Format Document** or format-on-save settings to apply the configured style. Diagnostics appear in the editor and Problems view. Workspace settings can override user settings for a project.
+
+If results differ from the running R session, confirm that both tools use the intended project files and library context, then review the R and extension logs.

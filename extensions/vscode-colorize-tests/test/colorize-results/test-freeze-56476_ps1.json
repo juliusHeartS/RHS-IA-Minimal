@@ -1,0 +1,38 @@
+[
+	{
+		"c": "<#",
+		"t": "source.powershell comment.block.powershell punctuation.definition.comment.block.begin.powershell",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "                        .",
+		"t": "source.powershell comment.block.powershell",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "#>",
+		"t": "source.powershell comment.block.powershell punctuation.definition.comment.block.end.powershell",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	}
+]

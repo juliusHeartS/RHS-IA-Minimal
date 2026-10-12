@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Development Containers"
+---
+
+Development containers provide a project-specific toolchain defined by container configuration. With a compatible container engine available, use a Dev Containers action to reopen or build the workspace in its container.
+
+The first build may take time because images and dependencies must be prepared. Terminals, extensions, and language runtimes can run inside the container while the interface remains local.
+
+Review container definitions before building them. Rebuild after changing the image or setup commands, and keep persistent data in mounted workspace or volume locations.

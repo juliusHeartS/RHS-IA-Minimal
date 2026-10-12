@@ -1,0 +1,36 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-notebook-text-output {
+	font-family: var(
+		--vscode-positronNotebook-text-output-font-family,
+		var(--monaco-monospace-font)
+	);
+	font-size: var(--vscode-positronNotebook-text-output-font-size);
+	/* Don't wrap text by default */
+	white-space: pre;
+}
+
+.positron-notebook-text-output.word-wrap {
+	/* Wrap text when word-wrap is enabled */
+	white-space: pre-wrap;
+}
+
+/* Clickable "Show N more lines" message shown when output is truncated. */
+.positron-notebook-text-output .notebook-output-truncation-message {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	/* Override the parent's monospace font and Button's unset !important. */
+	font-family: system-ui, sans-serif !important;
+	font-size: 11px;
+	line-height: 11px;
+	color: var(--vscode-editorCodeLens-foreground);
+	padding: 4px 0;
+	user-select: none;
+}
+.positron-notebook-text-output .notebook-output-truncation-message:hover {
+	color: var(--vscode-textLink-foreground);
+}

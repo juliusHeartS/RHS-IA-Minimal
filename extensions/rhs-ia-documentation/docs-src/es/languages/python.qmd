@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Python"
+---
+
+Abre un archivo `.py` y selecciona un intérprete de Python detectado. Ejecuta una línea o una selección desde el editor para iniciar una sesión de Python y enviar código a **Consola**.
+
+RHS-IA proporciona completado, diagnósticos, formato, depuración, variables, gráficos e integración con **Data Explorer** mediante sus herramientas de Python. Los kernels de cuaderno usan el entorno seleccionado para el cuaderno.
+
+Prefiere un entorno virtual específico del proyecto. Instala los paquetes en el mismo entorno que usa la sesión activa y reinicia la sesión cuando cambien las bibliotecas nativas o las variables de entorno. Consulta [Instalaciones de Python](../interpreters/python.qmd).

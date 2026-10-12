@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"allowedFiles": {
+		"docs-src/en/configuration/extensions.qmd": [
+			"Publisher"
+		],
+		"docs-src/en/database-connections/extensions.qmd": [
+			"Publisher"
+		],
+		"docs-src/en/about/documentation-license.qmd": [
+			"Positron",
+			"Posit Software"
+		],
+		"media/docs/en/configuration/extensions.html": [
+			"Publisher"
+		],
+		"media/docs/en/database-connections/extensions.html": [
+			"Publisher"
+		],
+		"media/docs/en/about/documentation-license.html": [
+			"Positron",
+			"Posit Software"
+		],
+		"docs-src/es/configuration/extensions.qmd": [
+			"Publisher"
+		],
+		"docs-src/es/database-connections/extensions.qmd": [
+			"Publisher"
+		],
+		"docs-src/es/about/documentation-license.qmd": [
+			"Positron",
+			"Posit Software"
+		],
+		"media/docs/es/configuration/extensions.html": [
+			"Publisher"
+		],
+		"media/docs/es/database-connections/extensions.html": [
+			"Publisher"
+		],
+		"media/docs/es/about/documentation-license.html": [
+			"Positron",
+			"Posit Software"
+		]
+	}
+}

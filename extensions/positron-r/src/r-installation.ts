@@ -1,0 +1,525 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as semver from 'semver';
+import * as path from 'path';
+import * as fs from 'fs';
+import { extractValue, readLines, isExecutable, removeSurroundingQuotes } from './util';
+import { LOGGER } from './extension';
+import { MINIMUM_R_VERSION } from './constants';
+import { arePathsSame } from './path-utils';
+import { getDefaultInterpreterPath, isExcludedInstallation } from './interpreter-settings.js';
+import { normalizeWindowsArch, sniffMachOBinaryArchitecture, sniffWindowsBinaryArchitecture } from './kernel.js';
+
+/**
+ * Extra metadata included in the LanguageRuntimeMetadata for R installations.
+ */
+export interface RMetadataExtra {
+	/** R's home path (R_HOME) */
+	readonly homepath: string;
+
+	/** R's binary path */
+	readonly binpath: string;
+
+	/** R's Rscript path */
+	readonly scriptpath: string;
+
+	/** Architecture reported by this installation (normalized, e.g. arm64, x86_64) */
+	readonly arch?: string;
+
+	/**
+	 * Is this known to be the current version of R?
+	 * https://github.com/posit-dev/positron/issues/2659
+	 */
+	readonly current: boolean;
+
+	/**
+	 * Is this specified as the default R interpreter in user settings?
+	 */
+	readonly default: boolean;
+
+	/**
+	 * How did we discover this R binary?
+	 */
+	readonly reasonDiscovered: ReasonDiscovered[] | null;
+
+	/**
+	 * Metadata for package manager environments (Conda or Pixi).
+	 * Use ReasonDiscovered.CONDA or ReasonDiscovered.PIXI to determine the type.
+	 */
+	readonly packagerMetadata?: PackagerMetadata;
+}
+
+/**
+ * Enum represents how we discovered an R binary.
+ */
+export enum ReasonDiscovered {
+	affiliated = "affiliated",
+	registry = "registry",
+
+	PATH = "PATH",
+	HQ = "HQ",
+	CONDA = "CONDA",
+	PIXI = "PIXI",
+	MODULE = "MODULE",
+	RVERSIONS = "RVERSIONS",
+
+	adHoc = "adHoc",
+	userSetting = "userSetting",
+	server = "server"
+}
+
+/**
+ * Enum represents why we rejected an R binary.
+ */
+export enum ReasonRejected {
+	invalid = "invalid",
+	unsupported = "unsupported",
+	nonOrthogonal = "nonOrthogonal",
+	excluded = "excluded",
+}
+
+/**
+ * Metadata for an R installation from a Conda environment.
+ */
+export interface CondaMetadata {
+	/** Path to the conda environment */
+	readonly environmentPath: string;
+}
+
+/**
+ * Metadata for an R installation from a Pixi environment.
+ */
+export interface PixiMetadata {
+	/** Path to the pixi environment */
+	readonly environmentPath: string;
+	/** Path to the manifest file (pixi.toml or pyproject.toml) */
+	readonly manifestPath: string;
+	/** Name of the environment */
+	readonly environmentName?: string;
+}
+
+/**
+ * Metadata for an R installation from a module environment.
+ */
+export interface ModuleMetadata {
+	/** Identifies this as a module environment */
+	readonly type: 'module';
+	/** The environment name from settings */
+	readonly environmentName: string;
+	/** The modules to load */
+	readonly modules: string[];
+	/** Pre-computed startup command */
+	readonly startupCommand: string;
+}
+
+/**
+ * Metadata for an R installation from an r-versions configuration file.
+ */
+export interface RVersionsMetadata {
+	/** Identifies this as an r-versions entry */
+	readonly type: 'rversions';
+	/** User-friendly display name from the Label field */
+	readonly label?: string;
+	/** Shell script to source before launching R */
+	readonly script?: string;
+	/** CRAN repository URL or path to repos.conf file */
+	readonly repo?: string;
+	/** Colon-separated list of R library directories */
+	readonly library?: string;
+	/** Environment module to load */
+	readonly module?: string;
+	/** Pre-computed startup command for module loading */
+	readonly moduleStartupCommand?: string;
+}
+
+/**
+ * Packager metadata - Conda, Pixi, Module, or RVersions.
+ * Check ReasonDiscovered.CONDA, ReasonDiscovered.PIXI, ReasonDiscovered.MODULE, or ReasonDiscovered.RVERSIONS to determine which type.
+ */
+export type PackagerMetadata = CondaMetadata | PixiMetadata | ModuleMetadata | RVersionsMetadata;
+
+/**
+ * Type guard to check if packager metadata is from Pixi (has manifestPath).
+ */
+export function isPixiMetadata(metadata: PackagerMetadata): metadata is PixiMetadata {
+	return 'manifestPath' in metadata;
+}
+
+/**
+ * Type guard to check if packager metadata is from Conda (no manifestPath and no type).
+ */
+export function isCondaMetadata(metadata: PackagerMetadata): metadata is CondaMetadata {
+	return !('manifestPath' in metadata) && !('type' in metadata);
+}
+
+/**
+ * Type guard to check if packager metadata is from a Module environment (has type: 'module').
+ */
+export function isModuleMetadata(metadata: PackagerMetadata): metadata is ModuleMetadata {
+	return 'type' in metadata && metadata.type === 'module';
+}
+
+/**
+ * Type guard to check if packager metadata is from an r-versions configuration file (has type: 'rversions').
+ */
+export function isRVersionsMetadata(metadata: PackagerMetadata): metadata is RVersionsMetadata {
+	return 'type' in metadata && metadata.type === 'rversions';
+}
+
+export function friendlyReason(reason: ReasonDiscovered | ReasonRejected | null): string {
+	if (Object.values(ReasonDiscovered).includes(reason as ReasonDiscovered)) {
+		switch (reason) {
+			case ReasonDiscovered.affiliated:
+				return 'Runtime previously affiliated with this workspace';
+			case ReasonDiscovered.registry:
+				return 'Found in Windows registry';
+			case ReasonDiscovered.PATH:
+				return 'Found in PATH, via the `which` command';
+			case ReasonDiscovered.HQ:
+				return 'Found in the primary location for R versions on this operating system';
+			case ReasonDiscovered.CONDA:
+				return 'Found in a Conda environment';
+			case ReasonDiscovered.PIXI:
+				return 'Found in a Pixi environment';
+			case ReasonDiscovered.MODULE:
+				return 'Found via environment modules';
+			case ReasonDiscovered.RVERSIONS:
+				return 'Found in r-versions configuration file';
+			case ReasonDiscovered.adHoc:
+				return 'Found in a conventional location for symlinked R binaries';
+			case ReasonDiscovered.userSetting:
+				return 'Found in a location specified via user settings';
+			case ReasonDiscovered.server:
+				return 'Found in a conventional location for R binaries installed on a server';
+		}
+	} else if (Object.values(ReasonRejected).includes(reason as ReasonRejected)) {
+		switch (reason) {
+			case ReasonRejected.invalid:
+				return 'Invalid installation';
+			case ReasonRejected.unsupported:
+				return `Unsupported version, i.e. version is less than ${MINIMUM_R_VERSION}`;
+			case ReasonRejected.nonOrthogonal:
+				return 'Non-orthogonal installation that is also not the current version';
+			case ReasonRejected.excluded:
+				return 'Installation path was excluded via user settings';
+		}
+	}
+
+	return 'Unknown reason';
+}
+
+/**
+ * Represents a single installation of R on a user's system.
+ */
+export class RInstallation {
+	// there are many reasons that we might deem a putative R installation to be unusable
+	// downstream users of RInstallation should filter for `usable` is `true`
+	public readonly usable: boolean = false;
+
+	// is the version >= positron's minimum version?
+	public readonly supported: boolean = false;
+
+	// we are gradually increasing user visibility into how the list of available R installations
+	// is determined; these fields are part of that plan
+	public readonly reasonDiscovered: ReasonDiscovered[] | null = null;
+	public readonly reasonRejected: ReasonRejected | null = null;
+
+	public readonly binpath: string = '';
+	public readonly homepath: string = '';
+	// The semVersion field was added because changing the version field from a string that's
+	// "major.minor" to an instance of SemVer (conveying major.minor.patch) would have
+	// downstream consequence I don't want to take on now. But we can probably rationalize this
+	// in the future.
+	public readonly semVersion: semver.SemVer = new semver.SemVer('0.0.1');
+	public readonly version: string = '';
+	public readonly arch: string = '';
+	public readonly current: boolean = false;
+	public readonly orthogonal: boolean = false;
+	public readonly default: boolean = false;
+	public readonly packagerMetadata: PackagerMetadata | undefined = undefined;
+
+	/**
+	 * Represents an installation of R on the user's system.
+	 *
+	 * @param pth Filepath for an R "binary" (on macOS and linux, this is actually a shell script)
+	 * @param current Whether this installation is known to be the current version of R
+	 * @param reasonDiscovered How we discovered this R binary (and there could be more than one
+	 *   reason)
+	 * @param packagerMetadata Metadata for the package manager environment (Conda or Pixi)
+	 */
+	constructor(
+		pth: string,
+		current: boolean = false,
+		reasonDiscovered: ReasonDiscovered[] | null = null,
+		packagerMetadata?: PackagerMetadata
+	) {
+		pth = path.normalize(pth);
+
+		LOGGER.info(`Candidate R binary at ${pth}`);
+
+		this.binpath = pth;
+		this.current = current;
+		this.reasonDiscovered = reasonDiscovered;
+		this.packagerMetadata = packagerMetadata;
+
+		// Check if the installation is the default R interpreter for Positron
+		const defaultInterpreterPath = getDefaultInterpreterPath();
+		this.default = defaultInterpreterPath
+			? arePathsSame(pth, defaultInterpreterPath)
+			: false;
+
+		const rHomePath = getRHomePath(pth);
+		if (!rHomePath) {
+			this.reasonRejected = ReasonRejected.invalid;
+			this.usable = false;
+			return;
+		}
+		this.homepath = rHomePath;
+
+		// orthogonality is a concern specific to macOS
+		// a non-orthogonal R "binary" is hard-wired to launch the current version of R,
+		// so it only works when it actually is the current version of R
+		// learn more in https://github.com/r-lib/rig/blob/main/src/macos.rs
+		// see is_orthogonal(), make_orthogonal_()
+		const re2 = new RegExp('R[.]framework/Resources');
+		this.orthogonal = !re2.test(this.homepath);
+
+		// make sure to target a base package that contains compiled code, so the
+		// 'Built' field contains the platform info
+		const descPath = path.join(this.homepath, 'library', 'utils', 'DESCRIPTION');
+		// We have actually seen an R "installation" that doesn't have the base packages!
+		// https://github.com/posit-dev/positron/issues/1314
+		if (!fs.existsSync(descPath)) {
+			LOGGER.info(`Can\'t find DESCRIPTION for the utils package at ${descPath}`);
+			this.reasonRejected = ReasonRejected.invalid;
+			this.usable = false;
+			return;
+		}
+		const descLines = readLines(descPath);
+		const targetLine2 = descLines.filter(line => line.match('Built'))[0];
+		if (!targetLine2) {
+			LOGGER.info(`Can't find 'Built' field for the utils package in its DESCRIPTION: ${descPath}`);
+			this.reasonRejected = ReasonRejected.invalid;
+			this.usable = false;
+			return;
+		}
+		// macOS arm64: Built: R 4.3.1; aarch64-apple-darwin20; 2023-06-16 21:52:54 UTC; unix
+		// macOS intel: Built: R 4.3.1; x86_64-apple-darwin20; 2023-06-16 21:51:34 UTC; unix
+		// linux: Built: R 4.2.3; x86_64-pc-linux-gnu; 2023-03-15 09:03:13 UTC; unix
+		// windows: Built: R 4.3.2; x86_64-w64-mingw32; 2023-10-31 13:57:45 UTC; windows
+		const builtField = extractValue(targetLine2, 'Built', ':');
+		const builtParts = builtField.split(new RegExp(';\\s+'));
+
+		const versionPart = builtParts[0];
+		this.semVersion = semver.coerce(versionPart) ?? new semver.SemVer('0.0.1');
+		this.version = this.semVersion.format();
+
+		const minimumSupportedVersion = semver.coerce(MINIMUM_R_VERSION)!;
+		this.supported = semver.gte(this.semVersion, minimumSupportedVersion);
+
+		if (this.supported) {
+			this.usable = this.current || this.orthogonal;
+			if (!this.usable) {
+				this.reasonRejected = ReasonRejected.nonOrthogonal;
+			} else {
+				// Check if this installation has been excluded via settings
+				const excluded = isExcludedInstallation(this.binpath);
+				if (excluded) {
+					LOGGER.info(`R installation excluded via settings: ${this.binpath}`);
+					this.reasonRejected = ReasonRejected.excluded;
+					this.usable = false;
+				}
+			}
+		} else {
+			this.reasonRejected = ReasonRejected.unsupported;
+			this.usable = false;
+		}
+
+		const platformPart = builtParts[1];
+		const architecture = platformPart.match('^(aarch64|x86_64)');
+		let derivedArch = '';
+
+		if (architecture) {
+			const arch = architecture[1];
+
+			// Remap known architectures to equivalent values used by Rig,
+			// just for overall consistency and familiarity
+			if (arch === 'aarch64') {
+				derivedArch = 'arm64';
+			} else if (arch === 'x86_64') {
+				derivedArch = 'x86_64';
+			} else {
+				// Should never happen because of how our `match()` works
+				console.warn(`Matched an unknown architecture '${arch}' for R '${this.version}'.`);
+				derivedArch = arch;
+			}
+		}
+
+		if (process.platform === 'win32') {
+			// Windows arm builds currently misreport in the Built field; prefer the path signature (e.g. ...-aarch64).
+			const normalizedBin = this.binpath.toLowerCase();
+			const pathSegments = normalizedBin.split(path.sep).filter(segment => segment.length > 0);
+			if (pathSegments.some(segment => segment === 'arm64' || segment === 'aarch64' || segment.endsWith('-arm64') || segment.endsWith('-aarch64'))) {
+				derivedArch = 'arm64';
+			} else if (!derivedArch && pathSegments.some(segment => segment === 'x64' || segment.endsWith('-x64'))) {
+				derivedArch = 'x86_64';
+			}
+
+			// Double check against the binary itself and log a warning if there's a mismatch.
+			const detectedArch = sniffWindowsBinaryArchitecture(this.binpath);
+			if (detectedArch) {
+				const normalizedArch = normalizeWindowsArch(derivedArch);
+				if (normalizedArch && detectedArch !== normalizedArch) {
+					LOGGER.warn(`Discrepancy between derived Windows architecture ${derivedArch} and sniffed architecture ${detectedArch} for R ${this.version} at ${this.binpath}`);
+				}
+			}
+		} else if (process.platform === 'darwin') {
+			// The DESCRIPTION 'Built' field records the build farm's platform, which
+			// for cross-compiled builds (notably conda-forge osx-arm64 R) does not
+			// match the installed binary. Prefer sniffing the actual Mach-O executable,
+			// analogous to the PE-header sniffing above for Windows. See #15297.
+			const execPath = path.join(this.homepath, 'bin', 'exec', 'R');
+			const detectedArch = sniffMachOBinaryArchitecture(execPath);
+			if (detectedArch && detectedArch !== derivedArch) {
+				LOGGER.info(`Corrected R architecture from '${derivedArch || 'unknown'}' (DESCRIPTION Built field) to '${detectedArch}' (Mach-O header) for R ${this.version} at ${execPath}`);
+				derivedArch = detectedArch;
+			}
+		}
+
+		this.arch = derivedArch;
+
+		LOGGER.info(`R installation discovered: ${JSON.stringify(this, null, 2)}`);
+	}
+
+	toJSON() {
+		return {
+			...this,
+			reasonDiscovered: this.reasonDiscovered?.map(friendlyReason) ?? null,
+			reasonRejected: this.reasonRejected ? friendlyReason(this.reasonRejected) : null
+		};
+	}
+}
+
+export function getRHomePath(binpath: string): string | undefined {
+	switch (process.platform) {
+		case 'darwin':
+			return getRHomePathDarwin(binpath);
+		case 'linux':
+			return getRHomePathLinux(binpath);
+		case 'win32':
+			return getRHomePathWindows(binpath);
+		default:
+			throw new Error('Unsupported platform');
+	}
+}
+
+function getRHomePathDarwin(binpath: string): string | undefined {
+	const binLines = readLines(binpath);
+	const re = new RegExp('Shell wrapper for R executable');
+	if (!binLines.some(x => re.test(x))) {
+		LOGGER.info(`Binary is not a shell script wrapping the executable: ${binpath}`);
+		return undefined;
+	}
+	const targetLine = binLines.find(line => line.match('R_HOME_DIR'));
+	if (!targetLine) {
+		LOGGER.info(`Can\'t determine R_HOME_DIR from the binary: ${binpath}`);
+		return undefined;
+	}
+	// macOS: R_HOME_DIR=/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources
+	// macOS non-orthogonal: R_HOME_DIR=/Library/Frameworks/R.framework/Resources
+	const R_HOME_DIR = removeSurroundingQuotes(extractValue(targetLine, 'R_HOME_DIR'));
+	const homepath = R_HOME_DIR;
+	if (homepath === '') {
+		LOGGER.info(`Can\'t determine R_HOME_DIR from the binary: ${binpath}`);
+		return undefined;
+	}
+	return homepath;
+}
+
+function getRHomePathLinux(binpath: string): string | undefined {
+	const binLines = readLines(binpath);
+	const re = new RegExp('Shell wrapper for R executable');
+	if (!binLines.some(x => re.test(x))) {
+		LOGGER.info(`Binary is not a shell script wrapping the executable: ${binpath}`);
+		return undefined;
+	}
+	const targetLine = binLines.find(line => line.match('R_HOME_DIR'));
+	if (!targetLine) {
+		LOGGER.info(`Can\'t determine R_HOME_DIR from the binary: ${binpath}`);
+		return undefined;
+	}
+	// linux: R_HOME_DIR=/opt/R/4.2.3/lib/R
+	// On linux we have seen the path surrounded with double quotes, which must be removed (#3696).
+	const R_HOME_DIR = removeSurroundingQuotes(extractValue(targetLine, 'R_HOME_DIR'));
+	const homepath = R_HOME_DIR;
+	if (homepath === '') {
+		LOGGER.info(`Can\'t determine R_HOME_DIR from the binary: ${binpath}`);
+		return undefined;
+	}
+
+	// on linux 64bit machines, lib64 is preferred over lib
+	// "/usr/lib64/R" <-- we prefer this, if both are present
+	// "/usr/lib/R"
+	const testLine = binLines.find(line => line.match('if test "\\${R_HOME_DIR}" = ".*"; then'));
+	if (!testLine) {
+		LOGGER.info(`Can't determine R_HOME_DIR from the binary: ${binpath}`);
+		return undefined;
+	}
+	const testPathMatch = testLine.match('= "(.*)"; then');
+	if (!testPathMatch) {
+		LOGGER.info(`Can't determine R_HOME_DIR from the binary: ${binpath}`);
+		return undefined;
+	}
+	const testPath = testPathMatch[1];
+	if (testPath !== R_HOME_DIR) {
+		return homepath;
+	}
+	const prefixMatch = testPath.match('(.*)\/.*\/R');
+	if (!prefixMatch) {
+		LOGGER.info(`Can't determine R_HOME_DIR from the binary: ${binpath}`);
+		return undefined;
+	}
+	const prefix = prefixMatch[1];
+	// Replicating special linux logic in R's official shell script
+	// https://github.com/wch/r-source/blob/8898619c430a383ceb401dee3e492ba386ea5967/src/scripts/R.sh.in#L5C1-L27C3
+	const is64BitArch = [
+		// Actual values returned by Node.js process.arch
+		'x64',      // Node.js equivalent of x86_64
+		'arm64',    // not in official shell script (but maybe should be?)
+		'ppc64',    // PowerPC 64-bit
+		's390x',    // IBM System z
+		// Remaining values from official script values, just to be safe
+		'x86_64', 'mips64', 'powerpc64', 'sparc64'
+	].includes(process.arch);
+
+	const libnn = is64BitArch ? 'lib64' : 'lib';
+	const libnnFallback = is64BitArch ? 'lib' : 'lib64';
+	const libnnPath = path.join(prefix, libnn, 'R/bin/exec/R');
+	const libnnFallbackPath = path.join(prefix, libnnFallback, 'R/bin/exec/R');
+	if (isExecutable(libnnPath)) {
+		return path.join(prefix, libnn, "R");
+	}
+	if (isExecutable(libnnFallbackPath)) {
+		return path.join(prefix, libnnFallback, "R");
+	}
+	return homepath;
+}
+
+function getRHomePathWindows(binpath: string): string | undefined {
+	// find right-most 'bin' in the path and take everything to the left of it
+	// Examples of binpaths:
+	// "C:\Program Files\R\R-4.3.2\bin\x64\R.exe" <-- we prefer this, if both are present
+	// "C:\Program Files\R\R-4.3.2\bin\R.exe"     <-- usually a shim for the path above
+	const binIndex = binpath.lastIndexOf(path.sep + 'bin' + path.sep);
+	if (binIndex === -1) {
+		LOGGER.info(`Can\'t determine R_HOME_DIR from the path to the R binary: ${binpath}`);
+		return undefined;
+	} else {
+		const pathUpToBin = binpath.substring(0, binIndex);
+		return pathUpToBin;
+	}
+
+}

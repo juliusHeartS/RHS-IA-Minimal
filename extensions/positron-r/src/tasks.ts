@@ -1,0 +1,134 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as vscode from 'vscode';
+import * as os from 'os';
+import { RSessionManager } from './session-manager';
+import { getForwardedSessionEnvVars } from './r-process-environment';
+import { prepCliEnvVars } from './uri-handler';
+
+export class RPackageTaskProvider implements vscode.TaskProvider {
+
+	async provideTasks() {
+		const tasks = getRPackageTasks();
+		return tasks;
+	}
+
+	resolveTask(_task: vscode.Task): vscode.Task | undefined {
+		return undefined;
+	}
+
+}
+
+export async function providePackageTasks(context: vscode.ExtensionContext): Promise<void> {
+	context.subscriptions.push(
+		vscode.tasks.registerTaskProvider('rPackageTask', new RPackageTaskProvider())
+	);
+}
+
+type InstallMethod = 'devtools' | 'base';
+
+function getPackageInstallTask(installMethod: InstallMethod) {
+	if (installMethod === 'base') {
+		return {
+			task: 'r.task.packageInstall',
+			message: vscode.l10n.t('{taskName}', { taskName: 'Install R package' }),
+			shellArgs: ['CMD', 'INSTALL', '--preclean', '--no-multiarch', '--with-keep.source', '.'],
+			package: null,
+			envVars: null
+		};
+	}
+	return {
+		task: 'r.task.packageInstall',
+		message: vscode.l10n.t('{taskName}', { taskName: 'Install R package' }),
+		rcode: 'devtools::install(build = FALSE)',
+		package: 'devtools',
+		envVars: null
+	};
+}
+
+export async function getRPackageTasks(editorFilePath?: string): Promise<vscode.Task[]> {
+	if (!RSessionManager.instance.hasLastBinpath()) {
+		throw new Error(`No running R runtime to use for R package tasks.`);
+	}
+	const binpath = RSessionManager.instance.getLastBinpath();
+
+	const config = vscode.workspace.getConfiguration('positron.r');
+	const installMethod = config.get<InstallMethod>('localPackageInstallMethod', 'devtools');
+
+	const taskData = [
+		{
+			task: 'r.task.packageCheck',
+			message: vscode.l10n.t('{taskName}', { taskName: 'Check R package' }),
+			rcode: 'devtools::check()',
+			package: 'devtools',
+			envVars: { ... await prepCliEnvVars() }
+		},
+		getPackageInstallTask(installMethod),
+		{
+			task: 'r.task.packageTest',
+			message: vscode.l10n.t('{taskName}', { taskName: 'Test R package' }),
+			rcode: 'devtools::test()',
+			package: 'devtools',
+			envVars: {
+				... await getForwardedSessionEnvVars(),
+				... await prepCliEnvVars()
+			}
+		},
+		{
+			task: 'r.task.rmarkdownRender',
+			message: vscode.l10n.t('{taskName}', { taskName: 'Render document with R Markdown' }),
+			rcode: `rmarkdown::render("${editorFilePath}")`,
+			package: 'rmarkdown',
+			envVars: null
+		}
+	];
+
+	return taskData.map(data => {
+		const taskEnv = {};
+
+		if (data.envVars) {
+			Object.assign(taskEnv, data.envVars);
+		}
+
+		let exec: vscode.ProcessExecution | vscode.ShellExecution;
+
+		if (data.task === 'r.task.rmarkdownRender' && os.platform() === 'win32') {
+			// Using vscode.ProcessExecution gets around some hairy quoting issues on Windows,
+			// specifically encountered with PowerShell.
+			// https://github.com/posit-dev/positron/issues/3816
+			// We don't know of specific problems around not using a shell (for example, env vars
+			// appear to be inherited by ProcessExecution), but we're still scoping this narrowly
+			// out of caution.
+			exec = new vscode.ProcessExecution(
+				binpath,
+				['--quiet', '--no-restore', '--no-save', '-e', data.rcode],
+				{ env: taskEnv }
+			);
+		} else {
+			// The explicit quoting treatment here is motivated by problems on
+			// both bash and PowerShell, on Windows, so make sure to test any
+			// changes on Windows.
+			// https://github.com/posit-dev/positron/issues/9216
+			const shellArgs = 'shellArgs' in data
+				? data.shellArgs
+				: ['--quiet', '--no-restore', '--no-save', '-e', { value: data.rcode, quoting: vscode.ShellQuoting.Strong }];
+			exec = new vscode.ShellExecution(
+				{ value: binpath, quoting: vscode.ShellQuoting.Strong },
+				shellArgs,
+				{ env: taskEnv }
+			);
+		}
+
+		return new vscode.Task(
+			{ type: 'rPackageTask', task: data.task, pkg: data.package },
+			vscode.TaskScope.Workspace,
+			data.message,
+			'R',
+			exec,
+			[]
+		);
+	});
+}

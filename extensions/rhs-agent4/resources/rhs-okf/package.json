@@ -1,0 +1,38 @@
+{
+  "name": "rhs-okf",
+  "version": "0.1.0",
+  "description": "Librería determinista (Node/TS) para construir y mantener bundles OKF v0.2 desde Docs/ y Data/. Sin LLM; pensada para ser envuelta por rhs-agent.",
+  "type": "module",
+  "packageManager": "pnpm@9.15.9",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "rhs-okf": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli.ts",
+    "ingest": "tsx src/cli.ts ingest",
+    "verify": "tsx src/cli.ts verify",
+    "reset": "tsx src/cli.ts reset",
+    "pack": "tsx src/cli.ts pack",
+    "test": "tsx --test src/profiler.test.ts src/ingest-protection.test.ts src/cli-json.test.ts src/okf-agnostic.test.ts src/governance-profile.test.ts src/converters.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@mapbox/node-pre-gyp": "^2.0.3",
+    "commander": "^12.1.0",
+    "duckdb": "^1.1.0",
+    "xlsx": "^0.18.5",
+    "yaml": "^2.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20.20.2"
+  },
+  "license": "SEE LICENSE"
+}

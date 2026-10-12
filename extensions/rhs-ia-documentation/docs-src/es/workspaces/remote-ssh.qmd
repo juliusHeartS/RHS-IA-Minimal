@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Remote SSH"
+---
+
+Remote SSH abre una carpeta en un host SSH mientras la interfaz de RHS-IA permanece local. Configura el host en la configuración de SSH, ejecuta una acción de conexión Remote SSH y elige el destino.
+
+Las extensiones y los tiempos de ejecución necesarios para el espacio de trabajo remoto pueden ejecutarse en el host. Por eso, las rutas, los terminales, los puertos y la detección de intérpretes reflejan el sistema remoto.
+
+Usa autenticación basada en claves y verifica la clave del host antes de aceptarla. Si la conexión falla, prueba el mismo host con el cliente SSH del sistema e inspecciona el registro de Remote SSH.

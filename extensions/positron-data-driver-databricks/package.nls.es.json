@@ -1,0 +1,4 @@
+{
+	"description": "Proporciona un controlador de conexión de datos Databricks para el panel de conexiones de datos.",
+	"displayName": "RHS-IA Controlador de conexiones de datos de Databricks"
+}

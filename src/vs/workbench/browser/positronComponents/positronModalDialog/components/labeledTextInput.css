@@ -1,0 +1,40 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2022 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-modal-dialog-box .labeled-text-input {
+	width: 100%;
+}
+
+.positron-modal-dialog-box .labeled-text-input.disabled {
+	cursor: default;
+	border-color: var(--vscode-disabledForeground);
+	color: var(--vscode-disabledForeground);
+}
+
+.positron-modal-dialog-box .labeled-text-input label {
+	display: flex;
+	flex-direction: column;
+}
+
+.positron-modal-dialog-box .labeled-text-input .text-input {
+	margin-top: 4px;
+}
+
+.positron-modal-dialog-box .labeled-text-input span.error {
+	color: var(--vscode-errorForeground);
+	height: 1em;
+	display: block;
+}
+
+/*
+ * The dynamic dialog renderer wraps its content in `.positron-dynamic-modal-dialog-box`, so the
+ * rules above never reach it. The red border is listed for both, because the dynamic dialog has no
+ * equivalent of its own; the red message text there already comes from `.error-msg` in
+ * positronDynamicModalDialog.css.
+ */
+.positron-modal-dialog-box .labeled-text-input input.error,
+.positron-dynamic-modal-dialog-box .labeled-text-input input.error {
+	border-color: var(--vscode-errorForeground);
+}

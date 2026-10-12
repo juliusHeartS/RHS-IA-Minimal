@@ -1,0 +1,16 @@
+{
+	"Connect to a Redshift cluster or workgroup": "Conectarse a un cluster o grupo de trabajo Redshift",
+	"Connect to a Redshift cluster with a user and password.": "Conéctese a un clúster Redshift con un usuario y contraseña.",
+	"Database": "Base de datos",
+	"Database is required": "Base de datos es obligatoria",
+	"Host": "Host",
+	"Host is required": "Se requiere host",
+	"Password": "Contraseña",
+	"Port": "Puerto",
+	"The cluster or workgroup endpoint. You can paste the full endpoint including port and database (host:port/database).": "El punto final del cluster o grupo de trabajo. Puede pegar el punto final completo incluyendo puerto y base de datos (host:port/database).",
+	"Unknown connection mechanism '{0}'.": "Mecanismo de conexión desconocido '{0}'.",
+	"Use SSL": "Usar SSL",
+	"User": "Usuario",
+	"User & Password": "Usuario y contraseña",
+	"User is required": "Usuario es obligatorio"
+}

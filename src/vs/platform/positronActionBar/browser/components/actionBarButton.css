@@ -1,0 +1,162 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2022-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+@keyframes positronActionBarButton-fadeIn {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+.action-bar-button {
+	padding: 0;
+	border: none;
+	display: flex;
+	margin: 0 1px;
+	cursor: pointer;
+	overflow: visible;
+	border-radius: 4px;
+	align-items: center;
+	box-sizing: border-box;
+	background: transparent;
+	height: var(--vscode-positronActionBar-iconSize);
+	color: var(--vscode-positronActionBar-foreground);
+}
+
+.action-bar-button.disabled {
+	cursor: default;
+}
+
+.action-bar-button.checked {
+	background: var(--vscode-positronActionBar-hoverBackground);
+}
+
+.action-bar-button.border {
+	height: 22px;
+	background-color: var(--vscode-positronActionBar-background);
+	border: 1px solid var(--vscode-positronActionBar-selectBorder);
+}
+
+.action-bar-button:hover:not(.disabled) {
+	background: var(--vscode-positronActionBar-hoverBackground);
+}
+
+.hc-black .action-bar-button:hover:not(.disabled),
+.hc-light .action-bar-button:hover:not(.disabled) {
+	border: 1px dashed var(--vscode-focusBorder);
+}
+
+.action-bar-button.fade-in {
+	opacity: 0;
+	animation: positronActionBarButton-fadeIn 0.25s ease-in 0.25s 1 forwards;
+}
+
+.action-bar-button:focus {
+	outline: none !important;
+}
+
+.action-bar-button:focus-visible {
+	border-radius: 4px;
+	outline: 1px solid var(--vscode-focusBorder) !important;
+}
+
+.action-bar-button-action-button {
+	padding: 0;
+}
+
+.action-bar-button-face {
+	display: flex;
+	align-items: center;
+}
+
+.action-bar-button-label {
+	display: flex;
+	font-size: 12px;
+	overflow: hidden;
+	margin-right: 4px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.action-bar-button.border .action-bar-button-label {
+	margin-right: 4px;
+}
+
+.action-bar-button.border .action-bar-button-face {
+	padding: 0 5px;
+	max-height: 100%;
+}
+
+.disabled .action-bar-button-label {
+	color: var(--vscode-positronActionBar-disabledForeground);
+}
+
+.action-bar-button-icon {
+	padding: 0 4px;
+	align-items: center;
+	justify-content: center;
+	display: flex !important;
+	height: var(--vscode-positronActionBar-iconSize);
+}
+
+.action-bar-button-icon::before {
+	color: var(--vscode-positronActionBar-foreground);
+}
+
+.action-bar-button-icon.custom-icon-color::before {
+	color: inherit;
+}
+
+.disabled .action-bar-button-icon::before {
+	color: var(--vscode-positronActionBar-disabledForeground);
+}
+
+.action-bar-button-icon.enabled-split {
+	display: flex;
+	padding: 0 4px;
+}
+
+.action-bar-button-icon.enabled-split:hover:not(.disabled) {
+	padding: 0 4px;
+	border-radius: 4px;
+	filter: brightness(90%);
+	background: var(--vscode-positronActionBar-hoverBackground);
+}
+
+.action-bar-button-drop-down-container {
+	display: flex;
+	padding-right: 5px;
+}
+
+.action-bar-button-drop-down-button {
+	display: flex;
+	padding: 0 5px;
+}
+
+.action-bar-button-drop-down-button:hover:not(.disabled) {
+	border-radius: 4px;
+	filter: brightness(90%);
+	background: var(--vscode-positronActionBar-hoverBackground);
+}
+
+.action-bar-button-drop-down-arrow {
+	align-items: center;
+	justify-content: left;
+	justify-content: center;
+	display: flex !important;
+	font-size: 18px !important;
+	height: var(--vscode-positronActionBar-iconSize);
+}
+
+.action-bar-button-drop-down-arrow::before {
+	color: var(--vscode-positronActionBar-foreground);
+}
+
+.disabled .action-bar-button-drop-down-arrow::before {
+	color: var(--vscode-positronActionBar-disabledForeground);
+}

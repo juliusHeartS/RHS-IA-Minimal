@@ -1,0 +1,275 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as positron from 'positron';
+import * as vscode from 'vscode';
+import { RSession, getActiveRSessions } from './session';
+
+const LAST_FOREGROUND_SESSION_ID_KEY = 'positron.r.lastForegroundSessionId';
+
+/**
+ * Manages all the R sessions.
+ */
+export class RSessionManager implements vscode.Disposable {
+	/// Singleton instance
+	private static _instance: RSessionManager;
+
+	/// Extension context for persistent state
+	private _context: vscode.ExtensionContext | undefined;
+
+	/// Disposables managed by the `RSessionManager`
+	/// Note that these aren't currently ever disposed of because this is a singleton,
+	/// but we may improve on this in the future so it is good practice to track them.
+	private readonly _disposables: vscode.Disposable[] = [];
+
+	/// The last binpath that was used
+	private _lastBinpath = '';
+
+	/// Fires when a console session is activated as the foreground R console.
+	private readonly _onDidActivateConsoleSession = new vscode.EventEmitter<RSession>();
+
+	/**
+	 * An event that fires when a console session is activated as the foreground
+	 * R console. Consumers can use this to sync state to the active console
+	 * (e.g. the contributed terminal environment). Only console sessions are
+	 * reported; notebook and background sessions never fire this event, and it
+	 * only fires when the foreground console actually changes.
+	 */
+	readonly onDidActivateConsoleSession = this._onDidActivateConsoleSession.event;
+
+	/// Constructor; private since we only want one of these
+	private constructor() {
+		this._disposables.push(
+			this._onDidActivateConsoleSession,
+			positron.runtime.onDidChangeForegroundSession(async sessionId => {
+				await this.didChangeForegroundSession(sessionId);
+			})
+		);
+	}
+
+	/**
+	 * Initialize the singleton instance with the extension context.
+	 * Must be called during extension activation before any sessions are created.
+	 */
+	static initialize(context: vscode.ExtensionContext): void {
+		if (!RSessionManager._instance) {
+			RSessionManager._instance = new RSessionManager();
+		}
+		RSessionManager._instance._context = context;
+	}
+
+	/**
+	 * Accessor for the singleton instance.
+	 * Throws if `initialize()` has not been called.
+	 */
+	static get instance(): RSessionManager {
+		if (!RSessionManager._instance) {
+			throw new Error('RSessionManager has not been initialized. Call initialize() first.');
+		}
+		return RSessionManager._instance;
+	}
+
+	/**
+	 * Get the last foreground session ID from persistent state.
+	 */
+	private getLastForegroundSessionId(): string | null {
+		return this._context?.workspaceState.get<string>(LAST_FOREGROUND_SESSION_ID_KEY) ?? null;
+	}
+
+	/**
+	 * Set the last foreground session ID in persistent state.
+	 */
+	private async setLastForegroundSessionId(sessionId: string | null): Promise<void> {
+		if (this._context) {
+			await this._context.workspaceState.update(LAST_FOREGROUND_SESSION_ID_KEY, sessionId);
+		}
+	}
+
+	/**
+	 * Registers a runtime with the manager.
+	 *
+	 * @param session The session.
+	 */
+	setSession(session: RSession): void {
+		session.register(
+			session.onDidChangeRuntimeState(async (state) => {
+				await this.didChangeSessionRuntimeState(session, state);
+			})
+		);
+	}
+
+	private async didChangeSessionRuntimeState(session: RSession, state: positron.RuntimeState): Promise<void> {
+		// Three `Ready` states to keep in mind:
+		// - Fresh console sessions fall through and are activated by `didChangeForegroundSession()`.
+		// - Restarted or restored (after extension host restart) console sessions are activated
+		//   here if they were previously the foreground session before their restart, as we
+		//   won't get a foreground session notification for them otherwise. Persistent state is
+		//   used in the extension host restart scenario to survive the restart.
+		// - Notebook sessions are activated immediately (Background sessions never have their LSP activated).
+		if (state === positron.RuntimeState.Ready) {
+			if (session.metadata.sessionMode === positron.LanguageRuntimeSessionMode.Console) {
+				const lastForegroundSessionId = this.getLastForegroundSessionId();
+				if (lastForegroundSessionId === session.metadata.sessionId) {
+					await this.activateConsoleSession(session, 'foreground session is ready');
+				}
+			} else if (session.metadata.sessionMode === positron.LanguageRuntimeSessionMode.Notebook) {
+				await this.activateSession(session, 'notebook session is ready');
+			}
+		}
+	}
+
+	private async didChangeForegroundSession(sessionId: string | undefined): Promise<void> {
+		if (!sessionId) {
+			// There is no foreground session.
+			return;
+		}
+
+		const lastForegroundSessionId = this.getLastForegroundSessionId();
+		if (lastForegroundSessionId === sessionId) {
+			// The foreground session has not changed.
+			// This happens when we switch from R, to Python, and back to R, where the foreground
+			// session for R hasn't changed.
+			return;
+		}
+
+		const sessions = await getActiveRSessions();
+		const session = sessions.find(s => s.metadata.sessionId === sessionId);
+		if (!session) {
+			// The foreground session is for another language or was deactivated in the meantime
+			return;
+		}
+
+		if (session.metadata.sessionMode === positron.LanguageRuntimeSessionMode.Background) {
+			throw Error(`Foreground session with ID ${sessionId} must not be a background session.`);
+		}
+
+		// Only activate console sessions as the foreground LSP. Notebook
+		// sessions have restricted document selectors that don't cover
+		// script files, so activating them as the console session would
+		// break autocomplete in scripts.
+		if (session.metadata.sessionMode !== positron.LanguageRuntimeSessionMode.Console) {
+			return;
+		}
+
+		// Multiple `activateConsoleSession()` might run concurrently if the
+		// `didChangeForegroundSession` event fires rapidly. We might want to queue
+		// the handling.
+		await this.setLastForegroundSessionId(session.metadata.sessionId);
+		await this.activateConsoleSession(session, 'foreground session changed');
+	}
+
+	/**
+	 * Activate a console session, while first deactivating all other console sessions
+	 */
+	private async activateConsoleSession(session: RSession, reason: string): Promise<void> {
+		// Deactivate other console session servers first
+		const sessions = await getActiveRSessions();
+		await Promise.all(sessions
+			.filter(s => {
+				return s.metadata.sessionId !== session.metadata.sessionId &&
+					s.metadata.sessionMode === positron.LanguageRuntimeSessionMode.Console;
+			})
+			.map(s => {
+				return this.deactivateSession(s, reason);
+			})
+		);
+		await this.activateSession(session, reason);
+
+		// Notify consumers that the foreground R console changed so they can
+		// sync state to it (e.g. the contributed terminal environment). This
+		// rides the console-activation path so it inherits the console-only
+		// and change-deduplication guards above.
+		this._onDidActivateConsoleSession.fire(session);
+	}
+
+	/**
+	 * Activates a session
+	 *
+	 * Does not request that other sessions deactivate. Used for notebook
+	 * and background sessions, and indirectly for console sessions through
+	 * the safer `activateConsoleSession()`.
+	 */
+	private async activateSession(session: RSession, reason: string): Promise<void> {
+		await session.activateServices(reason);
+	}
+
+	private async deactivateSession(session: RSession, reason: string): Promise<void> {
+		await session.deactivateServices(reason);
+	}
+
+	/**
+	 * Gets the R console session, if one is active.
+	 *
+	 * @returns The R console session, or undefined if there isn't one.
+	 */
+	async getConsoleSession(): Promise<RSession | undefined> {
+		const sessions = await getActiveRSessions();
+
+		// Sort the sessions by creation time (descending)
+		sessions.sort((a, b) => b.created - a.created);
+
+		// Remove any sessions that aren't console sessions and have either
+		// never started or have exited
+		const consoleSessions = sessions.filter(s =>
+			s.metadata.sessionMode === positron.LanguageRuntimeSessionMode.Console &&
+			s.state !== positron.RuntimeState.Uninitialized &&
+			s.state !== positron.RuntimeState.Exited);
+
+		// No console sessions
+		if (consoleSessions.length === 0) {
+			return undefined;
+		}
+
+		// We would not expect to see more than one console session since
+		// Positron currently only allows one console session per language. If
+		// this constraint is relaxed in the future, we can remove this warning.
+		if (consoleSessions.length > 1) {
+			console.warn(`${consoleSessions.length} R console sessions found; ` +
+				`returning the most recently started one.`);
+		}
+
+		return consoleSessions[0];
+	}
+
+	/**
+	 * Gets an R session by its session identifier.
+	 *
+	 * @param sessionId The session identifier
+	 * @returns The R session, or undefined if not found
+	 */
+	async getSessionById(sessionId: string): Promise<RSession | undefined> {
+		const sessions = await getActiveRSessions();
+		return sessions.find(s => s.metadata.sessionId === sessionId);
+	}
+
+	/**
+	 * Sets the last observed R binary path.
+	 *
+	 * @param path The path to the R binary
+	 */
+	setLastBinpath(path: string) {
+		this._lastBinpath = path;
+	}
+
+	/**
+	 * Returns the last observed R binary path.
+	 *
+	 * @returns Whether we have a last observed R binary path.
+	 */
+	hasLastBinpath(): boolean {
+		return this._lastBinpath !== '';
+	}
+
+	/**
+	 * Returns the last observed R binary path.
+	 */
+	getLastBinpath(): string {
+		return this._lastBinpath;
+	}
+
+	public dispose(): void {
+		this._disposables.forEach((disposable) => disposable.dispose());
+	}
+}

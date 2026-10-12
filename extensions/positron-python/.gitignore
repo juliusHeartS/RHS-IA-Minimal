@@ -1,0 +1,69 @@
+.DS_Store
+.huskyrc.json
+out
+log.log
+**/node_modules
+*.pyc
+*.vsix
+envVars.txt
+**/.vscode/.ropeproject/**
+**/testFiles/**/.cache/**
+*.noseids
+.nyc_output
+.vscode-test
+__pycache__
+npm-debug.log
+**/.mypy_cache/**
+!yarn.lock
+coverage/
+cucumber-report.json
+**/.vscode-test/**
+**/.vscode test/**
+**/.vscode-smoke/**
+**/.venv*/
+port.txt
+precommit.hook
+python_files/lib/**
+python_files/get-pip.py
+debug_coverage*/**
+languageServer/**
+languageServer.*/**
+bin/**
+obj/**
+.pytest_cache
+tmp/**
+.python-version
+.vs/
+test-results*.xml
+xunit-test-results.xml
+build/ci/performance/performance-results.json
+!build/
+debug*.log
+debugpy*.log
+pydevd*.log
+nodeLanguageServer/**
+nodeLanguageServer.*/**
+dist/**
+# translation files
+*.xlf
+*.nls.*.json
+*.i18n.json
+l10n/*
+!l10n/bundle.l10n.es.json
+tags
+# --- Start Positron ---
+# The old location, kept so clones that ran the pre-split suite stay clean.
+python_files/posit/positron/tests/images
+python_files/posit/positron/tests/test_matplotlib_backend/images
+python_files/posit/positron/_vendor/**
+scripts/*.js
+resources/pet/**
+# --- End Positron ---
+python-env-tools/**
+# coverage files produced as test output
+python_files/tests/*/.data/.coverage*
+python_files/tests/*/.data/*/.coverage*
+src/testTestingRootWkspc/coverageWorkspace/.coverage
+
+# ignore ai artifacts generated and placed in this folder
+ai-artifacts/*

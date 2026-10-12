@@ -1,0 +1,186 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as React from 'react';
+import { localize } from '../../../../nls.js';
+import { Schemas } from '../../../../base/common/network.js';
+import { Disposable } from '../../../../base/common/lifecycle.js';
+import { EditorExtensions } from '../../../common/editor.js';
+import { Registry } from '../../../../platform/registry/common/platform.js';
+import { SyncDescriptor } from '../../../../platform/instantiation/common/descriptors.js';
+import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
+import { EditorPaneDescriptor, IEditorPaneRegistry } from '../../../browser/editor.js';
+import { WorkbenchPhase, registerWorkbenchContribution2 } from '../../../common/contributions.js';
+import { EditorInputFactoryFunction, IEditorResolverService, RegisteredEditorPriority } from '../../../services/editor/common/editorResolverService.js';
+import { PositronDataExplorerEditor } from './positronDataExplorerEditor.js';
+import { PositronDataExplorerEditorInput } from './positronDataExplorerEditorInput.js';
+import { registerPositronDataExplorerActions } from './positronDataExplorerActions.js';
+import { PositronDataExplorerCodeActionContribution } from './positronDataExplorerCodeActionProvider.js';
+import { PositronDataExplorerClickToViewContribution } from './positronDataExplorerClickToViewProvider.js';
+import { PositronDataExplorerSheetSelector } from './positronDataExplorerSheetSelector.js';
+import { POSITRON_DATA_EXPLORER_IS_ACTIVE_EDITOR, POSITRON_DATA_EXPLORER_IS_XLSX } from './positronDataExplorerContextKeys.js';
+import { extname } from '../../../../base/common/resources.js';
+import { posix } from '../../../../base/common/path.js';
+import { MenuId } from '../../../../platform/actions/common/actions.js';
+import { ContextKeyExpr } from '../../../../platform/contextkey/common/contextkey.js';
+import { PositronActionBarWidgetRegistry } from '../../../../platform/positronActionBar/browser/positronActionBarWidgetRegistry.js';
+import { IPositronDataExplorerService } from '../../../services/positronDataExplorer/browser/interfaces/positronDataExplorerService.js';
+import { PositronDataExplorerUri } from '../../../services/positronDataExplorer/common/positronDataExplorerUri.js';
+import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
+import { DataExplorerPreviewEnabled } from '../../../services/positronDataExplorer/browser/positronDataExplorerSummary.js';
+
+/**
+ * PositronDataExplorerContribution class.
+ */
+class PositronDataExplorerContribution extends Disposable {
+	/**
+	 * The identifier.
+	 */
+	static readonly ID = 'workbench.contrib.positronDataExplorer';
+
+	/**
+	 * Constructor.
+	 * @param editorResolverService The editor resolver service.
+	 * @param instantiationService The instantiation service.
+	 */
+	constructor(
+		@IConfigurationService configurationService: IConfigurationService,
+		@IEditorResolverService editorResolverService: IEditorResolverService,
+		@IInstantiationService instantiationService: IInstantiationService,
+		@IPositronDataExplorerService dataExplorerService: IPositronDataExplorerService
+	) {
+		// Call the base class's constructor.
+		super();
+
+		const editorInfo = {
+			id: PositronDataExplorerEditorInput.EditorID,
+			// Label will be overwritten elsewhere
+			label: localize('positronDataExplorer', "RHS-IA Data Explorer"),
+			priority: RegisteredEditorPriority.builtin
+		};
+
+		const createDataExplorerEditor: EditorInputFactoryFunction = ({ resource, options }) => {
+			// Determine pinned state based on preview setting.
+			// When preview is enabled, tabs open unpinned (in preview mode).
+			// See https://github.com/posit-dev/positron/issues/11289
+			// Note: We intentionally ignore options.pinned here to ensure our setting
+			// takes precedence over VS Code's default preview behavior for files.
+			const pinned = !DataExplorerPreviewEnabled(configurationService);
+
+			return {
+				editor: instantiationService.createInstance(
+					PositronDataExplorerEditorInput,
+					resource
+				),
+				options: {
+					...options,
+					pinned
+				}
+			};
+		};
+
+		// Register the editor.
+		this._register(editorResolverService.registerEditor(
+			`${Schemas.positronDataExplorer}:**/**`,
+			editorInfo,
+			{
+				singlePerResource: true,
+				canSupportResource: resource => resource.scheme === Schemas.positronDataExplorer
+			},
+			{
+				createEditorInput: createDataExplorerEditor
+			}
+		));
+
+		const DUCKDB_SUPPORTED_EXTENSIONS = ['parquet', 'parq', 'csv', 'tsv', 'gz', 'xlsx'];
+
+		this._register(editorResolverService.registerEditor(
+			`*.{${DUCKDB_SUPPORTED_EXTENSIONS.join(',')}}`,
+			editorInfo,
+			{
+				singlePerResource: true,
+				canSupportResource: resource => {
+					// The registration glob above matches case-insensitively, so compare
+					// case-insensitively here too or DATA.CSV resolves to no editor.
+					let fileExt = extname(resource).substring(1).toLowerCase();
+					if (fileExt === 'gz') {
+						// Strip the .gz and get the actual extension
+						fileExt = posix.extname(resource.path.slice(0, -3)).substring(1).toLowerCase();
+					}
+					return DUCKDB_SUPPORTED_EXTENSIONS.includes(fileExt);
+				}
+			},
+			{
+				createEditorInput: async ({ resource, options }, group) => {
+					await dataExplorerService.openWithDuckDB(resource);
+
+					// We create a data explorer URI that will use the DuckDB client
+					// that we just created.
+					const newResource = PositronDataExplorerUri.generate(`duckdb:${resource.toString()}`);
+					return createDataExplorerEditor({
+						resource: newResource,
+						options
+					}, group);
+				}
+			}
+		));
+	}
+}
+
+// Register the Positron data explorer editor pane.
+Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
+	EditorPaneDescriptor.create(
+		PositronDataExplorerEditor,
+		PositronDataExplorerEditorInput.EditorID,
+		localize('positronDataExplorerEditor', "RHS-IA Data Explorer Editor")
+	),
+	[
+		new SyncDescriptor(PositronDataExplorerEditorInput)
+	]
+);
+
+// Register workbench contribution.
+registerWorkbenchContribution2(
+	PositronDataExplorerContribution.ID,
+	PositronDataExplorerContribution,
+	WorkbenchPhase.BlockRestore
+);
+
+// Register actions.
+registerPositronDataExplorerActions();
+
+// Register the "Open in Data Explorer" code action provider for runtime
+// languages.
+registerWorkbenchContribution2(
+	PositronDataExplorerCodeActionContribution.ID,
+	PositronDataExplorerCodeActionContribution,
+	WorkbenchPhase.AfterRestored
+);
+
+// Register the "Cmd/Ctrl+Click to open a data frame in the Data Explorer"
+// gesture. Gated on the RStudio keymap; takes precedence over go-to-definition
+// only for that cohort.
+registerWorkbenchContribution2(
+	PositronDataExplorerClickToViewContribution.ID,
+	PositronDataExplorerClickToViewContribution,
+	WorkbenchPhase.AfterRestored
+);
+
+// Register the worksheet selector widget in the editor action bar. It appears
+// on the right side of the action bar, only for Excel workbooks with more than
+// one worksheet, and lets the user switch between the workbook's worksheets.
+PositronActionBarWidgetRegistry.registerWidget({
+	id: 'positronDataExplorer.sheetSelector',
+	menuId: MenuId.EditorActionsRight,
+	order: 5,
+	when: ContextKeyExpr.and(
+		POSITRON_DATA_EXPLORER_IS_ACTIVE_EDITOR,
+		POSITRON_DATA_EXPLORER_IS_XLSX
+	),
+	selfContained: true,
+	componentFactory: (accessor) => {
+		return () => React.createElement(PositronDataExplorerSheetSelector, { accessor });
+	}
+});

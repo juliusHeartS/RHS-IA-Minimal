@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Environment Modules"
+---
+
+On systems that provide environment modules, RHS-IA can use module-managed tools and runtimes when the environment-modules integration is enabled and configured.
+
+Load the required module set before selecting an interpreter or launching related tools. A module change can alter `PATH`, library paths, and other environment variables, so restart affected runtime sessions afterward.
+
+Available modules are controlled by the host system. If a module or interpreter is missing, verify the same module command in a login shell and consult the site's module configuration.

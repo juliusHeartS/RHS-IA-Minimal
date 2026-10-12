@@ -1,0 +1,2126 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import type * as positron from 'positron';
+import { debounce } from '../../../../base/common/decorators.js';
+import { IHostedLanguageContribution, ILanguageRuntimeMessage, ILanguageRuntimeMessageCommClosed, ILanguageRuntimeMessageCommData, ILanguageRuntimeMessageCommOpen, ILanguageRuntimeMessageStream, ILanguageRuntimeMessageOutput, ILanguageRuntimeMessageState, ILanguageRuntimeMetadata, IRuntimeRootSignature, LanguageRuntimeSessionMode, RuntimeBusyBehavior, RuntimeCodeExecutionMode, RuntimeCodeFragmentStatus, RuntimeErrorBehavior, RuntimeState, ILanguageRuntimeMessageResult, ILanguageRuntimeMessageError, RuntimeOnlineState } from '../../../services/languageRuntime/common/languageRuntimeService.js';
+import * as extHostProtocol from './extHost.positron.protocol.js';
+import { Emitter } from '../../../../base/common/event.js';
+import { DisposableStore, IDisposable } from '../../../../base/common/lifecycle.js';
+import { Disposable, LanguageRuntimeMessageType } from '../extHostTypes.js';
+import { RuntimeClientState, RuntimeClientType } from './extHostTypes.positron.js';
+import { ExtHostRuntimeClientInstance } from './extHostClientInstance.js';
+import { ExtensionIdentifier, IExtensionDescription } from '../../../../platform/extensions/common/extensions.js';
+import { isUriComponents, URI } from '../../../../base/common/uri.js';
+import { DeferredPromise } from '../../../../base/common/async.js';
+import { IPackageRepositoryRequest, IPackageRepositoryResponse, IRuntimeSessionMetadata } from '../../../services/runtimeSession/common/runtimeSessionService.js';
+import { ILogService } from '../../../../platform/log/common/log.js';
+import { SerializableObjectWithBuffers } from '../../../services/extensions/common/proxyIdentifier.js';
+import { VSBuffer } from '../../../../base/common/buffer.js';
+import { generateUuid } from '../../../../base/common/uuid.js';
+import { CancellationToken } from '../../../../base/common/cancellation.js';
+import { QueryTableSummaryResult, Variable } from '../../../services/languageRuntime/common/positronVariablesComm.js';
+import { ILanguageRuntimeCodeExecutedEvent } from '../../../services/positronConsole/common/positronConsoleCodeExecution.js';
+import { EvalResult } from '../../../services/languageRuntime/common/positronUiComm.js';
+import { ICodeLocation } from '../../../services/positronConsole/common/codeLocation.js';
+import * as typeConvert from '../extHostTypeConverters.js';
+
+/**
+ * Derives the session's optional-method capabilities for the main thread,
+ * which cannot observe method presence across the RPC boundary.
+ */
+function sessionCapabilities(session: positron.LanguageRuntimeSession): extHostProtocol.RuntimeSessionCapabilities {
+	return {
+		listMissingPackages: !!session.listMissingPackages,
+		getMissingPackageProbe: !!session.getMissingPackageProbe,
+	};
+}
+
+/**
+ * Interface for code execution observers
+ */
+interface IExecutionObserver {
+	/** A cancellation token for interrupting execution */
+	token?: CancellationToken;
+
+	/** Called when execution starts */
+	onStarted?: () => void;
+
+	/** Called when text output is produced */
+	onOutput?: (message: string) => void;
+
+	/** Called when error output is produced */
+	onError?: (message: string) => void;
+
+	/** Called when a plot is generated */
+	onPlot?: (plotData: string) => void;
+
+	/** Called when data (like a dataframe) is produced */
+	onData?: (data: any) => void;
+
+	/** Called on successful completion with a result */
+	onCompleted?: (result: any) => void;
+
+	/** Called when execution fails with an error */
+	onFailed?: (error: Error) => void;
+
+	/** Called when execution finishes (after success or failure) */
+	onFinished?: () => void;
+}
+
+/**
+ * Wraps an IExecutionObserver and provides a promise that resolves when the
+ * execution is completed. This allows us to track the state of the
+ * execution and notify when it is completed.
+ */
+class ExecutionObserver implements IDisposable {
+
+	/** The promise that resolves when the computation completes */
+	public readonly promise: DeferredPromise<Record<string, any>>;
+
+	/** Store of disposables to be cleaned up */
+	public readonly store: DisposableStore = new DisposableStore();
+
+	/** The current state of the computation */
+	public state: 'pending' | 'running' | 'completed';
+
+	/**
+	 * The session ID in which the computation is running. This is not always
+	 * known when creating the observer since the it is possible we need to
+	 * create a new session to fulfill the request.
+	 */
+	public sessionId: string | undefined;
+
+	constructor(public readonly observer: IExecutionObserver | undefined) {
+		this.state = 'pending';
+		this.promise = new DeferredPromise<Record<string, any>>();
+	}
+
+	onOutputMessage(message: ILanguageRuntimeMessageOutput) {
+		if (this.observer && message.data) {
+			const imageMimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'] as const;
+			for (const mimeType of imageMimeTypes) {
+				if (message.data[mimeType] && this.observer.onPlot) {
+					this.observer.onPlot(message.data[mimeType]);
+				}
+			}
+			if (message.data['text/plain'] && this.observer.onOutput) {
+				this.observer.onOutput(message.data['text/plain']);
+			}
+		}
+	}
+
+	onStateMessage(message: ILanguageRuntimeMessageState) {
+		// When entering the busy state, consider code execution to have
+		// started
+		if (message.state === RuntimeOnlineState.Busy) {
+			this.onStarted();
+		}
+
+		// When entering the idle state, consider code execution to have
+		// finished
+		if (message.state === RuntimeOnlineState.Idle) {
+			this.onFinished();
+		}
+	}
+
+	onStreamMessage(message: ILanguageRuntimeMessageStream) {
+		if (this.observer) {
+			if (message.name === 'stdout' && this.observer.onOutput) {
+				this.observer.onOutput(message.text);
+			} else if (message.name === 'stderr' && this.observer.onError) {
+				this.observer.onError(message.text);
+			}
+		}
+	}
+
+	onStarted() {
+		this.state = 'running';
+		if (this.observer?.onStarted) {
+			this.observer.onStarted();
+		}
+	}
+
+	onFinished() {
+		this.state = 'completed';
+		if (this.observer?.onFinished) {
+			this.observer.onFinished();
+		}
+		// Ensure we're settled if we aren't yet
+		if (!this.promise.isSettled) {
+			this.promise.complete({});
+		}
+	}
+
+	onErrorMessage(message: ILanguageRuntimeMessageError) {
+		const err: Error = {
+			message: message.message,
+			name: message.name,
+			stack: message.traceback?.join('\n'),
+		};
+		this.onFailed(err);
+	}
+
+	onFailed(error: Error) {
+		this.state = 'completed';
+		if (this.observer?.onFailed) {
+			this.observer.onFailed(error);
+		}
+		this.promise.error(error);
+	}
+
+	onCompleted(result: Record<string, any>) {
+		this.state = 'completed';
+		if (this.observer?.onCompleted) {
+			this.observer.onCompleted(result);
+		}
+		this.promise.complete(result);
+	}
+
+	dispose(): void {
+		this.store.dispose();
+	}
+}
+
+/**
+ * A language runtime manager and metadata about the extension that registered it.
+ */
+interface LanguageRuntimeManager {
+	/** The language for which the manager provides runtimes */
+	languageId: string;
+
+	/** The manager itself */
+	manager: positron.LanguageRuntimeManager;
+
+	/** The extension that supplied the manager */
+	extension: IExtensionDescription;
+}
+
+/**
+ * A proxy to a language runtime session that is owned by another extension
+ * host.
+ *
+ * This proxy is used to fulfill the basic language runtime session interface by
+ * routing calls to the main thread, where they are dispatched to the extension
+ * that owns the actual session.
+ */
+export class ExtHostRuntimeSessionProxy
+	extends Disposable
+	implements positron.BaseLanguageRuntimeSession {
+	readonly sessionId: string = this.metadata.sessionId;
+
+	/** The last known runtime state of the session. */
+	private _runtimeState: RuntimeState;
+
+	/** Holds the emitters below so they can be disposed with the proxy. */
+	private readonly _store = new DisposableStore();
+
+	private readonly _onDidChangeRuntimeState = this._store.add(new Emitter<RuntimeState>());
+	private readonly _onDidDisconnect = this._store.add(new Emitter<void>());
+	private readonly _onDidReconnect = this._store.add(new Emitter<void>());
+
+	/** Fires when the session's runtime state changes. */
+	readonly onDidChangeRuntimeState = this._onDidChangeRuntimeState.event;
+
+	/** Fires when the session's connection to the runtime is lost. */
+	readonly onDidDisconnect = this._onDidDisconnect.event;
+
+	/** Fires when the session's connection to the runtime is re-established. */
+	readonly onDidReconnect = this._onDidReconnect.event;
+
+	/**
+	 * Constructor
+	 *
+	 * @param metadata The metadata about the session
+	 * @param runtimeMetadata The metadata about the runtime
+	 * @param runtimeState The session's runtime state at the time of creation
+	 * @param _proxy A proxy to the main thread language runtime API
+	 */
+	constructor(
+		readonly metadata: positron.RuntimeSessionMetadata,
+		readonly runtimeMetadata: positron.LanguageRuntimeMetadata,
+		runtimeState: RuntimeState,
+		private readonly _proxy: extHostProtocol.MainThreadLanguageRuntimeShape,
+	) {
+		super(() => { });
+		this._runtimeState = runtimeState;
+	}
+
+	override dispose(): void {
+		// Stop the main thread from forwarding events for this session and
+		// release our emitters.
+		this._proxy.$unsubscribeFromSession(this.sessionId);
+		this._store.dispose();
+		super.dispose();
+	}
+
+	/**
+	 * Get the current dynamic state of the runtime
+	 */
+	async getDynState(): Promise<positron.LanguageRuntimeDynState> {
+		return this._proxy.$getSessionDynState(this.sessionId);
+	}
+
+	/**
+	 * Get the current runtime state of the session.
+	 *
+	 * This is a synchronous accessor backed by the last state forwarded from the
+	 * main thread.
+	 */
+	getRuntimeState(): RuntimeState {
+		return this._runtimeState;
+	}
+
+	/**
+	 * Updates the cached runtime state and fires `onDidChangeRuntimeState`.
+	 * Called when the main thread forwards a state change for this session.
+	 */
+	setRuntimeState(state: RuntimeState): void {
+		if (this._runtimeState === state) {
+			return;
+		}
+		this._runtimeState = state;
+		this._onDidChangeRuntimeState.fire(state);
+	}
+
+	/**
+	 * Fires the `onDidDisconnect` event. Called when the main thread reports
+	 * that this session's connection to the runtime was lost.
+	 */
+	fireDidDisconnect(): void {
+		this._onDidDisconnect.fire();
+	}
+
+	/**
+	 * Fires the `onDidReconnect` event. Called when the main thread reports that
+	 * this session's connection to the runtime was re-established.
+	 */
+	fireDidReconnect(): void {
+		this._onDidReconnect.fire();
+	}
+
+	/**
+	 * Call a method in the runtime
+	 */
+	callMethod(method: string, ...args: any[]): Thenable<any> {
+		return this._proxy.$callMethod(this.metadata.sessionId, method, args);
+	}
+
+	/**
+	 * Execute code in the runtime
+	 *
+	 * @param code The code to execute
+	 * @param id The ID of the code
+	 * @param mode The code execution mode
+	 * @param errorBehavior The code execution error behavior
+	 * Note: The errorBehavior parameter is currently ignored by kernels
+	 */
+	execute(code: string,
+		id: string,
+		mode: RuntimeCodeExecutionMode,
+		errorBehavior: RuntimeErrorBehavior,
+		_codeLocation?: positron.Utf8Location,
+		executionMetadata?: Record<string, unknown>) {
+		return this._proxy.$executeInSession(this.sessionId, code, id, mode, errorBehavior, executionMetadata);
+	}
+
+	/**
+	 * Shut down the runtime; returns a Thenable that resolves when the
+	 * runtime shutdown sequence has been successfully started (not
+	 * necessarily when it has completed).
+	 */
+	shutdown(exitReason: positron.RuntimeExitReason) {
+		return this._proxy.$shutdownSession(this.sessionId, exitReason);
+	}
+}
+
+export class ExtHostLanguageRuntime implements extHostProtocol.ExtHostLanguageRuntimeShape {
+
+	private readonly _proxy: extHostProtocol.MainThreadLanguageRuntimeShape;
+
+	private readonly _runtimeManagersByRuntimeId = new Map<string, LanguageRuntimeManager>();
+
+	private readonly _runtimeManagers = new Array<LanguageRuntimeManager>();
+
+	private readonly _pendingRuntimeManagers = new Map<string, DeferredPromise<LanguageRuntimeManager>>();
+
+	// A list of active sessions owned by this extension host
+	private readonly _runtimeSessions = new Array<positron.LanguageRuntimeSession>();
+
+	// Per-session disposable stores, parallel to `_runtimeSessions`. Holds the
+	// event subscriptions created by `attachToSession` (and other per-session
+	// subscriptions like the one in `handleCommOpen`) so they can be released
+	// when `$disposeLanguageRuntime` is called.
+	private readonly _sessionDisposables = new Array<DisposableStore>();
+
+	// A list of runtime proxies to sessions owned by other extension hosts; map of
+	// session ID to proxy
+	private readonly _runtimeProxies = new Map<string, ExtHostRuntimeSessionProxy>();
+
+	private readonly _clientInstances = new Array<ExtHostRuntimeClientInstance>();
+
+	private readonly _clientHandlers = new Array<positron.RuntimeClientHandler>();
+
+	private readonly _registeredClientIds = new Set<string>();
+
+	/**
+	 * Lamport clocks, used for event ordering. Each runtime has its own clock since
+	 * events are only ordered within a runtime.
+	 */
+	private _eventClocks = new Array<number>();
+
+	/**
+	 * Indicates whether language runtime discovery is complete.
+	 */
+	private _runtimeDiscoveryComplete = false;
+
+	// The event emitter for the onDidRegisterRuntime event.
+	private readonly _onDidRegisterRuntimeEmitter = new Emitter<positron.LanguageRuntimeMetadata>;
+
+	// The event that fires when a runtime is registered.
+	public onDidRegisterRuntime = this._onDidRegisterRuntimeEmitter.event;
+
+	// The event emitter for the onDidChangeForegroundSession event.
+	private readonly _onDidChangeForegroundSessionEmitter = new Emitter<string | undefined>;
+
+	// The event that fires when the foreground session changes.
+	public onDidChangeForegroundSession = this._onDidChangeForegroundSessionEmitter.event;
+
+	// The event emitter for the onDidExecuteCode event.
+	private readonly _onDidExecuteCodeEmitter = new Emitter<positron.CodeExecutionEvent>();
+
+	// The event that fires when code is executed.
+	public onDidExecuteCode = this._onDidExecuteCodeEmitter.event;
+
+	// Map to track execution observers by execution ID
+	private _executionObservers = new Map<string, ExecutionObserver>();
+
+	// Handle counter for picker contributions
+	private _pickerContributionHandleCounter = 0;
+
+	// Map of handle to picker contribution
+	private readonly _pickerContributions = new Map<number, positron.runtime.RuntimePickerContribution>();
+
+	constructor(
+		mainContext: extHostProtocol.IMainPositronContext,
+		private readonly _logService: ILogService,
+	) {
+		// Trigger creation of the proxy
+		this._proxy = mainContext.getProxy(extHostProtocol.MainPositronContext.MainThreadLanguageRuntime);
+	}
+
+	/**
+	 * Creates a language runtime session.
+	 *
+	 * @param runtimeMetadata The metadata for the language runtime.
+	 * @param sessionMetadata The metadata for the session.
+	 *
+	 * @returns A promise that resolves with a handle to the runtime session.
+	 */
+	async $createLanguageRuntimeSession(
+		runtimeMetadata: ILanguageRuntimeMetadata,
+		sessionMetadata: IRuntimeSessionMetadata,
+		sessionName: string,
+	): Promise<extHostProtocol.RuntimeInitialState> {
+		// Look up the session manager responsible for restoring this session
+		const sessionManager = await this.runtimeManagerForRuntime(runtimeMetadata, true);
+
+		if (sessionMetadata.notebookUri) {
+			// Sometimes the full URI doesn't make it across the serialization boundary.
+			// By reviving the URI here we make sure we're operating with a full URI
+			// rather than a serialized one that may be missing parameters.
+			sessionMetadata = {
+				...sessionMetadata,
+				notebookUri: URI.revive(sessionMetadata.notebookUri)
+			};
+		}
+		if (sessionManager) {
+			const session =
+				await sessionManager.manager.createSession(runtimeMetadata, sessionMetadata);
+			const handle = this.attachToSession(session);
+
+			session.updateSessionName(sessionName);
+
+			const initalState = {
+				handle,
+				dynState: await session.getDynState(),
+				capabilities: sessionCapabilities(session),
+			};
+			return initalState;
+		} else {
+			throw new Error(
+				`No session manager found for language ID '${runtimeMetadata.languageId}'.`);
+		}
+	}
+
+	/**
+	 * Indicates whether the extension host is the host for a given language runtime.
+	 *
+	 * @param runtimeMetadata The metadata for the language runtime to test.
+	 * @returns The result of the test.
+	 */
+	async $isHostForLanguageRuntime(runtimeMetadata: ILanguageRuntimeMetadata): Promise<boolean> {
+		// Shortcut: if there aren't any managers, then we can't be the host
+		if (this._runtimeManagers.length === 0) {
+			return false;
+		}
+		const sessionManager =
+			await this.runtimeManagerForRuntime(runtimeMetadata, false /* don't wait */);
+		return !!sessionManager;
+	}
+
+	/**
+	 * Validates an ILanguageRuntimeMetadata object; typically used to validate
+	 * stored metadata prior to starting a runtime.
+	 *
+	 * @param metadata The metadata to validate
+	 * @returns An updated metadata object
+	 */
+	async $validateLanguageRuntimeMetadata(metadata: ILanguageRuntimeMetadata):
+		Promise<ILanguageRuntimeMetadata> {
+		// Find the runtime manager that should be used for this metadata
+		const m = await this.runtimeManagerForRuntime(metadata, true);
+		if (m) {
+			if (m.manager.validateMetadata) {
+				// The runtime manager has a validateMetadata function; use it to
+				// validate the metadata
+				const result = await m.manager.validateMetadata(metadata);
+				return {
+					...result,
+					extensionId: metadata.extensionId
+				};
+			} else {
+				// The runtime manager doesn't have a validateMetadata function;
+				// this is OK and just means that it doesn't know how to perform
+				// validation. Return the metadata as-is.
+				return metadata;
+			}
+		} else {
+			// We can't validate this metadata, and probably shouldn't use it.
+			throw new Error(
+				`No manager available for language ID '${metadata.languageId}' ` +
+				`(expected from extension ${metadata.extensionId.value})`);
+		}
+	}
+
+	/**
+	 * Validates a language runtime session.
+	 *
+	 * @param metadata The metadata for the language runtime.
+	 * @param sessionId The session ID to validate.
+	 */
+	async $validateLanguageRuntimeSession(metadata: ILanguageRuntimeMetadata,
+		sessionId: string): Promise<boolean> {
+
+		// Find the runtime manager that should be used for this session
+		const m = await this.runtimeManagerForRuntime(metadata, true);
+		if (m) {
+			if (m.manager.validateSession) {
+				// The runtime manager has a validateSession function; use it to
+				// validate the session
+				const result = await m.manager.validateSession(sessionId);
+				return result;
+			} else {
+				// Just consider the session to be invalid
+				return false;
+			}
+		} else {
+			// We can't validate this session, and probably shouldn't use it.
+			throw new Error(
+				`No manager available for language ID '${metadata.languageId}' ` +
+				`(expected from extension ${metadata.extensionId.value})`);
+		}
+	}
+
+	/**
+	 * Forwarded from the main thread whenever a runtime is registered with
+	 * `ILanguageRuntimeService`. This is the single source of truth for
+	 * `positron.runtime.onDidRegisterRuntime`: registrations from this ext
+	 * host's own extensions, from other ext hosts, and from main-thread-only
+	 * paths (e.g. the discovery cache loader) all flow through here.
+	 */
+	$onDidRegisterLanguageRuntime(metadata: ILanguageRuntimeMetadata): void {
+		this._onDidRegisterRuntimeEmitter.fire(metadata);
+	}
+
+	/**
+	 * Restores a language runtime session.
+	 *
+	 * @param runtimeMetadata The metadata for the language runtime.
+	 * @param sessionMetadata The metadata for the session.
+	 * @param sessionName The name of the session.
+	 * @returns A promise that resolves with a handle to the runtime session.
+	 */
+	async $restoreLanguageRuntimeSession(
+		runtimeMetadata: ILanguageRuntimeMetadata,
+		sessionMetadata: IRuntimeSessionMetadata,
+		sessionName: string): Promise<extHostProtocol.RuntimeInitialState> {
+		// Revive the notebook URI if it exists. The URI is serialized as a
+		// plain UriComponents object when crossing the IPC boundary and needs
+		// to be revived into a proper URI instance.
+		if (sessionMetadata.notebookUri) {
+			sessionMetadata = {
+				...sessionMetadata,
+				notebookUri: URI.revive(sessionMetadata.notebookUri)
+			};
+		}
+
+		// Look up the session manager responsible for restoring this session
+		console.debug(`[Reconnect ${sessionMetadata.sessionId}]: Await runtime manager for runtime ${runtimeMetadata.extensionId.value}...`);
+		const sessionManager = await this.runtimeManagerForRuntime(runtimeMetadata, true);
+		if (sessionManager) {
+			if (sessionManager.manager.restoreSession) {
+				// Attempt to restore the session. There are a lot of reasons
+				// this could fail, chief among them that the session isn't
+				// around any more.
+				console.debug(`[Reconnect ${sessionMetadata.sessionId}]: Await restore session...`);
+				const session =
+					await sessionManager.manager.restoreSession(runtimeMetadata, sessionMetadata, sessionName);
+				const handle = this.attachToSession(session);
+				const initalState = {
+					handle,
+					dynState: await session.getDynState(),
+					capabilities: sessionCapabilities(session),
+				};
+				return initalState;
+			} else {
+				// Session restoration is optional; if the session manager
+				// doesn't support it, then throw an error
+				throw new Error(
+					`Session manager for session ID '${sessionMetadata.sessionId}'. ` +
+					`does not support session restoration.`);
+			}
+		} else {
+			throw new Error(
+				`No session manager found for language ID '${runtimeMetadata.languageId}'.`);
+		}
+	}
+
+	/**
+	 * Utility function to look up the manager for a given runtime.
+	 *
+	 * If it can't find the runtime manager, then it will (optionally) wait
+	 * until the runtime manager is registered (up to 10 seconds). If the
+	 * runtime manager is not registered within that time, then it will reject
+	 * the promise.
+	 *
+	 * @param metadata The metadata for the runtime
+	 * @param wait Whether to wait for the runtime manager to be registered if
+	 *  it is not already registered.
+	 *
+	 *
+	 * @returns A promise that resolves with the runtime manager for the
+	 * runtime.
+	 */
+	private async runtimeManagerForRuntime(metadata: ILanguageRuntimeMetadata, wait: boolean): Promise<LanguageRuntimeManager | undefined> {
+		// Do we already have a manager for this runtime? This happens when we
+		// look up a runtime manager for a runtime that has already been
+		// registered.
+		const managerById = this._runtimeManagersByRuntimeId.get(metadata.runtimeId);
+		if (managerById) {
+			return managerById;
+		}
+
+		// Is the manager already known? This happens when we look up a runtime
+		// manager for a runtime that hasn't been registered, but is supplied by
+		// an extension that has registered a manager.
+		const managerByExt = this._runtimeManagers.find(manager =>
+			manager.extension.id === metadata.extensionId.value);
+		if (managerByExt) {
+			return managerByExt;
+		}
+
+
+		// If we don't have a manager for this runtime, and we're not waiting
+		// for one, then return undefined.
+		if (!wait) {
+			return undefined;
+		}
+
+		// Do we already have a pending promise for this extension? If so,
+		// return it.
+		const pending = this._pendingRuntimeManagers.get(
+			ExtensionIdentifier.toKey(metadata.extensionId));
+		if (pending) {
+			return pending.p;
+		}
+
+		// We don't have a manager for this runtime; wait for one.
+		const deferred = new DeferredPromise<LanguageRuntimeManager>();
+		this._pendingRuntimeManagers.set(ExtensionIdentifier.toKey(metadata.extensionId), deferred);
+
+		// Don't wait forever; if the deferred promise doesn't settle within 10
+		// seconds, then reject the promise.
+		setTimeout(() => {
+			if (!deferred.isSettled) {
+				deferred.error(new Error(
+					`Timed out after 10 seconds waiting for runtime manager for runtime ` +
+					`'${metadata.runtimeName}' (${metadata.runtimeId}) to be registered.`));
+			}
+		}, 10000);
+
+		return deferred.p;
+	}
+
+	/**
+	 * Attach to a language runtime session.
+	 *
+	 * @param session The language runtime session to attach to
+	 *
+	 * @returns The handle to the session
+	 */
+	private attachToSession(session: positron.LanguageRuntimeSession): number {
+		const sessionId = session.metadata.sessionId;
+		const disposables = new DisposableStore();
+
+		// Wire event handlers for state changes and messages
+		disposables.add(session.onDidChangeRuntimeState(state => {
+			const tick = this._eventClocks[handle] = this._eventClocks[handle] + 1;
+			this._proxy.$emitLanguageRuntimeState(sessionId, tick, state);
+
+			// When the session exits, make sure to shut down any of its
+			// remaining execution observers cleanly so they aren't left
+			// hanging.
+			if (state === RuntimeState.Exited) {
+				this._executionObservers.forEach((observer, id) => {
+					if (observer.sessionId === session.metadata.sessionId) {
+						// The observer is associated with this session, so we
+						// need to clean it up. Reject its promise if it hasn't
+						// already been settled.
+						if (!observer.promise.isSettled) {
+							observer.onFailed({
+								message: 'The session exited unexpectedly.',
+								name: 'Interrupted',
+							});
+						}
+						observer.dispose();
+						this._executionObservers.delete(id);
+					}
+				});
+			}
+		}));
+
+		disposables.add(session.onDidReceiveRuntimeMessage(message => {
+			const tick = this._eventClocks[handle] = this._eventClocks[handle] + 1;
+			// Amend the message with the event clock for ordering
+			const runtimeMessage: ILanguageRuntimeMessage = {
+				event_clock: tick,
+				...message,
+				// Wrap buffers in VSBuffer so that they can be sent to the main thread
+				buffers: message.buffers?.map(buffer => VSBuffer.wrap(buffer)),
+			};
+
+			// First check if this message relates to an execution with an observer
+			if (message.parent_id && this._executionObservers.has(message.parent_id)) {
+				// Get the observer for this execution
+				const observer = this._executionObservers.get(message.parent_id);
+
+				// Handle the message based on its type
+				if (observer) {
+					this.handleObserverMessage(runtimeMessage, observer);
+				}
+			}
+
+			// Dispatch the message to the appropriate handler
+			switch (message.type) {
+				// Handle comm messages separately
+				case LanguageRuntimeMessageType.CommOpen:
+					this.handleCommOpen(handle, runtimeMessage as ILanguageRuntimeMessageCommOpen);
+					break;
+
+				case LanguageRuntimeMessageType.CommData:
+					this.handleCommData(handle, runtimeMessage as ILanguageRuntimeMessageCommData);
+					break;
+
+				case LanguageRuntimeMessageType.CommClosed:
+					this.handleCommClosed(handle, runtimeMessage as ILanguageRuntimeMessageCommClosed);
+					break;
+
+				// Pass everything else to the main thread
+				default:
+					this._proxy.$emitLanguageRuntimeMessage(sessionId, false, new SerializableObjectWithBuffers(runtimeMessage));
+					break;
+			}
+		}));
+
+		// Hook up the session end (exit) handler
+		disposables.add(session.onDidEndSession(exit => {
+			// Notify the main thread that the session has ended
+			this._proxy.$emitLanguageRuntimeExit(session.metadata.sessionId, exit);
+
+			// The main thread will handle the session cleanup
+			// by calling the `$disposeLanguageRuntime` method.
+
+			// Note that we don't remove the session from the list of sessions;
+			// that would invalidate the handles of all subsequent sessions
+			// since we store them in an array. The session remains in an inert
+			// state.
+		}));
+
+		// Hook up the resource usage update handler
+		disposables.add(session.onDidUpdateResourceUsage(usage => {
+			this._proxy.$emitLanguageRuntimeResourceUsage(session.metadata.sessionId, usage);
+		}));
+
+		// Forward connection state changes to the main thread (if the session
+		// supports them) so they can be relayed to proxy handles held by other
+		// extension hosts. These members are optional on the session interface.
+		if (session.onDidDisconnect) {
+			disposables.add(session.onDidDisconnect(() => {
+				this._proxy.$emitLanguageRuntimeDisconnect(session.metadata.sessionId);
+			}));
+		}
+		if (session.onDidReconnect) {
+			disposables.add(session.onDidReconnect(() => {
+				this._proxy.$emitLanguageRuntimeReconnect(session.metadata.sessionId);
+			}));
+		}
+
+		// Register the runtime
+		const handle = this._runtimeSessions.length;
+		this._runtimeSessions.push(session);
+		this._sessionDisposables.push(disposables);
+
+		this._eventClocks.push(0);
+
+		return handle;
+	}
+
+	async $interruptLanguageRuntime(handle: number): Promise<void> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot interrupt runtime: session handle '${handle}' not found or no longer valid.`);
+		}
+		const session = this._runtimeSessions[handle];
+		try {
+			return session.interrupt();
+		} finally {
+			// Whether or not the interrupt was successful, ensure that
+			// execution observers associated with this session are settled, so
+			// that interrupting the session is always successful from the
+			// perspective of the observer even if the underlying session fails
+			// to interrupt.
+			this._executionObservers.forEach((observer, id) => {
+				if (observer.sessionId === session.metadata.sessionId) {
+					// The observer is associated with this session, so we
+					// need to clean it up. Reject its promise if it hasn't
+					// already been settled.
+					if (!observer.promise.isSettled) {
+						observer.onFailed({
+							message: 'The user interrupted the code execution.',
+							name: 'Interrupted',
+						});
+					}
+					observer.dispose();
+					this._executionObservers.delete(id);
+				}
+			});
+		}
+	}
+
+	async $callMethod(handle: number, method: string, args: any[]): Promise<any> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot call method ${method}: session handle '${handle}' not found or no longer valid.`);
+		}
+		const session = this._runtimeSessions[handle];
+		if (!session.callMethod) {
+			throw new Error(`Cannot call method ${method}: session handle '${handle}' does not implement method calls.`);
+		}
+		return session.callMethod(method, ...args);
+	}
+
+	async $shutdownLanguageRuntime(handle: number, exitReason: positron.RuntimeExitReason): Promise<void> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot shut down runtime: session handle '${handle}' not found or no longer valid.`);
+		}
+		return this._runtimeSessions[handle].shutdown(exitReason);
+	}
+
+	async $forceQuitLanguageRuntime(handle: number): Promise<void> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot force quit runtime: session handle '${handle}' not found or no longer valid.`);
+		}
+		return this._runtimeSessions[handle].forceQuit();
+	}
+
+	private getPackageManagerOrThrow(handle: number, operation: string): positron.LanguageRuntimePackageManager {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot ${operation}: session handle '${handle}' not found or no longer valid.`);
+		}
+		const session = this._runtimeSessions[handle];
+		const packageManager = session.getPackageManager?.();
+		if (!packageManager) {
+			throw new Error(`Cannot ${operation}: session handle '${handle}' does not implement package management.`);
+		}
+		return packageManager;
+	}
+
+	async $getPackages(handle: number, token: CancellationToken): Promise<positron.LanguageRuntimePackage[]> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'get packages from runtime');
+		return packageManager.getPackages(token);
+	}
+
+	async $installPackages(handle: number, packages: positron.PackageSpec[], token: CancellationToken): Promise<void> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'install packages');
+		return packageManager.installPackages(packages, token);
+	}
+
+	async $uninstallPackages(handle: number, packageNames: string[], token: CancellationToken): Promise<void> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'uninstall packages');
+		return packageManager.uninstallPackages(packageNames, token);
+	}
+
+	async $updatePackages(handle: number, packages: positron.PackageSpec[], token: CancellationToken): Promise<void> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'update packages');
+		return packageManager.updatePackages(packages, token);
+	}
+
+	async $updateAllPackages(handle: number, token: CancellationToken): Promise<void> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'update all packages');
+		return packageManager.updateAllPackages(token);
+	}
+
+	async $searchPackages(handle: number, query: string, token: CancellationToken): Promise<positron.LanguageRuntimePackage[]> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'search packages');
+		return packageManager.searchPackages(query, token);
+	}
+
+	async $searchPackageVersions(handle: number, name: string, token: CancellationToken): Promise<string[]> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'search package versions');
+		return packageManager.searchPackageVersions(name, token);
+	}
+
+	async $getPackageMetadata(
+		handle: number,
+		packageNames: string[],
+		token: CancellationToken,
+	): Promise<Record<string, Partial<positron.LanguageRuntimePackage>> | undefined> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'get package metadata');
+		// Return undefined if the package manager doesn't implement this optional method
+		if (!packageManager.getPackageMetadata) {
+			return undefined;
+		}
+		const result = await packageManager.getPackageMetadata(packageNames, token);
+		if (!result) {
+			return undefined;
+		}
+		// Convert Map to plain object for IPC serialization
+		return Object.fromEntries(result);
+	}
+
+	async $packageRepositoryUrl(handle: number, token: CancellationToken): Promise<string | undefined> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'get package repository URL');
+		// Return undefined if the package manager doesn't implement this optional method
+		return packageManager.packageRepositoryUrl?.(token);
+	}
+
+	/**
+	 * Perform a Package Manager API request for the workbench.
+	 *
+	 * The request runs here rather than in the workbench because this is the
+	 * host the runtime runs on: it has the route to the environment's
+	 * repository, and the extension host's `fetch` is already patched with the
+	 * user's proxy configuration and system certificates. The renderer has
+	 * neither, and its `fetch` would be blocked by CORS besides -- the Package
+	 * Manager `__api__` endpoints send no `Access-Control-Allow-Origin`.
+	 *
+	 * Routing through a session handle is what picks the right host: in a server
+	 * deployment the session's extension host is on the server, which is where
+	 * an internal repository is reachable.
+	 *
+	 * The request is held to the host the workbench named. Positron promises an
+	 * environment that installs from an internal repository that its package
+	 * inventory goes to that repository and nowhere else, and a redirect would
+	 * otherwise carry the inventory off-host without anyone deciding to.
+	 */
+	async $packageRepositoryRequest(
+		handle: number,
+		request: IPackageRepositoryRequest,
+		token: CancellationToken,
+	): Promise<IPackageRepositoryResponse> {
+		// Resolve the session so a stale handle fails loudly rather than
+		// performing a request on behalf of a session that no longer exists.
+		this.getPackageManagerOrThrow(handle, 'perform a package repository request');
+
+		const target = new URL(request.url);
+		if (target.protocol !== 'http:' && target.protocol !== 'https:') {
+			throw new Error(`Unsupported package repository scheme: ${target.protocol}`);
+		}
+
+		const signals: AbortSignal[] = [];
+		const controller = new AbortController();
+		signals.push(controller.signal);
+		const subscription = token.onCancellationRequested(() => controller.abort());
+		if (request.timeoutMs !== undefined) {
+			signals.push(AbortSignal.timeout(request.timeoutMs));
+		}
+
+		try {
+			// Redirects are followed manually so the off-host check runs before
+			// anything is re-sent: with `redirect: 'follow'`, by the time
+			// `response.redirected` is readable the body (the package inventory)
+			// has already been delivered to the redirect target. A same-host
+			// redirect (a normalized trailing slash, an http->https upgrade) is
+			// followed; an off-host one is refused with nothing sent.
+			const maxRedirects = 5;
+			const signal = signals.length > 1 ? AbortSignal.any(signals) : controller.signal;
+			let url = request.url;
+			let method: 'GET' | 'POST' = request.method ?? 'GET';
+			let body = request.body;
+			for (let redirects = 0; ; redirects++) {
+				const response = await fetch(url, {
+					method,
+					headers: request.headers,
+					body,
+					redirect: 'manual',
+					signal,
+				});
+				const location = response.status >= 300 && response.status < 400
+					? response.headers.get('location')
+					: null;
+				if (!location) {
+					return { status: response.status, body: await response.text() };
+				}
+				if (redirects >= maxRedirects) {
+					throw new Error(`Package repository request to ${target.host} was redirected more than ${maxRedirects} times`);
+				}
+				const redirected = new URL(location, url);
+				if (redirected.host !== target.host || (redirected.protocol !== 'http:' && redirected.protocol !== 'https:')) {
+					throw new Error(`Package repository request to ${target.host} redirected to ${redirected.host}`);
+				}
+				// Per fetch semantics, a 303 (and a 301/302 answering a POST) is
+				// followed with GET and no body; 307/308 preserve both.
+				if (response.status === 303 || ((response.status === 301 || response.status === 302) && method === 'POST')) {
+					method = 'GET';
+					body = undefined;
+				}
+				url = redirected.href;
+			}
+		} finally {
+			subscription.dispose();
+		}
+	}
+
+	async $listMissingPackages(
+		handle: number,
+		target: positron.RuntimeMissingPackagesTarget,
+		token: CancellationToken,
+	): Promise<positron.RuntimeMissingPackage[]> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot list missing packages: session handle '${handle}' not found or no longer valid.`);
+		}
+		const session = this._runtimeSessions[handle];
+		return (await session.listMissingPackages?.(target, token)) ?? [];
+	}
+
+	async $getMissingPackageProbe(
+		handle: number,
+		error: positron.RuntimeConsoleError,
+		token: CancellationToken,
+	): Promise<string | undefined> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot get missing-package probe: session handle '${handle}' not found or no longer valid.`);
+		}
+		const session = this._runtimeSessions[handle];
+		return session.getMissingPackageProbe?.(error, token);
+	}
+
+	async $getPackageDetail(
+		handle: number,
+		name: string,
+		token: CancellationToken,
+	): Promise<Partial<positron.LanguageRuntimePackage> | undefined> {
+		const packageManager = this.getPackageManagerOrThrow(handle, 'get package detail');
+		if (!packageManager.getPackageDetail) {
+			return undefined;
+		}
+		return packageManager.getPackageDetail(name, token);
+	}
+
+	async $restartSession(handle: number, workingDirectory?: string): Promise<void> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot restart runtime: session handle '${handle}' not found or no longer valid.`);
+		}
+		return this._runtimeSessions[handle].restart(workingDirectory);
+	}
+
+	async $startLanguageRuntime(handle: number): Promise<positron.LanguageRuntimeInfo> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot restart runtime: session handle '${handle}' not found or no longer valid.`);
+		}
+		return this._runtimeSessions[handle].start();
+	}
+
+	async $disposeLanguageRuntime(handle: number): Promise<void> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot cleanup runtime: session handle '${handle}' not found or no longer valid.`);
+		}
+		// Release the event subscriptions wired in `attachToSession`. The
+		// array slot is kept so subsequent session handles remain valid.
+		this._sessionDisposables[handle].dispose();
+		// Dispose session to cleanup kernel, LSP, etc.
+		await this._runtimeSessions[handle].dispose();
+	}
+
+	$showOutputLanguageRuntime(handle: number, channel?: positron.LanguageRuntimeSessionChannel): void {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot show output for runtime: language runtime session handle '${handle}' not found or no longer valid.`);
+		}
+		if (!this._runtimeSessions[handle].showOutput) {
+			throw new Error(`Cannot show output for runtime: language runtime session handle '${handle}' does not implement logging.`);
+		}
+		return this._runtimeSessions[handle].showOutput(channel);
+	}
+
+	async $listOutputChannelsLanguageRuntime(handle: number): Promise<positron.LanguageRuntimeSessionChannel[]> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot list output channels for runtime: language runtime session handle '${handle}' not found or no longer valid.`);
+		}
+		if (!this._runtimeSessions[handle].listOutputChannels) {
+			throw new Error(`Cannot list output channels for runtime: language runtime session handle '${handle}'`);
+		}
+		return this._runtimeSessions[handle].listOutputChannels();
+	}
+
+	$updateSessionNameLanguageRuntime(handle: number, sessionName: string): void {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot update session name for runtime: language runtime session handle '${handle}' not found or no longer valid.`);
+		}
+		this._runtimeSessions[handle].updateSessionName(sessionName);
+	}
+
+	$showProfileLanguageRuntime(handle: number): Thenable<void> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot show profile for runtime: language runtime session handle '${handle}' not found or no longer valid.`);
+		}
+		if (!this._runtimeSessions[handle].showProfile) {
+			throw new Error(`Cannot show profile for runtime: language runtime session handle '${handle}' does not implement profiling.`);
+		}
+		return this._runtimeSessions[handle].showProfile!();
+	}
+
+	async $getLaunchInfo(handle: number): Promise<positron.LanguageRuntimeLaunchInfo | undefined> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot get launch info: session handle '${handle}' not found or no longer valid.`);
+		}
+		const session = this._runtimeSessions[handle];
+		if (!session.getLaunchInfo) {
+			return undefined;
+		}
+		return session.getLaunchInfo();
+	}
+
+	$openResource(handle: number, resource: URI | string): Promise<boolean> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot open resource: session handle '${handle}' not found or no longer valid.`);
+		}
+		if (!this._runtimeSessions[handle].openResource) {
+			return Promise.resolve(false);
+		}
+		return Promise.resolve(this._runtimeSessions[handle].openResource!(resource));
+	}
+
+	$executeCode(handle: number, code: string, id: string, mode: RuntimeCodeExecutionMode, errorBehavior: RuntimeErrorBehavior, codeLocation?: ICodeLocation, _executionId?: string, executionMetadata?: Record<string, unknown>): Promise<void> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot execute code: session handle '${handle}' not found or no longer valid.`);
+		}
+
+		// Revive the URI after RPC serialization so extensions get a proper Uri instance
+		let codeLocationRevived: positron.Utf8Location | undefined;
+		if (codeLocation) {
+			codeLocationRevived = {
+				uri: URI.revive(codeLocation.uri),
+				range: codeLocation.range,
+			};
+		}
+
+		// Wrap in Promise.resolve so both void- and thenable-returning session
+		// implementations work, and so a thrown/rejected error propagates back
+		// over RPC (preserving error.name for CodeIncompleteError etc.).
+		return Promise.resolve(this._runtimeSessions[handle].execute(code, id, mode, errorBehavior, codeLocationRevived, executionMetadata));
+	}
+
+	$isCodeFragmentComplete(handle: number, code: string): Promise<RuntimeCodeFragmentStatus> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot test code completeness: session handle '${handle}' not found or no longer valid.`);
+		}
+		return Promise.resolve(this._runtimeSessions[handle].isCodeFragmentComplete(code));
+	}
+
+	$createClient(handle: number, id: string, type: RuntimeClientType, params: any, metadata?: any): Promise<void> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot create '${type}' client: session handle '${handle}' not found or no longer valid.`);
+		}
+		return Promise.resolve(this._runtimeSessions[handle].createClient(id, type, params, metadata));
+	}
+
+	$listClients(handle: number, type?: RuntimeClientType): Promise<Record<string, string>> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot list clients: session handle '${handle}' not found or no longer valid.`);
+		}
+		return Promise.resolve(this._runtimeSessions[handle].listClients(type));
+	}
+
+	$removeClient(handle: number, id: string): void {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot remove client: session handle '${handle}' not found or no longer valid.`);
+		}
+		this._runtimeSessions[handle].removeClient(id);
+	}
+
+	$sendClientMessage(handle: number, client_id: string, message_id: string, message: any): void {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot send message to client: session handle '${handle}' not found or no longer valid.`);
+		}
+		this._runtimeSessions[handle].sendClientMessage(client_id, message_id, message);
+	}
+
+	$replyToPrompt(handle: number, id: string, response: string): void {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot reply to prompt: session handle '${handle}' not found or no longer valid.`);
+		}
+		this._runtimeSessions[handle].replyToPrompt(id, response);
+	}
+
+	$setWorkingDirectory(handle: number, dir: string): Promise<void> {
+		if (handle >= this._runtimeSessions.length) {
+			throw new Error(`Cannot set working directory: session handle '${handle}' not found or no longer valid.`);
+		}
+		return new Promise((resolve, reject) => {
+			this._runtimeSessions[handle].setWorkingDirectory(dir).then(
+				() => {
+					resolve();
+				},
+				(err) => {
+					reject(err);
+				});
+		});
+	}
+
+	/**
+	 * Compute the root signature for the manager registered against the
+	 * given language ID. Returns `undefined` when no manager is registered
+	 * for the language or when the registered manager does not implement
+	 * `getDiscoveryRootSignature`. Errors thrown by the manager propagate to
+	 * the caller, which in turn drops back to the periodic-refresh trigger.
+	 */
+	/**
+	 * Per-contribution view of the runtime managers registered in this
+	 * extension host. The main-thread cache layer uses this to make
+	 * per-`(extensionId, languageId)` decisions about which contributions
+	 * need a full discovery pass, instead of forcing the whole ext host
+	 * just because one of its managers opted into `alwaysRediscover`.
+	 */
+	public async $getHostedLanguageContributions(): Promise<IHostedLanguageContribution[]> {
+		return this._runtimeManagers.map(m => ({
+			extensionId: m.extension.identifier.value,
+			languageId: m.languageId,
+			alwaysRediscover: m.manager.alwaysRediscover === true,
+		}));
+	}
+
+	public async $getDiscoveryRootSignature(extensionId: string, languageId: string): Promise<IRuntimeRootSignature | undefined> {
+		// Multiple extensions can register a runtime manager for the same
+		// languageId (e.g. `ms-python.python` and `positron.positron-reticulate`
+		// both register for `python`). Disambiguate by extensionId so a sibling
+		// manager that doesn't implement `getDiscoveryRootSignature` doesn't
+		// shadow the real owner.
+		const m = this._runtimeManagers.find(m =>
+			m.languageId === languageId && m.extension.identifier.value === extensionId);
+		if (!m || !m.manager.getDiscoveryRootSignature) {
+			return undefined;
+		}
+		return m.manager.getDiscoveryRootSignature();
+	}
+
+	public async $recommendWorkspaceRuntimes(disabledLanguageIds: string[]): Promise<ILanguageRuntimeMetadata[]> {
+		// Get the recommended runtimes from each provider
+		const metadata = await Promise.all(
+			this._runtimeManagers.filter(m => {
+				// Remove disabled languages from the list of runtime managers
+				return !disabledLanguageIds.includes(m.languageId);
+			}
+			).map(async m => {
+				// Get the recommended runtime from the provider, if any
+				const recommended = await m.manager.recommendedWorkspaceRuntime();
+				if (recommended) {
+					return {
+						extensionId: m.extension.identifier,
+						...recommended
+					};
+				}
+				return undefined;
+			})
+		);
+
+		// Return all the metadata from the providers
+		return metadata.filter(metadata => metadata !== undefined) as ILanguageRuntimeMetadata[];
+	}
+
+	/**
+	 * Discovers language runtimes and registers them with the main thread.
+	 *
+	 * @param disabledLanguageIds The set of language IDs the user has disabled.
+	 * @param skipLanguageIds Additional language IDs the cache layer has
+	 * decided don't need a discovery pass on this open (typically because
+	 * they're fully served from cache and aren't `alwaysRediscover`).
+	 */
+	public async $discoverLanguageRuntimes(disabledLanguageIds: string[], skipLanguageIds?: string[]): Promise<void> {
+		// Merge the two skip sources into one. `disabledLanguageIds` is the
+		// user's explicit "don't run this language" setting; `skipLanguageIds`
+		// is the cache layer's per-language opt-out for this pass. The ext
+		// host doesn't care which is which -- it just needs the union.
+		const skipSet = new Set<string>([...disabledLanguageIds, ...(skipLanguageIds ?? [])]);
+
+		// Extract all the runtime discoverers from the runtime managers
+		let start = 0;
+		let end = this._runtimeManagers.length;
+
+		// Discover runtimes from each provider in parallel
+		while (start !== end) {
+			// Extract the section of the providers list we're working on and discover
+			// runtimes from it
+			const managers = this._runtimeManagers.slice(start, end);
+			try {
+				await this.discoverLanguageRuntimes(managers, skipSet);
+			} catch (err) {
+				// Log and continue if errors occur during registration; this is
+				// a safeguard to ensure we always signal the main thread when
+				// discovery is complete (below)
+				console.error(err);
+			}
+
+			// Typically the loop ends after the first pass, but if new
+			// providers were added while we were discovering runtimes, then we
+			// need to go back into the body of the loop to discover those
+			// runtimes as well.
+			start = end;
+			end = this._runtimeManagers.length;
+		}
+
+		// Notify the main thread that discovery is complete
+		this._runtimeDiscoveryComplete = true;
+		this._proxy.$completeLanguageRuntimeDiscovery();
+	}
+
+	/**
+	 * Mark discovery complete on the warm-start fast path, where the main thread
+	 * served every cache-satisfied language from its discovery cache.
+	 *
+	 * This still runs a normal discovery pass, but with the cache-satisfied
+	 * languages in the skip set so they aren't needlessly re-walked. The point
+	 * is to catch a runtime manager registered via the public
+	 * `registerLanguageRuntimeManager` API *before* this signal arrived: its
+	 * language isn't cache-backed, so it was parked in `_runtimeManagers`
+	 * awaiting an enumeration pass that the warm start would otherwise skip,
+	 * stranding it forever. (Managers registered *after* the flag flips
+	 * self-discover via their own IIFE, so they were never at risk.)
+	 *
+	 * @param skipLanguageIds The cache-satisfied (and disabled) languages to
+	 * skip; supplied by the main thread.
+	 */
+	public $markRuntimeDiscoveryComplete(skipLanguageIds?: string[]): Promise<void> {
+		return this.$discoverLanguageRuntimes([], skipLanguageIds);
+	}
+
+	/**
+	 * Notifies the extension host that the foreground session has changed.
+	 * This is forwarding the event from the main thread to the extension host.
+	 *
+	 * @param sessionId The ID of the new foreground session
+	 */
+	@debounce(1000)
+	public async $notifyForegroundSessionChanged(sessionId: string | undefined): Promise<void> {
+		this._onDidChangeForegroundSessionEmitter.fire(sessionId);
+	}
+
+	/**
+	 * Notification from the main thread that code has been executed.
+	 *
+	 * @param event The event containing the code execution details
+	 */
+	public async $notifyCodeExecuted(event: ILanguageRuntimeCodeExecutedEvent): Promise<void> {
+		// Derive the code attribution object
+		const attribution: positron.CodeAttribution = {
+			metadata: event.attribution.metadata,
+			source: event.attribution.source as unknown as positron.CodeAttributionSource,
+		};
+
+		// Revive known metadata URIs
+		if (isUriComponents(attribution.metadata?.cell?.uri)) {
+			attribution.metadata.cell.uri = URI.revive(attribution.metadata.cell.uri);
+		}
+		if (isUriComponents(attribution.metadata?.cell?.notebook?.uri)) {
+			attribution.metadata.cell.notebook.uri = URI.revive(attribution.metadata.cell.notebook.uri);
+		}
+
+		// Create the event object
+		const evt: positron.CodeExecutionEvent = {
+			executionId: event.executionId,
+			sessionId: event.sessionId,
+			languageId: event.languageId,
+			code: event.code,
+			mode: event.mode as unknown as positron.RuntimeCodeExecutionMode,
+			attribution,
+			runtimeName: event.runtimeName,
+		};
+
+		this._onDidExecuteCodeEmitter.fire(evt);
+	}
+
+	/**
+	 * Discovers language runtimes in parallel and registers each one with the main thread.
+	 *
+	 * @param managers The set of managers to discover runtimes from
+	 * @param skipLanguageIds Language IDs to exclude from discovery (union of
+	 * the user's disabled set and the cache layer's per-pass skip set).
+	 */
+	private async discoverLanguageRuntimes(managers: Array<LanguageRuntimeManager>, skipLanguageIds: Set<string>): Promise<void> {
+
+		// Utility promise
+		const never: Promise<never> = new Promise(() => { });
+
+		// Utility interface to keep track of the discoverers and their extensions
+		interface Discoverer {
+			extension: IExtensionDescription;
+			manager: positron.LanguageRuntimeManager;
+			discoverer: AsyncGenerator<positron.LanguageRuntimeMetadata, void, unknown>;
+		}
+
+		// Invoke all the discovery functions to return an async generator for each
+		const discoverers: Array<Discoverer> = managers
+			.filter(manager => !skipLanguageIds.has(manager.languageId))
+			.map(manager => ({
+				extension: manager.extension,
+				manager: manager.manager,
+				languageId: manager.languageId,
+				discoverer: manager.manager.discoverAllRuntimes()
+			}));
+
+		// The number of discoverers we're waiting on (initially all
+		// discoverers)
+		let count = discoverers.length;
+
+		// Early exit if there are no discoverers
+		if (count === 0) {
+			return;
+		}
+
+		// Utility function to get the next runtime from a provider and amend an
+		// index. If the provider throws an error attempting to get the next
+		// provider, then the error is logged and the function signals that the
+		// provider is done.
+		const getNext =
+			async (asyncGen: Discoverer, index: number) => {
+				try {
+					const result = await asyncGen.discoverer.next();
+					return ({
+						index,
+						extension: asyncGen.extension,
+						manager: asyncGen.manager,
+						result
+					});
+				} catch (err) {
+					console.error(`Language runtime provider threw an error during registration: ` +
+						`${err}`);
+					return {
+						index,
+						extension: asyncGen.extension,
+						manager: asyncGen.manager,
+						result: { value: undefined, done: true }
+					};
+				}
+			};
+
+		// Array mapping each provider to a promise for its next runtime
+		const nextPromises = discoverers.map(getNext);
+
+		try {
+			while (count) {
+				// Wait for the next runtime to be discovered from any provider
+				const { index, extension, manager, result } = await Promise.race(nextPromises);
+				if (result.done) {
+					// If the provider is done supplying runtimes, remove it
+					// from the list of discoverers we're waiting on
+					nextPromises[index] = never;
+					count--;
+				} else if (result.value !== undefined) {
+					// Otherwise, move on to the next runtime from the provider
+					// and register the runtime it returned
+					nextPromises[index] = getNext(discoverers[index], index);
+					try {
+						this.registerLanguageRuntime(extension, manager, result.value);
+					} catch (err) {
+						console.error(`Error registering language runtime ` +
+							`${result.value.runtimeName}: ${err}`);
+					}
+				}
+			}
+		} catch (err) {
+			console.error(`Halting language runtime registration: ${err}`);
+		} finally {
+			// Clean up any remaining promises
+			for (const [index, iterator] of discoverers.entries()) {
+				if (nextPromises[index] !== never && iterator.discoverer.return !== null) {
+					void iterator.discoverer.return(undefined);
+				}
+			}
+		}
+	}
+
+	public registerClientHandler(handler: positron.RuntimeClientHandler): IDisposable {
+		this._clientHandlers.push(handler);
+		return new Disposable(() => {
+			const index = this._clientHandlers.indexOf(handler);
+			if (index >= 0) {
+				this._clientHandlers.splice(index, 1);
+			}
+		});
+	}
+
+	public registerClientInstance(clientInstanceId: string): IDisposable {
+		this._registeredClientIds.add(clientInstanceId);
+		return new Disposable(() => {
+			this._registeredClientIds.delete(clientInstanceId);
+		});
+	}
+
+	/**
+	 * Emits a performance mark for language runtime operations. This is used to
+	 * correlate performance events across the extension host and main thread.
+	 *
+	 * @param name The name of the performance mark
+	 */
+	public emitPerfMark(extensionId: string, name: string): void {
+		this._proxy.$emitPerfMark(extensionId, name);
+	}
+
+	public getRegisteredRuntimes(): Promise<positron.LanguageRuntimeMetadata[]> {
+		return this._proxy.$getRegisteredRuntimes();
+	}
+
+	public async getPreferredRuntime(languageId: string): Promise<positron.LanguageRuntimeMetadata | undefined> {
+		return this._proxy.$getPreferredRuntime(languageId);
+	}
+
+	public async getActiveSessions(): Promise<positron.BaseLanguageRuntimeSession[]> {
+		return (await this._proxy.$getActiveSessions())
+			.map(session => this.getRuntimeSessionInterface(session)!);
+	}
+
+	public async getSession(sessionId: string): Promise<positron.BaseLanguageRuntimeSession | undefined> {
+		const session = await this._proxy.$getSession(sessionId);
+		if (!session) {
+			return undefined;
+		}
+		return this.getRuntimeSessionInterface(session);
+	}
+
+	private getRuntimeSessionInterface(session?: extHostProtocol.IActiveRuntimeSessionMetadataDto): positron.BaseLanguageRuntimeSession | undefined {
+		// If there's no session, return undefined
+		if (!session) {
+			return undefined;
+		}
+
+		const sessionId = session.metadata.sessionId;
+
+		// Check to see if we already have this session
+		const existing = this._runtimeSessions.find(s => s.metadata.sessionId === sessionId);
+		if (existing) {
+			return existing;
+		}
+
+		// The session doesn't exist on this host. Check to see if we have a
+		// proxy for this session already.
+		const proxy = this._runtimeProxies.get(sessionId);
+		if (proxy) {
+			return proxy;
+		}
+
+		// Create a proxy for this session, seeding it with the current runtime
+		// state so that `getRuntimeState()` returns a useful value immediately.
+		const proxySession = new ExtHostRuntimeSessionProxy(
+			session.metadata,
+			session.runtimeMetadata,
+			session.runtimeState,
+			this._proxy);
+		this._runtimeProxies.set(sessionId, proxySession);
+
+		// Ask the main thread to forward state changes and connection events for
+		// this session so that the proxy stays in sync.
+		this._proxy.$subscribeToSession(sessionId);
+		return proxySession;
+	}
+
+	/**
+	 * Handles a runtime state change forwarded from the main thread for a
+	 * proxied session (one owned by another extension host).
+	 */
+	public $updateProxySessionState(sessionId: string, state: RuntimeState): void {
+		this._runtimeProxies.get(sessionId)?.setRuntimeState(state);
+	}
+
+	/**
+	 * Handles a disconnect notification forwarded from the main thread for a
+	 * proxied session.
+	 */
+	public $notifyProxySessionDisconnected(sessionId: string): void {
+		this._runtimeProxies.get(sessionId)?.fireDidDisconnect();
+	}
+
+	/**
+	 * Handles a reconnect notification forwarded from the main thread for a
+	 * proxied session.
+	 */
+	public $notifyProxySessionReconnected(sessionId: string): void {
+		this._runtimeProxies.get(sessionId)?.fireDidReconnect();
+	}
+
+	/**
+	 * Gets the current foreground language runtime session, if any.
+	 *
+	 * @returns The current foreground session, if any
+	 */
+	public async getForegroundSession(): Promise<positron.BaseLanguageRuntimeSession | undefined> {
+		const session = await this._proxy.$getForegroundSession();
+		return this.getRuntimeSessionInterface(session);
+	}
+
+	/**
+	 * Get the language runtime session associated with a notebook, if any.
+	 * @param notebookUri the URI of the notebook
+	 * @returns The session associated with the notebook, if any
+	 */
+	public async getNotebookSession(notebookUri: URI): Promise<positron.BaseLanguageRuntimeSession | undefined> {
+		const session = await this._proxy.$getNotebookSession(notebookUri);
+		return this.getRuntimeSessionInterface(session);
+	}
+
+	/**
+	 * Get the current working directory of a runtime session.
+	 * @param sessionId the session ID, or undefined for the foreground session
+	 * @returns The working directory, or undefined if not available
+	 */
+	public async getSessionWorkingDirectory(sessionId?: string): Promise<string | undefined> {
+		return this._proxy.$getSessionWorkingDirectory(sessionId);
+	}
+
+	/**
+	 * Registers a new language runtime manager with the extension host.
+	 *
+	 * @param extension The extension that is registering the manager
+	 * @param languageId The language ID for which the manager provides runtimes
+	 * @param manager The manager to register
+	 * @returns A disposable that unregisters the manager when disposed
+	 */
+	public registerLanguageRuntimeManager(
+		extension: IExtensionDescription,
+		languageId: string,
+		manager: positron.LanguageRuntimeManager): IDisposable {
+
+		const disposables = new DisposableStore();
+
+		// If we were waiting for this runtime manager to be registered, then
+		// resolve the promise now.
+		const pending = this._pendingRuntimeManagers.get(ExtensionIdentifier.toKey(extension.identifier));
+		if (pending) {
+			pending.complete({ manager, languageId, extension });
+			this._pendingRuntimeManagers.delete(ExtensionIdentifier.toKey(extension.identifier));
+		}
+
+		if (this._runtimeDiscoveryComplete) {
+			// We missed the discovery phase. Invoke the provider's async
+			// generator and register each runtime it returns right away.
+			//
+			// Note that if we don't miss the discovery phase, then the
+			// provider's async generator will be invoked as part of the
+			// discovery process, and we don't need to do anything here.
+			void (async () => {
+				const discoverer = manager.discoverAllRuntimes();
+				for await (const runtime of discoverer) {
+					disposables.add(this.registerLanguageRuntime(extension, manager, runtime));
+				}
+			})();
+		}
+
+		// Attach an event handler to the onDidDiscoverRuntime event, if
+		// present. This event notifies us when a new runtime is discovered
+		// outside the discovery phase.
+		if (manager.onDidDiscoverRuntime) {
+			disposables.add(manager.onDidDiscoverRuntime(runtime => {
+				this.registerLanguageRuntime(extension, manager, runtime);
+			}));
+		}
+
+		// Attach an event handler to the onDidRemoveRuntime event, if present.
+		// This event notifies us when a previously registered runtime should be
+		// retracted (e.g. its environment was deleted, or de-duplication
+		// collapsed an alias that had already been registered).
+		if (manager.onDidRemoveRuntime) {
+			disposables.add(manager.onDidRemoveRuntime(runtimeId => {
+				this._proxy.$unregisterLanguageRuntime(runtimeId);
+				this._runtimeManagersByRuntimeId.delete(runtimeId);
+			}));
+		}
+
+		this._runtimeManagers.push({ manager, languageId, extension });
+
+		return new Disposable(() => {
+			// Clean up disposables
+			disposables.dispose();
+
+			// Remove all the runtimes registered by this manager
+			this._runtimeManagersByRuntimeId.forEach((value, key) => {
+				if (value.manager === manager) {
+					// Unregister the runtime from the main thread
+					this._proxy.$unregisterLanguageRuntime(key);
+					// Remove the runtime from the map
+					this._runtimeManagersByRuntimeId.delete(key);
+				}
+			});
+
+			// Remove the manager from the list of registered managers
+			const index = this._runtimeManagers.findIndex(m => m.manager === manager);
+			if (index >= 0) {
+				this._runtimeManagers.splice(index, 1);
+			}
+		});
+	}
+
+	public registerLanguageRuntime(
+		extension: IExtensionDescription,
+		manager: positron.LanguageRuntimeManager,
+		runtime: positron.LanguageRuntimeMetadata): IDisposable {
+
+		// Register the runtime with the main thread. The main thread will
+		// broadcast back via `$onDidRegisterLanguageRuntime`, which is what
+		// fires `onDidRegisterRuntime` for listeners. We deliberately don't
+		// fire the local emitter here -- the round-trip is the single source
+		// of truth so cache-loaded runtimes (registered main-thread-only) and
+		// extension-driven runtimes both flow through the same path.
+		this._proxy.$registerLanguageRuntime({
+			extensionId: extension.identifier,
+			...runtime
+		});
+
+		// Save the manager associated with this runtime, too; we'll need to use
+		// it to create a runtime session later
+		this._runtimeManagersByRuntimeId.set(runtime.runtimeId, { manager, languageId: runtime.languageId, extension });
+
+		return new Disposable(() => {
+			this._proxy.$unregisterLanguageRuntime(runtime.runtimeId);
+		});
+	}
+
+	public executeCode(
+		languageId: string,
+		code: string,
+		extensionId: string,
+		focus: boolean,
+		allowIncomplete?: boolean,
+		mode?: RuntimeCodeExecutionMode,
+		errorBehavior?: RuntimeErrorBehavior,
+		observer?: IExecutionObserver,
+		sessionId?: string,
+		documentUri?: URI,
+		executionMetadata?: Record<string, unknown>,
+		attributionMetadata?: Record<string, unknown>): Promise<Record<string, unknown>> {
+
+		// Create a UUID and an observer for this execution request
+		const executionId = generateUuid();
+		const executionObserver = new ExecutionObserver(observer);
+		this._executionObservers.set(executionId, executionObserver);
+
+		// Begin the code execution. This returns a promise that resolves to the
+		// session ID of the session assigned (or created) to run the code.
+		//
+		// The parameter order gets rearranged here; the API parameter order is
+		// more or less fixed since it's part of the public API, but the
+		// internal parameter order can be more logical.
+		this._proxy.$executeCode(
+			languageId, extensionId, sessionId, code, focus, allowIncomplete, mode, errorBehavior, executionId, documentUri, executionMetadata, attributionMetadata).then(
+				(sessionId) => {
+					// Bind the session ID to the observer so we can use it later
+					executionObserver.sessionId = sessionId;
+
+					// If a cancellation token was provided, then add a cancellation
+					// request handler so we can interrupt the session if requested
+					if (!observer?.token) {
+						return;
+					}
+					const token = observer.token;
+					executionObserver.store.add(
+						token.onCancellationRequested(async () => {
+							// We can't interrupt the code if it hasn't started yet.
+							//
+							// CONSIDER: We could handle this by reaching
+							// back into the main thread and asking it to
+							// cancel the execution request that has not yet
+							// been dispatched
+							if (executionObserver.state === 'pending') {
+								this._logService.warn(
+									`Cannot interrupt execution of ${code}: ` +
+									`it has not yet started.`);
+							}
+
+							// If the code is running, interrupt the session
+							if (executionObserver.state === 'running') {
+								await this.interruptSession(sessionId);
+							}
+						}));
+				}).catch((err) => {
+					// Propagate the error to the observer
+					executionObserver.promise.error(err);
+				});
+
+		return executionObserver.promise.p;
+	}
+
+	/**
+	 * Evaluate code silently and return a JSON-coerced result.
+	 *
+	 * @param languageId The language ID to evaluate in
+	 * @param code The code to evaluate
+	 * @param token An optional cancellation token
+	 * @param sessionId An optional session ID to target
+	 * @returns A promise that resolves with the evaluation result
+	 */
+	public evaluateCode(
+		languageId: string,
+		code: string,
+		token?: CancellationToken,
+		sessionId?: string,
+		whenBusy?: RuntimeBusyBehavior
+	): Promise<EvalResult> {
+		const evaluationId = generateUuid();
+
+		const promise = this._proxy.$evaluateCode(languageId, sessionId, code, evaluationId, whenBusy);
+
+		// If a cancellation token is provided, register a listener to cancel
+		// the evaluation when the token fires
+		if (token) {
+			const listener = token.onCancellationRequested(() => {
+				// We need to know the session ID to cancel. If we don't have one
+				// yet, we can't cancel (the evaluation hasn't started).
+				// The main thread will figure out the session ID from the
+				// evaluation ID.
+				this._proxy.$cancelEvaluation(sessionId ?? '', evaluationId);
+				listener.dispose();
+			});
+
+			// Dispose the listener when the promise settles
+			promise.then(
+				() => listener.dispose(),
+				() => listener.dispose()
+			);
+		}
+
+		return promise;
+	}
+
+	/**
+	 * Executes set of inline cells in a source (e.g. Quarto) document.
+	 *
+	 * @param extensionId The id of the extension that requested execution
+	 * @param documentUri The URI of the document in which the cell resides
+	 * @param range The ranges of the cells to execute
+	 *
+	 * @returns A promise that resolves when the request has been sent
+	 */
+	public executeInlineCells(extensionId: string, documentUri: URI, cellRanges: any[], executionMetadata?: Record<string, unknown>[]): Promise<void> {
+		// Convert vscode.Range objects to serializable IRange format
+		// Filter out undefined/null ranges in case any are invalid
+		const convertedRanges = cellRanges
+			.filter(r => r != null)
+			.map(r => typeConvert.Range.from(r)!);
+		return this._proxy.$executeInlineCells(extensionId, documentUri, convertedRanges, executionMetadata);
+	}
+
+	/**
+	 * Selects and starts a language runtime.
+	 *
+	 * @param runtimeId The runtime ID to select and start.
+	 */
+	public selectLanguageRuntime(runtimeId: string): Promise<void> {
+		return this._proxy.$selectLanguageRuntime(runtimeId);
+	}
+
+	/**
+	 * Start a new session for a runtime previously registered with Positron.
+	 *
+	 * @param runtimeId The ID of the runtime to select and start.
+	 * @param sessionName A human-readable name for the new session.
+	 * @param sessionMode The mode in which the session is to be run.
+	 * @param notebookUri The URI of the notebook document, if in notebook mode.
+	 *
+	 * Returns a Thenable that resolves with the newly created session, or
+	 * rejects with an error.
+	 */
+	public async startLanguageRuntime(runtimeId: string,
+		sessionName: string,
+		sessionMode: LanguageRuntimeSessionMode,
+		notebookUri: URI | undefined): Promise<positron.LanguageRuntimeSession> {
+
+		// Start the runtime and get the session ID
+		const sessionId =
+			await this._proxy.$startLanguageRuntime(runtimeId, sessionName, sessionMode, notebookUri);
+
+		// The process of starting a session in Positron should have caused the
+		// runtime to be registered with the extension host, so we should be able
+		// to find it now.
+		const session = this._runtimeSessions.find(
+			session => session.metadata.sessionId === sessionId);
+		if (!session) {
+			throw new Error(`Session ID '${sessionId}' not found.`);
+		}
+		return session;
+	}
+
+	/**
+	 * Restarts an active session.
+	 *
+	 * @param sessionId The session ID to restart.
+	 */
+	public restartSession(sessionId: string): Promise<boolean> {
+		return this._proxy.$restartSession(sessionId);
+	}
+
+	/**
+	 * Focuses an active session.
+	 *
+	 * @param sessionId The session ID to focus.
+	 */
+	public focusSession(sessionId: string): void {
+		return this._proxy.$focusSession(sessionId);
+	}
+
+	/**
+	 * Deletes a session.
+	 *
+	 * @param sessionId The session ID to delete.
+	 */
+	public deleteSession(sessionId: string): Promise<boolean> {
+		return this._proxy.$deleteSession(sessionId);
+	}
+
+	/**
+	 * Gets the variables for a session.
+	 *
+	 * @param sessionId The session ID to get variables for.
+	 * @param accessKeys The access keys to filter variables by.
+	 *
+	 * @returns A promise that resolves with the session variables.
+	 */
+	public getSessionVariables(sessionId: string, accessKeys?: Array<Array<string>>):
+		Promise<Array<Array<Variable>>> {
+		return this._proxy.$getSessionVariables(sessionId, accessKeys);
+	}
+
+	public querySessionTables(sessionId: string, accessKeys: Array<Array<string>>, queryTypes: Array<string>):
+		Promise<Array<QueryTableSummaryResult>> {
+		return this._proxy.$querySessionTables(sessionId, accessKeys, queryTypes);
+	}
+
+	public getConsoleHistory(sessionId: string, numberOfEntries?: number): Promise<extHostProtocol.ISerializedConsoleHistoryEntry[]> {
+		return this._proxy.$getConsoleHistory(sessionId, numberOfEntries);
+	}
+
+	/**
+	 * Interrupts an active session.
+	 *
+	 * @param sessionId The session ID to restart.
+	 */
+	interruptSession(sessionId: string): Promise<void> {
+		return this._proxy.$interruptSession(sessionId);
+	}
+
+	/**
+	 * Handles a comm open message from the language runtime by either creating
+	 * a client instance for it or passing it to a registered client handler.
+	 *
+	 * @param handle The handle of the language runtime
+	 * @param message The message to handle
+	 */
+	private handleCommOpen(handle: number, message: ILanguageRuntimeMessageCommOpen): void {
+		// Create a client instance for the comm
+		const clientInstance = new ExtHostRuntimeClientInstance(message,
+			(id, data) => {
+				// Callback to send a message to the runtime
+				this._runtimeSessions[handle].sendClientMessage(message.comm_id, id, data);
+			},
+			() => {
+				// Callback to remove the client instance
+				this._runtimeSessions[handle].removeClient(message.comm_id);
+			});
+
+		// Dispose the client instance when the runtime exits
+		this._sessionDisposables[handle].add(this._runtimeSessions[handle].onDidChangeRuntimeState(state => {
+			if (state === RuntimeState.Exited) {
+				// Mark the client instance as already closed so disposal
+				// doesn't try to close it
+				clientInstance.setClientState(RuntimeClientState.Closed);
+				clientInstance.dispose();
+			}
+		}));
+
+		// See if one of the registered client handlers wants to handle this
+		let handled = false;
+		for (const handler of this._clientHandlers) {
+			// If the client type matches, then call the handler
+			if (message.target_name === handler.clientType) {
+				// If the handler returns true, then it'll take it from here
+				if (handler.callback(clientInstance, message.data)) {
+					// Add the client instance to the list
+					this._clientInstances.push(clientInstance);
+					handled = true;
+				}
+			}
+		}
+
+		// Notify the main thread that a client has been opened.
+		const sessionId = this._runtimeSessions[handle].metadata.sessionId;
+		this._proxy.$emitLanguageRuntimeMessage(sessionId, handled, new SerializableObjectWithBuffers(message));
+	}
+
+	/**
+	 * Handles a comm data message from the language runtime
+	 *
+	 * @param handle The handle of the language runtime
+	 * @param message The message to handle
+	 */
+	private handleCommData(handle: number, message: ILanguageRuntimeMessageCommData): void {
+		// Check to see if this message is handled by an active client instance
+		// tracked by the extension host
+		const clientInstance = this._clientInstances.find(instance =>
+			instance.getClientId() === message.comm_id);
+		let handled = false;
+		if (clientInstance) {
+			clientInstance.emitMessage(message);
+			handled = true;
+		}
+
+		// Check to see if this message is owned by a registered client ID
+		if (!handled && this._registeredClientIds.has(message.comm_id)) {
+			handled = true;
+		}
+
+		// Notify the main thread that a comm data message has been received,
+		// and whether it was handled in the extension host
+		const sessionId = this._runtimeSessions[handle].metadata.sessionId;
+		this._proxy.$emitLanguageRuntimeMessage(sessionId, handled, new SerializableObjectWithBuffers(message));
+	}
+
+	/**
+	 * Handles a comm closed message from the language runtime
+	 *
+	 * @param handle The handle of the language runtime
+	 * @param message The message to handle
+	 */
+	private handleCommClosed(handle: number, message: ILanguageRuntimeMessageCommClosed): void {
+		// See if this client instance is still active
+		const idx = this._clientInstances.findIndex(instance =>
+			instance.getClientId() === message.comm_id);
+		let handled = false;
+		if (idx >= 0) {
+			// If it is, dispose and remove it
+			const clientInstance = this._clientInstances[idx];
+			clientInstance.dispose();
+			this._clientInstances.splice(idx, 1);
+			handled = true;
+		}
+
+		const sessionId = this._runtimeSessions[handle].metadata.sessionId;
+		this._proxy.$emitLanguageRuntimeMessage(sessionId, handled, new SerializableObjectWithBuffers(message));
+	}
+
+	/**
+	 * Handles a message for an execution with an observer
+	 * @param message The message to handle
+	 * @param observer The observer for the execution
+	 */
+	private handleObserverMessage(message: ILanguageRuntimeMessage, o: ExecutionObserver): void {
+		switch (message.type) {
+			case LanguageRuntimeMessageType.Stream:
+				o.onStreamMessage(message as ILanguageRuntimeMessageStream);
+				break;
+
+			case LanguageRuntimeMessageType.Output:
+				o.onOutputMessage(message as ILanguageRuntimeMessageOutput);
+				break;
+
+			case LanguageRuntimeMessageType.State:
+				o.onStateMessage(message as ILanguageRuntimeMessageState);
+				break;
+
+			case LanguageRuntimeMessageType.Result:
+				o.onCompleted((message as ILanguageRuntimeMessageResult).data);
+				break;
+
+			case LanguageRuntimeMessageType.Error:
+				o.onErrorMessage(message as ILanguageRuntimeMessageError);
+				break;
+		}
+
+		if (message.type === LanguageRuntimeMessageType.State) {
+			const stateMessage = message as ILanguageRuntimeMessageState;
+			if (stateMessage.state === RuntimeOnlineState.Idle) {
+				// Clean up the observer
+				const executionId = message.parent_id;
+				if (executionId) {
+					o.dispose();
+					this._executionObservers.delete(executionId);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Register a runtime picker contribution.
+	 *
+	 * @param contribution The contribution to register
+	 * @returns A disposable that unregisters the contribution when disposed
+	 */
+	public registerRuntimePickerContribution(
+		contribution: positron.runtime.RuntimePickerContribution
+	): IDisposable {
+		const handle = this._pickerContributionHandleCounter++;
+		this._pickerContributions.set(handle, contribution);
+		this._proxy.$registerRuntimePickerContribution(handle, contribution.languageId);
+
+		return new Disposable(() => {
+			this._pickerContributions.delete(handle);
+			this._proxy.$unregisterRuntimePickerContribution(handle);
+		});
+	}
+
+	/**
+	 * Get runtime picker items from a contribution.
+	 * Called by the main thread.
+	 */
+	async $getRuntimePickerItems(handle: number): Promise<extHostProtocol.IRuntimePickerItem[]> {
+		const contribution = this._pickerContributions.get(handle);
+		if (!contribution) {
+			return [];
+		}
+		const items = await contribution.getItems();
+		return items.map((item: positron.runtime.RuntimePickerItem) => ({
+			id: item.id,
+			label: item.label,
+			detail: item.detail,
+			separatorLabel: item.separatorLabel,
+		}));
+	}
+
+	/**
+	 * Handle a runtime picker selection.
+	 * Called by the main thread when the user selects a contributed item.
+	 */
+	async $handleRuntimePickerSelection(handle: number, itemId: string): Promise<string | undefined> {
+		const contribution = this._pickerContributions.get(handle);
+		if (!contribution) {
+			return undefined;
+		}
+		return contribution.onDidSelectItem(itemId);
+	}
+}

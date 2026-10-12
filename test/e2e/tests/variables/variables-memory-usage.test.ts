@@ -1,0 +1,165 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { test, tags } from '../_test.setup';
+
+test.use({
+	suiteId: __filename
+});
+
+test.describe('Variables: Memory Usage', {
+	tag: [tags.WIN, tags.VARIABLES, tags.SESSIONS, tags.SOFT_FAIL],
+	annotation: [{ type: 'issue', description: 'https://github.com/posit-dev/positron/issues/12476' }]
+}, () => {
+
+	test.beforeEach(async function ({ hotKeys }) {
+		await hotKeys.closeSecondarySidebar();
+	});
+
+	test.afterEach(async function ({ sessions }) {
+		await sessions.deleteDisconnectedSessions();
+	});
+
+	test('Shut-down session is removed from memory usage meter', { tag: [tags.WEB] }, async function ({ app, sessions, settings }) {
+		const { console, variables } = app.workbench;
+
+		// Set a fast polling interval so the memory meter updates quickly
+		await settings.set({ 'positron.memoryUsage.pollingIntervalMs': 1000 });
+
+		// Start two sessions
+		const [pySession, rSession] = await sessions.start(['python', 'r']);
+
+		// Wait for the memory meter to be ready
+		await variables.expectMemoryMeterReady();
+
+		// Verify both sessions appear in the dropdown
+		await variables.expectSessionsInMemoryDropdown({
+			[pySession.name]: true,
+			[rSession.name]: true
+		});
+
+		// Shut down the Python session (not delete)
+		await sessions.select(pySession.name);
+		await console.typeToConsole('exit()', true);
+		await sessions.expectSessionCountToBe(1, 'active');
+
+		// Switch to the R session so the variables pane is active
+		await sessions.select(rSession.name);
+		await variables.expectMemoryMeterReady();
+
+		// Verify the shut-down Python session is no longer listed
+		await variables.expectSessionsInMemoryDropdown({
+			[pySession.name]: false,
+			[rSession.name]: true
+		});
+	});
+
+	test('Low memory warning icon appears when memory is low', { tag: [tags.WEB] }, async function ({ app, sessions, settings }) {
+		const { variables } = app.workbench;
+
+		// Set a fast polling interval and a 100% threshold. The warning fires when
+		// free memory is at or below this percentage of total memory, and free
+		// memory can never exceed total, so a 100% threshold ALWAYS qualifies as
+		// "low" regardless of how the underlying provider reports memory.
+		//
+		// Reload on web since the live value update doesn't propagate there.
+		await settings.set({
+			'memoryUsage.pollingIntervalMs': 1000,
+			'memoryUsage.lowMemoryThresholdPercent': 100,
+		}, { reload: 'web' });
+
+		// Start a Python session so the variables pane shows a memory meter.
+		await sessions.start(['python']);
+
+		// Wait for the memory meter to report a real measurement.
+		await variables.expectMemoryMeterReady();
+
+		// The low-memory warning icon should be shown.
+		await variables.expectLowMemoryWarning(true);
+	});
+
+	test('Memory bar segments render with their designated colors', { tag: [tags.WEB] }, async function ({ app, sessions, settings }) {
+		const { variables } = app.workbench;
+
+		// Poll quickly so the meter populates fast, and disable the low-memory
+		// state (both thresholds 0) so the overhead/other segments keep their
+		// normal colors instead of the error color. Reload on web since the live
+		// value update does not propagate there.
+		await settings.set({
+			'memoryUsage.pollingIntervalMs': 1000,
+			'memoryUsage.lowMemoryThresholdPercent': 0,
+			'memoryUsage.lowMemoryThresholdMB': 0,
+		}, { reload: 'web' });
+
+		// Start a Python session so the variables pane shows a populated memory meter.
+		await sessions.start(['python']);
+
+		// Wait for the meter to report a real measurement (not the loading state).
+		await variables.expectMemoryMeterReady();
+
+		// The Positron-overhead and other-process segments must render with their
+		// designated Positron colors. This guards against the upstream-merge
+		// regression where the removed `--vscode-gauge-*` colors left these
+		// segments transparent.
+		await variables.expectMemoryBarSegmentsColored();
+	});
+
+	test.skip('Reconnected session reappears in memory usage meter after extension host restart', {
+		annotation: { type: 'issue', description: 'https://github.com/posit-dev/positron/issues/12476' }
+	}, async function ({ app, sessions, settings }) {
+		const { console: consolePage, quickaccess, variables } = app.workbench;
+
+		// Set a fast polling interval so the memory meter updates quickly
+		await settings.set({ 'positron.memoryUsage.pollingIntervalMs': 1000 });
+
+		// Start an R session
+		const [rSession] = await sessions.start(['r']);
+
+		// Wait for the memory meter to be ready
+		await variables.expectMemoryMeterReady();
+
+		// Verify the session appears in the dropdown
+		await variables.expectSessionsInMemoryDropdown({ [rSession.name]: true });
+
+		// Restart the extension host
+		await quickaccess.runCommand('workbench.action.restartExtensionHost');
+		await consolePage.waitForConsoleContents('Extensions restarting...');
+		await consolePage.waitForReady('>');
+
+		// Wait for memory meter to be ready after reconnection
+		await variables.expectMemoryMeterReady();
+
+		// Verify the session reappears after extension host restart
+		await variables.expectSessionsInMemoryDropdown({ [rSession.name]: true });
+	});
+
+	test.skip('Restarted session reappears in memory usage meter', {
+		tag: [tags.WEB],
+		annotation: { type: 'issue', description: 'https://github.com/posit-dev/positron/issues/12476' }
+	}, async function ({ app, sessions, settings }) {
+		const { variables } = app.workbench;
+
+		// Set a fast polling interval so the memory meter updates quickly
+		await settings.set({ 'positron.memoryUsage.pollingIntervalMs': 1000 });
+
+		// Start a Python session
+		const [pySession] = await sessions.start(['python']);
+
+		// Wait for the memory meter to be ready
+		await variables.expectMemoryMeterReady();
+
+		// Verify the session appears in the dropdown
+		await variables.expectSessionsInMemoryDropdown({ [pySession.name]: true });
+
+		// Restart the session
+		await sessions.restart(pySession.name);
+
+		// Wait for memory meter to be ready after restart
+		await variables.expectMemoryMeterReady();
+
+		// Verify the session still appears after restart
+		await variables.expectSessionsInMemoryDropdown({ [pySession.name]: true });
+	});
+});

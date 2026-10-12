@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Developing Data Applications"
+---
+
+RHS-IA can run supported data applications from project files and display them in the Viewer or an external browser. Available run actions depend on the language, framework, and installed packages.
+
+Select the correct runtime, open the application's entry file, and use its Run App action. Stop or restart the running task after changing startup configuration or dependencies.
+
+Keep application configuration and reproducible launch instructions in the project. Bind development servers only to trusted interfaces, and never commit credentials used by the application.

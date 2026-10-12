@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Paleta de comandos"
+---
+
+La **Paleta de comandos** proporciona acceso mediante búsqueda a las acciones de RHS-IA. Ábrela con **Ver > Paleta de comandos** o **Cmd/Ctrl+Shift+P**, escribe parte del nombre de una acción y presiona Entrar.
+
+Los resultados cambian según el contexto: el editor activo, el tiempo de ejecución seleccionado y la vista enfocada pueden mostrar comandos distintos. El icono de engranaje junto a un resultado abre su entrada de métodos abreviados de teclado.
+
+Quick Open usa el mismo control para otras búsquedas. Elimina el prefijo `>` para buscar archivos del espacio de trabajo o usa los prefijos mostrados para buscar símbolos y otros destinos.
+
+[Abrir Configuración](rhs-doc-action:settings).

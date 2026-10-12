@@ -1,0 +1,131 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-notebook-code-cell-footer {
+	/* Layout: execution metadata on its own row with the tag bar stacked beneath,
+	so a wrapped tag set no longer crowds (and vertically off-centers) the metadata.
+	justify-content centers a lone metadata row (the common, tagless footer) within
+	the 24px floor; it is a no-op once both rows are present and fill the height. */
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	gap: 4px;
+	box-sizing: border-box;
+	padding: 3px 1rem;
+	/* Auto height with a 24px floor: the tag bar wraps large tag sets onto
+	extra rows, so the footer grows with it. The vertical padding keeps wrapped
+	pills off the footer borders while a single row still totals 24px. */
+	min-height: 24px;
+	overflow: hidden;
+	/* Lets the height transition below animate from the auto height when
+	collapsing (no-op where unsupported; the collapse then snaps). */
+	interpolate-size: allow-keywords;
+
+	/* Visual separators from editor content above and outputs below */
+	border-top: 1px solid var(--vscode-widget-border);
+	background-color: var(--vscode-notebook-cellEditorBackground);
+	border-bottom: 1px solid var(--vscode-widget-border);
+	/* Footer has rounded bottom corners (acts as bottom of editor section) */
+	border-bottom-left-radius: var(--vscode-positronNotebook-cell-radius);
+	border-bottom-right-radius: var(--vscode-positronNotebook-cell-radius);
+
+	/* Typography */
+	font-size: 11px;
+	color: var(--vscode-positronNotebook-cellFooterForeground);
+
+	/* Override inherited cursor from .positron-notebook class */
+	cursor: default;
+
+	/* Animate expand/collapse */
+	transition: height 150ms ease-out, min-height 150ms ease-out,
+		padding 150ms ease-out, opacity 150ms ease-out,
+		border-top-width 150ms ease-out, border-bottom-width 150ms ease-out;
+}
+
+.positron-notebook-code-cell-footer.collapsed {
+	height: 0;
+	min-height: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	opacity: 0;
+	border-top-width: 0;
+	border-bottom-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.positron-notebook-code-cell-footer {
+		transition: none;
+	}
+}
+
+/* Override inherited cursor from .positron-notebook class for children spans */
+.positron-notebook-code-cell-footer span {
+	cursor: default;
+}
+
+/* Execution metadata row (status icon + timing text). A horizontal flex row
+inside the column-stacked footer; preserves the original icon-to-text spacing. */
+.code-cell-footer-metadata {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.code-cell-footer-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 16px;
+	height: 16px;
+	font-size: 16px; /* Ensure consistent codicon size */
+}
+
+.codicon.code-cell-footer-icon.success {
+	color: var(--vscode-notebookStatusSuccessIcon-foreground);
+}
+
+.codicon.code-cell-footer-icon.error {
+	color: var(--vscode-notebookStatusErrorIcon-foreground);
+}
+
+.codicon.code-cell-footer-icon.pending {
+	color: var(--vscode-notebookStatusRunningIcon-foreground);
+}
+
+.codicon.code-cell-footer-icon.running {
+	color: var(--vscode-notebookStatusRunningIcon-foreground);
+	animation: code-cell-spin 1.5s linear infinite;
+}
+
+@keyframes code-cell-spin {
+	100% {
+		transform:rotate(360deg);
+	}
+}
+
+.code-cell-footer-text {
+	display: flex;
+	align-items: center;
+	gap: 13px; /* Space between duration and timestamp and adding 1px to account for vertical separator*/
+	white-space: nowrap;
+}
+
+/* Duration text with separator pseudo-element */
+.code-cell-footer-duration {
+	position: relative;
+}
+
+/* Vertical separator between duration and timestamp */
+.code-cell-footer-duration::after {
+	content: '';
+	position: absolute;
+	right: -7px; /* center the separator in the 13px gap between footer text */
+	top: 1px;
+	bottom: 1px;
+	width: 1px;
+	background-color: var(--vscode-widget-border);
+}

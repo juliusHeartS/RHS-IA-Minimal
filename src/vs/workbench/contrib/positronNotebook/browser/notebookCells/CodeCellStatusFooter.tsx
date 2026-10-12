@@ -1,0 +1,213 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+// CSS.
+import './CodeCellStatusFooter.css';
+
+// React.
+import { useEffect, useRef, useState } from 'react';
+
+// Other dependencies.
+import { localize } from '../../../../../nls.js';
+import * as DOM from '../../../../../base/browser/dom.js';
+import { useObservedValue, useDebouncedObservedValue } from '../useObservedValue.js';
+import { PositronNotebookCodeCell } from '../PositronNotebookCells/PositronNotebookCodeCell.js';
+import { ExecutionStatus } from '../PositronNotebookCells/IPositronNotebookCell.js';
+import { formatCellDuration, formatTimestamp, getRelativeTime, isMoreThanOneHourAgo } from './cellExecutionUtils.js';
+import { Icon } from '../../../../../platform/positronActionBar/browser/components/icon.js';
+import { Codicon } from '../../../../../base/common/codicons.js';
+import { positronClassNames } from '../../../../../base/common/positronUtilities.js';
+import { CellTagsBar } from './CellTagsBar.js';
+
+interface CodeCellStatusFooterProps {
+	cell: PositronNotebookCodeCell;
+	hasError: boolean;
+}
+
+// Defined outside the component so the reference is stable across renders,
+// avoiding memoization invalidation inside useDebouncedObservedValue.
+const isRunningOrPending = (s: ExecutionStatus) => s === 'running' || s === 'pending';
+
+/**
+ * Footer component that displays cell execution status information between
+ * the editor and outputs sections. Shows execution state, duration, and timestamp.
+ */
+export function CodeCellStatusFooter({ cell, hasError }: CodeCellStatusFooterProps) {
+	// Debounce "clearing" transitions to prevent visual flash during fast re-executions.
+	// Only delay transitions to running/pending/undefined; new values propagate immediately.
+	const executionStatus = useDebouncedObservedValue(cell.executionStatus, isRunningOrPending);
+	const tagUIVisible = useObservedValue(cell.tagUIVisible);
+	const executionOrder = useObservedValue(cell.lastExecutionOrder);
+	const duration = useDebouncedObservedValue(cell.lastExecutionDuration);
+	const lastRunEndTime = useDebouncedObservedValue(cell.lastRunEndTime);
+	const lastRunSuccess = useDebouncedObservedValue(cell.lastRunSuccess);
+
+	/**
+	 * `lastRunEndTime` doesn't change after execution completes, which means the
+	 * relative time recalculation won't trigger a re-render. To keep the relative time
+	 * display accurate, we set up an interval that updates a dummy state value every minute.
+	 * This forces the component to re-render and update the displayed relative time.
+	 */
+	const [, setTick] = useState(0);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (lastRunEndTime === undefined) {
+			return;
+		}
+
+		const targetWindow = DOM.getWindow(containerRef.current);
+		const intervalId = targetWindow.setInterval(() => {
+			setTick(tick => tick + 1);
+		}, 60000);
+
+		return () => targetWindow.clearInterval(intervalId);
+	}, [cell, lastRunEndTime]);
+
+	// Derive state conditions
+	const hasExecutionOrder = executionOrder !== undefined;
+	const hasExecutionResult = lastRunSuccess !== undefined;
+	const isCurrentlyRunning = executionStatus === 'running';
+	const hasDuration = duration !== undefined;
+	const hasCompletionTime = lastRunEndTime !== undefined;
+	const hasTimingInfo = hasDuration || hasCompletionTime;
+	const hasCurrentSessionContent = hasExecutionResult || isCurrentlyRunning || hasTimingInfo;
+
+	// Check if cell has never been run (no execution order and no current session data)
+	const hasNeverBeenRun = !hasExecutionOrder && !hasCurrentSessionContent;
+
+	// Check if we only have execution order from previous session (no current session data)
+	const wasRunInPreviousSession = hasExecutionOrder && !hasCurrentSessionContent;
+
+	const isPending = executionStatus === 'pending';
+
+	// Whether the footer shows any execution metadata (icon and/or timing text).
+	// Gates the metadata row so a tag-only footer doesn't render an empty row
+	// above the tags.
+	const hasMetadata = isCurrentlyRunning || isPending || hasTimingInfo;
+
+	// Collapse the footer when there's no execution info to display.
+	// This covers cells that have never been run and cells only run in a previous session.
+	// isPending guard keeps the clock icon visible for queued cells.
+	// A visible tag UI (tags or an in-progress add; the cell owns the predicate)
+	// also keeps the footer open, since the tag bar lives here.
+	const isCollapsed = !isPending && !hasCurrentSessionContent && !tagUIVisible;
+
+	const dataExecutionStatus = executionStatus || 'idle';
+
+	const renderIcon = () => {
+		if (isCurrentlyRunning) {
+			return (
+				<Icon
+					className='code-cell-footer-icon running'
+					icon={Codicon.sync}
+				/>
+			);
+		}
+
+		if (isPending) {
+			return (
+				<Icon
+					className='code-cell-footer-icon pending'
+					icon={Codicon.clock}
+				/>
+			);
+		}
+
+		if (hasTimingInfo) {
+			if (hasError || lastRunSuccess === false) {
+				return (
+					<Icon
+						className='code-cell-footer-icon error'
+						icon={Codicon.error}
+					/>
+				);
+			} else {
+				return (
+					<Icon
+						className='code-cell-footer-icon success'
+						icon={Codicon.check}
+					/>
+				);
+			}
+		}
+
+		return null;
+	};
+
+	// Determine what text to show
+	const renderText = () => {
+		// Show duration and timestamp for completed cells (or previous run while currently running)
+		if (hasTimingInfo && duration !== undefined && lastRunEndTime !== undefined) {
+			const formattedDuration = formatCellDuration(duration);
+			const completedMoreThanAnHourAgo = isMoreThanOneHourAgo(lastRunEndTime);
+			const timeDisplay = completedMoreThanAnHourAgo
+				? `${getRelativeTime(lastRunEndTime)} (${formatTimestamp(lastRunEndTime)})`
+				: getRelativeTime(lastRunEndTime);
+
+			return (
+				<span className='code-cell-footer-text'>
+					<span className='code-cell-footer-duration'>{formattedDuration}</span>
+					<span>{timeDisplay}</span>
+				</span>
+			);
+		}
+
+		return null;
+	};
+
+	// Build ARIA label for accessibility.
+	// Active states (running/pending) take priority over static states so a
+	// queued cell that has never been run is announced as "queued", not "not yet run".
+	const getAriaLabel = () => {
+		if (isCurrentlyRunning) {
+			return localize('cellExecution.running', 'Cell is executing');
+		}
+
+		if (isPending) {
+			return localize('cellExecution.pending', 'Cell is queued for execution');
+		}
+
+		if (hasNeverBeenRun) {
+			return localize('cellExecution.notYetRun', 'Cell not yet run');
+		}
+
+		if (wasRunInPreviousSession) {
+			return localize('cellExecution.notRunThisSession', 'Not run this session');
+		}
+
+		if (hasTimingInfo && duration !== undefined && lastRunEndTime !== undefined) {
+			const status = hasError || lastRunSuccess === false
+				? localize('cellExecution.failed', 'Cell execution failed')
+				: localize('cellExecution.success', 'Cell execution succeeded');
+			const formattedDuration = formatCellDuration(duration);
+			const timeDisplay = getRelativeTime(lastRunEndTime);
+
+			return `${status}. ${formattedDuration}. ${timeDisplay}`;
+		}
+
+		return localize('cellExecution.statusIndicator', 'Cell execution status indicator');
+	};
+
+	return (
+		<div
+			ref={containerRef}
+			aria-hidden={isCollapsed || undefined}
+			aria-label={isCollapsed ? undefined : getAriaLabel()}
+			aria-live={isCurrentlyRunning ? 'polite' : 'off'}
+			className={positronClassNames('positron-notebook-code-cell-footer', { 'collapsed': isCollapsed })}
+			data-execution-status={dataExecutionStatus}
+			role='status'
+		>
+			{hasMetadata &&
+				<div className='code-cell-footer-metadata' data-testid='cell-footer-metadata'>
+					{renderIcon()}
+					{renderText()}
+				</div>
+			}
+			<CellTagsBar cell={cell} />
+		</div>
+	);
+}

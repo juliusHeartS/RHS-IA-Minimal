@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Data Explorer"
+---
+
+Data Explorer opens tabular objects in an interactive viewer. Use an object's **Open in Data Explorer** action from Variables, a notebook result, or another supported surface.
+
+The viewer combines a [data grid](data-grid.qmd), [filter bar](filter-bar.qmd), and [summary panel](summary-panel.qmd). Sorting and filtering change the view of the data; they do not silently rewrite the runtime object.
+
+Large or remote data may be loaded in pages. Available operations and type summaries depend on the language runtime and its data-explorer provider.

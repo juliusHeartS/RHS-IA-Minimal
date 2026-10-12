@@ -1,0 +1,108 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { test, expect, tags } from '../_test.setup';
+
+test.use({
+	suiteId: __filename
+});
+
+test.describe('Console Pane: R', {
+	tag: [tags.WEB, tags.CONSOLE, tags.WIN, tags.ARK]
+}, () => {
+	test.beforeAll(async function ({ app }) {
+		// Need to make console bigger to see all bar buttons
+		await app.workbench.quickaccess.runCommand('workbench.action.toggleAuxiliaryBar');
+	});
+
+	test('R - do not allow extra console output on start', async function ({ app, r }) {
+
+		await app.workbench.console.waitForConsoleContents(process.env.POSITRON_R_VER_SEL!, { expectedCount: 2, timeout: 20000 });
+	});
+
+	test('R - Verify cancel button on console bar', async function ({ app, r }) {
+
+		await app.workbench.console.pasteCodeToConsole('Sys.sleep(10)');
+		await app.workbench.console.sendEnterKey();
+		await app.workbench.console.interruptExecution();
+		// nothing appears in console after interrupting execution
+	});
+
+	test('R - Verify password prompt', async function ({ app, r }) {
+
+		// The interrupt test above can leave `Sys.sleep(10)` in the input; pasting
+		// appends at the cursor, so R would get a syntax error instead of a prompt.
+		await app.workbench.console.clearInput();
+
+		await app.workbench.console.pasteCodeToConsole('out <- rstudioapi::askForPassword("enter password")', true);
+
+		// quickInput.type() calls selectText(), which blocks on the always-attached
+		// widget for 30s with a bare locator timeout if the prompt never opens.
+		await app.workbench.quickInput.waitForQuickInputOpened({ timeout: 15000 });
+		await app.workbench.quickInput.type('password');
+		await app.code.driver.currentPage.keyboard.press('Enter');
+
+		await app.workbench.layouts.enterLayout('stacked');
+		await app.workbench.layouts.enterLayout('fullSizedAuxBar');
+
+		await expect(async () => {
+			const variablesMap = await app.workbench.variables.getFlatVariables();
+			expect(variablesMap.get('out')?.value).toBe('"password"');
+		}).toPass({ timeout: 20000 });
+
+		await app.workbench.layouts.enterLayout('stacked');
+	});
+
+	test('R - Verify console commands are queued during execution', async function ({ app, r }) {
+		await app.workbench.console.pasteCodeToConsole('123 + 123');
+		await app.workbench.console.executeCode('R', '456 + 456');
+
+		await app.workbench.console.waitForConsoleContents('912', { expectedCount: 1, timeout: 10000 });
+		await app.workbench.console.waitForConsoleContents('123 + 123', { expectedCount: 1, timeout: 10000 });
+		await app.workbench.console.waitForConsoleContents('246', { expectedCount: 0, timeout: 5000 });
+
+	});
+
+	test('R - Multi-statement input executes each statement (input boundary provider path)', async function ({ app, r }) {
+		const { console } = app.workbench;
+
+		// Start from a clean input line: a prior test may have left unrun code
+		// pasted in the console input (e.g. the queued-execution test), and
+		// pasting appends at the cursor.
+		await console.clearInput();
+
+		// Submit two complete statements at once. The R input boundary provider
+		// splits them; the first executes immediately and the second is queued
+		// and run on the next idle transition.
+		await console.pasteCodeToConsole('x <- 1\ny <- 2');
+		await console.sendEnterKey();
+
+		// Both statements should be echoed.
+		await console.waitForConsoleContents('x <- 1', { expectedCount: 1, timeout: 10000 });
+		await console.waitForConsoleContents('y <- 2', { expectedCount: 1, timeout: 10000 });
+
+		// Both assignments took effect, proving both statements executed.
+		await console.typeToConsole('x + y', true);
+		await console.waitForConsoleContents('[1] 3', { timeout: 10000 });
+	});
+
+	test('R - Incomplete input shows a continuation prompt and does not execute', async function ({ app, r }) {
+		const { console } = app.workbench;
+
+		// An incomplete statement must not execute; the console shows the
+		// continuation prompt (+) so the user can finish typing. The editor
+		// auto-closes the '(', so typing 'f <- function(' yields
+		// 'f <- function()'.
+		await console.typeToConsole('f <- function(', true);
+		await console.waitForReady('+', 10000);
+
+		// Complete the statement by adding the function body; it should now run.
+		await console.typeToConsole(' { 42 }', true);
+		await console.waitForReady('>', 10000);
+		await console.typeToConsole('f()', true);
+		await console.waitForConsoleContents('[1] 42', { timeout: 10000 });
+	});
+});
+

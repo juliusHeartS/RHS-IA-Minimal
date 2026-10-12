@@ -1,0 +1,5 @@
+{
+	"displayName": "JavaScript",
+	"description": "JavaScript Language Pack for RHS-IA",
+	"javascript.command.startExtHostRuntime.title": "Connect Extension Host Runtime"
+}

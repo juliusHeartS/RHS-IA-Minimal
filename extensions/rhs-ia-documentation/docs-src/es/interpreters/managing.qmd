@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Administración de intérpretes"
+---
+
+Un intérprete identifica la instalación de Python o R que se usa para iniciar un tiempo de ejecución. Usa el selector de intérprete o la **Paleta de comandos** para ver las instalaciones detectadas y seleccionar una para el espacio de trabajo.
+
+RHS-IA recuerda las selecciones adecuadas en el estado del espacio de trabajo. Es posible que un entorno virtual recién creado o un tiempo de ejecución recién instalado requiera actualizar la detección o volver a cargar la ventana antes de aparecer.
+
+Elige entornos locales del proyecto cuando sea posible, verifica la ruta del ejecutable mostrada y reinicia las sesiones activas después de cambiar de intérprete. Continúa con [Instalaciones de Python](python.qmd) o [Instalaciones de R](r.qmd).

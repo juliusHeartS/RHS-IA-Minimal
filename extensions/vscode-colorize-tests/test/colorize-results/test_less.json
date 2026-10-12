@@ -1,0 +1,4010 @@
+[
+	{
+		"c": "@",
+		"t": "source.css.less meta.at-rule.import.less keyword.control.at-rule.import.less punctuation.definition.keyword.less",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "import",
+		"t": "source.css.less meta.at-rule.import.less keyword.control.at-rule.import.less",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.at-rule.import.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.css.less meta.at-rule.import.less string.quoted.double.less punctuation.definition.string.begin.less",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "mystyle.css",
+		"t": "source.css.less meta.at-rule.import.less string.quoted.double.less",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.css.less meta.at-rule.import.less string.quoted.double.less punctuation.definition.string.end.less",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.at-rule.import.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.at-rule.import.less keyword.control.at-rule.import.less punctuation.definition.keyword.less",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "import",
+		"t": "source.css.less meta.at-rule.import.less keyword.control.at-rule.import.less",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.at-rule.import.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "url",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less support.function.url.less",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less string.quoted.double.less punctuation.definition.string.begin.less",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "mystyle.css",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less string.quoted.double.less",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less string.quoted.double.less punctuation.definition.string.end.less",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.at-rule.import.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.at-rule.import.less keyword.control.at-rule.import.less punctuation.definition.keyword.less",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "import",
+		"t": "source.css.less meta.at-rule.import.less keyword.control.at-rule.import.less",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.at-rule.import.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "url",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less support.function.url.less",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less string.quoted.double.less punctuation.definition.string.begin.less",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "bluish.css",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less string.quoted.double.less",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less string.quoted.double.less punctuation.definition.string.end.less",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.at-rule.import.less meta.function-call.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.at-rule.import.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "projection",
+		"t": "source.css.less meta.at-rule.import.less support.constant.media.less",
+		"r": {
+			"hc_black": "support.constant.media: #CE9178",
+			"2026-light": "support.constant.media: #0451A5",
+			"2026-dark": "support.constant.media: #CE9178",
+			"rhs_ia_dark": "support.constant.media: #CE9178",
+			"rhs_ia_light": "support.constant.media: #0451A5",
+			"hc_light": "support.constant.media: #0451A5"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.at-rule.import.less punctuation.definition.arbitrary-repetition.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.at-rule.import.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "tv",
+		"t": "source.css.less meta.at-rule.import.less support.constant.media.less",
+		"r": {
+			"hc_black": "support.constant.media: #CE9178",
+			"2026-light": "support.constant.media: #0451A5",
+			"2026-dark": "support.constant.media: #CE9178",
+			"rhs_ia_dark": "support.constant.media: #CE9178",
+			"rhs_ia_light": "support.constant.media: #0451A5",
+			"hc_light": "support.constant.media: #0451A5"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.at-rule.import.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "base",
+		"t": "source.css.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-value.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-value.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.css.less meta.property-value.less constant.other.color.rgb-value.less punctuation.definition.constant.less",
+		"r": {
+			"hc_black": "constant.other.color.rgb-value: #CE9178",
+			"2026-light": "constant.other.color.rgb-value: #0451A5",
+			"2026-dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_light": "punctuation.definition.constant: #E88023",
+			"hc_light": "constant.other.color.rgb-value: #0451A5"
+		}
+	},
+	{
+		"c": "f938ab",
+		"t": "source.css.less meta.property-value.less constant.other.color.rgb-value.less",
+		"r": {
+			"hc_black": "constant.other.color.rgb-value: #CE9178",
+			"2026-light": "constant.other.color.rgb-value: #0451A5",
+			"2026-dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_light": "constant.other.color.rgb-value: #0451A5",
+			"hc_light": "constant.other.color.rgb-value: #0451A5"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-value.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.class.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": "box-shadow",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.class.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.selector.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "style",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "c",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.selector.less meta.group.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "when",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less keyword.control.conditional.less",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "iscolor",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less support.function.type.less",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "c",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "border-radius",
+		"t": "source.css.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less variable.other.readwrite.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "style",
+		"t": "source.css.less meta.property-list.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less variable.other.readwrite.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "c",
+		"t": "source.css.less meta.property-list.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.class.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": "box-shadow",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.class.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.selector.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "style",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "alpha",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "50",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "%",
+		"t": "source.css.less meta.selector.less meta.group.less meta.property-value.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.selector.less meta.group.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "when",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less keyword.control.conditional.less",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "isnumber",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less support.function.type.less",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "alpha",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less meta.group.less meta.function-call.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less meta.conditional.guarded-namespace.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.css.less meta.property-list.less meta.selector.less entity.other.attribute-name.class.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": "box-shadow",
+		"t": "source.css.less meta.property-list.less meta.selector.less entity.other.attribute-name.class.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "style",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "rgba",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less support.function.color.less",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "0",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "0",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "0",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "alpha",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less meta.property-value.less meta.function-call.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.selector.less meta.group.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.class.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": "box",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.class.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "color",
+		"t": "source.css.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "saturate",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less support.function.color-operation.less",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "base",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "5",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "%",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "border-color",
+		"t": "source.css.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "lighten",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less support.function.color-operation.less",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "base",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "30",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "%",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "div",
+		"t": "source.css.less meta.property-list.less meta.selector.less entity.name.tag.less",
+		"r": {
+			"hc_black": "entity.name.tag.less: #D7BA7D",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag.less: #D7BA7D",
+			"rhs_ia_dark": "entity.name.tag.less: #D7BA7D",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.selector.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t\t",
+		"t": "source.css.less meta.property-list.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less entity.other.attribute-name.class.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": "box-shadow",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less entity.other.attribute-name.class.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.class: #0F4A85"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "0",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less meta.group.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less meta.group.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "0",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less meta.group.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less meta.group.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "5",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less meta.group.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "px",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less meta.group.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less meta.group.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "30",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "%",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less meta.group.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less meta.property-list.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.id.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"2026-light": "source.css.less entity.other.attribute-name.id: #800000",
+			"2026-dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_light": "source.css.less entity.other.attribute-name.id: #800000",
+			"hc_light": "source.css.less entity.other.attribute-name.id: #0F4A85"
+		}
+	},
+	{
+		"c": "header",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.id.less",
+		"r": {
+			"hc_black": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"2026-light": "source.css.less entity.other.attribute-name.id: #800000",
+			"2026-dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_light": "source.css.less entity.other.attribute-name.id: #800000",
+			"hc_light": "source.css.less entity.other.attribute-name.id: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "h1",
+		"t": "source.css.less meta.property-list.less meta.selector.less entity.name.tag.less",
+		"r": {
+			"hc_black": "entity.name.tag.less: #D7BA7D",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag.less: #D7BA7D",
+			"rhs_ia_dark": "entity.name.tag.less: #D7BA7D",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.selector.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t\t",
+		"t": "source.css.less meta.property-list.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "font-size",
+		"t": "source.css.less meta.property-list.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "26",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-value.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "px",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-value.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t\t",
+		"t": "source.css.less meta.property-list.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "font-weight",
+		"t": "source.css.less meta.property-list.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "bold",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-value.less support.constant.property-value.less",
+		"r": {
+			"hc_black": "support.constant.property-value: #CE9178",
+			"2026-light": "support.constant.property-value: #0451A5",
+			"2026-dark": "support.constant.property-value: #CE9178",
+			"rhs_ia_dark": "support.constant.property-value: #CE9178",
+			"rhs_ia_light": "support.constant.property-value: #3D3D3D",
+			"hc_light": "support.constant.property-value: #0451A5"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less meta.property-list.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "p",
+		"t": "source.css.less meta.property-list.less meta.selector.less entity.name.tag.less",
+		"r": {
+			"hc_black": "entity.name.tag.less: #D7BA7D",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag.less: #D7BA7D",
+			"rhs_ia_dark": "entity.name.tag.less: #D7BA7D",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.selector.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "font-size",
+		"t": "source.css.less meta.property-list.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "12",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-value.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "px",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-value.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t\t",
+		"t": "source.css.less meta.property-list.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less entity.name.tag.less",
+		"r": {
+			"hc_black": "entity.name.tag.less: #D7BA7D",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag.less: #D7BA7D",
+			"rhs_ia_dark": "entity.name.tag.less: #D7BA7D",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.selector.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "text-decoration",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "none",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-value.less support.constant.property-value.less",
+		"r": {
+			"hc_black": "support.constant.property-value: #CE9178",
+			"2026-light": "support.constant.property-value: #0451A5",
+			"2026-dark": "support.constant.property-value: #CE9178",
+			"rhs_ia_dark": "support.constant.property-value: #CE9178",
+			"rhs_ia_light": "support.constant.property-value: #3D3D3D",
+			"hc_light": "support.constant.property-value: #0451A5"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t\t\t",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "&",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.selector.less entity.other.attribute-name.parent.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "entity.other.attribute-name.parent.less: #D7BA7D",
+			"2026-light": "entity.other.attribute-name.parent.less: #800000",
+			"2026-dark": "entity.other.attribute-name.parent.less: #D7BA7D",
+			"rhs_ia_dark": "entity.other.attribute-name.parent.less: #D7BA7D",
+			"rhs_ia_light": "entity.other.attribute-name.parent.less: #800000",
+			"hc_light": "entity.other.attribute-name.parent.less: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.selector.less meta.function-call.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "hover",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.selector.less meta.function-call.less entity.other.attribute-name.pseudo-class.less",
+		"r": {
+			"hc_black": "source.css entity.other.attribute-name.pseudo-class: #D7BA7D",
+			"2026-light": "source.css entity.other.attribute-name.pseudo-class: #800000",
+			"2026-dark": "source.css entity.other.attribute-name.pseudo-class: #D7BA7D",
+			"rhs_ia_dark": "source.css entity.other.attribute-name.pseudo-class: #D7BA7D",
+			"rhs_ia_light": "source.css entity.other.attribute-name.pseudo-class: #800000",
+			"hc_light": "source.css entity.other.attribute-name.pseudo-class: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.selector.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "border-width",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "1",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-value.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "px",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-value.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less meta.property-list.less meta.property-list.less meta.property-list.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t\t",
+		"t": "source.css.less meta.property-list.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less meta.property-list.less meta.property-list.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less meta.property-list.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "the-border",
+		"t": "source.css.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-value.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-value.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "1",
+		"t": "source.css.less meta.property-value.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "px",
+		"t": "source.css.less meta.property-value.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-value.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "base-color",
+		"t": "source.css.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-value.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-value.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.css.less meta.property-value.less constant.other.color.rgb-value.less punctuation.definition.constant.less",
+		"r": {
+			"hc_black": "constant.other.color.rgb-value: #CE9178",
+			"2026-light": "constant.other.color.rgb-value: #0451A5",
+			"2026-dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_light": "punctuation.definition.constant: #E88023",
+			"hc_light": "constant.other.color.rgb-value: #0451A5"
+		}
+	},
+	{
+		"c": "111",
+		"t": "source.css.less meta.property-value.less constant.other.color.rgb-value.less",
+		"r": {
+			"hc_black": "constant.other.color.rgb-value: #CE9178",
+			"2026-light": "constant.other.color.rgb-value: #0451A5",
+			"2026-dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_light": "constant.other.color.rgb-value: #0451A5",
+			"hc_light": "constant.other.color.rgb-value: #0451A5"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-value.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "red",
+		"t": "source.css.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-value.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "        ",
+		"t": "source.css.less meta.property-value.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.css.less meta.property-value.less constant.other.color.rgb-value.less punctuation.definition.constant.less",
+		"r": {
+			"hc_black": "constant.other.color.rgb-value: #CE9178",
+			"2026-light": "constant.other.color.rgb-value: #0451A5",
+			"2026-dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_light": "punctuation.definition.constant: #E88023",
+			"hc_light": "constant.other.color.rgb-value: #0451A5"
+		}
+	},
+	{
+		"c": "842210",
+		"t": "source.css.less meta.property-value.less constant.other.color.rgb-value.less",
+		"r": {
+			"hc_black": "constant.other.color.rgb-value: #CE9178",
+			"2026-light": "constant.other.color.rgb-value: #0451A5",
+			"2026-dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_dark": "constant.other.color.rgb-value: #CE9178",
+			"rhs_ia_light": "constant.other.color.rgb-value: #0451A5",
+			"hc_light": "constant.other.color.rgb-value: #0451A5"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-value.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.id.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"2026-light": "source.css.less entity.other.attribute-name.id: #800000",
+			"2026-dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_light": "source.css.less entity.other.attribute-name.id: #800000",
+			"hc_light": "source.css.less entity.other.attribute-name.id: #0F4A85"
+		}
+	},
+	{
+		"c": "header",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.id.less",
+		"r": {
+			"hc_black": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"2026-light": "source.css.less entity.other.attribute-name.id: #800000",
+			"2026-dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_light": "source.css.less entity.other.attribute-name.id: #800000",
+			"hc_light": "source.css.less entity.other.attribute-name.id: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "color",
+		"t": "source.css.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "base-color",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less keyword.operator.arithmetic.less",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.arithmetic: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "3",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "border-left",
+		"t": "source.css.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.property-value.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "the-border",
+		"t": "source.css.less meta.property-list.less meta.property-value.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "border-right",
+		"t": "source.css.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "the-border",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "*",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less keyword.operator.arithmetic.less",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.arithmetic: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "2",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.id.less punctuation.definition.entity.less",
+		"r": {
+			"hc_black": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"2026-light": "source.css.less entity.other.attribute-name.id: #800000",
+			"2026-dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_light": "source.css.less entity.other.attribute-name.id: #800000",
+			"hc_light": "source.css.less entity.other.attribute-name.id: #0F4A85"
+		}
+	},
+	{
+		"c": "footer",
+		"t": "source.css.less meta.selector.less entity.other.attribute-name.id.less",
+		"r": {
+			"hc_black": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"2026-light": "source.css.less entity.other.attribute-name.id: #800000",
+			"2026-dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_dark": "source.css.less entity.other.attribute-name.id: #D7BA7D",
+			"rhs_ia_light": "source.css.less entity.other.attribute-name.id: #800000",
+			"hc_light": "source.css.less entity.other.attribute-name.id: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.selector.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.selector: #BC729C",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.css.less meta.property-list.less punctuation.definition.block.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "color",
+		"t": "source.css.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "base-color",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "+",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less keyword.operator.arithmetic.less",
+		"r": {
+			"hc_black": "keyword.operator: #D4D4D4",
+			"2026-light": "keyword.operator: #000000",
+			"2026-dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_dark": "keyword.operator: #D4D4D4",
+			"rhs_ia_light": "keyword.operator.arithmetic: #66476B",
+			"hc_light": "keyword.operator: #000000"
+		}
+	},
+	{
+		"c": " #",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "003300",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.group.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.css.less meta.property-list.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "border-color",
+		"t": "source.css.less meta.property-list.less support.type.property-name.less",
+		"r": {
+			"hc_black": "support.type.property-name: #D4D4D4",
+			"2026-light": "support.type.property-name: #E50000",
+			"2026-dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_dark": "support.type.property-name: #9CDCFE",
+			"rhs_ia_light": "support.type.property-name: #3D3D3D",
+			"hc_light": "support.type.property-name: #264F78"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.css.less meta.property-list.less punctuation.separator.key-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "desaturate",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less support.function.color-operation.less",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less punctuation.definition.group.begin.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less variable.other.readwrite.less punctuation.definition.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": "red",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less variable.other.readwrite.less support.other.variable.less",
+		"r": {
+			"hc_black": "source.css variable: #D4D4D4",
+			"2026-light": "support: #0550AE",
+			"2026-dark": "support: #79C0FF",
+			"rhs_ia_dark": "source.css variable: #9CDCFE",
+			"rhs_ia_light": "variable.other.readwrite: #67898E",
+			"hc_light": "source.css variable: #264F78"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less punctuation.separator.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "10",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less constant.numeric.less",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": "%",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less constant.numeric.less keyword.other.unit.less",
+		"r": {
+			"hc_black": "keyword.other.unit: #B5CEA8",
+			"2026-light": "keyword.other.unit: #098658",
+			"2026-dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_dark": "keyword.other.unit: #B5CEA8",
+			"rhs_ia_light": "keyword.other.unit: #67898E",
+			"hc_light": "keyword.other.unit: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.css.less meta.property-list.less meta.property-value.less meta.function-call.less punctuation.definition.group.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.css.less meta.property-list.less punctuation.terminator.rule.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.css.less punctuation.definition.block.end.less",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	}
+]

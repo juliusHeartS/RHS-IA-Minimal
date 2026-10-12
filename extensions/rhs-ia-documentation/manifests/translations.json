@@ -1,0 +1,307 @@
+{
+	"schemaVersion": 1,
+	"canonicalLocale": "en",
+	"locale": "es",
+	"entries": [
+		{
+			"id": "home",
+			"source_revision": "19cee079c7b1035f528d3e83041fcad82cc4f21abdf8c387f282b4c086430598",
+			"translation_revision": "fb97c09883610768f6f7255b399f37be594f05c805fd0f52ce1fa3b3b5e7731d",
+			"translation_status": "current"
+		},
+		{
+			"id": "getting-started/overview",
+			"source_revision": "1179926f4fcbe2db9647a5ad29af0d4923970a86a41a67fbc492f7e1ca09108f",
+			"translation_revision": "537c6e562259b9af0929b8cd9a6660cd0145b51501e5e7a600145b90db4cb808",
+			"translation_status": "current"
+		},
+		{
+			"id": "configuration/keyboard-shortcuts",
+			"source_revision": "ad0df8d528e4313f828c6cc44ed7838bf50ac7d27e10dbb5399452e0352ca5e7",
+			"translation_revision": "b9e8c26044c332a642057b9530cf4046ba9faa1219b9260cd4901ea586eebb5c",
+			"translation_status": "current"
+		},
+		{
+			"id": "configuration/add-to-path",
+			"source_revision": "951eee4dc8e660909f65620a7471da36b393d616856b2b869a68ccf66e5db858",
+			"translation_revision": "7b9b9cd6b3cce28fcc6aa13d628c3a46421e6925fce264f6089786c60cf11bae",
+			"translation_status": "current"
+		},
+		{
+			"id": "configuration/git",
+			"source_revision": "6d1084dd49749925357137433e86afb818cb3f8d0aec612af8a09d27f9071e47",
+			"translation_revision": "f4976fd802a9b26ddb8bb55a32eeefb70bf84b2267d887db7392584d77a32189",
+			"translation_status": "current"
+		},
+		{
+			"id": "configuration/extensions",
+			"source_revision": "c7c402508676517fb2075a9b7c63599235379d42d06350aef32aa71a1fbda13b",
+			"translation_revision": "1d3b652114106e49c21b325c556decaf2b05075ff4c38dd7e59367a9e033b5b4",
+			"translation_status": "current"
+		},
+		{
+			"id": "user-interface/layout",
+			"source_revision": "560f7f8b3874d2a326cd90ca615995580793a6a7e77df32110a2fa02acc1c86a",
+			"translation_revision": "0209978cb2717be94cff0a9461b26b16d25514d1d7369473fe5b8e669f3e463a",
+			"translation_status": "current"
+		},
+		{
+			"id": "user-interface/command-palette",
+			"source_revision": "f9f7ac1d3effeac093fc6899c931ec494e1ffd222c70bcc7ee1d79e7f4679a69",
+			"translation_revision": "eddd3b018ed6f961b8475692884c565318e2bbe3c57d47b680aa7c84aa964ce6",
+			"translation_status": "current"
+		},
+		{
+			"id": "user-interface/action-bars",
+			"source_revision": "f93974f12e2d7edde1ed7e47609e6f7228e41204343e9e3254db7b60a3a5d7c2",
+			"translation_revision": "2411c1457b8db93e055de6144eba36572bf3ca7a5f93b1fb2a72e78a583de302",
+			"translation_status": "current"
+		},
+		{
+			"id": "user-interface/help",
+			"source_revision": "af713fec51de7911b936d2ee4abe4717e91035c5c0b082f987efe112af991a61",
+			"translation_revision": "07d45689ac6b3062af60f75acb144ade373f7d5c6bdbd15f0709e722125a5832",
+			"translation_status": "current"
+		},
+		{
+			"id": "languages/overview",
+			"source_revision": "68c80abac8c17aac911d2d0a8f91d12c45f231af0afc4ff4a3c1b73c7643f663",
+			"translation_revision": "e2e1ef46ae162a96299537f413b0cda5dccf14e3207769b704900b0dd9261ca1",
+			"translation_status": "current"
+		},
+		{
+			"id": "languages/python",
+			"source_revision": "818f7dc37349018920a56382abee5eded617f69edfaad95f9ef0fda6d02bb1b7",
+			"translation_revision": "a8286dbe64f46709c745fbb8a520157e6ed314b7ab1f697629ace89663337c37",
+			"translation_status": "current"
+		},
+		{
+			"id": "languages/r",
+			"source_revision": "70b780470e86b8e50ea985de33a99cc068f35c1654724947ccf4d37ef84a19df",
+			"translation_revision": "bce27d6f5c9730bae35eeebddea65d2b97663db95a4a121a5faf13c0bc3bfbe0",
+			"translation_status": "current"
+		},
+		{
+			"id": "languages/r-debugging",
+			"source_revision": "6bb2e1b7a43a040da7e083d46afdb972133532ff9fb3079ab4526489025bf626",
+			"translation_revision": "15a777dbe8029757f88d8d5aa6949afdea6d662fe8d40d30a46e4ec354b7742a",
+			"translation_status": "current"
+		},
+		{
+			"id": "languages/r-session-hooks",
+			"source_revision": "be5859ea6c6b36c9bafcccc9a24cdca0acb014a0773c658d72842894d8bdeb3f",
+			"translation_revision": "6af33bfa3143d4f4542d68fb107ad820219339fad7dc426d814b6fac15a1d1ef",
+			"translation_status": "current"
+		},
+		{
+			"id": "languages/r-air",
+			"source_revision": "1a96d60b355811112ed85689b764d34063a0c83bf00dba24122d1dbb657f0456",
+			"translation_revision": "8038aff8a213c08537089f2cbd515a55fc7e09f976492b37c072cabea013230c",
+			"translation_status": "current"
+		},
+		{
+			"id": "data-analysis/data-explorer",
+			"source_revision": "816d11659ce793883cec544be86e8098a51f8ea294954ddb0588639aac2ff35f",
+			"translation_revision": "1750e8690bbf86b016c1f2123926daf1ff52232bd56426cf7b2f3d727ff1d164",
+			"translation_status": "current"
+		},
+		{
+			"id": "data-analysis/data-grid",
+			"source_revision": "40ef6187e19438e7fe9216de7dd7d824181bdf92eb75651885ac3dc340b75102",
+			"translation_revision": "7262b609a001917ff170232d6d7516b5fccf9a66c91bdbcb67beecf4c22819c2",
+			"translation_status": "current"
+		},
+		{
+			"id": "data-analysis/filter-bar",
+			"source_revision": "e10c40571501b512e5404b8432e10012e0957fd5d790d6eb1a53a784e11c0c07",
+			"translation_revision": "de37e35b16ae3565b4b0a7f49e34fb046b90becf3df6f861973a5707ab3884f7",
+			"translation_status": "current"
+		},
+		{
+			"id": "data-analysis/summary-panel",
+			"source_revision": "12e829f4d6d88dc63ce25c401e7c304e822e894c36eb50823c7b49d6e7f6868c",
+			"translation_revision": "8498b528e57e43be65ec1b939414090c02732b62172844f99cbc60b6de66c683",
+			"translation_status": "current"
+		},
+		{
+			"id": "data-analysis/variables",
+			"source_revision": "c62f06a5acc828247733c04ad238c78d4cc0166da1497d36e906ee086c430ebf",
+			"translation_revision": "9443cf12fa8799e0e4d5bd6a7f62e7e8d31d8803d847e1675fc48b98b0a34396",
+			"translation_status": "current"
+		},
+		{
+			"id": "data-analysis/plots",
+			"source_revision": "415e3256f9a0ac5c147ca7a6c0f8f1d75358048a83b5477968a281d3f9ed35b0",
+			"translation_revision": "4ab8347d48bdc82f39c96de28b31a3924e55ef24a2c035763de78d85add526dd",
+			"translation_status": "current"
+		},
+		{
+			"id": "database-connections/overview",
+			"source_revision": "663cf92c13574297c8f84f9c217fdb425f55c3be2d1282e91ce52c96c0ff16dc",
+			"translation_revision": "11e088d1104583b9523ea40d7db4d29f50ec653e56e01f8b5aebee65da7d869e",
+			"translation_status": "current"
+		},
+		{
+			"id": "database-connections/extensions",
+			"source_revision": "70a7b70f9800589713dccfc89569fb06ea1a2bc13a7462b6729760136926307b",
+			"translation_revision": "cbc997b08879e5dffde2f4d0b37780494fa1579f570d64be8811a20e9d07a678",
+			"translation_status": "current"
+		},
+		{
+			"id": "database-connections/catalog",
+			"source_revision": "759e5bdc6637531526f5395d8071929613d6f1f2518820cdbfb3f0e89cc57dfb",
+			"translation_revision": "a032463ff8b758975a741bc09b155e4d5e6da54fa61ca3c6665d84113934eb1e",
+			"translation_status": "current"
+		},
+		{
+			"id": "quarto/overview",
+			"source_revision": "fd604f7917ec204db52f9f9e6ce76de919ebeb83490c70a6d0afce41de61dd42",
+			"translation_revision": "2c363410bdd5a6a161aae3471ec49115505bace457ff1ce79c48b9b56de78db1",
+			"translation_status": "current"
+		},
+		{
+			"id": "quarto/inline-output",
+			"source_revision": "3fcfb88c398c69cde4f4c8012a6570e2b2e01c41bb973ca6ed6986098e3eed41",
+			"translation_revision": "0ef7f9b405d245cf80eddc6186cbeca9d8efe45a1bffde2762ac1323c475e99f",
+			"translation_status": "current"
+		},
+		{
+			"id": "notebooks/overview",
+			"source_revision": "5eed8aaabb5909b0a4453ab3afdb3974b49365b1becf32960e0b521315260e2c",
+			"translation_revision": "0efc5194e5e85cce9a276bf1ceb7fef25e5aad64930012a7fffcf478ba6823e7",
+			"translation_status": "current"
+		},
+		{
+			"id": "notebooks/editor",
+			"source_revision": "41349832c801b3bc0ab9b5310ae2a68e8c5272846b544a95722f33d77c9fe8ec",
+			"translation_revision": "cedc2fe26ee6ec0d82a428ef914c999be000e177ff618c118dfb2155cfb3454a",
+			"translation_status": "current"
+		},
+		{
+			"id": "notebooks/legacy-editor",
+			"source_revision": "e851d028ac18b1110415907b38ddfba6ec8cd022247f1e4c4de15e566d16ba3e",
+			"translation_revision": "2283afd8a6d555acb24b5b6ce4e8e5761bf2901022a24b2fd2d46e5be3aa1d58",
+			"translation_status": "current"
+		},
+		{
+			"id": "notebooks/code-cells",
+			"source_revision": "ec8b19617040d370ae49cce0cf073546f046faa862dd6e68c98d0e822e6cb569",
+			"translation_revision": "ef9f31014d6562d54567231709b52bb36570ebcb7a88c68c5b1315b784bfff5f",
+			"translation_status": "current"
+		},
+		{
+			"id": "applications/development",
+			"source_revision": "d163769b0a4a9870179d6fc0c9c46e2a3ad91ca61d6d2457e0828243a00c87a9",
+			"translation_revision": "bd79233400fd991a9506de9b33cc60f3fd19e84e57052a39ce7caca892e193ba",
+			"translation_status": "current"
+		},
+		{
+			"id": "workspaces/folder-templates",
+			"source_revision": "b59b0eb78f3b3d47b63bd23e0c75a69ef123418ba92cd6ce551dc0c699cf5835",
+			"translation_revision": "b000a6fd6959f0345615aed524185b0608e38af00d93c173bcc12067cc79205d",
+			"translation_status": "current"
+		},
+		{
+			"id": "workspaces/remote-ssh",
+			"source_revision": "41760fea095a04297bdf54ff1f2259f95495b9e2b927f00e8f5aa7602b638a70",
+			"translation_revision": "aca57973a6f4cfc9f8b50e392c9e717a7797ff8b19824e0b88027f9a598d0262",
+			"translation_status": "current"
+		},
+		{
+			"id": "workspaces/dev-containers",
+			"source_revision": "8e06bf36ceda6b134f5fb50f0cf01be1be96e55b0004b398f951789bc45e8eeb",
+			"translation_revision": "ee477b26bab8b4c062d84d838f70f25a18441f81956f4de509f12d6476e9f4f7",
+			"translation_status": "current"
+		},
+		{
+			"id": "interpreters/managing",
+			"source_revision": "2295e4ee4800f6777506624fb14cce648c727af3f5be5bf2adc4e03e442a754c",
+			"translation_revision": "197991c918f02cf5493766671cd30cc33d12b992487638b314942b5731982372",
+			"translation_status": "current"
+		},
+		{
+			"id": "interpreters/startup",
+			"source_revision": "36233f357746025549f587f65210f7d92e83b8711a9343801fec35dc519999c9",
+			"translation_revision": "44de0c623f528856c60ec503da7feb7253ee0a775becd251aba71eee8782572f",
+			"translation_status": "current"
+		},
+		{
+			"id": "interpreters/packages",
+			"source_revision": "d7f7086cdfc24590c77456da0b116c58bc169950e94c2790b6d9a5de828dd10b",
+			"translation_revision": "f7dc1ecb30e5886f3446996c8cb36a90deeef615eb8c35aadc49a9858f96ce9c",
+			"translation_status": "current"
+		},
+		{
+			"id": "interpreters/python",
+			"source_revision": "edf70edf4dd71fbcca3f819cf34507938c3bec49a200bed62c48f4671b7f4bdf",
+			"translation_revision": "83a61e086ea2dd90aa35be1515d41de5a4b8df11e8a7d5bf58d96bd93360304a",
+			"translation_status": "current"
+		},
+		{
+			"id": "interpreters/r",
+			"source_revision": "8ec79661b0e5214d0964e735975f52812619a1c25ae5d1f4f7adb3c5ab5a2f5d",
+			"translation_revision": "cc4a383494bd29fdf7d0e1c3adc4f2a8ff1dea7f2a48976e4bf9a921ceb0f2c4",
+			"translation_status": "current"
+		},
+		{
+			"id": "interpreters/reticulate",
+			"source_revision": "fbec7459a6f9f91f3f87f1fa320662520873925e0f6cb2464199282373e93d48",
+			"translation_revision": "42581ae5481c0b95a39259b4ca2c282d38147ef4f9cc12242df745a3d07e5130",
+			"translation_status": "current"
+		},
+		{
+			"id": "interpreters/environment-modules",
+			"source_revision": "000b8a0ff36f3be682871c02eb8afcedf1406ca0d6eb6213f62e25b9c05d64f9",
+			"translation_revision": "8ff40d7f582edb3cb798c1b4a8c4c6735af02f6203e76547bf60ffaf4aef1bd6",
+			"translation_status": "current"
+		},
+		{
+			"id": "extensions/development",
+			"source_revision": "adfff680e5e16d10d787c609598bd42bcb75e451ff5fa3dae661e341ec7c4d6f",
+			"translation_revision": "70e8b3181a2d7d6c1f900c9aa7a7fc6c1e9182a5d943c85a4a94e4284f724d0b",
+			"translation_status": "current"
+		},
+		{
+			"id": "tutorials/overview",
+			"source_revision": "cbc2c533489f9cfbbb822b509e12ee6f901d803ed72c194d1ad287d135428426",
+			"translation_revision": "0fbac340937f37c8990d167a7f7f7d0040aa7485e781f8efc651291c6fd79ea0",
+			"translation_status": "current"
+		},
+		{
+			"id": "tutorials/jupyter-notebook",
+			"source_revision": "e29c45834f19074e0dd62fd1f478552f3b0b41da65436da97738665895827360",
+			"translation_revision": "de729a2b7ab53fd149f07406ff495bfe8d866bfbb1f8782b1745431bf8ee1545",
+			"translation_status": "current"
+		},
+		{
+			"id": "tutorials/quarto",
+			"source_revision": "c0bfd6e526148beefa43251904edc11b5cd6223de379e5129e119ea3dd52dd33",
+			"translation_revision": "69c5b21c3cfe92076ac24651ae020c477219dc79f8f4fa13750a2f450d6157d3",
+			"translation_status": "current"
+		},
+		{
+			"id": "support/troubleshooting",
+			"source_revision": "01ebbb4efd8394e576a81e1305630f494daf797ed30e2521ff79187c6f4acb13",
+			"translation_revision": "61eff65f579e2dc8292acca4262dd3be2bc26db6eb187ae2ac9d4e27af3820b0",
+			"translation_status": "current"
+		},
+		{
+			"id": "support/faq",
+			"source_revision": "9a4453a670dc4657c869d46866b4cc9c583601f754da020ed75fcf43f517be18",
+			"translation_revision": "f434d0a29cac0c8f10362af4ab49c631d454b32c4f0ebc8f0dae5b861c6f8e94",
+			"translation_status": "current"
+		},
+		{
+			"id": "about/overview",
+			"source_revision": "f0d7d9b6fc2b1aacc8b2cb24e5c8f2071333c50a040fd0349e5c3d63be0ebd46",
+			"translation_revision": "ee29f4c9a66a157306598fb4d7a7256fa24c9879573bdd67f485243f8f499e0d",
+			"translation_status": "current"
+		},
+		{
+			"id": "about/documentation-license",
+			"source_revision": "aa2cf654fe3409fc6b20da768d2dc22a0723a3062c3b64fbd64aea597d84aaac",
+			"translation_revision": "ef9570c739dbe34d1f024432200113021395392b6448b6fb15d62860431829b7",
+			"translation_status": "current"
+		}
+	]
+}

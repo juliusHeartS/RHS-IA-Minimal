@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Documentation Attribution and License"
+---
+
+Portions of this documentation were adapted from the Positron documentation published by Posit Software, PBC. The upstream repository and snapshot hashes are recorded in the extension's immutable baseline manifest. The exact upstream commit is unknown because the local snapshot has no Git metadata.
+
+The adapted educational material is provided under the Creative Commons Attribution-ShareAlike 4.0 International license. RHS-IA changed the organization, wording, branding, screenshots policy, and product-specific behavior. New RHS-IA material is distributed under the documentation terms stated by the project.
+
+Product names and marks belong to their respective owners. Attribution does not imply endorsement of RHS-IA by the upstream authors.
+
+License text: [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/).

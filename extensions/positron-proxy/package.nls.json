@@ -1,0 +1,6 @@
+{
+	"displayName": "RHS-IA Proxy",
+	"description": "HTTP proxying for RHS-IA",
+	"command.positronProxy.showHtmlPreview.title": "Open in Viewer",
+	"command.positronProxy.openBrowserPreview.title": "Open in Browser"
+}

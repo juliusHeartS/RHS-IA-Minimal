@@ -1,0 +1,590 @@
+[
+	{
+		"c": "struct",
+		"t": "source.cpp meta.block.struct.cpp meta.head.struct.cpp storage.type.struct.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.block.struct.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "Foo",
+		"t": "source.cpp meta.block.struct.cpp entity.name.type.struct.cpp",
+		"r": {
+			"hc_black": "entity.name.type: #4EC9B0",
+			"2026-light": "entity.name.type: #267F99",
+			"2026-dark": "entity.name.type: #4EC9B0",
+			"rhs_ia_dark": "entity.name.type: #4EC9B0",
+			"rhs_ia_light": "entity.name.type: #2D9BA9",
+			"hc_light": "entity.name.type: #185E73"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.block.struct.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.cpp meta.block.struct.cpp meta.head.struct.cpp punctuation.section.block.begin.bracket.curly.struct.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.special.constructor.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "Foo",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.special.constructor.cpp meta.head.function.definition.special.constructor.cpp entity.name.function.constructor.cpp entity.name.function.definition.special.constructor.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.special.constructor.cpp meta.head.function.definition.special.constructor.cpp punctuation.section.parameters.begin.bracket.round.special.constructor.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.special.constructor.cpp meta.head.function.definition.special.constructor.cpp punctuation.section.parameters.end.bracket.round.special.constructor.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp punctuation.terminator.statement.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "int",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp meta.qualified-type.cpp storage.type.primitive.cpp storage.type.built-in.primitive.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp meta.declaration.cpp variable.lower-case.cpp variable.other.declare.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp punctuation.terminator.statement.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "int",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp meta.qualified-type.cpp storage.type.primitive.cpp storage.type.built-in.primitive.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "b",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp meta.declaration.cpp variable.lower-case.cpp variable.other.declare.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp punctuation.terminator.statement.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "int",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp meta.qualified-type.cpp storage.type.primitive.cpp storage.type.built-in.primitive.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "c",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp meta.declaration.cpp meta.declaration.cpp variable.lower-case.cpp variable.other.declare.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp punctuation.terminator.statement.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.cpp meta.block.struct.cpp meta.body.struct.cpp punctuation.section.block.end.bracket.curly.struct.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.cpp meta.block.struct.cpp punctuation.terminator.statement.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "Foo",
+		"t": "source.cpp entity.name.scope-resolution.function.call.cpp",
+		"r": {
+			"hc_black": "entity.name.scope-resolution: #4EC9B0",
+			"2026-light": "entity.name.scope-resolution: #267F99",
+			"2026-dark": "entity.name.scope-resolution: #4EC9B0",
+			"rhs_ia_dark": "entity.name.scope-resolution: #4EC9B0",
+			"rhs_ia_light": "entity.name.scope-resolution.function.call: #2D9BA9",
+			"hc_light": "entity.name.scope-resolution: #185E73"
+		}
+	},
+	{
+		"c": "::",
+		"t": "source.cpp punctuation.separator.namespace.access.cpp punctuation.separator.scope-resolution.function.call.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "Foo",
+		"t": "source.cpp entity.name.function.call.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp punctuation.section.arguments.begin.bracket.round.function.call.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp punctuation.section.arguments.end.bracket.round.function.call.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "    : ",
+		"t": "source.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.cpp entity.name.function.call.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp punctuation.section.arguments.begin.bracket.round.function.call.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "1",
+		"t": "source.cpp constant.numeric.decimal.cpp",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp punctuation.section.arguments.end.bracket.round.function.call.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.cpp punctuation.separator.delimiter.comma.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "      ",
+		"t": "source.cpp comment.line.double-slash.cpp",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "//",
+		"t": "source.cpp comment.line.double-slash.cpp punctuation.definition.comment.cpp",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "     b(2),",
+		"t": "source.cpp comment.line.double-slash.cpp",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "      ",
+		"t": "source.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "c",
+		"t": "source.cpp entity.name.function.call.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp punctuation.section.arguments.begin.bracket.round.function.call.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "3",
+		"t": "source.cpp constant.numeric.decimal.cpp",
+		"r": {
+			"hc_black": "constant.numeric: #B5CEA8",
+			"2026-light": "constant.numeric: #098658",
+			"2026-dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_dark": "constant.numeric: #B5CEA8",
+			"rhs_ia_light": "constant.numeric: #E88023",
+			"hc_light": "constant.numeric: #096D48"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp punctuation.section.arguments.end.bracket.round.function.call.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.cpp meta.block.cpp punctuation.section.block.begin.bracket.curly.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.begin.bracket.curly.cpp: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.cpp meta.block.cpp punctuation.section.block.end.bracket.curly.cpp",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.section.block.end.bracket.curly.cpp: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	}
+]

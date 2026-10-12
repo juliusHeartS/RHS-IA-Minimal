@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Distribución del espacio de trabajo"
+---
+
+El editor ocupa el centro de la ventana. La barra lateral principal contiene **Explorador**, **Búsqueda**, **Control de código fuente**, **Ejecutar y depurar** y **Extensiones**. Los paneles, como **Consola** y **Terminal**, suelen aparecer debajo del editor. **Auxiliary Bar** contiene las vistas de ciencia de datos y **Documentación**.
+
+Arrastra las cabeceras de las vistas para reorganizarlas, o usa **Ver > Apariencia** y los controles de distribución para mostrar, ocultar y cambiar la posición de los componentes de la ventana. Abre una vista por su nombre desde **Ver: Abrir vista**.
+
+RHS-IA recuerda los cambios de distribución de cada espacio de trabajo. Usa la acción de restablecimiento de la distribución en la **Paleta de comandos** si resulta difícil encontrar una vista.

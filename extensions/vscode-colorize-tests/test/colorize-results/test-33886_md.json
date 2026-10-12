@@ -1,0 +1,362 @@
+[
+	{
+		"c": "#",
+		"t": "text.html.markdown markup.heading.markdown heading.1.markdown punctuation.definition.heading.markdown",
+		"r": {
+			"hc_black": "markup.heading: #6796E6",
+			"2026-light": "markup.heading: #0550AE",
+			"2026-dark": "markup.heading: #79C0FF",
+			"rhs_ia_dark": "markup.heading: #569CD6",
+			"rhs_ia_light": "punctuation.definition.heading.markdown: #67898E",
+			"hc_light": "markup.heading: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.markdown markup.heading.markdown heading.1.markdown",
+		"r": {
+			"hc_black": "markup.heading: #6796E6",
+			"2026-light": "markup.heading: #0550AE",
+			"2026-dark": "markup.heading: #79C0FF",
+			"rhs_ia_dark": "markup.heading: #569CD6",
+			"rhs_ia_light": "markup.heading: #67898E",
+			"hc_light": "markup.heading: #0F4A85"
+		}
+	},
+	{
+		"c": "h",
+		"t": "text.html.markdown markup.heading.markdown heading.1.markdown entity.name.section.markdown",
+		"r": {
+			"hc_black": "markup.heading: #6796E6",
+			"2026-light": "markup.heading entity.name: #0550AE",
+			"2026-dark": "markup.heading entity.name: #79C0FF",
+			"rhs_ia_dark": "markup.heading: #569CD6",
+			"rhs_ia_light": "entity.name.section.markdown: #67898E",
+			"hc_light": "markup.heading: #0F4A85"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.markdown meta.tag.structure.pre.start.html punctuation.definition.tag.begin.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "pre",
+		"t": "text.html.markdown meta.tag.structure.pre.start.html entity.name.tag.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.markdown meta.tag.structure.pre.start.html punctuation.definition.tag.end.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.markdown meta.tag.inline.code.start.html punctuation.definition.tag.begin.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "code",
+		"t": "text.html.markdown meta.tag.inline.code.start.html entity.name.tag.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.markdown meta.tag.inline.code.start.html punctuation.definition.tag.end.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "# a",
+		"t": "text.html.markdown",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.markdown meta.tag.inline.code.end.html punctuation.definition.tag.begin.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "code",
+		"t": "text.html.markdown meta.tag.inline.code.end.html entity.name.tag.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.markdown meta.tag.inline.code.end.html punctuation.definition.tag.end.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.markdown meta.tag.structure.pre.end.html punctuation.definition.tag.begin.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "pre",
+		"t": "text.html.markdown meta.tag.structure.pre.end.html entity.name.tag.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.markdown meta.tag.structure.pre.end.html punctuation.definition.tag.end.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "#",
+		"t": "text.html.markdown markup.heading.markdown heading.1.markdown punctuation.definition.heading.markdown",
+		"r": {
+			"hc_black": "markup.heading: #6796E6",
+			"2026-light": "markup.heading: #0550AE",
+			"2026-dark": "markup.heading: #79C0FF",
+			"rhs_ia_dark": "markup.heading: #569CD6",
+			"rhs_ia_light": "punctuation.definition.heading.markdown: #67898E",
+			"hc_light": "markup.heading: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.markdown markup.heading.markdown heading.1.markdown",
+		"r": {
+			"hc_black": "markup.heading: #6796E6",
+			"2026-light": "markup.heading: #0550AE",
+			"2026-dark": "markup.heading: #79C0FF",
+			"rhs_ia_dark": "markup.heading: #569CD6",
+			"rhs_ia_light": "markup.heading: #67898E",
+			"hc_light": "markup.heading: #0F4A85"
+		}
+	},
+	{
+		"c": "h",
+		"t": "text.html.markdown markup.heading.markdown heading.1.markdown entity.name.section.markdown",
+		"r": {
+			"hc_black": "markup.heading: #6796E6",
+			"2026-light": "markup.heading entity.name: #0550AE",
+			"2026-dark": "markup.heading entity.name: #79C0FF",
+			"rhs_ia_dark": "markup.heading: #569CD6",
+			"rhs_ia_light": "entity.name.section.markdown: #67898E",
+			"hc_light": "markup.heading: #0F4A85"
+		}
+	},
+	{
+		"c": "<",
+		"t": "text.html.markdown meta.tag.structure.pre.start.html punctuation.definition.tag.begin.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "pre",
+		"t": "text.html.markdown meta.tag.structure.pre.start.html entity.name.tag.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.markdown meta.tag.structure.pre.start.html punctuation.definition.tag.end.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "# a",
+		"t": "text.html.markdown",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "a",
+		"t": "text.html.markdown",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "</",
+		"t": "text.html.markdown meta.tag.structure.pre.end.html punctuation.definition.tag.begin.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "pre",
+		"t": "text.html.markdown meta.tag.structure.pre.end.html entity.name.tag.html",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ">",
+		"t": "text.html.markdown meta.tag.structure.pre.end.html punctuation.definition.tag.end.html",
+		"r": {
+			"hc_black": "punctuation.definition.tag: #808080",
+			"2026-light": "punctuation.definition.tag: #800000",
+			"2026-dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_dark": "punctuation.definition.tag: #808080",
+			"rhs_ia_light": "punctuation.definition.tag: #800000",
+			"hc_light": "punctuation.definition.tag: #0F4A85"
+		}
+	},
+	{
+		"c": "#",
+		"t": "text.html.markdown markup.heading.markdown heading.1.markdown punctuation.definition.heading.markdown",
+		"r": {
+			"hc_black": "markup.heading: #6796E6",
+			"2026-light": "markup.heading: #0550AE",
+			"2026-dark": "markup.heading: #79C0FF",
+			"rhs_ia_dark": "markup.heading: #569CD6",
+			"rhs_ia_light": "punctuation.definition.heading.markdown: #67898E",
+			"hc_light": "markup.heading: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "text.html.markdown markup.heading.markdown heading.1.markdown",
+		"r": {
+			"hc_black": "markup.heading: #6796E6",
+			"2026-light": "markup.heading: #0550AE",
+			"2026-dark": "markup.heading: #79C0FF",
+			"rhs_ia_dark": "markup.heading: #569CD6",
+			"rhs_ia_light": "markup.heading: #67898E",
+			"hc_light": "markup.heading: #0F4A85"
+		}
+	},
+	{
+		"c": "h",
+		"t": "text.html.markdown markup.heading.markdown heading.1.markdown entity.name.section.markdown",
+		"r": {
+			"hc_black": "markup.heading: #6796E6",
+			"2026-light": "markup.heading entity.name: #0550AE",
+			"2026-dark": "markup.heading entity.name: #79C0FF",
+			"rhs_ia_dark": "markup.heading: #569CD6",
+			"rhs_ia_light": "entity.name.section.markdown: #67898E",
+			"hc_light": "markup.heading: #0F4A85"
+		}
+	}
+]

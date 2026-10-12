@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "R Session Hooks"
+---
+
+R startup files and environment files can customize an R session. Common files include project or user `.Rprofile` and `.Renviron` files. R determines their precedence and reads them during startup.
+
+Keep startup code fast, non-interactive, and safe to run in every session. Avoid storing secrets in files committed to source control. Restart R after changing a startup file.
+
+If startup code prevents a session from launching, temporarily rename the project startup file and inspect the R runtime log before restoring changes.

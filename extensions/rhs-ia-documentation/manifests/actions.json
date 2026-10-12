@@ -1,0 +1,5 @@
+{
+	"settings": "workbench.action.openSettings",
+	"keyboard-shortcuts": "workbench.action.openGlobalKeybindings",
+	"extensions": "workbench.view.extensions"
+}

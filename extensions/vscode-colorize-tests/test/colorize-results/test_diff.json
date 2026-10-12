@@ -1,0 +1,182 @@
+[
+	{
+		"c": "diff --git a/helloworld.txt b/helloworld.txt",
+		"t": "source.diff meta.diff.header.git",
+		"r": {
+			"hc_black": "meta.diff.header: #000080",
+			"2026-light": "meta.diff.header: #0550AE",
+			"2026-dark": "meta.diff.header: #79C0FF",
+			"rhs_ia_dark": "meta.diff.header: #569CD6",
+			"rhs_ia_light": "meta.diff.header: #000080",
+			"hc_light": "meta.diff.header: #062F4A"
+		}
+	},
+	{
+		"c": "index e4f37c4..557db03 100644",
+		"t": "source.diff meta.diff.index.git",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "---",
+		"t": "source.diff meta.diff.header.from-file punctuation.definition.from-file.diff",
+		"r": {
+			"hc_black": "meta.diff.header: #000080",
+			"2026-light": "meta.diff.header.from-file: #82071E",
+			"2026-dark": "meta.diff.header.from-file: #FFA198",
+			"rhs_ia_dark": "meta.diff.header: #569CD6",
+			"rhs_ia_light": "punctuation.definition.from-file.diff: #007BC4",
+			"hc_light": "meta.diff.header: #062F4A"
+		}
+	},
+	{
+		"c": " a/helloworld.txt",
+		"t": "source.diff meta.diff.header.from-file",
+		"r": {
+			"hc_black": "meta.diff.header: #000080",
+			"2026-light": "meta.diff.header.from-file: #82071E",
+			"2026-dark": "meta.diff.header.from-file: #FFA198",
+			"rhs_ia_dark": "meta.diff.header: #569CD6",
+			"rhs_ia_light": "meta.diff.header.from-file: #007BC4",
+			"hc_light": "meta.diff.header: #062F4A"
+		}
+	},
+	{
+		"c": "+++",
+		"t": "source.diff meta.diff.header.to-file punctuation.definition.to-file.diff",
+		"r": {
+			"hc_black": "meta.diff.header: #000080",
+			"2026-light": "meta.diff.header.to-file: #116329",
+			"2026-dark": "meta.diff.header.to-file: #7EE787",
+			"rhs_ia_dark": "meta.diff.header: #569CD6",
+			"rhs_ia_light": "punctuation.definition.to-file.diff: #007BC4",
+			"hc_light": "meta.diff.header: #062F4A"
+		}
+	},
+	{
+		"c": " b/helloworld.txt",
+		"t": "source.diff meta.diff.header.to-file",
+		"r": {
+			"hc_black": "meta.diff.header: #000080",
+			"2026-light": "meta.diff.header.to-file: #116329",
+			"2026-dark": "meta.diff.header.to-file: #7EE787",
+			"rhs_ia_dark": "meta.diff.header: #569CD6",
+			"rhs_ia_light": "meta.diff.header.to-file: #007BC4",
+			"hc_light": "meta.diff.header: #062F4A"
+		}
+	},
+	{
+		"c": "@@",
+		"t": "source.diff meta.diff.range.unified punctuation.definition.range.diff",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.diff.range: #8250DF",
+			"2026-dark": "meta.diff.range: #D2A8FF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.diff meta.diff.range.unified",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.diff.range: #8250DF",
+			"2026-dark": "meta.diff.range: #D2A8FF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "-1 +1",
+		"t": "source.diff meta.diff.range.unified meta.toc-list.line-number.diff",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.diff.range: #8250DF",
+			"2026-dark": "meta.diff.range: #D2A8FF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.diff meta.diff.range.unified",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.diff.range: #8250DF",
+			"2026-dark": "meta.diff.range: #D2A8FF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@@",
+		"t": "source.diff meta.diff.range.unified punctuation.definition.range.diff",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "meta.diff.range: #8250DF",
+			"2026-dark": "meta.diff.range: #D2A8FF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "-",
+		"t": "source.diff markup.deleted.diff punctuation.definition.deleted.diff",
+		"r": {
+			"hc_black": "markup.deleted: #CE9178",
+			"2026-light": "punctuation.definition.deleted: #82071E",
+			"2026-dark": "punctuation.definition.deleted: #FFA198",
+			"rhs_ia_dark": "markup.deleted: #CE9178",
+			"rhs_ia_light": "markup.deleted.diff: #67898E",
+			"hc_light": "markup.deleted: #5A5A5A"
+		}
+	},
+	{
+		"c": "Hello world",
+		"t": "source.diff markup.deleted.diff",
+		"r": {
+			"hc_black": "markup.deleted: #CE9178",
+			"2026-light": "markup.deleted: #82071E",
+			"2026-dark": "markup.deleted: #FFA198",
+			"rhs_ia_dark": "markup.deleted: #CE9178",
+			"rhs_ia_light": "markup.deleted.diff: #67898E",
+			"hc_light": "markup.deleted: #5A5A5A"
+		}
+	},
+	{
+		"c": "+",
+		"t": "source.diff markup.inserted.diff punctuation.definition.inserted.diff",
+		"r": {
+			"hc_black": "markup.inserted: #B5CEA8",
+			"2026-light": "punctuation.definition.inserted: #116329",
+			"2026-dark": "punctuation.definition.inserted: #7EE787",
+			"rhs_ia_dark": "markup.inserted: #B5CEA8",
+			"rhs_ia_light": "markup.inserted.diff: #C2AD00",
+			"hc_light": "markup.inserted: #096D48"
+		}
+	},
+	{
+		"c": "Hello World",
+		"t": "source.diff markup.inserted.diff",
+		"r": {
+			"hc_black": "markup.inserted: #B5CEA8",
+			"2026-light": "markup.inserted: #116329",
+			"2026-dark": "markup.inserted: #7EE787",
+			"rhs_ia_dark": "markup.inserted: #B5CEA8",
+			"rhs_ia_light": "markup.inserted.diff: #C2AD00",
+			"hc_light": "markup.inserted: #096D48"
+		}
+	}
+]

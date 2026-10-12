@@ -1,0 +1,69 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { MainPositronContext, MainThreadEnvironmentShape } from '../../common/positron/extHost.positron.protocol.js';
+import { extHostNamedCustomer, IExtHostContext } from '../../../services/extensions/common/extHostCustomers.js';
+import { DisposableStore } from '../../../../base/common/lifecycle.js';
+import { IEnvironmentVariableService } from '../../../contrib/terminal/common/environmentVariable.js';
+import { EnvironmentContributionFilter } from '../../common/positron/extHostTypes.positron.js';
+
+interface IEnvironmentVariableAction {
+	/** The action to take */
+	action: number;
+
+	/** The name of the variable */
+	name: string;
+
+	/** The value to replace, append, or remove */
+	value: string;
+}
+
+@extHostNamedCustomer(MainPositronContext.MainThreadEnvironment)
+export class MainThreadEnvironment implements MainThreadEnvironmentShape {
+
+	private readonly _disposables = new DisposableStore();
+	constructor(
+		extHostContext: IExtHostContext,
+		@IEnvironmentVariableService private readonly _environmentService: IEnvironmentVariableService
+	) {
+	}
+
+	async $getEnvironmentContributions(filter?: EnvironmentContributionFilter): Promise<Record<string, IEnvironmentVariableAction[]>> {
+		// Get environment variable collections from the environment service
+		const collections = this._environmentService.collections;
+
+		// Create a new map to store the results
+		const result = Object.create(null) as Record<string, IEnvironmentVariableAction[]>;
+
+		// Iterate through collections and extract environment variable actions
+		for (const [extensionIdentifier, collection] of collections.entries()) {
+			const actions: IEnvironmentVariableAction[] = [];
+			for (const [variable, mutator] of collection.map) {
+				// When filtering to process creation, skip mutators that opt out
+				// of it. These are contributed for interactive terminals only
+				// (applied via shell integration) and must not be inherited by
+				// spawned runtime processes such as kernels. Without a filter,
+				// every contribution is returned so terminal-like consumers can
+				// replay shell-integration-only variables too.
+				if (filter === EnvironmentContributionFilter.ProcessCreation &&
+					mutator.options?.applyAtProcessCreation === false) {
+					continue;
+				}
+				actions.push({
+					action: mutator.type,
+					name: variable,
+					value: mutator.value
+				});
+			}
+			result[extensionIdentifier] = actions;
+		}
+
+		return result;
+	}
+
+	dispose(): void {
+		this._disposables.dispose();
+	}
+}

@@ -1,0 +1,11 @@
+project:
+  type: default
+
+format:
+  html:
+    minimal: true
+    toc: false
+    html-math-method: plain
+
+execute:
+  enabled: false

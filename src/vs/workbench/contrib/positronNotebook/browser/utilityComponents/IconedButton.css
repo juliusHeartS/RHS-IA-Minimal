@@ -1,0 +1,29 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-iconed-button {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 12px;
+
+	.action-label {
+		cursor: pointer;
+	}
+}
+
+.positron-iconed-button div.button-icon {
+	color: inherit;
+	font-size: 14px;
+}
+.positron-iconed-button div.button-icon.codicon-plus {
+	/* The plus icon is not centered vertically within its canvas */
+	transform: translate(1px, 1px);
+}
+
+.positron-iconed-button.bordered {
+	border: 1px solid var(--vscode-positronNotebook-actionBarBorder);
+}

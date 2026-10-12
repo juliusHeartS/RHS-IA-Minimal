@@ -1,0 +1,37 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as vscode from 'vscode';
+import { PreviewMode } from './positron-run-app';
+
+export enum Config {
+	ShellIntegrationEnabled = 'terminal.integrated.shellIntegration.enabled',
+	ShowEnableShellIntegrationMessage = 'positron.appLauncher.showEnableShellIntegrationMessage',
+	ShowShellIntegrationNotSupportedMessage = 'positron.appLauncher.showShellIntegrationNotSupportedMessage',
+	PreviewMode = 'positron.runApp.previewMode',
+	UrlDetectionTimeout = 'positron.runApp.urlDetectionTimeout',
+}
+
+export type PositronProxyInfo = {
+	proxyPath: string;
+	externalUri: vscode.Uri;
+	finishProxySetup: (targetOrigin: string) => Promise<void>;
+};
+
+export type AppPreviewOptions = {
+	preview?: Exclude<PreviewMode, 'none'>;
+	terminalPid: number | undefined;
+	proxyInfo?: PositronProxyInfo;
+	urlPath?: string;
+	appReadyMessage?: string;
+	appUrlStrings?: string[];
+	urlDetectionTimeout?: number;
+};
+
+export type AppLauncherTerminalLink = vscode.TerminalLink & {
+	url: string;
+	proxyUri: vscode.Uri;
+	terminal: vscode.Terminal;
+};

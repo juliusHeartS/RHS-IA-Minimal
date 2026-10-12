@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Tutorials"
+---
+
+The tutorials exercise the core RHS-IA workflow with small local projects. Choose the [Jupyter Notebook](jupyter-notebook.qmd) tutorial for an interactive cell-based analysis or the [Quarto](quarto.qmd) tutorial for an executable document.
+
+Before starting, install a supported Python or R interpreter and the packages required by your chosen example. Work in a new folder so generated files and environment configuration remain isolated.
+
+Each tutorial ends with a clean-session check to make sure the result can be reproduced.

@@ -1,0 +1,72 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { test, tags } from '../_test.setup';
+import { join } from 'path';
+
+test.use({
+	suiteId: __filename
+});
+
+test.describe('Source Content Management', {
+	tag: [tags.SCM, tags.WEB, tags.WIN]
+}, () => {
+
+	// This spec owns workspaces/scm: it saves, stages and commits the file. Shared
+	// fixtures are read-only, since a writer's teardown would revert the copy a
+	// concurrent spec is working on.
+	const file = 'chinook-sqlite.py';
+	const filePath = join('workspaces', 'scm', file);
+
+	test.afterAll(async function ({ cleanup }) {
+		await cleanup.restoreFiles([filePath]);
+	});
+
+	test('Verify SCM Tracks File Modifications, Staging, and Commit Actions', async function ({ app, openFile }) {
+
+		await test.step('Open file and add a new line to it', async () => {
+			await openFile(filePath);
+
+			await app.workbench.editor.clickOnTerm(file, 'rows', 9, true);
+
+			await app.code.driver.currentPage.keyboard.press('ArrowRight');
+			await app.code.driver.currentPage.keyboard.press('ArrowRight');
+			await app.code.driver.currentPage.keyboard.type('\n');
+
+			await app.code.driver.currentPage.keyboard.type('print(df)');
+
+			await app.code.driver.currentPage.keyboard.press(process.platform === 'darwin' ? 'Meta+S' : 'Control+S');
+
+		});
+
+		await test.step('Open scm viewer and await change appearance', async () => {
+			await app.workbench.scm.openSCMViewlet();
+
+			await app.workbench.scm.waitForChange(file, 'Modified');
+		});
+
+		await test.step('Open change and await tab appearance', async () => {
+			await app.workbench.scm.openChange(file);
+
+			await app.workbench.sideBar.closeSecondarySideBar();
+
+			await app.workbench.editors.waitForSCMTab(`${file} (Working Tree)`);
+
+			await app.workbench.layouts.enterLayout('stacked');
+		});
+
+		await test.step('Stage, commit change, and verify history', async () => {
+			const message = 'Add print statement';
+
+			await app.workbench.scm.stage(file);
+
+			await app.workbench.scm.commit(message);
+
+			// This works locally but not in CI where we have no
+			// git user for a real commit to take place:
+			// await app.workbench.scm.verifyCurrentHistoryItem(message);
+		});
+	});
+});

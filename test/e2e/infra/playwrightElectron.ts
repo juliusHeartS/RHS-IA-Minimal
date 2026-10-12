@@ -1,0 +1,148 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as playwright from '@playwright/test';
+import type { LaunchOptions } from './code';
+import { PlaywrightDriver } from './playwrightDriver';
+import { IElectronConfiguration, resolveElectronConfiguration } from './electron';
+import { measureAndLog } from './logger';
+import { ChildProcess } from 'child_process';
+import * as fs from 'fs';
+
+const isDocker = () => {
+	return fs.existsSync('/.dockerenv');
+};
+
+/**
+ * Upper bound for how long we wait for the Electron process to launch and for
+ * its first window to appear. This is deliberately much smaller than Mocha's
+ * `before all` hook timeout (120s) so that a crashed or hung launch fails fast
+ * with an actionable error instead of bubbling up as an opaque hook timeout.
+ */
+const LAUNCH_TIMEOUT = 60_000;
+
+export async function launch(options: LaunchOptions): Promise<{ electronProcess: ChildProcess; driver: PlaywrightDriver; electronApp: playwright.ElectronApplication }> {
+
+	// Resolve electron config and update
+	const { electronPath, args, env } = await resolveElectronConfiguration(options);
+	args.push('--enable-smoke-test-driver');
+
+	// the following args are required for running in docker as root
+	if (isDocker()) {
+		args.push('--disable-dev-shm-usage'); // required for docker
+		args.push('--no-sandbox'); // required for root
+		args.push('--enable-unsafe-swiftshader'); // minimize warnings related to GPU
+		args.push('--use-gl=swiftshader'); // minimize warnings related to GPU
+		args.push('--disable-gpu-compositing'); // minimize warnings related to GPU
+		// --- Start Positron ---
+		// The CI docker image has no OS keyring backend, so any secret-storage
+		// access pops a modal "An OS keyring couldn't be identified..." dialog
+		// that intercepts all input and cascades into widespread test failures.
+		// Use Chromium's basic (file-based) password store so Electron never
+		// probes for a system keyring. Set at launch time because the per-test
+		// argv.json approach runs after the app has already started.
+		args.push('--password-store=basic');
+		// --- End Positron ---
+	}
+
+	// Launch electron via playwright
+	const { electron, context, page } = await launchElectron({ electronPath, args, env }, options);
+	const electronProcess = electron.process();
+
+	return {
+		electronProcess,
+		driver: new PlaywrightDriver(electron, context, page, undefined /* no server process */, Promise.resolve() /* Window is open already */, options),
+		electronApp: electron
+	};
+}
+
+async function launchElectron(configuration: IElectronConfiguration, options: LaunchOptions) {
+	const { logger, tracing, customTracing, snapshots } = options;
+
+	if (!fs.existsSync(configuration.electronPath || '')) {
+		throw new Error(`Cannot find Positron at ${configuration.electronPath}. Please run Positron once first (scripts/code.sh, scripts\\code.bat) and try again.`);
+	}
+
+	const electron = await measureAndLog(() => playwright._electron.launch({
+		executablePath: configuration.electronPath,
+		args: configuration.args,
+		env: configuration.env as { [key: string]: string },
+		// --- Start Positron ---
+		...(options.recordVideo ? { recordVideo: options.recordVideo } : {}),
+		// --- End Positron ---
+		timeout: 0
+	}), 'playwright-electron#launch', logger);
+
+	let window = electron.windows()[0];
+	if (!window) {
+		try {
+			window = await measureAndLog(() => electron.waitForEvent('window', { timeout: LAUNCH_TIMEOUT }), 'playwright-electron#firstWindow', logger);
+		} catch (error) {
+			throw enrichLaunchError(error, options);
+		}
+	}
+
+	const context = window.context();
+
+	if (tracing) {
+		try {
+			await measureAndLog(() => context.tracing.start({ screenshots: true, snapshots }), 'context.tracing.start()', logger);
+			// Open the first chunk now so startup is captured. A failure during startup
+			// lands in the trace exported by the app fixture; otherwise the per-test
+			// tracing fixture re-slices from here.
+			if (customTracing) {
+				await context.tracing.startChunk({ title: 'startup' });
+			}
+		} catch (error) {
+			logger.log(`Playwright (Electron): Failed to start playwright tracing (${error})`); // do not fail the build when this fails
+		}
+	}
+
+	if (options.verbose) {
+		electron.on('window', () => logger.log(`Playwright (Electron): electron.on('window')`));
+		electron.on('close', () => logger.log(`Playwright (Electron): electron.on('close')`));
+
+		context.on('page', () => logger.log(`Playwright (Electron): context.on('page')`));
+		context.on('requestfailed', e => logger.log(`Playwright (Electron): context.on('requestfailed') [${e.failure()?.errorText} for ${e.url()}]`));
+
+		window.on('dialog', () => logger.log(`Playwright (Electron): window.on('dialog')`));
+		window.on('domcontentloaded', () => logger.log(`Playwright (Electron): window.on('domcontentloaded')`));
+		window.on('load', () => logger.log(`Playwright (Electron): window.on('load')`));
+		window.on('popup', () => logger.log(`Playwright (Electron): window.on('popup')`));
+		window.on('framenavigated', () => logger.log(`Playwright (Electron): window.on('framenavigated')`));
+		window.on('requestfailed', e => logger.log(`Playwright (Electron): window.on('requestfailed') [${e.failure()?.errorText} for ${e.url()}]`));
+	}
+
+	window.on('console', e => logger.log(`Playwright (Electron): window.on('console') [${e.text()}]`));
+	window.on('pageerror', async (error) => logger.log(`Playwright (Electron) ERROR: page error: ${error}`));
+	window.on('crash', () => logger.log('Playwright (Electron) ERROR: page crash'));
+	window.on('close', () => logger.log('Playwright (Electron): page close'));
+	window.on('response', async (response) => {
+		if (response.status() >= 400) {
+			logger.log(`Playwright (Electron) ERROR: HTTP status ${response.status()} for ${response.url()}`);
+		}
+	});
+
+	return { electron, context, page: window };
+}
+
+/**
+ * Turns a low-level Playwright launch failure (e.g. a launch timeout caused by
+ * the Electron process crashing during startup) into an actionable error that
+ * points at the crash dumps and traces collected for this run.
+ */
+function enrichLaunchError(error: unknown, options: LaunchOptions): Error {
+	const original = error instanceof Error ? error.message : String(error);
+	const enriched = new Error(
+		`Failed to launch Electron within ${LAUNCH_TIMEOUT}ms. The Electron process likely crashed or hung during startup ` +
+		`(a native crash will leave a minidump in the crashes directory: '${options.crashesPath}'). ` +
+		`Inspect the crash dumps and the Playwright trace (https://trace.playwright.dev/) for details. Original error: ${original}`
+	);
+	if (error instanceof Error && error.stack) {
+		enriched.stack = `${enriched.name}: ${enriched.message}\nCaused by: ${error.stack}`;
+	}
+	options.logger.log(`Playwright (Electron) ERROR: ${enriched.message}`);
+	return enriched;
+}

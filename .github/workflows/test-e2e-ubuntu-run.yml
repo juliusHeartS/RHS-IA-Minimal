@@ -1,0 +1,524 @@
+name: "Test: E2E (Ubuntu) — Run-only"
+
+on:
+  workflow_call:
+    inputs:
+      commit:
+        description: "Commit SHA to test"
+        required: false
+        default: ""
+        type: string
+      grep:
+        required: false
+        description: "Only run tests matching this regex. Supports tags (comma-separated), titles, filenames. Confirm pattern matching locally with: npx playwright test --grep=<regex>"
+        default: "@:critical"
+        type: string
+      project:
+        required: false
+        description: "The name of the Playwright project to run tests for."
+        default: "e2e-electron"
+        type: string
+      workers:
+        required: false
+        description: "Number of parallel workers to use, defaults to 2."
+        default: 2
+        type: number
+      shards:
+        required: false
+        description: "Total number of shards (for display purposes and shard argument)"
+        default: 1
+        type: number
+      matrix:
+        required: false
+        description: "Pre-calculated matrix JSON from build workflow"
+        default: '{"shard":[1]}'
+        type: string
+      repeat_each:
+        required: false
+        description: "Run each test N times, defaults to one."
+        default: 1
+        type: number
+      display_name:
+        required: false
+        description: "The name of the job as it will appear in the GitHub Actions UI."
+        default: "e2e-ubuntu-run"
+        type: string
+      install_undetectable_interpreters:
+        required: false
+        description: "Whether or not to install undetectable interpreters."
+        type: boolean
+        default: false
+      install_license:
+        required: false
+        description: "Whether or not to install positron-license"
+        type: boolean
+        default: false
+      upload_logs:
+        required: false
+        description: "Whether or not to upload e2e test logs."
+        type: boolean
+        default: true
+      skip_extension_test:
+        required: false
+        description: "Whether to skip the bootstrap extensions test."
+        type: boolean
+        default: false
+      allow_soft_fail:
+        required: false
+        description: "Whether to allow tests marked with :soft-fail to fail without failing the job."
+        type: boolean
+        default: false
+      max_failures:
+        required: false
+        description: "Maximum number of test failures before aborting. Should be calculated as: base_max_failures / number_of_shards (e.g., 10 / 4 = 3 for 4 shards)."
+        type: number
+        default: 10
+      enable_diagnostic_logging:
+        required: false
+        description: "Enable diagnostic logging (free memory, process list, CPU usage) at the end of each test."
+        type: boolean
+        default: false
+      grep_invert:
+        required: false
+        description: "Exclude tests matching this regex pattern (passed to --grep-invert)"
+        type: string
+        default: ""
+
+permissions:
+  id-token: write
+  contents: read
+  packages: read
+
+jobs:
+  e2e-ubuntu-run:
+    name: ${{ inputs.display_name || 'e2e-ubuntu-run' }}-${{ matrix.shard }}
+    timeout-minutes: 90
+    runs-on: ubuntu-latest-8x
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(inputs.matrix) }}
+    container:
+      image: ghcr.io/posit-dev/positron-ubuntu24:24.18.0
+      # --device/--cap-add give the container a TUN device so the Tailscale step can bring up
+      # kernel-mode networking (transparent routing to the tailnet, needed by the Redshift test).
+      options: --user 0:0 --init --device /dev/net/tun --cap-add=NET_ADMIN
+      credentials:
+        username: ${{ secrets.POSITRON_GITHUB_RO_USER }}
+        password: ${{ secrets.POSITRON_GITHUB_RO_PAT }}
+    services:
+      postgres:
+        image: ghcr.io/posit-dev/positron-postgres:24.18.0
+        credentials:
+          username: ${{ secrets.POSITRON_GITHUB_RO_USER }}
+          password: ${{ secrets.POSITRON_GITHUB_RO_PAT }}
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: ${{ secrets.E2E_POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.E2E_POSTGRES_PASSWORD }}
+          POSTGRES_DB: postgres
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DOCKER_CONFIG: /tmp/.docker
+      POSITRON_BUILD_NUMBER: 0
+      _R_CHECK_FUTURE_FILE_TIMESTAMPS_: false
+      _R_CHECK_CRAN_INCOMING_: false
+      _R_CHECK_SYSTEM_CLOCK_: false
+      AWS_S3_BUCKET: positron-test-reports
+      E2E_POSTGRES_USER: ${{ secrets.E2E_POSTGRES_USER }}
+      E2E_POSTGRES_PASSWORD: ${{ secrets.E2E_POSTGRES_PASSWORD }}
+      R_LIBS_SITE: /usr/local/lib/R/site-library
+      R_LIBS_USER: /usr/local/lib/R/site-library
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      RETICULATE_PYTHON: /root/.venv/bin/python
+      HOME: /root
+      DATABRICKS_WORKSPACE: ${{ secrets.DATABRICKS_WORKSPACE }}
+      DATABRICKS_PAT: ${{ secrets.DATABRICKS_PAT }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Checkout specific commit
+        if: ${{ inputs.commit != '' }}
+        run: git checkout ${{ inputs.commit }}
+
+      - name: Setup AWS S3 Access
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.QA_AWS_RO_ROLE }}
+          aws-region: ${{ secrets.QA_AWS_REGION }}
+          # Session must outlast the full build + sharded test run so the Bedrock
+          # sign-in e2e test doesn't hit an expired STS token (must be <= role
+          # MaxSessionDuration).
+          role-duration-seconds: 21600
+
+      - name: Load secret
+        uses: 1password/load-secrets-action@v5
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          ANTHROPIC_KEY: "op://Positron/Anthropic/credential"
+          OPENAI_KEY: "op://Positron/OpenAI/credential"
+          MS_FOUNDRY_KEY: "op://Positron/MS-Foundry-East2TestAI/credential"
+          MS_FOUNDRY_BASE_URL: "op://Positron/MS-Foundry-East2TestAI/hostname"
+          POSIT_AUTH_HOST: "op://Positron/Posit-AI-Login/website"
+          POSIT_EMAIL: "op://Positron/Posit-AI-Login/username"
+          POSIT_PASSWORD: "op://Positron/Posit-AI-Login/password"
+          REDSHIFT_TEST_HOST: "op://Positron/Redshift_Test_Environment/hostname"
+          REDSHIFT_TEST_USERNAME: "op://Positron/Redshift_Test_Environment/username"
+          REDSHIFT_TEST_PASSWORD: "op://Positron/Redshift_Test_Environment/password"
+          # Databricks OAuth sign-in, shared by the posit-assistant LLM provider test and
+          # the data-connections driver test. Desktop only: both flows redirect to a
+          # loopback server on this machine. The same workspace and service account the
+          # Workbench managed-credentials lane uses. DATABRICKS_HTTP_PATH is the SQL
+          # warehouse in that workspace, needed only by the data-connections test.
+          DATABRICKS_URL: "op://Positron/Databricks-WB-Auto/url"
+          DATABRICKS_HTTP_PATH: "op://Positron/Databricks-WB-Auto/http-path"
+          IDE_SERVICE_ACCOUNT_EMAIL: "op://Positron/RStudioIDE_Service_Account/service-account-email"
+          IDE_SERVICE_ACCOUNT_PASSWORD: "op://Positron/RStudioIDE_Service_Account/service-account-password"
+          IDE_SERVICE_ACCOUNT_OTP_SECRET: "op://Positron/RStudioIDE_Service_Account/service-account-otp-secret"
+          # Snowflake programmatic access token for the posit-assistant Snowflake Cortex
+          # test. Pairs with the SNOWFLAKE_ACCOUNT secret already exported above, which
+          # doubles as the account identifier that test types into the modal.
+          SNOWFLAKE_API_KEY: "op://Positron/Snowflake-API-key/credential"
+          TS_OAUTH_CLIENT_ID: "op://Positron/Tailscale_OAuth/client_id"
+          TS_OAUTH_SECRET: "op://Positron/Tailscale_OAuth/client_secret"
+
+      # Bring up Tailscale so tests can reach private test infrastructure (e.g. the serverless
+      # Redshift workgroup used by the data-connections e2e tests). OAuth creds are loaded from
+      # 1Password in the previous step.
+      - name: Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ env.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ env.TS_OAUTH_SECRET }}
+          tags: tag:positron-gha
+
+      - name: Transform to Playwright tags $PW_TAGS
+        run: bash scripts/pr-tags-transform.sh ${{ inputs.project}} "${{ inputs.grep }}"
+        shell: bash
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: "positron-build"
+          path: /tmp/artifacts
+
+      - name: Extract build artifact
+        run: |
+          mkdir -p /__w
+          if [ -f /tmp/artifacts/positron-build.tar.zst ]; then
+            echo "Extracting zstd archive with parallel decompression"
+            zstd -d -T0 --stdout /tmp/artifacts/positron-build.tar.zst | tar --no-same-owner --no-same-permissions -x -C /__w || true
+            echo "Cleaning up compressed archive to free disk space"
+            rm -f /tmp/artifacts/positron-build.tar.zst
+          elif [ -f /tmp/artifacts/positron-build.tar.gz ]; then
+            echo "Extracting gzip archive"
+            tar --no-same-owner --no-same-permissions -xzf /tmp/artifacts/positron-build.tar.gz -C /__w || true
+            echo "Cleaning up compressed archive to free disk space"
+            rm -f /tmp/artifacts/positron-build.tar.gz
+          else
+            echo "No known build artifact found in /tmp/artifacts"; ls -la /tmp/artifacts || true; exit 1
+          fi
+
+          if [ -d /__w/positron ]; then
+            chown -R $(id -u):$(id -g) /__w/positron || true
+          fi
+
+      - name: Download binaries (Ark, Kallichore)
+        uses: ./.github/actions/download-binaries
+        with:
+          cache-hit: 'true'  # Always download since using extracted build artifact
+
+      - name: Validate bundled license
+        run: |
+          if [ "${{ inputs.install_license }}" = "true" ]; then
+            LICENSE_PATH="/__w/positron/positron-license/pdol/target/debug/pdol_rsa"
+            echo "Checking for Positron license at $LICENSE_PATH"
+            if [ -f "$LICENSE_PATH" ]; then
+              echo "✓ Positron license present"
+            else
+              echo "✗ Positron license missing at $LICENSE_PATH"
+              echo "Contents of /__w/positron/positron-license (if any):"; ls -la /__w/positron/positron-license || true
+              echo "Contents of /__w/positron/test/e2e (for context):"; ls -la /__w/positron/test/e2e || true
+              exit 1
+            fi
+          fi
+
+      - name: Setup E2E Test Environment
+        uses: ./.github/actions/setup-test-env
+        with:
+          aws-role-to-assume: ${{ secrets.QA_AWS_RO_ROLE }}
+          aws-region: ${{ secrets.QA_AWS_REGION }}
+
+      # - name: Log Shard Distribution Info
+      #   run: |
+      #     bash scripts/log-shard-info.sh "${{ inputs.project }}" "${{ matrix.shard }}" "${{ inputs.shards }}" "$PW_TAGS"
+
+      - name: Preload Node.js Binary
+        if: ${{ inputs.project != 'e2e-electron' }}
+        run: npm run gulp node
+
+      - name: Alter AppArmor Restrictions for Playwright
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+      - name: Install Playwright browsers
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: .playwright-browsers
+        run: npx playwright install
+
+      - name: Install Microsoft Edge for e2e-edge project
+        if: ${{ inputs.project == 'e2e-edge' }}
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: .playwright-browsers
+        run: |
+          echo "Installing Microsoft Edge browser channel for Playwright (msedge)"
+          npx playwright install msedge
+
+      - name: Set Report URL
+        uses: ./.github/actions/gen-report-dir
+        with:
+          identifier: ${{ inputs.project }}
+          skip-summary: true
+
+      - name: 🧪 Run Playwright Tests
+        shell: bash
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: .playwright-browsers
+          POSITRON_PY_VER_SEL: "3.10.12"
+          POSITRON_R_VER_SEL: 4.5.2
+          POSITRON_PY_ALT_VER_SEL: "3.13.0"
+          POSITRON_R_ALT_VER_SEL: 4.4.2
+          POSITRON_HIDDEN_PY: "3.12.10 (Conda)"
+          POSITRON_HIDDEN_R: 4.4.1
+          COMMIT_INFO_MESSAGE: ${{ github.event.head_commit.message }}
+          PWTEST_BLOB_DO_NOT_REMOVE: 1
+          CONNECT_API_KEY: ${{ secrets.CONNECT_API_KEY }}
+          USE_KEY: true
+          PW_PROJECT_NAME: ${{ inputs.project }}
+          GH_SUMMARY_REPORT: false # prevent reporting individual shard results to github summary
+          ENABLE_DIAGNOSTIC_LOGGING: ${{ inputs.enable_diagnostic_logging }}
+        run: |
+          if [ -z "$PW_TAGS" ]; then
+            GREP_ARG=""
+          else
+            GREP_ARG="--grep \"$PW_TAGS\""
+          fi
+
+          if [ -z "${{ inputs.grep_invert }}" ]; then
+            GREP_INVERT_ARG=""
+          else
+            GREP_INVERT_ARG="--grep-invert \"${{ inputs.grep_invert }}\""
+          fi
+
+          if [ "${{ inputs.skip_extension_test }}" != "true" ]; then
+            echo "Running: npx playwright test test/e2e/tests/extensions/bootstrap-extensions.test.ts --project ${{ inputs.project }} --reporter=null"
+            npx playwright test test/e2e/tests/extensions/bootstrap-extensions.test.ts --project ${{ inputs.project }} --reporter=null
+            SKIP_CLONE_ARG="SKIP_CLONE=true"
+          else
+            echo "Skipping bootstrap extensions test (skip_extension_test=true)"
+            SKIP_CLONE_ARG=""
+          fi
+
+          # Shards are duration-balanced by the reporter's preprocess hook
+          # (see playwright.config.ts); falls back to the native split on error.
+          CMD="npx playwright test \
+            --shard=${{ matrix.shard }}/${{ inputs.shards }} \
+            --project ${{ inputs.project }} \
+            --workers ${{ inputs.workers }} \
+            $GREP_ARG \
+            $GREP_INVERT_ARG \
+            --repeat-each ${{ inputs.repeat_each }} \
+            --max-failures ${{ inputs.max_failures }}"
+
+          echo "Running: $CMD"
+
+          # Don't fail the shard on test failures - let all shards complete and upload results
+          # The merge-reports job will determine pass/fail based on the complete test results
+          eval SKIP_BOOTSTRAP=true $SKIP_CLONE_ARG $CMD || true
+
+      - name: Upload Blob Report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: blob-report-${{ inputs.project }}-${{ matrix.shard }}
+          path: blob-report
+          retention-days: 1
+
+      - name: Upload Test Logs
+        if: ${{ always() && inputs.upload_logs }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.project }}-ubuntu-logs-${{ matrix.shard }}
+          path: test-logs
+          retention-days: 3
+          if-no-files-found: ignore
+
+      # A native crash leaves a minidump in `.build/crashes` (electron.ts's
+      # `--crash-reporter-directory`); the job used to discard it. `always()`,
+      # not `failure()`: the Playwright step ends in `|| true`.
+      - name: Upload Crash Dumps
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.project }}-ubuntu-crash-dumps-${{ matrix.shard }}
+          path: .build/crashes
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Upload inspect-ai JSON Responses
+        if: ${{ always() && inputs.project == 'inspect-ai' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: inspect-ai-responses-${{ matrix.shard }}
+          path: test/assistant-inspect-ai/*.json
+          retention-days: 3
+
+  merge-reports:
+    name: ${{ inputs.display_name }}
+    if: ${{ !cancelled() }}
+    needs: [e2e-ubuntu-run]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      - name: Setup AWS S3 Access
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.QA_AWS_RO_ROLE }}
+          aws-region: ${{ secrets.QA_AWS_REGION }}
+          # Session must outlast the full build + sharded test run so the Bedrock
+          # sign-in e2e test doesn't hit an expired STS token (must be <= role
+          # MaxSessionDuration).
+          role-duration-seconds: 21600
+
+      - name: Install Playwright
+        run: |
+          # Create clean directory for merge dependencies
+          mkdir -p playwright-merge
+          cd playwright-merge
+          npm init -y
+          npm install @playwright/test @midleman/github-actions-reporter
+
+      - name: Generate Report Directory
+        uses: ./.github/actions/gen-report-dir
+        with:
+          identifier: ${{ inputs.project }}
+
+      - name: Download all blob reports
+        uses: actions/download-artifact@v8
+        with:
+          path: all-blob-reports
+          pattern: blob-report-${{ inputs.project }}-*
+          merge-multiple: true
+
+      - name: Verify all shard reports received
+        id: verify-reports
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          EXPECTED_SHARDS=${{ inputs.shards }}
+          PROJECT="${{ inputs.project }}"
+          echo "Expected shard count: $EXPECTED_SHARDS"
+
+          # Query GitHub API for artifacts in this run matching our pattern
+          # This is more reliable than counting files since artifact names are deterministic
+          ARTIFACTS=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts --jq '.artifacts[].name' | grep "^blob-report-${PROJECT}-" || true)
+          ARTIFACT_COUNT=$(echo "$ARTIFACTS" | grep -c . || echo 0)
+
+          echo "Found artifacts:"
+          echo "$ARTIFACTS"
+          echo ""
+          echo "Artifact count: $ARTIFACT_COUNT"
+
+          # Check which shards are missing
+          MISSING_SHARDS=""
+          for i in $(seq 1 $EXPECTED_SHARDS); do
+            if ! echo "$ARTIFACTS" | grep -q "^blob-report-${PROJECT}-${i}$"; then
+              MISSING_SHARDS="$MISSING_SHARDS $i"
+            fi
+          done
+
+          if [ -n "$MISSING_SHARDS" ]; then
+            echo "::warning::Missing blob reports for shards:$MISSING_SHARDS"
+            echo "This typically means these shards crashed before uploading their results."
+            echo "missing_reports=true" >> $GITHUB_OUTPUT
+            echo "missing_shards=$MISSING_SHARDS" >> $GITHUB_OUTPUT
+          else
+            echo "All $EXPECTED_SHARDS shard reports received"
+            echo "missing_reports=false" >> $GITHUB_OUTPUT
+            echo "missing_shards=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Merge Playwright Blob Reports, Generate HTML and JSON Reports
+        working-directory: playwright-merge
+        run: |
+          # Create output directory
+          mkdir -p playwright-report
+
+          # Generate HTML report and GH Summary
+          PLAYWRIGHT_HTML_REPORT=playwright-report npx playwright merge-reports \
+            --reporter=@midleman/github-actions-reporter,html \
+            ../all-blob-reports
+
+          # Generate JSON report separately with explicit output path
+          PLAYWRIGHT_JSON_OUTPUT_NAME=playwright-report/results.json npx playwright merge-reports \
+            --reporter=json \
+            ../all-blob-reports
+
+      - name: Upload HTML report to S3
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/upload-report-to-s3
+        with:
+          role-to-assume: ${{ secrets.AWS_TEST_REPORTS_ROLE }}
+          report-dir: ${{ env.REPORT_DIR }}
+          working-directory: playwright-merge
+
+      - name: Check test results
+        if: always()
+        run: |
+          JSON_REPORT="playwright-merge/playwright-report/results.json"
+          if [ ! -f "$JSON_REPORT" ]; then
+            echo "⚠ JSON report not found at $JSON_REPORT"
+            echo "Contents of playwright-merge/playwright-report:"
+            ls -la playwright-merge/playwright-report/ || true
+            exit 1
+          fi
+
+          EXTRA_ARGS=""
+          if [[ "${{ inputs.allow_soft_fail }}" != "true" ]]; then
+            echo "SOFT-FAIL DISABLED: standard test failure behavior"
+            EXTRA_ARGS="--no-soft-fail"
+          else
+            echo "SOFT-FAIL ENABLED: soft-fail tests won't fail the job"
+          fi
+
+          node scripts/check-soft-fail-failures.js "$JSON_REPORT" $EXTRA_ARGS
+
+          # Fail if we're missing reports from any shards (even if all available tests passed)
+          if [[ "${{ steps.verify-reports.outputs.missing_reports }}" == "true" ]]; then
+            echo ""
+            echo "::error::Missing shard reports detected!"
+            echo "Missing reports from shards:${{ steps.verify-reports.outputs.missing_shards }}"
+            echo "These shards likely crashed or timed out before uploading results."
+            echo "Check the individual shard jobs above for errors."
+            exit 1
+          fi
+
+      - name: Clean up blob report artifacts
+        if: success()
+        uses: geekyeggo/delete-artifact@v6
+        with:
+          name: blob-report-${{ inputs.project }}-*
+          failOnError: false

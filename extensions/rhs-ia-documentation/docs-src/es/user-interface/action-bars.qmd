@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Barras de acciones"
+---
+
+Las barras de acciones colocan los controles más relevantes cerca del contenido al que afectan. Las acciones del editor aparecen junto al título del editor, mientras que las acciones de una vista aparecen en su cabecera. Las acciones adicionales se agrupan en el menú de elipsis.
+
+Pasa el puntero sobre un icono para leer su etiqueta y método abreviado de teclado. Las acciones disponibles dependen del tipo de archivo, el lenguaje, la selección y el estado de la vista.
+
+Si el espacio es limitado, RHS-IA mueve las acciones a un menú de desbordamiento. La misma operación suele poder buscarse en la [Paleta de comandos](command-palette.qmd).

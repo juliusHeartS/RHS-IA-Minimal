@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Tutorial de Quarto"
+---
+
+1. Crea una carpeta y un archivo `.qmd` con un título en el frontmatter YAML.
+2. Añade Markdown explicativo y una celda de código Python o R cercada.
+3. Selecciona el intérprete correspondiente y ejecuta la celda de forma insertada.
+4. Añade un cálculo o gráfico que dependa de la primera celda.
+5. Renderiza el documento con Quarto e inspecciona la salida.
+
+Por último, reinicia el tiempo de ejecución y vuelve a renderizar. Una renderización limpia correcta confirma que el documento no depende de un estado interactivo oculto.

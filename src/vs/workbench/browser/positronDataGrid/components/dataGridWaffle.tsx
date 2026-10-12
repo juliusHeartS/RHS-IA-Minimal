@@ -1,0 +1,836 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+// CSS.
+import './dataGridWaffle.css';
+
+// React.
+import { CSSProperties, forwardRef, JSX, KeyboardEvent, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+
+// Other dependencies.
+import { DataGridRow } from './dataGridRow.js';
+import * as DOM from '../../../../base/browser/dom.js';
+import { DataGridScrollbar } from './dataGridScrollbar.js';
+import { DataGridRowHeaders } from './dataGridRowHeaders.js';
+import { generateUuid } from '../../../../base/common/uuid.js';
+import { mainWindow } from '../../../../base/browser/window.js';
+import { DataGridCornerTopLeft } from './dataGridCornerTopLeft.js';
+import { DataGridColumnHeaders } from './dataGridColumnHeaders.js';
+import { DisposableStore } from '../../../../base/common/lifecycle.js';
+import { DataGridScrollbarCorner } from './dataGridScrollbarCorner.js';
+import { pinToRange } from '../../../../base/common/positronUtilities.js';
+import { usePositronDataGridContext } from '../positronDataGridContext.js';
+import { FontConfigurationManager } from '../../fontConfigurationManager.js';
+import { isElectron, isMacintosh } from '../../../../base/common/platform.js';
+import { ExtendColumnSelectionBy, ExtendRowSelectionBy } from '../classes/dataGridInstance.js';
+import { usePositronReactServicesContext } from '../../../../base/browser/positronReactRendererContext.js';
+import { TableSummaryDataGridInstance } from '../../../services/positronDataExplorer/browser/tableSummaryDataGridInstance.js';
+
+/**
+ * Inline-style shape for the data grid waffle root. Extends CSSProperties with the two custom
+ * properties this component sets so TypeScript accepts the literal without per-key casts.
+ */
+interface DataGridWaffleCSSProperties extends CSSProperties {
+	'--data-grid-clip-right': string;
+	'--data-grid-clip-bottom': string;
+}
+
+/**
+ * DataGridWaffle component.
+ * @param ref The foreard ref.
+ * @returns The rendered component.
+ */
+export const DataGridWaffle = forwardRef<HTMLDivElement>((_: unknown, ref) => {
+	// Context hooks.
+	const services = usePositronReactServicesContext();
+	const context = usePositronDataGridContext();
+
+	// Reference hooks.
+	const dataGridWaffleRef = useRef<HTMLDivElement>(undefined!);
+	const dataGridRowsRef = useRef<HTMLDivElement>(undefined!);
+
+	// Customize the ref handle that is exposed.
+	useImperativeHandle(ref, () => dataGridWaffleRef.current, []);
+
+	// State hooks.
+	const [width, setWidth] = useState(0);
+	const [height, setHeight] = useState(0);
+	const [, setRenderMarker] = useState(generateUuid());
+	const [lastWheelEvent, setLastWheelEvent] = useState(0);
+
+	// Main useEffect. This is where we set up event handlers.
+	useEffect(() => {
+		// Create the disposable store for cleanup.
+		const disposableStore = new DisposableStore();
+
+		// Use the editor font, if so configured.
+		if (context.instance.useEditorFont) {
+			disposableStore.add(FontConfigurationManager.fontConfigurationWatcher(
+				services.configurationService,
+				'editor',
+				dataGridRowsRef.current
+			));
+		}
+
+		// Add the onDidUpdate event handler.
+		disposableStore.add(context.instance.onDidUpdate(() => {
+			setRenderMarker(generateUuid());
+		}));
+
+		// Return the cleanup function that will dispose of the event handlers.
+		return () => disposableStore.dispose();
+	}, [services.configurationService, context.instance]);
+
+	// Automatic layout useLayoutEffect.
+	useLayoutEffect(() => {
+		// Wait for the data grid waffle to be mounted.
+		if (!dataGridWaffleRef.current) {
+			return;
+		}
+
+		/**
+		 * Sets the size.
+		 * @returns A Promise<void> that resolves when the operation is complete.
+		 */
+		const setSize = async (width: number, height: number) => {
+			// Set the width and height in this component.
+			setWidth(width);
+			setHeight(height);
+
+			// Set the size in the data grid instance.
+			await context.instance.setSize(width, height);
+		};
+
+		// ResizeObserver does not work well on elements inside secondary Electron windows. This causes issues
+		// with the data grid's automatic layout feature, which relies on knowing when the size of the data grid
+		// waffle changes. See https://github.com/posit-dev/positron/issues/8695. Using `requestAnimationFrame`
+		// ensures that the initial size of the data grid waffle is set when the component is mounted.
+		DOM.getWindow(dataGridWaffleRef.current).requestAnimationFrame(async () =>
+			await setSize(dataGridWaffleRef.current.offsetWidth, dataGridWaffleRef.current.offsetHeight)
+		);
+
+		// If automatic layout isn't enabled, return.
+		if (!context.instance.automaticLayout) {
+			return;
+		}
+
+		// If we're not in Electron, or the data grid waffle is in the main window, allocate and
+		// initialize the data grid waffle resize observer. Otherwise, poll the size of the data
+		// grid waffle every 250 milliseconds. This is a workaround for ResizeObserver not working
+		// in secondary Electron windows.
+		if (!isElectron || DOM.getWindow(dataGridWaffleRef.current) === mainWindow) {
+			// Allocate and initialize the data grid waffle resize observer.
+			const dataGridWaffleResizeObserver = new ResizeObserver(async entries => {
+				await setSize(
+					entries[0].contentRect.width,
+					entries[0].contentRect.height
+				);
+			});
+
+			// Start observing the size of the data grid waffle.
+			dataGridWaffleResizeObserver.observe(dataGridWaffleRef.current);
+
+			// Return the cleanup function that will disconnect the resize observers.
+			return () => dataGridWaffleResizeObserver.disconnect();
+		} else {
+			// Get the window of the data grid waffle.
+			const window = DOM.getWindow(dataGridWaffleRef.current);
+
+			// Set the last width and height.
+			let lastWidth = dataGridWaffleRef.current.offsetWidth;
+			let lastHeight = dataGridWaffleRef.current.offsetHeight;
+
+			// Poll the size of the data grid waffle every 250 milliseconds.
+			const interval = window.setInterval(async () => {
+				// If the size of the data grid waffle has changed, update the last width and height and set the screen size.
+				if (lastWidth !== dataGridWaffleRef.current.offsetWidth || lastHeight !== dataGridWaffleRef.current.offsetHeight) {
+					lastWidth = dataGridWaffleRef.current.offsetWidth;
+					lastHeight = dataGridWaffleRef.current.offsetHeight;
+					await setSize(lastWidth, lastHeight);
+				}
+			}, 250);
+
+			// Return the cleanup function that will clear the interval.
+			return () => window.clearInterval(interval);
+		}
+	}, [context.instance, dataGridWaffleRef]);
+
+	/**
+	 * onKeyDown event handler.
+	 * @param e A KeyboardEvent<HTMLDivElement> that describes a user interaction with the keyboard.
+	 */
+	const keyDownHandler = async (e: KeyboardEvent<HTMLDivElement>) => {
+		// Ignore onKeyDown events that arrive while we're receiving onWheelEvents.
+		if (e.timeStamp - lastWheelEvent < 250) {
+			return;
+		}
+
+		// Consumes the event.
+		const consumeEvent = () => {
+			e.preventDefault();
+			e.stopPropagation();
+		};
+
+		// Applies the per-key selection policy around cursor navigation. In spreadsheet mode
+		// (the default), selection is cleared before the cursor moves so cursor and selection
+		// are independent. In either list mode, selection collapses onto the new cursor row
+		// after the move so the selection tracks the cursor -- unless selectionFollowsCursor is
+		// false, in which case the cursor (focus) moves independently and the selection is left
+		// untouched. The `selection` guards keep these no-ops when selection is disabled on the
+		// grid.
+		const selectionMode = context.instance.selectionMode;
+		const isListMode = selectionMode === 'list-multiple-selection' || selectionMode === 'list-single-selection';
+		const navigationSelection = {
+			beforeMoveCursor: () => {
+				if (context.instance.selection && selectionMode === 'spreadsheet') {
+					context.instance.clearSelection();
+				}
+			},
+			afterMoveCursor: () => {
+				if (context.instance.selection && isListMode && context.instance.selectionFollowsCursor) {
+					context.instance.selectRow(context.instance.cursorRowIndex);
+				}
+			}
+		};
+
+		// In 'list-single-selection' mode the selection is always exactly the cursor row, so
+		// Shift extension keys fall through to plain navigation (which collapses onto the cursor
+		// via afterMoveCursor). Ctrl+Shift+Space (select all) is likewise gated off below.
+		const allowExtend = selectionMode !== 'list-single-selection';
+
+		// Process the code.
+		switch (e.code) {
+			// Tab key - for summary panel navigation
+			case 'Tab': {
+				// Check if this is a summary panel instance
+				const isSummaryPanel = context.instance instanceof TableSummaryDataGridInstance;
+
+				if (isSummaryPanel) {
+					// Consume the event.
+					consumeEvent();
+
+					// Make sure the cursor is showing.
+					if (context.instance.showCursor()) {
+						return;
+					}
+
+					// Move the cursor to the next/previous row.
+					if (e.shiftKey) {
+						// Shift+Tab moves to previous row
+						context.instance.moveCursorUp();
+					} else {
+						// Tab moves to the next row
+						context.instance.moveCursorDown();
+					}
+				}
+				break;
+			}
+
+			// Space key.
+			case 'Space': {
+				// Make sure the cursor is showing.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// Plain Space: in the list modes, when spaceSelects is set, commit the selection to
+				// the cursor row. Then always raise onSpace so consumers can act on the cursor row
+				// independently of selection (e.g. expand/collapse in a tree).
+				if (!e.ctrlKey && !e.shiftKey) {
+					consumeEvent();
+					if (context.instance.selection && isListMode && context.instance.spaceSelects) {
+						context.instance.selectRow(context.instance.cursorRowIndex);
+					}
+					await context.instance.onSpaceKey();
+				} else if (context.instance.selection) {
+					// Modifier combinations build selections (spreadsheet / multi-select list).
+					consumeEvent();
+					if (e.ctrlKey && !e.shiftKey) {
+						context.instance.selectColumn(context.instance.cursorColumnIndex);
+					} else if (e.shiftKey && !e.ctrlKey) {
+						context.instance.selectRow(context.instance.cursorRowIndex);
+					} else if (e.ctrlKey && e.shiftKey && allowExtend) {
+						context.instance.selectAll();
+					}
+				}
+				break;
+			}
+
+			// Enter key.
+			case 'Enter': {
+				// Consume the event.
+				consumeEvent();
+
+				// Make sure the cursor is showing. If showCursor returned true, the cursor
+				// was previously hidden and is now visible; treat that as the activation.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// In the list modes, when enterSelects is set, Enter commits the selection to the
+				// cursor row. Then always raise onEnter so consumers can act on the cursor row
+				// independently of selection (e.g. expand/collapse in a tree).
+				if (context.instance.selection && isListMode && context.instance.enterSelects) {
+					context.instance.selectRow(context.instance.cursorRowIndex);
+				}
+				await context.instance.onEnterKey();
+				break;
+			}
+
+			// Home key.
+			case 'Home': {
+				// Consume the event.
+				consumeEvent();
+
+				// Make sure the cursor is showing.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// Shift + Home extends the row selection up by one screen.
+				if (e.shiftKey && allowExtend) {
+					context.instance.extendRowSelectionUp(ExtendRowSelectionBy.Screen);
+					return;
+				}
+
+				// On macOS, Ctrl + Home does nothing.
+				if (isMacintosh && e.ctrlKey) {
+					return;
+				}
+
+				// Cmd / Ctrl + Home positions the screen and cursor to the top left. The cursor
+				// lands on the first selectable row so unselectable rows (e.g. section headers)
+				// are skipped. In spreadsheet mode the selection is cleared; in list mode it
+				// collapses onto the new cursor row.
+				if (isMacintosh ? e.metaKey : e.ctrlKey) {
+					navigationSelection.beforeMoveCursor();
+					await context.instance.setScrollOffsets(0, 0);
+					context.instance.setCursorPosition(
+						context.instance.firstColumnIndex,
+						context.instance.firstSelectableRowIndex
+					);
+					navigationSelection.afterMoveCursor();
+					return;
+				}
+
+				// Home positions the screen and cursor to the left. In spreadsheet mode the
+				// selection is cleared; in list mode it collapses onto the cursor row.
+				navigationSelection.beforeMoveCursor();
+				await context.instance.setHorizontalScrollOffset(0);
+				context.instance.setCursorColumn(context.instance.firstColumnIndex);
+				navigationSelection.afterMoveCursor();
+				break;
+			}
+
+			// End key.
+			case 'End': {
+				// Consume the event.
+				consumeEvent();
+
+				// Make sure the cursor is showing.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// Shift + End extends the row selection down by one screen.
+				if (e.shiftKey && allowExtend) {
+					context.instance.extendRowSelectionDown(ExtendRowSelectionBy.Screen);
+					return;
+				}
+
+				// On macOS, Ctrl + End does nothing.
+				if (isMacintosh && e.ctrlKey) {
+					return;
+				}
+
+				// Cmd / Ctrl + End positions the screen and cursor to the bottom right. The
+				// cursor lands on the last selectable row so unselectable rows (e.g. section
+				// headers) are skipped. In spreadsheet mode the selection is cleared; in list
+				// mode it collapses onto the new cursor row.
+				if (isMacintosh ? e.metaKey : e.ctrlKey) {
+					navigationSelection.beforeMoveCursor();
+					await context.instance.setScrollOffsets(
+						context.instance.maximumHorizontalScrollOffset,
+						context.instance.maximumVerticalScrollOffset
+					);
+					context.instance.setCursorPosition(
+						context.instance.lastColummIndex,
+						context.instance.lastSelectableRowIndex
+					);
+					navigationSelection.afterMoveCursor();
+					return;
+				}
+
+				// End positions the screen and cursor to the right. In spreadsheet mode the
+				// selection is cleared; in list mode it collapses onto the cursor row.
+				navigationSelection.beforeMoveCursor();
+				await context.instance.setHorizontalScrollOffset(context.instance.maximumHorizontalScrollOffset);
+				context.instance.setCursorColumn(context.instance.lastColummIndex);
+				navigationSelection.afterMoveCursor();
+				break;
+			}
+
+			// Page up key.
+			case 'PageUp': {
+				// Consume the event.
+				consumeEvent();
+
+				// Make sure the cursor is showing.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// Cmd / Ctrl + PageUp does nothing.
+				if (isMacintosh ? e.metaKey : e.ctrlKey) {
+					return;
+				}
+
+				// Range selection.
+				if (e.shiftKey && allowExtend) {
+					context.instance.extendRowSelectionUp(ExtendRowSelectionBy.Page);
+					return;
+				}
+
+				// PageUp moves up by one page, positioning the cursor at the top of the page. In
+				// spreadsheet mode the selection is cleared; in list mode it collapses onto the
+				// new cursor row.
+				navigationSelection.beforeMoveCursor();
+
+				// Scroll page up.
+				context.instance.scrollPageUp();
+				navigationSelection.afterMoveCursor();
+				break;
+			}
+
+			// Page down key.
+			case 'PageDown': {
+				// Consume the event.
+				consumeEvent();
+
+				// Make sure the cursor is showing.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// Cmd / Ctrl + PageDown does nothing.
+				if (isMacintosh ? e.metaKey : e.ctrlKey) {
+					return;
+				}
+
+				// Range selection.
+				if (e.shiftKey && allowExtend) {
+					context.instance.extendRowSelectionDown(ExtendRowSelectionBy.Page);
+					return;
+				}
+
+				// PageDown moves down by one page, positioning the cursor at the top of the page.
+				// In spreadsheet mode the selection is cleared; in list mode it collapses onto
+				// the new cursor row.
+				navigationSelection.beforeMoveCursor();
+
+				// Scroll page down.
+				context.instance.scrollPageDown();
+				navigationSelection.afterMoveCursor();
+				break;
+			}
+
+			// Up arrow key.
+			case 'ArrowUp': {
+				// Consume the event.
+				consumeEvent();
+
+				// Make sure the cursor is showing.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// Cmd / Ctrl + ArrowUp does nothing.
+				if (isMacintosh ? e.metaKey : e.ctrlKey) {
+					return;
+				}
+
+				// When selection is enabled, perform selection processing.
+				if (context.instance.selection) {
+					// Extend selection up.
+					if (e.shiftKey && allowExtend) {
+						context.instance.extendRowSelectionUp(ExtendRowSelectionBy.Row);
+						return;
+					}
+
+					// Clear selection (spreadsheet mode) or leave it for the post-move selectRow
+					// (list mode).
+					navigationSelection.beforeMoveCursor();
+				}
+
+				// Move the cursor up.
+				context.instance.moveCursorUp();
+
+				// Collapse selection onto the new cursor row in list mode.
+				navigationSelection.afterMoveCursor();
+				break;
+			}
+
+			// Down arrow key.
+			case 'ArrowDown': {
+				// Consume the event.
+				consumeEvent();
+
+				// Make sure the cursor is showing.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// Cmd / Ctrl + ArrowDown does nothing.
+				if (isMacintosh ? e.metaKey : e.ctrlKey) {
+					return;
+				}
+
+				// When selection is enabled, perform selection processing.
+				if (context.instance.selection) {
+					// Extend selection down.
+					if (e.shiftKey && allowExtend) {
+						context.instance.extendRowSelectionDown(ExtendRowSelectionBy.Row);
+						return;
+					}
+
+					// Clear selection (spreadsheet mode) or leave it for the post-move selectRow
+					// (list mode).
+					navigationSelection.beforeMoveCursor();
+				}
+
+				// Move the cursor down.
+				context.instance.moveCursorDown();
+
+				// Collapse selection onto the new cursor row in list mode.
+				navigationSelection.afterMoveCursor();
+				break;
+			}
+
+			// Left arrow key.
+			case 'ArrowLeft': {
+				// Consume the event.
+				consumeEvent();
+
+				// Make sure the cursor is showing.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// Cmd / Ctrl + ArrowLeft does nothing.
+				if (isMacintosh ? e.metaKey : e.ctrlKey) {
+					return;
+				}
+
+				// When selection is enabled, perform selection processing.
+				if (context.instance.selection) {
+					// Extend selection left.
+					if (e.shiftKey && allowExtend) {
+						context.instance.extendColumnSelectionLeft(ExtendColumnSelectionBy.Column);
+						return;
+					}
+
+					// Clear selection (spreadsheet mode) or leave it for the post-move selectRow
+					// (list mode).
+					navigationSelection.beforeMoveCursor();
+				}
+
+				// Moves the cursor left.
+				context.instance.moveCursorLeft();
+
+				// Collapse selection onto the new cursor row in list mode.
+				navigationSelection.afterMoveCursor();
+				break;
+			}
+
+			// Right arrow key.
+			case 'ArrowRight': {
+				// Consume the event.
+				consumeEvent();
+
+				// Make sure the cursor is showing.
+				if (context.instance.showCursor()) {
+					return;
+				}
+
+				// Cmd / Ctrl + ArrowRight does nothing.
+				if (isMacintosh ? e.metaKey : e.ctrlKey) {
+					return;
+				}
+
+				// When selection is enabled, perform selection processing.
+				if (context.instance.selection) {
+					// Extend selection right.
+					if (e.shiftKey && allowExtend) {
+						context.instance.extendColumnSelectionRight(ExtendColumnSelectionBy.Column);
+						return;
+					}
+
+					// Clear selection (spreadsheet mode) or leave it for the post-move selectRow
+					// (list mode).
+					navigationSelection.beforeMoveCursor();
+				}
+
+				// Moves the cursor right.
+				context.instance.moveCursorRight();
+
+				// Collapse selection onto the new cursor row in list mode.
+				navigationSelection.afterMoveCursor();
+				break;
+			}
+
+			// C key - for copy.
+			case 'KeyC': {
+				// Handle Cmd+C / Ctrl+C for copy.
+				if (isMacintosh ? e.metaKey : e.ctrlKey) {
+					// Only handle if instance has copyToClipboard method.
+					if ('copyToClipboard' in context.instance && typeof context.instance.copyToClipboard === 'function') {
+						consumeEvent();
+						await (context.instance as { copyToClipboard: () => Promise<void> }).copyToClipboard();
+					}
+				}
+				break;
+			}
+		}
+	};
+
+	// Use a native wheel event listener with { passive: false } to reliably
+	// call preventDefault(). React's synthetic onWheel uses passive listeners
+	// by default (Chrome 73+), which silently ignores preventDefault() and
+	// allows scroll chaining to parent containers like the notebook.
+	// This matches the pattern used by VS Code's ScrollableElement and
+	// Positron's plotsContainer.tsx.
+	useEffect(() => {
+		const element = dataGridWaffleRef.current;
+		if (!element) {
+			return;
+		}
+
+		const onWheel = (e: globalThis.WheelEvent) => {
+			// Get the delta X and delta Y.
+			let deltaX = e.deltaX;
+			let deltaY = e.deltaY;
+
+			// Suppress jitter on the non-dominant wheel axis.
+			{
+				// This bias factor prevents minor input noise from falsely
+				// flipping axis dominance.
+				const bias = 1.1;
+
+				// Zero out the non-dominant axis.
+				const absDeltaX = Math.abs(deltaX);
+				const absDeltaY = Math.abs(deltaY);
+				if (absDeltaX > absDeltaY * bias) {
+					deltaY = 0;
+				} else if (absDeltaY > absDeltaX * bias) {
+					deltaX = 0;
+				}
+			}
+
+			// If the alt key is pressed, scroll by 10 times the delta X and
+			// delta Y.
+			if (e.altKey) {
+				deltaX *= 10;
+				deltaY *= 10;
+			}
+
+			// Compute the new scroll offsets.
+			const newHorizontalOffset = pinToRange(
+				context.instance.horizontalScrollOffset + deltaX,
+				0,
+				context.instance.maximumHorizontalScrollOffset
+			);
+			const newVerticalOffset = pinToRange(
+				context.instance.verticalScrollOffset + deltaY,
+				0,
+				context.instance.maximumVerticalScrollOffset
+			);
+
+			// If the scroll position wouldn't actually change, let the event
+			// bubble up so parent containers (e.g. Quarto documents) can scroll.
+			const horizontalChanged = newHorizontalOffset !== context.instance.horizontalScrollOffset;
+			const verticalChanged = newVerticalOffset !== context.instance.verticalScrollOffset;
+			if (!horizontalChanged && !verticalChanged) {
+				return;
+			}
+
+			// Consume the event to prevent scroll chaining to parent containers.
+			e.preventDefault();
+			e.stopPropagation();
+
+			// Record the last wheel event.
+			setLastWheelEvent(e.timeStamp);
+
+			// Set the scroll offsets.
+			context.instance.setScrollOffsets(newHorizontalOffset, newVerticalOffset);
+		};
+
+		element.addEventListener('wheel', onWheel, { passive: false });
+		return () => element.removeEventListener('wheel', onWheel);
+	}, [context.instance]);
+
+	// Get the column descriptors and row descriptors.
+	const columnDescriptors = context.instance.getColumnDescriptors(
+		context.instance.horizontalScrollOffset,
+		width
+	);
+	const rowDescriptors = context.instance.getRowDescriptors(
+		context.instance.verticalScrollOffset,
+		height
+	);
+
+	// Create the pinned data grid row elements. Pinned rows are never clipped because they are
+	// painted above the unpinned rows that scroll under them.
+	const dataGridRows: JSX.Element[] = [];
+	for (const pinnedRowDescriptor of rowDescriptors.pinnedRowDescriptors) {
+		dataGridRows.push(
+			<DataGridRow
+				key={`pinned-row-${pinnedRowDescriptor.rowIndex}`}
+				clipTop={0}
+				columnDescriptors={columnDescriptors}
+				height={pinnedRowDescriptor.height}
+				pinned={true}
+				rowIndex={pinnedRowDescriptor.rowIndex}
+				top={pinnedRowDescriptor.top}
+				width={width}
+			/>
+		);
+	}
+
+	// Create the unpinned data grid row elements. An unpinned row that scrolls under the band of
+	// pinned rows is clipped so that it does not paint there. When no row is pinned, the band is
+	// empty and nothing is clipped; a row scrolled off the top edge of the viewport is already
+	// clipped by the rows container.
+	const pinnedRowsHeight = rowDescriptors.pinnedRowDescriptorsHeight;
+	for (const unpinnedRowDescriptor of rowDescriptors.unpinnedRowDescriptors) {
+		const top = unpinnedRowDescriptor.top - context.instance.verticalScrollOffset;
+		dataGridRows.push(
+			<DataGridRow
+				key={`unpinned-row-${unpinnedRowDescriptor.rowIndex}`}
+				clipTop={pinnedRowsHeight > 0 ? Math.max(0, pinnedRowsHeight - top) : 0}
+				columnDescriptors={columnDescriptors}
+				height={unpinnedRowDescriptor.height}
+				pinned={false}
+				rowIndex={unpinnedRowDescriptor.rowIndex}
+				top={top}
+				width={width}
+			/>
+		);
+	}
+
+	// Scrollbars are absolutely-positioned siblings overlapping the column headers, row headers,
+	// and rows. These custom properties carry the scrollbar thickness when each scrollbar
+	// enabled (otherwise zero), and descendants use them in clip-path so nothing paints underneath
+	// the scrollbar gutters. This avoids the "what color should the scrollbar background be",
+	// allowing the scrollbars (and the scrollbar corner) to simply show the ambient background.
+	const waffleStyle: DataGridWaffleCSSProperties = {
+		'--data-grid-clip-right': `${context.instance.verticalScrollbar ? context.instance.scrollbarThickness : 0}px`,
+		'--data-grid-clip-bottom': `${context.instance.horizontalScrollbar ? context.instance.scrollbarThickness : 0}px`,
+	};
+
+	// Render.
+	return (
+		<div
+			ref={dataGridWaffleRef}
+			className='data-grid-waffle'
+			role='grid'
+			style={waffleStyle}
+			tabIndex={0}
+			onBlur={() => context.instance.setFocused(false)}
+			onFocus={() => context.instance.setFocused(true)}
+			onKeyDown={keyDownHandler}
+		>
+			{context.instance.columnHeaders && context.instance.rowHeaders && context.instance.columns !== 0 &&
+				<DataGridCornerTopLeft
+					onClick={async () => {
+						await context.instance.setScrollOffsets(0, 0);
+					}}
+				/>
+			}
+			{context.instance.columnHeaders &&
+				<DataGridColumnHeaders
+					columnDescriptors={columnDescriptors}
+					height={context.instance.columnHeadersHeight}
+					width={width - context.instance.rowHeadersWidth}
+				/>
+			}
+			{context.instance.rowHeaders &&
+				<DataGridRowHeaders
+					height={height - context.instance.columnHeadersHeight}
+					rowDescriptors={rowDescriptors}
+				/>
+			}
+			{context.instance.horizontalScrollbar &&
+				<DataGridScrollbar
+					bothScrollbarsVisible={
+						context.instance.horizontalScrollbar && context.instance.verticalScrollbar
+					}
+					containerHeight={height}
+					containerWidth={width}
+					layoutSize={context.instance.layoutWidth}
+					maximumScrollOffset={() => context.instance.maximumHorizontalScrollOffset}
+					orientation='horizontal'
+					pageSize={context.instance.pageWidth}
+					scrollOffset={context.instance.horizontalScrollOffset}
+					scrollSize={context.instance.scrollWidth}
+					scrollbarThickness={context.instance.scrollbarThickness}
+					onDidChangeScrollOffset={async scrollOffset => {
+						await context.instance.setHorizontalScrollOffset(scrollOffset);
+					}}
+				/>
+			}
+			{context.instance.verticalScrollbar &&
+				<DataGridScrollbar
+					bothScrollbarsVisible={
+						context.instance.horizontalScrollbar && context.instance.verticalScrollbar
+					}
+					containerHeight={height}
+					containerWidth={width}
+					layoutSize={context.instance.layoutHeight}
+					maximumScrollOffset={() => context.instance.maximumVerticalScrollOffset}
+					orientation='vertical'
+					pageSize={context.instance.pageHeight}
+					scrollOffset={context.instance.verticalScrollOffset}
+					scrollSize={context.instance.scrollHeight}
+					scrollbarThickness={context.instance.scrollbarThickness}
+					onDidChangeScrollOffset={async scrollOffset => {
+						await context.instance.setVerticalScrollOffset(scrollOffset);
+					}}
+				/>
+			}
+			{context.instance.horizontalScrollbar && context.instance.verticalScrollbar &&
+				<DataGridScrollbarCorner
+					onClick={async () => {
+						await context.instance.setScrollOffsets(
+							context.instance.maximumHorizontalScrollOffset,
+							context.instance.maximumVerticalScrollOffset
+						);
+					}}
+				/>
+			}
+			<div
+				ref={dataGridRowsRef}
+				className='data-grid-rows-container'
+				style={{
+					width: width - context.instance.rowHeadersWidth,
+					height: height - context.instance.columnHeadersHeight,
+					// See the --data-grid-clip-* custom properties on .data-grid-waffle.
+					clipPath: 'inset(0 var(--data-grid-clip-right) var(--data-grid-clip-bottom) 0)',
+				}}
+			>
+				<div
+					className='data-grid-rows'
+					style={{
+						margin: context.instance.rowsMargin
+					}}
+				>
+					{dataGridRows}
+				</div>
+			</div>
+		</div>
+	);
+});
+
+// Set the display name.
+DataGridWaffle.displayName = 'DataGridWaffle';

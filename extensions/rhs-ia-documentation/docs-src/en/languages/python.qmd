@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Python"
+---
+
+Open a `.py` file and choose a discovered Python interpreter. Run a line or selection from the editor to start a Python session and send code to the Console.
+
+RHS-IA provides completion, diagnostics, formatting, debugging, variables, plots, and Data Explorer integration through its Python tooling. Notebook kernels use the environment selected for the notebook.
+
+Prefer a project-specific virtual environment. Install packages into the same environment used by the active session, then restart the session when native libraries or environment variables change. See [Python Installations](../interpreters/python.qmd).

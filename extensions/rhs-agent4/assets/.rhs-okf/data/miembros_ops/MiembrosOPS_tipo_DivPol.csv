@@ -1,0 +1,41 @@
+iso3,pais,tipo_division
+ARG,Argentina,Provincias
+ATG,Antigua y Barbuda,Parroquias
+AIA,Anguila,Parroquias
+BHS,Bahamas,Islas/Áreas (districts)
+BRB,Barbados,Parroquias
+BLZ,Belice,Distritos
+BMU,Bermudas,Parroquias
+BOL,Bolivia,Departamentos
+BRA,Brasil,Estados
+CAN,Canadá,Provincias y Territorios
+CYM,Islas Caimán,Distritos
+CHL,Chile,Regiones
+COL,Colombia,Departamentos
+CRI,Costa Rica,Provincias
+CUB,Cuba,Provincias
+DMA,Dominica,Parroquias
+DOM,República Dominicana,Provincias
+ECU,Ecuador,Provincias
+GRD,Granada,Distrito (solo total, sin desglose)
+GTM,Guatemala,Departamentos
+GUY,Guyana,Regiones
+HTI,Haití,Departamentos
+HND,Honduras,Departamentos
+JAM,Jamaica,Parroquias
+KNA,Saint Kitts y Nevis,Parroquias
+LCA,Santa Lucía,Distritos
+MEX,México,Entidades Federativas
+MSR,Montserrat,Parroquias
+NIC,Nicaragua,Departamentos
+PAN,Panamá,Provincias
+PER,Perú,Departamentos
+PRY,Paraguay,Departamentos
+SLV,El Salvador,Departamentos
+SUR,Surinam,Distritos
+TTO,Trinidad y Tobago,Regiones/municipios
+USA,Estados Unidos,Estados
+URY,Uruguay,Departamentos
+VCT,San Vicente y las Granadinas,Parroquias
+VEN,Venezuela,Estados
+VGB,Islas Vírgenes Británicas,Parroquias

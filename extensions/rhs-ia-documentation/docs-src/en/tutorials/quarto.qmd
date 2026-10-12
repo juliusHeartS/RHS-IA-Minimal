@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Quarto Tutorial"
+---
+
+1. Create a folder and a `.qmd` file with a title in YAML frontmatter.
+2. Add explanatory Markdown and a fenced Python or R code cell.
+3. Select the matching interpreter and run the cell inline.
+4. Add a calculation or plot that depends on the first cell.
+5. Render the document with Quarto and inspect the output.
+
+Finally, restart the runtime and render again. A successful clean render confirms that the document does not depend on hidden interactive state.

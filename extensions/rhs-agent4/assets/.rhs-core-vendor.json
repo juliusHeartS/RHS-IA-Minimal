@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "name": "rhs-okf-canonical-bundle",
+  "strategy": "bundled-with-explicit-update",
+  "source": "/Users/julius3005/Documents/Github/rhs-okf-core",
+  "commit": "d8aeb9f17358c48a8dc1e36b00397bdd2bf3768c",
+  "branch": "codex/coreokf-rhs-agent-integration",
+  "remotes": [
+    "origin\thttps://github.com/juliusHeartS/rhs-okf-core.git (fetch)",
+    "origin\thttps://github.com/juliusHeartS/rhs-okf-core.git (push)"
+  ],
+  "sourceStatusShort": "",
+  "sourceDirty": false,
+  "vendoredAt": "2026-09-14T01:42:18.729Z",
+  "packagedConceptLayers": [
+    ".rhs-okf",
+    ".baseglobal",
+    ".rhs-rag-canonical"
+  ],
+  "packagedRagLancedb": true,
+  "layers": {
+    ".rhs-okf": {
+      "fileCount": 211,
+      "totalBytes": 8682791,
+      "sha256": "06f6263483b49d3f412231236891dcab6e1251568845851ad4c9c65872f32738"
+    },
+    ".baseglobal": {
+      "fileCount": 162,
+      "totalBytes": 33016256,
+      "sha256": "bac97da7da02ea69c726bb291c8ede51aa57a5170508266b703619b44ed84156"
+    },
+    ".rhs-rag-canonical": {
+      "fileCount": 1233,
+      "totalBytes": 37068704,
+      "sha256": "ee3870ae10f6e35c8f0a8a8c0681c5c20bee7b7d3c3d438e6ad63496889ba395"
+    }
+  },
+  "manifest": {
+    "path": ".rhs-core-manifest.json",
+    "sha256": "af579ff6939a0bb6573c79cc2622fe5437a5c942eda71ac4ebb97098dc8d9f4b",
+    "bytes": 550440
+  }
+}

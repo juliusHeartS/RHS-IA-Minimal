@@ -1,0 +1,1356 @@
+{
+	"schemaVersion": 1,
+	"generatedFrom": "../../../rhs-ia-documentation/positron-website-main",
+	"entries": [
+		{
+			"source": "_environment",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "_extensions/cdn-video/cdn-video.lua",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/css/all.css",
+			"kind": "css",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/css/all.min.css",
+			"kind": "css",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/css/latex-fontsize.css",
+			"kind": "css",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/LICENSE.txt",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-brands-400.ttf",
+			"kind": "ttf",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-brands-400.woff2",
+			"kind": "woff2",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-regular-400.ttf",
+			"kind": "ttf",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-regular-400.woff2",
+			"kind": "woff2",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-solid-900.ttf",
+			"kind": "ttf",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-solid-900.woff2",
+			"kind": "woff2",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-v4compatibility.ttf",
+			"kind": "ttf",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-v4compatibility.woff2",
+			"kind": "woff2",
+			"disposition": "REVIEW",
+			"reason": "runtime-dependency-review-required"
+		},
+		{
+			"source": "_extensions/quarto-ext/fontawesome/fontawesome.lua",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "_redirects",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": ".gitattributes",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": ".gitignore",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": ".quarto-version",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": ".vscode/launch.json",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": ".vscode/snippets.code-snippets",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "assets/images/exclamation-circle-dm.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "assets/images/exclamation-circle.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "assets/images/exclamation-triangle-dm.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "assets/images/exclamation-triangle.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "assets/images/info-circle-dm.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "assets/images/info-circle.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "assets/images/positron-icon.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "assets/images/positron-logo_fullcolor-TM.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "css/_posit-colors.scss",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "css/theme-workbench.scss",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "css/theme.scss",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "images/action-bar-button-with-text.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-button.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-checkbox.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-information.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-menu-button.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-overflow-button.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-regions.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-separator.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-split-menu-button-left.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-split-menu-button-right.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-toggle.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bar-tooltip.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/action-bars.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/active-interpreter-session.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/assistant-provider-modal-amazon-bedrock.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/assistant-provider-modal-anthropic.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/assistant-provider-modal-custom-provider.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/assistant-provider-modal-github-copilot.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/assistant-provider-modal-microsoft-foundry.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/assistant-provider-modal-openai.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/assistant-provider-modal-snowflake-cortex.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/assistant-sidebar-icon.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/assistant-status-bar-icon.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/astropy.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/code-cells.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/connections-pane-new-connection.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/connections-pane-schema-explorer.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/connections-pane-variables-pane.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/connections-pane.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/console-pane-interpreter-session-status.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/create-python-environment.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/create-python-project.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/create-r-environment.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/create-r-project.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-cell-menu.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-cell-value-tooltip.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-column-label-summary-panel.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-column-menu.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-copy-cell-context-menu.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-copy-rectangular-range.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-copy-whole-columns.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-copy-whole-rows.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-filter-ui.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-filter.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-flights.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-grid-example.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-loading-indicators.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-row-menu.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-sort-context-menu.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-sort-multiple-columns.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-summary-config.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-summary-data-type-tooltip.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-summary-missing-tooltip.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-summary-panel.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer-summary-sparkline-tooltip.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/data-explorer.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/databot-welcome.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/dev-containers-remote-explorer.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/dev-containers-reopen.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/dev-containers-setting.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/download-button.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/extension-publisher-trust.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/extension-verified-publisher.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/favicon.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/features-bridge.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/features-enterprise.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/features-explore.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/features-publish.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/installer-windows-add-to-directory-context-menu.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/installer-windows-add-to-path.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/jupyter-notebook-option.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/jupyter-notebooks-kernel-selector.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/new-folder-from-template.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/new-quarto-document.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/open-folder.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/posit-guide-ltmd.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/posit-icon-fullcolor.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/posit-logo-black-TM.svg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/positron-notebook-assistant-action-bar.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/positron-notebook-assistant-panel.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/positron-notebook-editor-kernel-selector.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/positron-notebook-layout.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/positron-notebook.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/positron-path.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/positron-social.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/project-manager-activity-bar.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/project-manager-commands-greatest-hits.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/python-project-template.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/quarto-hello-python.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/r-project-template.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/remote-ssh-menu.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/remote-ssh-port-forwarding.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/remote-ssh-server-template.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/remote-ssh-shutdown-timeout.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/remote-ssh-status.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/reticulate-interpreter-list.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/reticulate-interpreter.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/reticulate-python-objs.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/run-app-button.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/run-app-debug-breakpoint.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/run-app-debug-streamlit-paused-at-breakpoint.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/run-app-debug-streamlit.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/run-app-play-button.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/run-app-streamlit.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/save-notebook.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/snippets-configure-language-specific-snippets.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/snippets-configure-snippets.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/snippets-for-example.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/snippets-keyword-with-two-items.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tbid.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/top-action-bar.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-keyboard-shortcuts-command-palette.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-layout-buttons.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-migrate-command-palette.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-migrate-extensions.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-migrate-open-keybindings.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-migrate-open-settings.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-assistant.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-chart.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-configure-model.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-convert-to-qmd.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-dashboard.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-environment.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-explain-error.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-explorer.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-ghost-cell.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-git.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-notebook-assistant.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-notebook.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-notification.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-permission.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-python-ai-results.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-assistant.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-chart.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-completion.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-dashboard.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-donut.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-explain-error.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-git.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-permission.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-renv.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-report.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-r-ai-results.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-vscode-available-interpreters.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-vscode-console.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-vscode-copilot.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-vscode-data-explorer.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/tutorial-vscode-import-settings.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/user-interface-for-rstudio-migration.jpeg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/user-interface-rstudio-vs-positron.jpeg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/variables-pane-mpg.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/variables-pane-starwars.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "images/variables-pane.png",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "lychee.toml",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "release-notes/assets/2026-07-packages-pane.gif",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "release-notes/assets/2026-08-data-connections.gif",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "scripts/build-llms-bundle.sh",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "scripts/generate-redirect-stubs.sh",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "scripts/test-build-llms-bundle.sh",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "scripts/test-generate-redirect-stubs.sh",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "scripts/workbench-metadata/update-all-releases.py",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "templates/feature-card.ejs",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "templates/tutorial-listing.ejs",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "templates/welcome-card.ejs",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "videos/deploy-to-connect-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/deploy-to-connect.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/generate-posters.sh",
+			"kind": "support",
+			"disposition": "REVIEW",
+			"reason": "upstream-build-support-review-required"
+		},
+		{
+			"source": "videos/notebook-ai-quick-actions-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/notebook-ai-quick-actions.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/notebook-fix-error-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/notebook-fix-error.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/plots-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/plots.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/positron-hero-fast-tour-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/positron-hero-fast-tour.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-explore-python-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-explore-python.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-explore-r-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-explore-r.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-filter-python-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-filter-python.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-load-python-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-load-python.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-load-r-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-load-r.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-migrate-color-themes-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-migrate-color-themes.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-render-r-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-render-r.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-test-python-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-test-python.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-vscode-notebooks-poster.jpg",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		},
+		{
+			"source": "videos/tutorial-vscode-notebooks.mp4",
+			"kind": "media",
+			"disposition": "RECREATE",
+			"reason": "upstream-visual-review-required"
+		}
+	]
+}

@@ -1,0 +1,684 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { RuntimeItem } from '../classes/runtimeItem.js';
+import { Event } from '../../../../../base/common/event.js';
+import { IDisposable } from '../../../../../base/common/lifecycle.js';
+import { ICodeEditor } from '../../../../../editor/browser/editorBrowser.js';
+import { createDecorator } from '../../../../../platform/instantiation/common/instantiation.js';
+import { IExecutionHistoryEntry } from '../../../positronHistory/common/executionHistoryService.js';
+import { ILanguageRuntimeSession, IRuntimeSessionMetadata } from '../../../runtimeSession/common/runtimeSessionService.js';
+import { ILanguageRuntimeMetadata, RuntimeCodeExecutionMode, RuntimeErrorBehavior } from '../../../languageRuntime/common/languageRuntimeService.js';
+import { IConsoleCodeAttribution, ILanguageRuntimeCodeExecutedEvent } from '../../common/positronConsoleCodeExecution.js';
+import { URI } from '../../../../../base/common/uri.js';
+
+// Create the decorator for the Positron console service (used in dependency injection).
+export const IPositronConsoleService = createDecorator<IPositronConsoleService>('positronConsoleService');
+
+/**
+ * The Positron console view ID.
+ */
+export const POSITRON_CONSOLE_VIEW_ID = 'workbench.panel.positronConsole';
+
+/**
+ * PositronConsoleState enumeration.
+ */
+export const enum PositronConsoleState {
+	Uninitialized = 'Uninitialized',
+	Starting = 'Starting',
+	Busy = 'Busy',
+	Ready = 'Ready',
+	Offline = 'Offline',
+	Exiting = 'Exiting',
+	Exited = 'Exited',
+	Disconnected = 'Disconnected'
+}
+
+/**
+ * Result of a code submission attempt made via {@link IPositronConsoleInstance.submitCode}.
+ */
+export const enum CodeSubmissionResult {
+	/** The code was accepted and (its first statement) sent for execution. */
+	Executed = 'executed',
+	/** The code is incomplete; nothing was submitted. Show the continuation prompt. */
+	Incomplete = 'incomplete',
+	/** The user cancelled the submission; nothing was (knowingly) submitted. */
+	Cancelled = 'cancelled',
+}
+
+/**
+ * IPositronConsoleService interface.
+ */
+export interface IPositronConsoleService {
+	/**
+	 * Needed for service branding in dependency injector.
+	 */
+	readonly _serviceBrand: undefined;
+
+	/**
+	 * Gets the Positron console instances.
+	 */
+	readonly positronConsoleInstances: IPositronConsoleInstance[];
+
+	/**
+	 * Gets the active Positron console instance.
+	 */
+	readonly activePositronConsoleInstance?: IPositronConsoleInstance;
+
+	/**
+	 * Whether a notebook console session is currently being deleted.
+	 * When true, focus changes should not update the foreground session
+	 * because the active console tab switch is a side effect of cleanup,
+	 * not a user gesture.
+	 */
+	readonly isDeletingNotebookConsole: boolean;
+
+	/**
+	 * Gets the active code editor (CodeEditorWidget used to enter code) for the active Positron
+	 * console instance.
+	 */
+	readonly activeCodeEditor: ICodeEditor | undefined;
+
+	/**
+	 * The onDidStartPositronConsoleInstance event.
+	 */
+	readonly onDidStartPositronConsoleInstance: Event<IPositronConsoleInstance>;
+
+	/**
+	 * The onDidDeletePositronConsoleInstance event.
+	 */
+	readonly onDidDeletePositronConsoleInstance: Event<IPositronConsoleInstance>;
+
+	/**
+	 * The onDidChangeActivePositronConsoleInstance event.
+	 */
+	readonly onDidChangeActivePositronConsoleInstance: Event<IPositronConsoleInstance | undefined>;
+
+	/**
+	 * Set the active console instance to the one with the given session ID.
+	 *
+	 * Typically the active console instance should follow the global
+	 * foreground session; this method should only be used when the active
+	 * console instance needs to be set to a specific session.
+	 *
+	 * @param sessionId The session ID of the console to activate.
+	 */
+	setActivePositronConsoleSession(sessionId: string): void;
+
+	/**
+	 * Remove the console instance with the given session ID.
+	 *
+	 * As with setActivePositronConsoleSession, this is only used to remove
+	 * provisional instances that aren't tied to a session. Typically, session
+	 * deletion should be handled by the runtime session service.
+	 *
+	 * @param sessionId
+	 */
+	deletePositronConsoleSession(sessionId: string): void;
+
+	/**
+	 * The onDidChangeConsoleWidth event.
+	 */
+	readonly onDidChangeConsoleWidth: Event<number>;
+
+	/**
+	 * Placeholder that gets called to "initialize" the PositronConsoleService.
+	 */
+	initialize(): void;
+
+	/**
+	 * Reveals the find widget in the active console instance.
+	 */
+	revealFindWidget(): void;
+
+	/**
+	 * Hides the find widget in the active console instance.
+	 */
+	hideFindWidget(): void;
+
+	/**
+	 * Navigates to the next find match in the active console instance.
+	 */
+	findNext(): void;
+
+	/**
+	 * Navigates to the previous find match in the active console instance.
+	 */
+	findPrevious(): void;
+
+	/**
+	 * Gets the current console input width, in characters.
+	 */
+	getConsoleWidth(): number;
+
+	/**
+	 * Executes code in a PositronConsoleInstance.
+	 *
+	 * @param languageId The language ID.
+	 * @param sessionId The session ID. This can be empty, in which case an appropriate session
+	 *   will be chosen, and if no session for the desired language is running at all, a new
+	 *   session will be started.
+	 * @param code The code.
+	 * @param attribution An optional attribution object that describes the source of the code.
+	 * @param focus A value which indicates whether to focus Positron console instance.
+	 * @param allowIncomplete Whether to bypass runtime code completeness checks. If true, the `code`
+	 *   will be executed by the runtime even if it is incomplete or invalid. Defaults to false
+	 * @param mode Possible code execution modes for a language runtime
+	 * @param errorBehavior Possible error behavior for a language runtime
+	 * @param executionId An optional ID to track this execution for observation
+	 * @param documentUri Optional document URI when code is executed from a file. When provided,
+	 *   the backend will be notified that this is the source of code execution.
+	 * @returns The session ID that was assigned to execute the code.
+	 */
+	executeCode(languageId: string,
+		sessionId: string | undefined,
+		code: string,
+		attribution: IConsoleCodeAttribution,
+		focus: boolean,
+		allowIncomplete?: boolean,
+		mode?: RuntimeCodeExecutionMode,
+		errorBehavior?: RuntimeErrorBehavior,
+		executionId?: string,
+		documentUri?: URI,
+		executionMetadata?: Record<string, unknown>): Promise<string>;
+
+	/**
+	 * Fires when code is executed in any Positron console instance.
+	 */
+	onDidExecuteCode: Event<ILanguageRuntimeCodeExecutedEvent>;
+
+	/**
+	 * Shows and focuses the notebook console for the given notebook. If no
+	 * console exists for the notebook, one is created.
+	 *
+	 * @param notebookUri The URI of the notebook.
+	 * @param focus A value which indicates whether to focus the console.
+	 */
+	showNotebookConsole(notebookUri: URI, focus: boolean): void;
+
+	/**
+	 * Reveals and highlights the console input associated with the given execution ID.
+	 * This will activate the console instance for the given session, scroll to the input,
+	 * and briefly highlight it to draw attention to it.
+	 *
+	 * @param sessionId The session ID of the console instance.
+	 * @param executionId The execution ID of the input to reveal.
+	 * @throws an error if the console instance or execution cannot be found.
+	 */
+	revealExecution(sessionId: string, executionId: string): void;
+}
+
+/**
+ * An enumeration of the session attachment modes for new console instances.
+ */
+export enum SessionAttachMode {
+	/** The console is attaching to a new, starting session */
+	Starting = 'starting',
+
+	/** The console is attaching to a restarting session */
+	Restarting = 'restarting',
+
+	/** The console is switching to a different session */
+	Switching = 'switching',
+
+	/** The console is attaching to a session that is being reconnected */
+	Reconnecting = 'reconnecting',
+
+	/** The console is reattaching to a connected session */
+	Connected = 'connected',
+}
+
+/**
+ * Event arguments for the onDidNavigateInputHistoryUp event.
+ */
+export type DidNavigateInputHistoryUpEventArgs = {
+	/**
+	 * A value which indicates whether to use the prefix match strategy.
+	 */
+	usingPrefixMatch: boolean;
+};
+
+/**
+ * Options for focusing the console input.
+ */
+export type FocusInputOptions = {
+	/**
+	 * Whether to focus the input without scrolling it into view. Used when the
+	 * user has scrolled up to view history so that focusing the input does not
+	 * yank the viewport back to the bottom.
+	 */
+	preventScroll?: boolean;
+};
+
+/**
+ * IConsoleFindWidget interface. Abstracts the find widget so the service layer
+ * can own its lifecycle without depending on the concrete implementation.
+ */
+export interface IConsoleFindWidget extends IDisposable {
+	reveal(initialInput?: string): void;
+	hide(): void;
+	find(previous: boolean): void;
+	refreshSearch(): void;
+	layout(width: number): void;
+	getDomNode(): HTMLElement;
+	readonly onDidHide: Event<void>;
+}
+
+// Create the decorator for the console find widget factory (used in dependency injection).
+export const IConsoleFindWidgetFactory = createDecorator<IConsoleFindWidgetFactory>('consoleFindWidgetFactory');
+
+/**
+ * IConsoleFindWidgetFactory interface. Allows the service layer to create
+ * find widgets without depending on the concrete implementation.
+ */
+export interface IConsoleFindWidgetFactory {
+	readonly _serviceBrand: undefined;
+	createFindWidget(): IConsoleFindWidget;
+}
+
+/**
+ * IPositronConsoleInstance interface.
+ */
+export interface IPositronConsoleInstance {
+	/**
+	 * Gets the state.
+	 */
+	readonly state: PositronConsoleState;
+
+	/**
+	 * Gets the metadata for the runtime session itself.
+	 */
+	readonly sessionMetadata: IRuntimeSessionMetadata;
+
+	/**
+	 * Gets the metadata of the runtime associated with the session.
+	 */
+	readonly runtimeMetadata: ILanguageRuntimeMetadata;
+
+	/**
+	 * Gets the session ID.
+	 */
+	readonly sessionId: string;
+
+	/**
+	 * Gets the session name.
+	 */
+	readonly sessionName: string;
+
+	/**
+	 * Gets a value which indicates whether trace is enabled.
+	 */
+	readonly trace: boolean;
+
+	/**
+	 * Gets a value which indicates whether word wrap is enabled.
+	 */
+	readonly wordWrap: boolean;
+
+	/**
+	 * Gets the runtime items.
+	 */
+	readonly runtimeItems: RuntimeItem[];
+
+	/**
+	 * Gets a value which indicates whether a prompt is active.
+	 */
+	readonly promptActive: boolean;
+
+	/**
+	 * Whether or not we are currently attached to the runtime.
+	 */
+	readonly runtimeAttached: boolean;
+
+	/**
+	 * Is scroll-lock engaged?
+	 */
+	scrollLocked: boolean;
+
+	/**
+	 * Last saved scroll top.
+	 */
+	lastScrollTop: number;
+
+
+	/**
+	 * The onFocusInput event.
+	 */
+	readonly onFocusInput: Event<FocusInputOptions>;
+
+	/**
+	 * The onDidChangeState event.
+	 */
+	readonly onDidChangeState: Event<PositronConsoleState>;
+
+	/**
+	 * The onDidChangeWordWrap event.
+	 */
+	readonly onDidChangeWordWrap: Event<boolean>;
+
+	/**
+	 * The onDidChangeTrace event.
+	 */
+	readonly onDidChangeTrace: Event<boolean>;
+
+	/**
+	 * The onDidChangeRuntimeItems event.
+	 */
+	readonly onDidChangeRuntimeItems: Event<void>;
+
+	/**
+	 * The onDidPasteText event.
+	 */
+	readonly onDidPasteText: Event<string>;
+
+	/**
+	 * The onDidSelectAll event.
+	 */
+	readonly onDidSelectAll: Event<void>;
+
+	/**
+	 * The onDidClearConsole event.
+	 */
+	readonly onDidClearConsole: Event<void>;
+
+	/**
+	 * The onDidNavigateInputHistoryDown event.
+	 */
+	readonly onDidNavigateInputHistoryDown: Event<void>;
+
+	/**
+	 * The onDidNavigateInputHistoryUp event.
+	 */
+	readonly onDidNavigateInputHistoryUp: Event<DidNavigateInputHistoryUpEventArgs>;
+
+	/**
+	 * The onDidEngageHistoryInfixSearch event.
+	 */
+	readonly onDidEngageHistoryInfixSearch: Event<void>;
+
+	/**
+	 * The onDidClearInputHistory event.
+	 */
+	readonly onDidClearInputHistory: Event<void>;
+
+	/**
+	 * The onDidSetPendingCode event.
+	 */
+	readonly onDidSetPendingCode: Event<string | undefined>;
+
+	/**
+	 * The onDidExecuteCode event.
+	 */
+	readonly onDidExecuteCode: Event<ILanguageRuntimeCodeExecutedEvent>;
+
+	/**
+	 * The onDidSelectPlot event.
+	 */
+	readonly onDidSelectPlot: Event<string>;
+
+	/**
+	 * The onDidRequestRestart event.
+	 */
+	readonly onDidRequestRestart: Event<void>;
+
+	/**
+	 * The onDidAttachSession event. Fires both when a session is attached and
+	 * when one is detached (in which case the parameter is undefined)
+	 */
+	readonly onDidAttachSession: Event<ILanguageRuntimeSession | undefined>;
+
+	/**
+	 * The onDidRequestRevealExecution event. Fired when an execution should be
+	 * revealed and highlighted in the console.
+	 */
+	readonly onDidRequestRevealExecution: Event<string>;
+
+	/**
+	 * The onDidChangeWidthInChars event.
+	 */
+	readonly onDidChangeWidthInChars: Event<number>;
+
+	/**
+	 * Fires when a code submission (completeness check) starts or finishes.
+	 * The payload is the new value of {@link codeSubmissionInProgress}.
+	 */
+	readonly onDidChangeCodeSubmissionInProgress: Event<boolean>;
+
+	/**
+	 * Focuses the input for the console.
+	 * @param options Options controlling how focus is taken.
+	 */
+	focusInput(options?: FocusInputOptions): void;
+
+	/**
+	 * Gets the find widget's DOM node for insertion into the console container.
+	 * Returns undefined if no find widget has been set.
+	 */
+	readonly findWidgetDomNode: HTMLElement | undefined;
+
+	/**
+	 * Layouts the find widget to the given width.
+	 */
+	layoutFindWidget(width: number): void;
+
+	/**
+	 * Requests that the find widget be revealed.
+	 */
+	requestFind(): void;
+
+	/**
+	 * Requests that the find widget be hidden.
+	 */
+	requestHideFind(): void;
+
+	/**
+	 * Requests navigation to the next find match.
+	 */
+	requestFindNext(): void;
+
+	/**
+	 * Requests navigation to the previous find match.
+	 */
+	requestFindPrevious(): void;
+
+	/**
+	 * Re-applies find highlights. Called when the console tab becomes active
+	 * to reclaim the global CSS Custom Highlight API entries.
+	 */
+	refreshFindHighlights(): void;
+
+	/**
+	 * Tells the console its current console input width, in characters. Fires
+	 * the onDidChangeWidth event if the width has changed.
+	 */
+	setWidthInChars(newWidth: number): void;
+
+	/**
+	 * Gets the current width of the console input, in characters.
+	 */
+	getWidthInChars(): number;
+
+	/**
+	 * Returns the active code editor for the console, if it exists.
+	 */
+	codeEditor: ICodeEditor | undefined;
+
+	/**
+	 * An event that fires each time a code editor is assigned (i.e. every time the ConsoleInput
+	 * React component mounts and sets the editor). Fires again on remount with the new editor,
+	 * since the previous one has been disposed by then.
+	 */
+	readonly onDidSetCodeEditor: Event<ICodeEditor>;
+
+	/**
+	 * Toggles trace.
+	 */
+	toggleTrace(): void;
+
+	/**
+	 * Toggles word wrap.
+	 */
+	toggleWordWrap(): void;
+
+	/**
+	 * Pastes text into the console.
+	 */
+	pasteText(text: string): void;
+
+	/**
+	 * Select all text in the console.
+	 */
+	selectAll(): void;
+
+	/**
+	 * Clears the console.
+	 */
+	clearConsole(): void;
+
+	/**
+	 * Navigates the input history down.
+	 */
+	navigateInputHistoryDown(): void;
+
+	/**
+	 * Navigates the input history up.
+	 * @param usingPrefixMatch A value which indicates whether to use the prefix match strategy.
+	 */
+	navigateInputHistoryUp(usingPrefixMatch: boolean): void;
+
+	/**
+	 * Engages a reverse history search using infix matching.
+	 */
+	engageHistoryInfixSearch(): void;
+
+	/**
+	 * Clears the input history.
+	 */
+	clearInputHistory(): void;
+
+	/**
+	 * Interrupts the console.
+	 * @param code The optional code to interrupt.
+	 */
+	interrupt(code?: string): void;
+
+	/**
+	 * Whether a code submission (completeness check) is currently in flight.
+	 */
+	readonly codeSubmissionInProgress: boolean;
+
+	/**
+	 * Whether the code being submitted has been promoted into the transcript
+	 * (because more code was queued behind it). While true, the input line
+	 * should be hidden: its code now lives in the transcript, and showing an
+	 * empty prompt would invite the user to enter more code even though a
+	 * submission is still pending.
+	 */
+	readonly submittingInputPromoted: boolean;
+
+	/**
+	 * Submits code entered interactively: performs the completeness check
+	 * appropriate for the session/settings, then executes and/or queues it.
+	 *
+	 * @param code The code to submit.
+	 * @param attribution An attribution object that describes the source of the code.
+	 * @returns The result of the submission attempt.
+	 */
+	submitCode(code: string, attribution: IConsoleCodeAttribution): Promise<CodeSubmissionResult>;
+
+	/**
+	 * Cancels the in-flight submission, if any.
+	 */
+	cancelCodeSubmission(): void;
+
+	/**
+	 * Aborts an in-flight completeness check so a follow-up line can be merged
+	 * and the combined code re-checked immediately. Never interrupts an
+	 * execution: a no-op once the submission has been accepted for execution.
+	 */
+	cancelCompletenessCheck(): void;
+
+	/**
+	 * Gets the clipboard representation of the console instance.
+	 * @param commentPrefix The comment prefix to use.
+	 * @returns The clipboard representation of the console instance.
+	 */
+	getClipboardRepresentation(commentPrefix: string): string[];
+
+	/**
+	 * Replays execution history entries, adding their input and output to the
+	 * console and preparing the console to reconnect to the runtime.
+	 *
+	 * @param entry The entry to replay.
+	 */
+	replayExecutions(entries: IExecutionHistoryEntry<unknown>[]): void;
+
+	/**
+	 * Gets or sets the initial working directory displayed in the console.
+	 *
+	 * This does not actually change the working directory of the runtime session.
+	 */
+	initialWorkingDirectory: string;
+
+	/**
+	 * Enqueues code to be executed.
+	 * @param code The code to enqueue.
+	 * @param attribution An optional attribution object that describes the source of the code.
+	 * @param allowIncomplete Whether to bypass runtime code completeness checks. If true, the `code`
+	 *   will be executed by the runtime even if it is incomplete or invalid. Defaults to false
+	 * @param mode Possible code execution modes for a language runtime.
+	 * @param errorBehavior Possible error behavior for a language runtime
+	 * @param executionId An optional ID to track this execution for observation
+	 */
+	enqueueCode(code: string,
+		attribution: IConsoleCodeAttribution,
+		allowIncomplete?: boolean,
+		mode?: RuntimeCodeExecutionMode,
+		errorBehavior?: RuntimeErrorBehavior,
+		executionId?: string): Promise<void>;
+
+	/**
+	 * Executes code.
+	 * @param code The code to execute.
+	 * @param attribution An optional attribution object that describes the source of the code.
+	 * @param mode Possible code execution modes for a language runtime.
+	 * @param errorBehavior Possible error behavior for a language runtime
+	 * @param executionId An optional ID to track this execution for observation
+	 */
+	executeCode(code: string,
+		attribution: IConsoleCodeAttribution,
+		mode?: RuntimeCodeExecutionMode,
+		errorBehavior?: RuntimeErrorBehavior,
+		executionId?: string,
+		executionMetadata?: Record<string, unknown>): void;
+
+	/**
+	 * Replies to the active prompt.
+	 * @param value The value.
+	 */
+	replyToPrompt(value: string): void;
+
+	/**
+	 * Attaches a runtime session to the console.
+	 *
+	 * @param session The session to attach.
+	 * @param mode The session attach mode.
+	 */
+	attachRuntimeSession(session: ILanguageRuntimeSession | undefined, mode: SessionAttachMode): void;
+
+	/**
+	 * Gets the currently attached runtime, or undefined if none.
+	 */
+	attachedRuntimeSession: ILanguageRuntimeSession | undefined;
+
+	/**
+	 * Reveals and highlights the console input associated with the given execution ID.
+	 * This will scroll to the input and briefly highlight it.
+	 *
+	 * @param executionId The execution ID of the input to reveal.
+	 * @returns `true` if the execution was found and revealed, `false` otherwise.
+	 */
+	revealExecution(executionId: string): boolean;
+}

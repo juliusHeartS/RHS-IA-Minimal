@@ -1,0 +1,362 @@
+name: "Test: PR"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - "prerelease/**"
+      - "release/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pr-tags:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.pr-tags.outputs.tags }}
+      win_tag_found: ${{ steps.pr-tags.outputs.win_tag_found }}
+      web_tag_found: ${{ steps.pr-tags.outputs.web_tag_found }}
+      rocky_electron_tag_found: ${{ steps.pr-tags.outputs.rocky_electron_tag_found }}
+      rocky_web_tag_found: ${{ steps.pr-tags.outputs.rocky_web_tag_found }}
+      suse_electron_tag_found: ${{ steps.pr-tags.outputs.suse_electron_tag_found }}
+      suse_web_tag_found: ${{ steps.pr-tags.outputs.suse_web_tag_found }}
+      sles_electron_tag_found: ${{ steps.pr-tags.outputs.sles_electron_tag_found }}
+      sles_web_tag_found: ${{ steps.pr-tags.outputs.sles_web_tag_found }}
+      debian_electron_tag_found: ${{ steps.pr-tags.outputs.debian_electron_tag_found }}
+      debian_web_tag_found: ${{ steps.pr-tags.outputs.debian_web_tag_found }}
+      pyrefly_tag_found: ${{ steps.pr-tags.outputs.pyrefly_tag_found }}
+      workbench_tag_found: ${{ steps.pr-tags.outputs.workbench_tag_found }}
+      workbench_stable_tag_found: ${{ steps.pr-tags.outputs.workbench_stable_tag_found }}
+      workbench_rocky_tag_found: ${{ steps.pr-tags.outputs.workbench_rocky_tag_found }}
+      jupyter_tag_found: ${{ steps.pr-tags.outputs.jupyter_tag_found }}
+      remote_ssh_tag_found: ${{ steps.pr-tags.outputs.remote_ssh_tag_found }}
+      connect_tag_found: ${{ steps.pr-tags.outputs.connect_tag_found }}
+
+    steps:
+      - uses: actions/checkout@v7
+      # Install just enough for derive-test-change-tags.mjs's
+      # `playwright test --list` call. Gated to PRs that touch e2e test files.
+      # Shared with pr-e2e-comment.yml so the two derivation environments can't
+      # drift -- see the composite action for the full rationale.
+      - name: Set up e2e tag listing
+        uses: ./.github/actions/e2e-tag-listing-setup
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-repository: ${{ github.repository }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+      # Guardrail for the tag-derivation scripts; fail fast before relying on them below.
+      - name: Unit test the tag-derivation helpers
+        run: bash scripts/test/pr-tags-lib-test.sh
+      - name: Validate test-tag-paths-map.json tags against test-tags.ts
+        run: bash scripts/check-test-tag-map.sh --tags-only
+      - name: Parse Tags from PR Body
+        id: pr-tags
+        run: bash scripts/pr-tags-parse.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+      # Scoped to dirs THIS PR touches, unlike the tree-wide weekly sweep
+      # (check-test-tag-map.sh), which stays warn-only so unrelated drift
+      # can't fail an unrelated PR.
+      - name: Fail if this PR touches an unmapped RHS-IA dir
+        if: ${{ steps.pr-tags.outputs.unmapped_dirs != '' }}
+        run: |
+          echo "This PR touches a Positron source dir with no entry in test-tag-paths-map.json:"
+          echo "${{ steps.pr-tags.outputs.unmapped_dirs }}" | tr ',' '\n' | sed 's/^/  - /'
+          echo ""
+          echo "Add each dir to .github/workflows/test-tag-paths-map.json: a feature tag list (e.g. [\"@:console\"]) or [] if it has no e2e coverage."
+          exit 1
+      # The advisory comment (no-match / unmapped-dir warnings) is posted from
+      # the pr-e2e-comment workflow, folded into the single "E2E Tests" comment.
+
+  e2e-ubuntu-electron:
+    name: e2e
+    uses: ./.github/workflows/test-e2e-ubuntu.yml
+    needs: pr-tags
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "electron"
+      install_undetectable_interpreters: false
+      install_license: false
+      upload_logs: false
+      workers: 2
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-windows-electron:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.win_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-windows-run.yml
+    with:
+      save_cache: true
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "electron-win"
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-ubuntu-browser:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.web_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-ubuntu.yml
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "chromium"
+      project: "e2e-chromium"
+      install_undetectable_interpreters: false
+      install_license: true
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-rocky-electron:
+    name: e2e
+    uses: ./.github/workflows/test-e2e-rocky.yml
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.rocky_electron_tag_found == 'true' }}
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "electron (Rocky)"
+      install_undetectable_interpreters: false
+      install_license: false
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-rocky-chromium:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.rocky_web_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-rocky.yml
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "chromium (Rocky)"
+      project: "e2e-chromium"
+      install_undetectable_interpreters: false
+      install_license: true
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-suse-electron:
+    name: e2e
+    uses: ./.github/workflows/test-e2e-suse.yml
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.suse_electron_tag_found == 'true' }}
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "electron (SUSE)"
+      install_undetectable_interpreters: false
+      install_license: false
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-suse-chromium:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.suse_web_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-suse.yml
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "chromium (SUSE)"
+      project: "e2e-chromium"
+      install_undetectable_interpreters: false
+      install_license: true
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-sles-electron:
+    name: e2e
+    uses: ./.github/workflows/test-e2e-sles.yml
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.sles_electron_tag_found == 'true' }}
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "electron (SLES)"
+      install_undetectable_interpreters: false
+      install_license: false
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-sles-chromium:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.sles_web_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-sles.yml
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "chromium (SLES)"
+      project: "e2e-chromium"
+      install_undetectable_interpreters: false
+      install_license: true
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-debian-electron:
+    name: e2e
+    uses: ./.github/workflows/test-e2e-debian.yml
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.debian_electron_tag_found == 'true' }}
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "electron (Debian)"
+      install_undetectable_interpreters: false
+      install_license: false
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-debian-chromium:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.debian_web_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-debian.yml
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "chromium (Debian)"
+      project: "e2e-chromium"
+      install_undetectable_interpreters: false
+      install_license: true
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-pyrefly:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.pyrefly_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-pyrefly.yml
+    secrets: inherit
+
+  build-workbench:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.workbench_tag_found == 'true' || needs.pr-tags.outputs.workbench_stable_tag_found == 'true' || needs.pr-tags.outputs.workbench_rocky_tag_found == 'true' }}
+    name: build
+    uses: ./.github/workflows/build-workbench-linux.yml
+    secrets: inherit
+
+  e2e-workbench:
+    needs: [pr-tags, build-workbench]
+    if: ${{ needs.pr-tags.outputs.workbench_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-workbench-linux.yml
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "workbench"
+      install_license: false
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  e2e-workbench-stable:
+    needs: [pr-tags, build-workbench]
+    if: ${{ needs.pr-tags.outputs.workbench_stable_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-workbench-linux.yml
+    with:
+      grep: "@:workbench"
+      display_name: "workbench-stable"
+      install_license: false
+      upload_logs: false
+      allow_soft_fail: false
+      install_mode: "ci-stable"
+    secrets: inherit
+
+  # Same test set as the workbench lane, run against a Rocky Linux 9 container.
+  # A separate job so the two OSes run in parallel. `grep` is pinned to
+  # "@:workbench" rather than the PR's derived tags: @:workbench-rocky selects the
+  # lane, never individual tests, so no test carries it.
+  e2e-workbench-rocky:
+    needs: [pr-tags, build-workbench]
+    if: ${{ needs.pr-tags.outputs.workbench_rocky_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-workbench-linux.yml
+    with:
+      os: "rocky9"
+      grep: "@:workbench"
+      display_name: "workbench-rocky"
+      install_license: false
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  build-jupyter:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.jupyter_tag_found == 'true' }}
+    name: build
+    uses: ./.github/workflows/build-jupyter-linux.yml
+    secrets: inherit
+
+  e2e-jupyter:
+    needs: [pr-tags, build-jupyter]
+    if: ${{ needs.pr-tags.outputs.jupyter_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-jupyter-ubuntu.yml
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "jupyter"
+      install_license: true
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  build-remote-ssh:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.remote_ssh_tag_found == 'true' }}
+    name: build
+    uses: ./.github/workflows/build-remote-ssh-linux.yml
+    secrets: inherit
+
+  e2e-remote-ssh:
+    needs: [pr-tags, build-remote-ssh]
+    if: ${{ needs.pr-tags.outputs.remote_ssh_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-remote-ssh-ubuntu.yml
+    with:
+      grep: ${{ needs.pr-tags.outputs.tags }}
+      display_name: "remote-ssh"
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  build-connect:
+    needs: pr-tags
+    if: ${{ needs.pr-tags.outputs.connect_tag_found == 'true' }}
+    name: build
+    uses: ./.github/workflows/build-connect-linux.yml
+    secrets: inherit
+
+  e2e-connect:
+    needs: [pr-tags, build-connect]
+    if: ${{ needs.pr-tags.outputs.connect_tag_found == 'true' }}
+    name: e2e
+    uses: ./.github/workflows/test-e2e-connect.yml
+    with:
+      display_name: "connect"
+      upload_logs: false
+      allow_soft_fail: false
+    secrets: inherit
+
+  unit-tests:
+    name: test
+    uses: ./.github/workflows/test-unit.yml
+    secrets: inherit
+    with:
+      save_cache: false  # PRs restore from main only; test-merge.yml saves
+
+  ext-host-tests:
+    name: test
+    uses: ./.github/workflows/test-ext-host.yml
+    secrets: inherit
+    with:
+      pull_request: true

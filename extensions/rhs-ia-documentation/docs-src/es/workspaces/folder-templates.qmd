@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Plantillas de carpetas"
+---
+
+Usa **Archivo > Nueva carpeta** para crear un espacio de trabajo a partir de una plantilla disponible. Las plantillas pueden preparar un proyecto básico, un espacio de trabajo de Python o R, un cuaderno u otra estructura compatible.
+
+Elige una plantilla, un destino y un nombre de carpeta; después revisa los archivos y las acciones de inicialización antes de crearla. Algunas plantillas pueden inicializar el control de código fuente o crear archivos específicos del lenguaje.
+
+Abre la carpeta generada como espacio de trabajo y selecciona su intérprete. Una plantilla es un punto de partida; inspecciona la configuración generada antes de añadir credenciales o datos de producción.

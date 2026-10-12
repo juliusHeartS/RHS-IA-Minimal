@@ -1,0 +1,9 @@
+<article class="quarto-article" lang="en"><header id="title-block-header">
+<h1 class="title">R Session Hooks</h1>
+
+</header>
+
+
+<p>R startup files and environment files can customize an R session. Common files include project or user <code>.Rprofile</code> and <code>.Renviron</code> files. R determines their precedence and reads them during startup.</p>
+<p>Keep startup code fast, non-interactive, and safe to run in every session. Avoid storing secrets in files committed to source control. Restart R after changing a startup file.</p>
+<p>If startup code prevents a session from launching, temporarily rename the project startup file and inspect the R runtime log before restoring changes.</p></article>

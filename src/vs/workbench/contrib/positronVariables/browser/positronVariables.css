@@ -1,0 +1,16 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2022-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-variables {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	color: var(--vscode-positronVariables-foreground);
+	background: var(--vscode-positronVariables-background);
+}
+
+.positron-variables .positron-variables-action-bars {
+	height: min-content;
+}

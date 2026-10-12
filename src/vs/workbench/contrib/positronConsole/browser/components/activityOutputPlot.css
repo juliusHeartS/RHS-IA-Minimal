@@ -1,0 +1,46 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.activity-output-plot {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+}
+
+.activity-output-plot img {
+	/*
+	 * Show the plot at its natural size, capped at 300px tall. max-height never
+	 * upscales, so small plots stay their real height and never exceed the plot's
+	 * actual height. Notebook consoles override this cap with an inline
+	 * max-height driven by the `console.notebookPlotPreviewHeight` setting.
+	 */
+	max-height: 300px;
+	max-width: 100%;
+	border-radius: 4px;
+	cursor: pointer;
+	padding: 5px;
+}
+
+.activity-output-plot .inspect {
+	display: none;
+	position: absolute;
+	top: 3px;
+	right: 3px;
+}
+
+.activity-output-plot:hover .inspect {
+	display: block;
+}
+
+/*
+ * Use an inset outline (not a border) for the hover indicator. An outline does
+ * not participate in layout, so revealing it on hover cannot shift the plot or
+ * any surrounding console content. outline-offset keeps it inside the element so
+ * it isn't clipped by the container's overflow: hidden.
+ */
+.activity-output-plot:hover img {
+	outline: 1px solid var(--vscode-tab-border);
+	outline-offset: -1px;
+}

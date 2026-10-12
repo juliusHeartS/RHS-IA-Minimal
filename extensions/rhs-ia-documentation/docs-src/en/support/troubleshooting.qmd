@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Troubleshooting"
+---
+
+Start by reproducing the problem in the smallest relevant workspace. Note the active interpreter, remote context, file type, and exact action that failed.
+
+Open **View > Output** and choose the related channel. Runtime startup failures usually require checking the executable and startup files; extension failures may require **Developer: Show Running Extensions** or an Extension Host log. Use **Developer: Reload Window** after configuration or extension changes.
+
+If the issue persists, record RHS-IA and operating-system versions, concise reproduction steps, expected behavior, actual behavior, and sanitized log excerpts. Never include credentials or sensitive data.

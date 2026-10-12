@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Extensiones"
+---
+
+Las extensiones añaden lenguajes, temas, depuradores y herramientas de flujo de trabajo. Abre **Extensiones** desde la barra de actividad para revisar las extensiones instaladas o buscar en el marketplace de extensiones configurado.
+
+Antes de instalar una extensión, revisa su publicador, permisos, configuración y compatibilidad con el espacio de trabajo. Usa el menú de engranaje de la extensión para deshabilitarla, actualizarla o desinstalarla. Algunos cambios requieren **Desarrollador: Recargar ventana**.
+
+RHS-IA ya incluye la funcionalidad básica de ciencia de datos; evita instalar otra extensión que proporcione la misma integración de tiempo de ejecución, salvo que su documentación indique que son compatibles.
+
+[Abrir Extensiones](rhs-doc-action:extensions).

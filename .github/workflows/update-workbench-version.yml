@@ -1,0 +1,65 @@
+name: Update PWB Code Server Version on rstudio-pro
+
+on:
+  repository_dispatch:
+    types: [trigger-pwb-code-server-update]
+
+jobs:
+  update-rstudio-pro:
+    runs-on: ubuntu-latest
+    env:
+      install_file: dependencies/common/install-code-server
+      news_file: .github/NEWS.md
+
+    steps:
+      - name: Check out vscode-server
+        uses: actions/checkout@v4
+
+      - name: Set version and branch
+        run: |
+          echo "VERSION=${{ github.event.client_payload.version }}" >> $GITHUB_ENV
+          echo "CODE_OSS_VERSION=${{ github.event.client_payload.code_oss_version }}" >> $GITHUB_ENV
+          echo "BRANCH=${{ github.event.client_payload.branch }}" >> $GITHUB_ENV
+          echo "TOKEN=${{ github.event.client_payload.github_pat }}" >> $GITHUB_ENV
+
+      - name: Clone rstudio/rstudio-pro
+        run: |
+          git clone --depth=1 https://x-access-token:$TOKEN@github.com/rstudio/rstudio-pro.git
+          cd rstudio-pro
+          git checkout ${{ env.BRANCH }}
+
+      - name: Update PWB Code Server version
+        run: |
+          cd rstudio-pro
+
+          sed -i.bak "s/^VSCODE_VERSION=.*/VSCODE_VERSION=${VERSION}/" "$install_file"
+
+          rm $install_file.bak
+
+      - name: Update release notes
+        run: |
+          ./.github/scripts/update-news.sh \
+            "rstudio-pro/${news_file}" \
+            "${VERSION}" \
+            "${CODE_OSS_VERSION}"
+
+      - name: Git management
+        run: |
+          cd rstudio-pro
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ env.TOKEN }}
+          commit-message: "Update PWB Code Server version to ${{ env.VERSION }}"
+          title: "Automation PR: Update PWB Code Server version to ${{ env.VERSION }} on branch ${{ env.BRANCH }}"
+          body: |
+            This PR was automatically generated from https://github.com/rstudio/vscode-server branch `${{ env.BRANCH }}`.
+            Updated PWB Code Server version to `${{ env.VERSION }}` in `${{ env.install_file }}`, and recorded the PWB Code Server (`${{ env.VERSION }}`) and Code OSS (`${{ env.CODE_OSS_VERSION }}`) versions in `${{ env.news_file }}`.
+
+            @:vscode
+          branch: update-pwb-code-server-${{ env.VERSION }}
+          reviewers: melissa-barca
+          path: rstudio-pro

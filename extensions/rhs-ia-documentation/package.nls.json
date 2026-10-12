@@ -1,0 +1,10 @@
+{
+	"displayName": "RHS-IA Documentation",
+	"description": "Bundled offline documentation for RHS-IA.",
+	"command.open.title": "Open Documentation",
+	"viewContainer.title": "RHS-IA Documentation",
+	"view.title": "Documentation",
+	"view.contextualTitle": "RHS-IA Documentation",
+	"command.home.title": "Open Documentation Home",
+	"command.search.title": "Search Documentation"
+}

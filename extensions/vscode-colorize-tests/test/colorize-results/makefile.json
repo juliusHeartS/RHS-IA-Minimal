@@ -1,0 +1,4298 @@
+[
+	{
+		"c": ".PHONY",
+		"t": "source.makefile meta.scope.target.makefile support.function.target.PHONY.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " all",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "all",
+		"t": "source.makefile meta.scope.target.makefile entity.name.function.target.makefile",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " echo hello",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".PHONY",
+		"t": "source.makefile meta.scope.target.makefile support.function.target.PHONY.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " hello",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "hello",
+		"t": "source.makefile meta.scope.target.makefile entity.name.function.target.makefile",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " main.o factorial.o ",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile constant.character.escape.continuation.makefile",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "       hello.o ",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "first",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "filter",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.filter.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " second",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile string.interpolated.makefile meta.scope.function-call.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "second",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile constant.character.escape.continuation.makefile",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "       ",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile punctuation.whitespace.comment.leading.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile comment.line.number-sign.makefile punctuation.definition.comment.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": " This is a long ",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile comment.line.number-sign.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile comment.line.number-sign.makefile constant.character.escape.continuation.makefile",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "         comment inside prerequisites.",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile comment.line.number-sign.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "\tg++ main.o factorial.o hello.o -o hello",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.makefile comment.line.number-sign.makefile punctuation.definition.comment.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": " There are a building steps ",
+		"t": "source.makefile comment.line.number-sign.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.makefile comment.line.number-sign.makefile constant.character.escape.continuation.makefile",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\tbelow. And the tab is at the beginning of this line.",
+		"t": "source.makefile comment.line.number-sign.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "main.o",
+		"t": "source.makefile meta.scope.target.makefile entity.name.function.target.makefile",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " main.cpp",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\tg++ -c main.cpp",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "factorial.o",
+		"t": "source.makefile meta.scope.target.makefile entity.name.function.target.makefile",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " factorial.cpp",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\tg++ -c factorial.cpp ",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "fake_variable",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "hello.o",
+		"t": "source.makefile meta.scope.target.makefile entity.name.function.target.makefile",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " hello.cpp ",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile constant.character.escape.continuation.makefile",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\t\t\t\t\t",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "Colorizing with tabs at the beginning of the second line of prerequisites",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\tg++ -c hello.cpp -o ",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$@",
+		"t": "source.makefile meta.scope.recipe.makefile variable.language.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.language: #0550AE",
+			"2026-dark": "variable.language: #79C0FF",
+			"rhs_ia_dark": "variable.language: #569CD6",
+			"rhs_ia_light": "variable.language: #2D9BA9",
+			"hc_light": "variable.language: #0F4A85"
+		}
+	},
+	{
+		"c": ".PHONY",
+		"t": "source.makefile meta.scope.target.makefile support.function.target.PHONY.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " clean",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "clean",
+		"t": "source.makefile meta.scope.target.makefile entity.name.function.target.makefile",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\trm *o hello",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".PHONY",
+		"t": "source.makefile meta.scope.target.makefile support.function.target.PHONY.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " var",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile meta.scope.target.makefile entity.name.function.target.makefile",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t# \"",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$$",
+		"t": "source.makefile meta.scope.recipe.makefile variable.language.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.language: #0550AE",
+			"2026-dark": "variable.language: #79C0FF",
+			"rhs_ia_dark": "variable.language: #569CD6",
+			"rhs_ia_light": "variable.language: #2D9BA9",
+			"hc_light": "variable.language: #0F4A85"
+		}
+	},
+	{
+		"c": "\" in a shell means to escape makefile's variable substitution.",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\tsome_shell_var=",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$$",
+		"t": "source.makefile meta.scope.recipe.makefile variable.language.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.language: #0550AE",
+			"2026-dark": "variable.language: #79C0FF",
+			"rhs_ia_dark": "variable.language: #569CD6",
+			"rhs_ia_light": "variable.language: #2D9BA9",
+			"hc_light": "variable.language: #0F4A85"
+		}
+	},
+	{
+		"c": "(sed -nre 's/some regex with (group)/\\1/p')",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ".PHONY",
+		"t": "source.makefile meta.scope.target.makefile support.function.target.PHONY.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " echo",
+		"t": "source.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "echo",
+		"t": "source.makefile meta.scope.target.makefile entity.name.function.target.makefile",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\techo \"#\" and '#' in quotes are not comments ",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.makefile meta.scope.recipe.makefile constant.character.escape.continuation.makefile",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "\t\tand '\\' will be continued",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.makefile meta.scope.recipe.makefile keyword.control.@.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "echo Shell is not printed out, just a message.",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@-+-+",
+		"t": "source.makefile meta.scope.recipe.makefile keyword.control.@-+-+.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "echo Error will be ignored here; invalidcommand",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t# And we can see variables are highlited as supposed to be:",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@",
+		"t": "source.makefile meta.scope.recipe.makefile keyword.control.@.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "echo '",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "CC",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "shell",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.shell.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " echo \"123\"",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.recipe.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": " -o ",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$@",
+		"t": "source.makefile meta.scope.recipe.makefile variable.language.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.language: #0550AE",
+			"2026-dark": "variable.language: #79C0FF",
+			"rhs_ia_dark": "variable.language: #569CD6",
+			"rhs_ia_light": "variable.language: #2D9BA9",
+			"hc_light": "variable.language: #0F4A85"
+		}
+	},
+	{
+		"c": "'",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\t",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "@-",
+		"t": "source.makefile meta.scope.recipe.makefile keyword.control.@-.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "./point-and-slash-should-not-be-highlighted",
+		"t": "source.makefile meta.scope.recipe.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "define",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.define.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "defined",
+		"t": "source.makefile meta.scope.conditional.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "info",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.info.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " Checking existence of ",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "1",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "flavor",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.flavor.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile variable.other.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "1",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile variable.other.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile variable.other.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "if",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.if.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "filter",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.filter.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " undefined",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "flavor",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.flavor.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile variable.other.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "1",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile variable.other.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile variable.other.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "0",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "1",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "endef",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.override.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "ifeq",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.ifeq.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " (",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "strip",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.strip.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "call",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.call.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " defined",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "TOP_DIR",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "0)",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "info",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.info.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " TOP_DIR must be set before including paths.mk",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "endif",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.endif.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "-include",
+		"t": "source.makefile keyword.control.include.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "TOP_DIR",
+		"t": "source.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "3rdparty.mk",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "ifeq",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.ifeq.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " (",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "strip",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.strip.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "call",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.call.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " defined",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "CODIT_DIR",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "0)",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "info",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.info.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " CODIT_DIR must be set in ",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "TOP_DIR",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "3rdparty.mk",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "endif",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.endif.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "CXXVER_GE480",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ":=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "shell",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.shell.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " expr `",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "CXX",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": " -dumpversion | sed -e 's/\\.\\([0-9][0-9]\\)/\\1/g' -e 's/\\.\\([0-9]\\)/0\\1/g' -e 's/^[0-9]\\{3,4\\}",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$$",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile variable.language.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.language: #0550AE",
+			"2026-dark": "variable.language: #79C0FF",
+			"rhs_ia_dark": "variable.language: #569CD6",
+			"rhs_ia_light": "variable.language: #2D9BA9",
+			"hc_light": "variable.language: #0F4A85"
+		}
+	},
+	{
+		"c": "/&00/'` \\>= 40800",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ok",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ":=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ok",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "info",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.info.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " Braces {} in parentheses ({}): ",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "${",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ok",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "${",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "info",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.info.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " Parentheses () in braces {()}: ",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ok",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ifeq",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.ifeq.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " (\"",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "${",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ok",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " \"skip\")",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.condition.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ok",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")}",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "else ifeq",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.else.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " (\"",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "${",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ok",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.makefile meta.scope.conditional.makefile punctuation.separator.delimeter.comma.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " \"skip\")",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "${",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ok",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.makefile meta.scope.conditional.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "})",
+		"t": "source.makefile meta.scope.conditional.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "else",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.else.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile entity.name.function.target.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "info",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile entity.name.function.target.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.info.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " Else",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile entity.name.function.target.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "${",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ok",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile meta.scope.conditional.makefile meta.scope.target.makefile meta.scope.prerequisites.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "meta.scope.prerequisites.makefile: #67898E",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "endif",
+		"t": "source.makefile meta.scope.conditional.makefile keyword.control.endif.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "result",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "!=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " echo \"'",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "ok",
+		"t": "source.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "' ",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "shell",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.shell.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " echo \"from inlined shell\"",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "\"",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "info",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.info.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "result",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.makefile comment.line.number-sign.makefile punctuation.definition.comment.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": " Below is a test of variable assignment without any spacing.",
+		"t": "source.makefile comment.line.number-sign.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "val",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "?=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "val",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ":=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "123",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "!=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "echo val",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ":=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "val ",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.makefile constant.character.escape.continuation.makefile",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "notvar=butval",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ":=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "val:.c=.o",
+		"t": "source.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ":=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "blah",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.makefile comment.line.number-sign.makefile punctuation.definition.comment.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "comment",
+		"t": "source.makefile comment.line.number-sign.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "?=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "blah\\#not_a_comment",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ":=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "blah\\\\",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.makefile comment.line.number-sign.makefile punctuation.definition.comment.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "comment",
+		"t": "source.makefile comment.line.number-sign.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "var",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "!=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "blah\\\\\\#not_a_comment",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "var-",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile variable.other.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "nested-var",
+		"t": "source.makefile variable.other.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile variable.other.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "val",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.makefile comment.line.number-sign.makefile punctuation.definition.comment.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": " Spaces in a nested shell will hurt a colorizing of variable,",
+		"t": "source.makefile comment.line.number-sign.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "#",
+		"t": "source.makefile comment.line.number-sign.makefile punctuation.definition.comment.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "punctuation.definition.comment: #6E7781",
+			"2026-dark": "punctuation.definition.comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "punctuation.definition.comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": " but not so much.",
+		"t": "source.makefile comment.line.number-sign.makefile",
+		"r": {
+			"hc_black": "comment: #7CA668",
+			"2026-light": "comment: #6E7781",
+			"2026-dark": "comment: #8B949E",
+			"rhs_ia_dark": "comment: #6A9955",
+			"rhs_ia_light": "comment: #B1BACB",
+			"hc_light": "comment: #515151"
+		}
+	},
+	{
+		"c": "var-",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "shell",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.shell.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " printf 2",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": " := val2",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "info",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile support.function.info.makefile",
+		"r": {
+			"hc_black": "support.function: #DCDCAA",
+			"2026-light": "support.function: #795E26",
+			"2026-dark": "support.function: #DCDCAA",
+			"rhs_ia_dark": "support.function: #DCDCAA",
+			"rhs_ia_light": "support.function: #66476B",
+			"hc_light": "support.function: #5E2CBC"
+		}
+	},
+	{
+		"c": " Should be 'val2' here: ",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "$(",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "var-2",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile meta.scope.function-call.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.makefile string.interpolated.makefile punctuation.definition.variable.makefile",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string: #0A3069",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string: #C2AD00",
+			"hc_light": "string: #0F4A85"
+		}
+	},
+	{
+		"c": "export",
+		"t": "source.makefile keyword.control.export.makefile",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "a",
+		"t": "source.makefile variable.other.makefile",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "?=",
+		"t": "source.makefile punctuation.separator.key-value.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "punctuation.separator.key-value: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " b:c",
+		"t": "source.makefile",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "source.makefile: #2D9BA9",
+			"hc_light": "default: #292929"
+		}
+	}
+]

@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Quarto"
+---
+
+RHS-IA recognizes Quarto documents and projects, including executable Python and R code cells. Open a `.qmd` file to edit source, run supported cells, preview equations, and use Quarto-aware editor actions.
+
+Rendering requires a compatible Quarto installation and any runtimes used by the document. Run a render action from the editor or terminal; output and errors appear in the associated channel or terminal.
+
+Keep document options in YAML frontmatter or project configuration. Use [inline output](inline-output.qmd) for rapid exploration and a full render to validate the final document.

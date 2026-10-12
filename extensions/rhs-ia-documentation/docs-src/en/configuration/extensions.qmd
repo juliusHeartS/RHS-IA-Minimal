@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Extensions"
+---
+
+Extensions add languages, themes, debuggers, and workflow tools. Open **Extensions** from the Activity Bar to inspect installed extensions or search the configured extension marketplace.
+
+Review an extension's publisher, permissions, settings, and workspace compatibility before installing it. Use the extension's gear menu to disable, update, or uninstall it. Some changes require **Developer: Reload Window**.
+
+RHS-IA already bundles core data-science functionality; avoid installing another extension that provides the same runtime integration unless its documentation says they are compatible.
+
+[Open Extensions](rhs-doc-action:extensions).

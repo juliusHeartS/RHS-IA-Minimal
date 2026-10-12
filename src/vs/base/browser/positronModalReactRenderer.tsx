@@ -1,0 +1,498 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+// CSS.
+import './positronModalReactRenderer.css';
+
+// React.
+import { ReactElement } from 'react';
+import { createRoot, Root } from 'react-dom/client';
+
+// Other dependencies.
+import * as DOM from './dom.js';
+import { Emitter } from '../common/event.js';
+import { Disposable } from '../common/lifecycle.js';
+import { StandardKeyboardEvent } from './keyboardEvent.js';
+import { PositronReactServices } from './positronReactServices.js';
+import { PositronReactServicesProvider } from './positronReactRendererContext.js';
+import { ResultKind } from '../../platform/keybinding/common/keybindingResolver.js';
+
+/**
+ * Commands that are allowed through.
+ */
+const ALLOWABLE_COMMANDS = [
+	'copy',
+	'cut',
+	'undo',
+	'redo',
+	'editor.action.selectAll',
+	'editor.action.clipboardCopyAction',
+	'editor.action.clipboardCutAction',
+	'editor.action.clipboardPasteAction',
+	'workbench.action.quit',
+	'workbench.action.reloadWindow'
+];
+
+/**
+ * Constants.
+ */
+const KEYDOWN = 'keydown';
+const MOUSEDOWN = 'mousedown';
+const RESIZE = 'resize';
+
+/**
+ * PositronModalReactRendererOptions interface.
+ */
+interface PositronModalReactRendererOptions {
+	container?: HTMLElement;
+	parent?: HTMLElement;
+	allowPointerPassthrough?: boolean;
+	disableCaptures?: boolean;
+	onDisposed?: () => void;
+}
+
+/**
+ * Stack class.
+ */
+class Stack<T> {
+	// The items in the stack.
+	private items: T[] = [];
+
+	/**
+	 * Determines whether the stack is empty.
+	 * @returns true if the stack is empty; otherwise, false.
+	 */
+	isEmpty(): boolean { return this.items.length === 0; }
+
+	/**
+	 * Pushes an item onto the stack.
+	 * @param item The item to push onto the stack.
+	 */
+	push(item: T): void {
+		this.items.push(item);
+	}
+
+	/**
+	 * Pops an item from the stack.
+	 * @returns The popped item or undefined if the stack is empty.
+	 */
+	pop(): T | undefined {
+		return this.items.pop();
+	}
+
+	/**
+	 * Gets the top item of the stack without removing it.
+	 * @returns The top item of the stack or undefined if the stack is empty.
+	 */
+	top(): T | undefined {
+		return this.items[this.items.length - 1];
+	}
+
+	/**
+	 * Gets the bottom item of the stack without removing it.
+	 * @returns The bottom item of the stack or undefined if the stack is empty.
+	 */
+	bottom(): T | undefined {
+		return this.items[0];
+	}
+
+	/**
+	 * Iterates over each item in the stack from bottom to top.
+	 * @param callback The callback function to call for each item.
+	 */
+	forEach(callback: (item: T) => void): void {
+		this.items.forEach(callback);
+	}
+}
+
+/**
+ * PositronModalReactRenderer class.
+ * Manages rendering a React element as a modal popup.
+ */
+export class PositronModalReactRenderer extends Disposable {
+	//#region Private Static Properties
+
+	/**
+	 * The renderers stack.
+	 */
+	private static readonly _renderersStack = new Stack<PositronModalReactRenderer>();
+
+	/**
+	 * Unbind callback that unbinds the most recently bound event listeners.
+	 */
+	private static _unbindCallback?: () => void;
+
+	//#endregion Private Static Properties
+
+	//#region Private Properties
+
+	/**
+	 * Gets the last focused element.
+	 */
+	private readonly _lastFocusedElement: HTMLElement | undefined;
+
+	/**
+	 * Gets or sets the overlay element.
+	 */
+	private _overlay?: HTMLElement;
+
+	/**
+	 * Gets or sets the root where the React element will be rendered.
+	 */
+	private _root?: Root;
+
+	/**
+	 * Provides the bounding rect of this renderer's popup element. Registered by PositronModalPopup.
+	 */
+	private _boundsProvider?: () => DOMRect;
+
+	/**
+	 * The onKeyDown event emitter.
+	 */
+	private readonly _onKeyDownEmitter = this._register(new Emitter<KeyboardEvent>);
+
+	/**
+	 * The onMouseDown event emitter.
+	 */
+	private readonly _onMouseDownEmitter = this._register(new Emitter<MouseEvent>);
+
+	/**
+	 * The onResize event emitter.
+	 */
+	private readonly _onResizeEmitter = this._register(new Emitter<UIEvent>);
+
+	//#endregion Private Properties
+
+	//#region Constructor & Dispose
+
+	/**
+	 * Initializes a new instance of the PositronModalReactRenderer class.
+	 * @param _options The options for the PositronModalReactRenderer.
+	 */
+	constructor(private readonly _options: PositronModalReactRendererOptions = {}) {
+		// Call the base class's constructor.
+		super();
+
+		// If the container is not provided, use the active container.
+		if (_options.container === undefined) {
+			_options.container = PositronReactServices.services.workbenchLayoutService.activeContainer;
+		}
+
+		// Get the active element.
+		let activeElement: Element | null = null;
+		if (_options.parent !== undefined) {
+			activeElement = DOM.getWindow(_options.parent).document.activeElement;
+		}
+		if (activeElement === null) {
+			activeElement = DOM.getActiveWindow().document.activeElement;
+		}
+
+		// If the active element is an HTML element, set it as the last focused element.
+		if (DOM.isHTMLElement(activeElement)) {
+			this._lastFocusedElement = activeElement;
+		}
+	}
+
+	/**
+	 * Dispose method. Disposes this renderer and all renderers above it on the stack.
+	 */
+	public override dispose(): void {
+		// If never rendered, just clean up internal resources and return.
+		if (this._root === undefined) {
+			super.dispose();
+			return;
+		}
+
+		// Dispose all renderers above this one on the stack (child modals).
+		while (!PositronModalReactRenderer._renderersStack.isEmpty()) {
+			// Get the top renderer on the stack.
+			const topRenderer = PositronModalReactRenderer._renderersStack.top();
+
+			// If the top of the stack is this renderer, we're done unwinding children.
+			if (topRenderer === this) {
+				break;
+			}
+
+			// Dispose the child renderer (which will pop itself from the stack).
+			if (topRenderer !== undefined) {
+				topRenderer.dispose();
+			}
+		}
+
+		// Now dispose this renderer.
+		// Remove ourselves from the stack.
+		const poppedRenderer = PositronModalReactRenderer._renderersStack.pop();
+		if (poppedRenderer !== this) {
+			// This should never happen, but log if it does.
+			console.error('[PositronModalReactRenderer] Disposed renderer was not at top of stack');
+		}
+
+		// Return focus to the last focused element.
+		// Use preventScroll to avoid unwanted scrolling when focus is restored
+		// (e.g., inline data explorer in notebooks scrolling the notebook container).
+		this._lastFocusedElement?.focus({ preventScroll: true });
+
+		// If this renderer was rendered, dispose it.
+		if (this._root !== undefined) {
+			// If there is a parent, remove its aria-expanded property.
+			if (this._options.parent !== undefined) {
+				this._options.parent.removeAttribute('aria-expanded');
+			}
+
+			// Unmount the root.
+			this._root.unmount();
+			this._root = undefined;
+
+			// Remove the overlay from the container.
+			if (this._overlay !== undefined) {
+				this._overlay.remove();
+				this._overlay = undefined;
+			}
+		}
+
+		// Call the onDisposed callback.
+		if (this._options.onDisposed !== undefined) {
+			this._options.onDisposed();
+		}
+
+		// Rebind event listeners for the new top renderer.
+		PositronModalReactRenderer.bindEventListeners();
+
+		// Call the base class's dispose method.
+		super.dispose();
+	}
+
+	//#endregion Constructor & Dispose
+
+	//#region Public Properties
+
+	/**
+	 * Gets the services.
+	 */
+	get services(): PositronReactServices {
+		return PositronReactServices.services;
+	}
+
+	/**
+	 * Gets the container.
+	 */
+	get container() {
+		return this._options.container!;
+	}
+
+	//#endregion Public Properties
+
+	//#region Public Events
+
+	/**
+	 * onKeyDown event.
+	 */
+	readonly onKeyDown = this._onKeyDownEmitter.event;
+
+	/**
+	 * onMouseDown event.
+	 */
+	readonly onMouseDown = this._onMouseDownEmitter.event;
+
+	/**
+	 * onResize event.
+	 */
+	readonly onResize = this._onResizeEmitter.event;
+
+	//#endregion Public Events
+
+	//#region Public Methods
+
+	/**
+	 * Registers a function that returns the bounding rect of this renderer's popup element.
+	 * Called by PositronModalPopup so the renderer stack can check click containment.
+	 * @param boundsProvider A function that returns the popup's DOMRect.
+	 */
+	public setBoundsProvider(boundsProvider: () => DOMRect): void {
+		this._boundsProvider = boundsProvider;
+	}
+
+	/**
+	 * Returns true if the mouse event occurred inside the popup of any renderer in the stack.
+	 * @param e The mouse event to check.
+	 */
+	public static isInsideAnyPopup(e: MouseEvent): boolean {
+		let inside = false;
+		PositronModalReactRenderer._renderersStack.forEach(renderer => {
+			if (renderer._boundsProvider !== undefined) {
+				const rect = renderer._boundsProvider();
+				if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+					inside = true;
+				}
+			}
+		});
+		return inside;
+	}
+
+	/**
+	 * Disposes all renderers in the stack by disposing the bottom renderer, which cascades upward.
+	 */
+	public static disposeAll(): void {
+		PositronModalReactRenderer._renderersStack.bottom()?.dispose();
+	}
+
+	/**
+	 * Disposes the contiguous run of popup renderers at the top of the stack, stopping below the
+	 * topmost non-popup renderer (e.g. a modal dialog). A renderer counts as a popup when it has
+	 * registered a bounds provider via setBoundsProvider (PositronModalPopup does; modal dialogs
+	 * do not). This lets a click outside every popup dismiss the whole popup/menu chain while
+	 * leaving an underlying dialog open. When the stack is all popups, this disposes them all,
+	 * matching disposeAll.
+	 */
+	public static disposeTopPopups(): void {
+		// Collect the stack from bottom to top.
+		const renderers: PositronModalReactRenderer[] = [];
+		PositronModalReactRenderer._renderersStack.forEach(renderer => renderers.push(renderer));
+
+		// Walk down from the top while renderers are popups; the lowest popup in this contiguous
+		// run is the base to dispose (dispose() cascades to everything above it).
+		let base: PositronModalReactRenderer | undefined;
+		for (let i = renderers.length - 1; i >= 0; i--) {
+			if (renderers[i]._boundsProvider === undefined) {
+				break;
+			}
+			base = renderers[i];
+		}
+
+		// Dispose the base of the popup run, which cascades to the popups above it.
+		base?.dispose();
+	}
+
+	/**
+	 * Renders the ReactElement that was supplied.
+	 * @param reactElement The ReactElement to render.
+	 */
+	public render(reactElement: ReactElement) {
+		// Return if this renderer has already been rendered.
+		if (this._root !== undefined) {
+			// This should never happen, but log if it does.
+			console.error('[PositronModalReactRenderer] Attempted to render a React element when one has already been rendered');
+			return;
+		}
+
+		// If there is a parent, set its aria-expanded property to true.
+		if (this._options.parent !== undefined) {
+			this._options.parent.setAttribute('aria-expanded', 'true');
+		}
+
+		// Create the overlay element in the container and the root element in the overlay
+		// element.
+		this._overlay = this._options.container!.appendChild(
+			DOM.$('.positron-modal-overlay', { tabIndex: 0, 'data-testid': 'positron-modal-overlay' })
+		);
+
+		// When pointer passthrough is enabled, allow mouse events to pass through the overlay
+		// to elements beneath it (used for cascading context menus).
+		if (this._options.allowPointerPassthrough === true) {
+			this._overlay.style.pointerEvents = 'none';
+		}
+
+		// Create the root for this modal renderer.
+		this._root = createRoot(this._overlay);
+
+		// Render the ReactElement that was supplied.
+		this._root.render(
+			<PositronReactServicesProvider>
+				{reactElement}
+			</PositronReactServicesProvider>
+		);
+
+		// Drive focus into the overlay element.
+		this._overlay.focus();
+
+		// Push this renderer onto the renderers stack and bind event listeners.
+		PositronModalReactRenderer._renderersStack.push(this);
+		PositronModalReactRenderer.bindEventListeners();
+	}
+
+	//#endregion Public Methods
+
+	//#region Private Methods
+
+	/**
+	 * Binds event listeners.
+	 */
+	private static bindEventListeners() {
+		// Unbind the most recently bound event listeners.
+		if (PositronModalReactRenderer._unbindCallback !== undefined) {
+			PositronModalReactRenderer._unbindCallback();
+			PositronModalReactRenderer._unbindCallback = undefined;
+		}
+
+		// Get the renderer to bind event listeners for. If there isn't one, return.
+		const renderer = PositronModalReactRenderer._renderersStack.top();
+		if (renderer === undefined) {
+			return;
+		}
+
+		// Get the window for the renderer.
+		const window = DOM.getWindow(renderer._options.container);
+
+		/**
+		 * keydown handler.
+		 * @param e A KeyboardEvent that describes a user interaction with the keyboard.
+		 */
+		const keydownHandler = (e: KeyboardEvent) => {
+			// Convert the KeyboardEvent into a StandardKeyboardEvent.
+			const event = new StandardKeyboardEvent(e);
+
+			// Soft dispatch the keyboard event so we can determine whether it is bound to a
+			// command.
+			const resolutionResult = PositronReactServices.services.keybindingService.softDispatch(
+				event,
+				PositronReactServices.services.workbenchLayoutService.activeContainer
+			);
+
+			// If a keybinding to a command was found, stop it from being processed if it is not one
+			// of the allowable commands.
+			if (resolutionResult.kind === ResultKind.KbFound && resolutionResult.commandId !== null) {
+				if (ALLOWABLE_COMMANDS.indexOf(resolutionResult.commandId) === -1) {
+					DOM.EventHelper.stop(event, true);
+				}
+			}
+
+			// Fire the onKeyDown event.
+			renderer._onKeyDownEmitter.fire(e);
+		};
+
+		/**
+		 * mousedown handler.
+		 * @param e A MouseEvent that describes a user interaction with the mouse.
+		 */
+		const mousedownHandler = (e: MouseEvent) => {
+			renderer._onMouseDownEmitter.fire(e);
+		};
+
+		/**
+		 * resize handler.
+		 * @param e A UIEvent.
+		 */
+		const resizeHandler = (e: UIEvent) => {
+			PositronModalReactRenderer._renderersStack.forEach((positronModalReactRenderer: PositronModalReactRenderer) => {
+				positronModalReactRenderer._onResizeEmitter.fire(e);
+			});
+		};
+
+		// Add global keydown, mousedown, and resize event listeners.
+		window.addEventListener(KEYDOWN, keydownHandler, renderer._options.disableCaptures === true ? false : true);
+		window.addEventListener(MOUSEDOWN, mousedownHandler, true);
+		window.addEventListener(RESIZE, resizeHandler, false);
+
+		// Return the cleanup function that removes our event listeners.
+		PositronModalReactRenderer._unbindCallback = () => {
+			// Remove keydown, mousedown, and resize event listeners.
+			window.removeEventListener(KEYDOWN, keydownHandler, renderer._options.disableCaptures === true ? false : true);
+			window.removeEventListener(MOUSEDOWN, mousedownHandler, true);
+			window.removeEventListener(RESIZE, resizeHandler, false);
+		};
+	}
+
+	//#endregion Private Methods
+}

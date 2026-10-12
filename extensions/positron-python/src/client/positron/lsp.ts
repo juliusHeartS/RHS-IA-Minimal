@@ -1,0 +1,514 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+import * as path from 'path';
+import * as vscode from 'vscode';
+// eslint-disable-next-line import/no-unresolved
+import * as positron from 'positron';
+import { LanguageClient, LanguageClientOptions, State, StreamInfo } from 'vscode-languageclient/node';
+import { Socket } from 'net';
+
+import { PYTHON_LANGUAGE } from '../common/constants';
+import { IServiceContainer } from '../ioc/types';
+import { traceError, traceInfo } from '../logging';
+import { ProgressReporting } from '../activation/progress';
+import { PromiseHandles } from './util';
+import { PythonErrorHandler } from './errorHandler';
+import { PythonHelpTopicProvider } from './help';
+import { PythonStatementRangeProvider } from './statementRange';
+import { isQuartoInlineOutputEnabled } from './quarto';
+
+// Regex to match Quarto virtual document files: .vdoc.[uuid].[ext]
+const VDOC_PATTERN = /^\.vdoc\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.\w+$/i;
+
+// Selector for Quarto virtual documents.
+const VDOC_SELECTOR = { language: 'python', pattern: '**/.vdoc.*.{py,PY}' };
+
+// Regex to match notebook console REPL URIs: /notebook-repl-<lang>-<uuid>
+const NOTEBOOK_REPL_PATTERN = /^\/notebook-repl-/;
+
+// Positron core creates a hidden notebook of this type for each open Quarto
+// document, so that language servers see the embedded code cells as ordinary
+// notebook cells. See
+// src/vs/workbench/contrib/positronQuarto/common/quartoVirtualNotebookTypes.ts.
+const QUARTO_CELLS_NOTEBOOK_TYPE = 'quarto-cells';
+
+// Matches the path of a Quarto or R Markdown document.
+const QUARTO_PATH_PATTERN = /\.(qmd|rmd)$/i;
+
+// Selector for the cells of Quarto virtual notebooks. Matching the notebook's
+// type keeps the cells of real notebooks (.ipynb) out, since no other notebook
+// carries this type. This covers `.Rmd` documents as well as `.qmd` ones: core
+// builds a hidden notebook for both, so both arrive here.
+const QUARTO_CELL_SELECTOR = {
+    notebook: { notebookType: QUARTO_CELLS_NOTEBOOK_TYPE },
+    language: 'python',
+};
+
+/**
+ * Whether a document is a cell of a Quarto virtual notebook.
+ */
+function isQuartoVirtualCell(document: vscode.TextDocument): boolean {
+    if (document.uri.scheme !== 'vscode-notebook-cell') {
+        return false;
+    }
+    return vscode.workspace.notebookDocuments.some(
+        (notebook) =>
+            notebook.notebookType === QUARTO_CELLS_NOTEBOOK_TYPE &&
+            notebook.getCells().some((cell) => cell.document.uri.toString() === document.uri.toString()),
+    );
+}
+
+/**
+ * Global output channel for Python LSP sessions
+ *
+ * Since we only have one LSP session active at any time, and since the start of
+ * a new session is logged with a session ID, we use a single output channel for
+ * all LSP sessions. Watch out for session start log messages to find the
+ * relevant section of the log.
+ */
+let _lspOutputChannel: vscode.LogOutputChannel | undefined;
+function getLspOutputChannel(): vscode.LogOutputChannel {
+    if (!_lspOutputChannel) {
+        _lspOutputChannel = positron.window.createRawLogOutputChannel('Python Language Server');
+    }
+    return _lspOutputChannel;
+}
+
+/**
+ * The state of the language server.
+ */
+export enum LspState {
+    uninitialized = 'uninitialized',
+    starting = 'starting',
+    stopped = 'stopped',
+    running = 'running',
+}
+
+/**
+ * Wraps an instance of the client side of the Python LSP.
+ */
+export class PythonLsp implements vscode.Disposable {
+    /** The languge client instance, if it has been created */
+    private _client?: LanguageClient;
+
+    private _state: LspState = LspState.uninitialized;
+
+    /** Promise that resolves after initialization is complete */
+    private _initializing?: Promise<void>;
+
+    private _outputChannel: vscode.LogOutputChannel;
+
+    /** Disposable for per-activation items */
+    private activationDisposables: vscode.Disposable[] = [];
+
+    public constructor(
+        private readonly serviceContainer: IServiceContainer,
+        private readonly _version: string,
+        private readonly _clientOptions: LanguageClientOptions,
+        private readonly _metadata: positron.RuntimeSessionMetadata,
+    ) {
+        // Persistant output channel, used across multiple sessions of the same name + mode combination
+        this._outputChannel = getLspOutputChannel();
+    }
+
+    /**
+     * Activate the language server; returns a promise that resolves when the LSP is
+     * activated.
+     *
+     * @param port The port on which the language server is listening.
+     * @param host The host on which the language server is listening. Must match
+     *   the bind address passed to `startPositronLsp`, otherwise the connect can
+     *   resolve to a different address family than the server bound to (e.g.
+     *   `::1` when the server is bound to `127.0.0.1` and IPv4 is disabled).
+     */
+    public async activate(port: number, host: string): Promise<void> {
+        // Clean up disposables from any previous activation
+        this.activationDisposables.forEach((d) => d.dispose());
+        this.activationDisposables = [];
+
+        // Define server options for the language server. Connects to `host:port`.
+        const serverOptions = async (): Promise<StreamInfo> => {
+            const out = new PromiseHandles<StreamInfo>();
+            const socket = new Socket();
+
+            socket.on('ready', () => {
+                const streams: StreamInfo = {
+                    reader: socket,
+                    writer: socket,
+                };
+                out.resolve(streams);
+            });
+            socket.on('error', (error) => {
+                out.reject(error);
+            });
+            socket.connect(port, host);
+
+            return out.promise;
+        };
+
+        const { notebookUri, workingDirectory } = this._metadata;
+
+        // Matches the cells of this client's own notebook.
+        //
+        // Skipped for Quarto sessions, whose session URI is the .qmd document.
+        // The only Python documents under that path are the cells of the
+        // document's virtual notebook, and the console client serves those, so
+        // matching them here would only duplicate it. For a real notebook (.ipynb)
+        // this is what matches the notebook's own cells.
+        //
+        // `filterCells` below excludes them too, but only covers the case where the
+        // server claims notebook cells through `notebookDocumentSync`. Without that
+        // capability the client syncs them as ordinary text documents, and then the
+        // document selector is the only gate.
+        const ownNotebookCellSelectors =
+            notebookUri && !QUARTO_PATH_PATTERN.test(notebookUri.path)
+                ? [{ language: 'python', pattern: notebookUri.fsPath }]
+                : [];
+
+        // If this client belongs to a notebook, set the document selector to only include that notebook,
+        // Quarto virtual documents (vdocs), and notebook console inputs (inmemory scheme).
+        // Otherwise, this is the main client for this language, so set the document selector to include
+        // untitled Python files, in-memory Python files (e.g. the console), and Python files on disk.
+        this._clientOptions.documentSelector = notebookUri
+            ? [
+                  ...ownNotebookCellSelectors,
+                  // Match Quarto virtual documents (vdocs). Vdocs are
+                  // temporary .py files created for LSP features in
+                  // embedded code blocks (e.g. completions, hover).
+                  // They may be in the document's directory or in a
+                  // system temp directory, so use a global pattern.
+                  VDOC_SELECTOR,
+                  // Match notebook console inputs. These use the
+                  // inmemory scheme with a notebook-repl path prefix
+                  // to distinguish them from regular console inputs.
+                  { language: 'python', scheme: 'inmemory' },
+              ]
+            : [
+                  { language: 'python', scheme: 'untitled' },
+                  { language: 'python', scheme: 'inmemory' }, // Console
+                  // Assistant code confirmation widget: https://github.com/posit-dev/positron/issues/7750
+                  { language: 'python', scheme: 'assistant-code-confirmation-widget' },
+                  { language: 'python', pattern: '**/*.py' },
+                  // Match Quarto virtual documents (vdocs) so the
+                  // console LSP can provide completions in Quarto
+                  // code blocks when inline output is disabled and
+                  // no notebook LSP exists.
+                  VDOC_SELECTOR,
+                  // Match Quarto virtual notebook cells. The console
+                  // client serves these for every open Quarto document.
+                  QUARTO_CELL_SELECTOR,
+              ];
+
+        // This is needed in addition to the document selector, otherwise every client seems to
+        // produce diagnostics for each notebook.
+        this._clientOptions.notebookDocumentOptions = notebookUri
+            ? // If this client belongs to a notebook, only include cells belonging to the notebook.
+              {
+                  filterCells: (notebookDocument, cells) =>
+                      notebookUri.toString() === notebookDocument.uri.toString() ? cells : [],
+              }
+            : // Console clients exclude notebook cells, which belong to their own
+              // notebook's client, except for the cells of Quarto virtual notebooks.
+              // Those have no client of their own. A Quarto session starts only for
+              // the active pinned editor and only when inline output is enabled, so
+              // routing these cells to a session instead would leave every other open
+              // Quarto document without language features.
+              {
+                  filterCells: (notebookDocument, cells) =>
+                      notebookDocument.notebookType === QUARTO_CELLS_NOTEBOOK_TYPE ? cells : [],
+              };
+
+        // Override default error handler with one that doesn't automatically restart the client,
+        // and that logs to the appropriate place.
+        this._clientOptions.errorHandler = new PythonErrorHandler(this._version, port);
+
+        // Override default output channel with our persistant one that is reused across sessions.
+        this._clientOptions.outputChannel = this._outputChannel;
+
+        // Filter so each LSP only handles its own documents.
+        // The console LSP skips vdocs and notebook console inputs;
+        // the notebook LSP skips regular console inputs.
+        const shouldSkipDocument = (document: vscode.TextDocument): boolean => {
+            if (!notebookUri) {
+                // Console LSP: skip vdoc files when inline output
+                // is enabled, because a notebook LSP handles them.
+                // When inline output is disabled, no notebook LSP
+                // exists, so the console LSP must handle vdocs.
+                if (document.uri.scheme === 'file') {
+                    const baseName = path.basename(document.uri.fsPath);
+                    if (VDOC_PATTERN.test(baseName) && isQuartoInlineOutputEnabled()) {
+                        return true;
+                    }
+                }
+                // Console LSP: skip notebook console inputs
+                if (document.uri.scheme === 'inmemory' && NOTEBOOK_REPL_PATTERN.test(document.uri.path)) {
+                    return true;
+                }
+            } else {
+                // Notebook LSP: skip Quarto virtual notebook cells, which the console LSP serves.
+                if (isQuartoVirtualCell(document)) {
+                    return true;
+                }
+                // Notebook LSP: skip regular (non-notebook) console inputs
+                if (document.uri.scheme === 'inmemory' && !NOTEBOOK_REPL_PATTERN.test(document.uri.path)) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        // Add middleware to filter diagnostics for Quarto virtual documents:
+        // https://github.com/quarto-dev/quarto/issues/855
+        // Also set the priorities for completion items and hovers based on Positron LSP server extensions.
+        this._clientOptions.middleware = {
+            handleDiagnostics(uri, diagnostics, next) {
+                // Only check file URIs because vdocs are files on disk
+                if (uri.scheme === 'file') {
+                    const baseName = path.basename(uri.fsPath);
+                    if (VDOC_PATTERN.test(baseName)) {
+                        return;
+                    }
+                }
+                return next(uri, diagnostics);
+            },
+            // Apply per-completion-item priority set by the Positron LSP server.
+            provideCompletionItem(document, position, context, token, next) {
+                if (shouldSkipDocument(document)) {
+                    return undefined;
+                }
+                return Promise.resolve(next(document, position, context, token)).then((res) => {
+                    if (res) {
+                        const items = Array.isArray(res) ? res : (res as vscode.CompletionList).items;
+                        for (const item of items) {
+                            const priority = (item as any).data?.priority;
+                            if (typeof priority === 'number') {
+                                (item as any).priority = priority;
+                            }
+                        }
+                    }
+                    return res;
+                });
+            },
+            // Apply hover priority set by the Positron LSP server.
+            provideHover(document, position, token, next) {
+                if (shouldSkipDocument(document)) {
+                    return undefined;
+                }
+                return Promise.resolve(next(document, position, token)).then((result) => {
+                    if (result) {
+                        const data = (result as any).data;
+                        if (data && typeof data.priority === 'number') {
+                            (result as any).priority = data.priority;
+                        }
+                    }
+                    return result;
+                });
+            },
+        };
+
+        // Set Positron-specific server initialization options.
+        // If this server is for a notebook, set the notebook path option.
+        if (notebookUri) {
+            this._clientOptions.initializationOptions.positron = {
+                working_directory: workingDirectory,
+            };
+        }
+
+        const message = `Creating Python ${this._version} language client (port ${port})`;
+        traceInfo(message);
+        this._outputChannel.appendLine(message);
+
+        this._client = new LanguageClient(
+            PYTHON_LANGUAGE,
+            `Python Language Server (${this._version})`,
+            serverOptions,
+            this._clientOptions,
+        );
+
+        // Patch protocol converter to preserve `data` on Hover responses.
+        // The Positron LSP server uses data.priority for cross-provider
+        // hover deduplication. vscode-languageclient's default asHover
+        // discards all fields except contents and range.
+        const p2c = this._client.protocol2CodeConverter as any;
+        const originalAsHover = p2c.asHover.bind(p2c);
+        p2c.asHover = (hover: any) => {
+            const result = originalAsHover(hover);
+            if (hover?.data !== undefined && result) {
+                (result as any).data = hover.data;
+            }
+            return result;
+        };
+
+        const out = new PromiseHandles<void>();
+        this._initializing = out.promise;
+
+        this.activationDisposables.push(
+            this._client.onDidChangeState((event) => {
+                const oldState = this._state;
+                // Convert the state to our own enum
+                switch (event.newState) {
+                    case State.Starting:
+                        this._state = LspState.starting;
+                        break;
+                    case State.Running:
+                        if (this._initializing) {
+                            traceInfo(`Python (${this._version}) language client init successful`);
+                            this._initializing = undefined;
+                            out.resolve();
+                        }
+                        if (this._client) {
+                            // Register Positron-specific LSP extension methods
+                            this.registerPositronLspExtensions(this._client);
+                        }
+                        this._state = LspState.running;
+                        break;
+                    case State.Stopped:
+                        if (this._initializing) {
+                            traceInfo(`Python (${this._version}) language client init failed`);
+                            out.reject('Python LSP client stopped before initialization');
+                        }
+                        this._state = LspState.stopped;
+                        break;
+                    default:
+                        traceError(`Unexpected language client state: ${event.newState}`);
+                        out.reject('Unexpected language client state');
+                }
+                traceInfo(`Python (${this._version}) language client state changed ${oldState} => ${this._state}`);
+            }),
+        );
+
+        this.activationDisposables.push(new ProgressReporting(this._client));
+
+        this._client.start();
+        await out.promise;
+    }
+
+    /**
+     * Stops the client instance.
+     *
+     * @returns A promise that resolves when the client has been stopped.
+     */
+    public async deactivate(): Promise<void> {
+        if (!this._client) {
+            // No client to stop, so just resolve
+            this._outputChannel.appendLine('No client to stop');
+            return;
+        }
+
+        // If we don't need to stop the client, just resolve
+        if (!this._client.needsStop()) {
+            this._outputChannel.appendLine('Client does not need to stop');
+            return;
+        }
+
+        // First wait for initialization to complete.
+        // `stop()` should not be called on a
+        // partially initialized client.
+        this._outputChannel.appendLine('Waiting for client to initialize before stopping');
+        await this._initializing;
+
+        // Suppress the "Connection to server got closed" toast that
+        // vscode-languageclient force-shows when the connection close races
+        // with `stop()`: if the socket close handler fires while `$state ===
+        // Stopping` (between `connection.dispose()` and the `finally` block
+        // in `shutdown()`), our `PythonErrorHandler.closed()` is bypassed and
+        // the notification is forced. See posit-dev/positron#7593.
+        const origError = this._client.error.bind(this._client);
+        this._client.error = (message, data, showNotification) => {
+            if (typeof message === 'string' && /Connection to server got closed/.test(message)) {
+                origError(message, data, false);
+                return;
+            }
+            origError(message, data, showNotification);
+        };
+
+        // Ideally we'd just wait for `this._client!.stop()`. In practice, the
+        // promise returned by `stop()` never resolves if the server side is
+        // disconnected, so rather than awaiting it when the runtime has exited,
+        // we wait for the client to change state to `stopped`, which does
+        // happen reliably.
+        this._outputChannel.appendLine('Client initialized, stopping');
+        const stopped = new Promise<void>((resolve) => {
+            const disposable = this._client!.onDidChangeState((event) => {
+                this._outputChannel.appendLine(`Client stopped state change: ${event.newState}`);
+                if (event.newState === State.Stopped) {
+                    this._outputChannel.appendLine('Client stopped');
+                    resolve();
+                    disposable.dispose();
+                }
+            });
+            this._client!.stop();
+        });
+
+        const timeout = new Promise<void>((_, reject) => {
+            setTimeout(() => {
+                this._outputChannel.appendLine(`Timed out after 2 seconds waiting for client to stop.`);
+                reject(Error(`Timed out after 2 seconds waiting for client to stop.`));
+            }, 2000);
+        });
+
+        // Don't wait more than a couple of seconds for the client to stop
+        await Promise.race([stopped, timeout]);
+    }
+
+    /**
+     * Gets the current state of the client.
+     */
+    get state(): LspState {
+        return this._state;
+    }
+
+    /**
+     * Registers additional Positron-specific LSP methods. These programmatic
+     * language features are not part of the LSP specification, and are
+     * consequently not covered by vscode-languageserver, but are used by
+     * Positron to provide additional functionality.
+     *
+     * @param client The language client instance
+     */
+    private registerPositronLspExtensions(client: LanguageClient) {
+        // Register the statement range and help topic providers with a
+        // selector appropriate for the session type:
+        // - Console sessions: register for 'python' to cover all Python documents
+        // - Notebook sessions: register for vdoc files (Quarto virtual
+        //   documents) and notebook cells. We must not match regular .py
+        //   script files to avoid competing with the console session's
+        //   provider for files that aren't synced to the notebook LSP.
+        const { notebookUri } = this._metadata;
+        const selector: vscode.DocumentSelector = notebookUri
+            ? [VDOC_SELECTOR, { language: 'python', scheme: 'vscode-notebook-cell' }]
+            : 'python';
+
+        const rangeDisposable = positron.languages.registerStatementRangeProvider(
+            selector,
+            new PythonStatementRangeProvider(this.serviceContainer),
+        );
+        this.activationDisposables.push(rangeDisposable);
+
+        const helpDisposable = positron.languages.registerHelpTopicProvider(
+            selector,
+            new PythonHelpTopicProvider(client),
+        );
+        this.activationDisposables.push(helpDisposable);
+    }
+
+    /**
+     * Dispose of the client instance.
+     */
+    async dispose(): Promise<void> {
+        this.activationDisposables.forEach((d) => d.dispose());
+        await this.deactivate();
+    }
+
+    /**
+     * Displays the output channel associated with the current Python LSP session.
+     *
+     * This method retrieves the output channel using the session name and session mode
+     * from the metadata, and then shows the output channel to the user.
+     */
+    public showOutput(): void {
+        this._outputChannel.show();
+    }
+}

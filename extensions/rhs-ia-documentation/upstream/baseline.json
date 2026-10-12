@@ -1,0 +1,1450 @@
+{
+	"schemaVersion": 1,
+	"upstreamRepository": "https://github.com/posit-dev/positron-website",
+	"upstreamCommit": null,
+	"upstreamCommitStatus": "unresolved-snapshot-has-no-git-metadata",
+	"upstreamQuartoVersion": "1.10.18",
+	"rhsIaDocumentationBaseline": 1,
+	"snapshotPath": "../../../rhs-ia-documentation/positron-website-main",
+	"snapshotTreeSha256": "ba45702518f379a7f7d12c029c902caa234e454f231fc9f2a0e22273922a0731",
+	"fileCount": 359,
+	"license": "CC BY-SA 4.0",
+	"files": [
+		{
+			"path": "_assistant-privacy-terms.qmd",
+			"sha256": "d92803f5122e7586cb6c7d672d0142931f1401d477db3e7ce9ceb0da1e3c301a"
+		},
+		{
+			"path": "_download.html",
+			"sha256": "5f87dc808c9efdd906e5ab85245892d81ab7e4f2105896d4fb40dcac36145d46"
+		},
+		{
+			"path": "_enterprise-callout-link.qmd",
+			"sha256": "863bc7050043d5eb01beba953e3b453f6a77a86dbc1ce66f6935abcf9c07d90c"
+		},
+		{
+			"path": "_environment",
+			"sha256": "ea1c5b7664d2f6ae8793c7bea49f0fd5b65ab221d9d301c2e9602b26a3ce5227"
+		},
+		{
+			"path": "_extensions/cdn-video/_extension.yml",
+			"sha256": "d4352dfaeebae5193145802fc43b4694cf984642e707ac0f81a5d113cb20f720"
+		},
+		{
+			"path": "_extensions/cdn-video/cdn-video.lua",
+			"sha256": "95cc09e1f4e807af51bb899ba6672ebb28493d95a2a2d761897335b2a7b560f9"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/_extension.yml",
+			"sha256": "371d092594f13ef4d7772b6829fa0e8ef34070e3df36c6e38d7a92d86479ff43"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/css/all.css",
+			"sha256": "05e004a9125ff6d5d4882a2936de99e7817002714322c7359641c00b66f781c8"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/css/all.min.css",
+			"sha256": "74005d7c17d4a02f2f25404ec0655d9bc2fdaa53166874c87d7b7eec69d9088a"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/css/latex-fontsize.css",
+			"sha256": "8df3fbb7dceb5e3ecee02577fdf7a63eacad2a6a5db3271f9a04bfe480a620e1"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/LICENSE.txt",
+			"sha256": "9b914eae88817d63b576eab5aafde7068c7a1abae125d7cdfb034f1da43a9afc"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-brands-400.ttf",
+			"sha256": "808443ae6c8204395add8543da8a90a60b9376fb0f87ed8e8ea37d109596d805"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-brands-400.woff2",
+			"sha256": "d7236a19bf23cbb2027280e8f51dc99d6c45976a2ed60de73382b034b18a2b68"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-regular-400.ttf",
+			"sha256": "54cf6086f7bb21f9d072ad494a19b4681fa516dd0a14cee52da01d3651a913a3"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-regular-400.woff2",
+			"sha256": "e3456d1283b9d75337a773dfd147bf908fd02c01b4bf48576d8603a69b13cbe5"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-solid-900.ttf",
+			"sha256": "d2f0593540b0e33ba6de255a54f272d466e31144806956bea8cfdbf7edffc9bd"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-solid-900.woff2",
+			"sha256": "aa75998623a391e61c6901794ace832e3ecdd288b56d608f21bea0411acc0b8e"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-v4compatibility.ttf",
+			"sha256": "30f6abf6baa425825828793d6dfad1fb63765d0e5abaa7af6feafb9bfcece5a0"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/assets/webfonts/fa-v4compatibility.woff2",
+			"sha256": "0ce9033c69dc714f5f45ef9bf17d55e4c46bcdfad6799a4e92b38e7781bf86bd"
+		},
+		{
+			"path": "_extensions/quarto-ext/fontawesome/fontawesome.lua",
+			"sha256": "bc1765aa87afadec1884edaf1555441ee7d5d032735d0334d16478c92a22e8e1"
+		},
+		{
+			"path": "_notebook-customization.qmd",
+			"sha256": "c326b650f9f1122c407346f459a636c2e47a749bbea3ecedad0d74bbae9abf6c"
+		},
+		{
+			"path": "_notebook-kernel-selection.qmd",
+			"sha256": "d9ce9137ba581bb7d2f4f1a2caef547d512d8230e4d3a958da2deee827681048"
+		},
+		{
+			"path": "_positron-assistant-deprecated.qmd",
+			"sha256": "6b03b24a6354d5af4787ddf3e9cc456dd14cfcb15bb058a4c525f79ad4e90504"
+		},
+		{
+			"path": "_privacy-link.qmd",
+			"sha256": "bcac0e078ca0fd6d73753249bd2709de7212ca05cad5b0b4f30d790fb8d2d221"
+		},
+		{
+			"path": "_python-managers.qmd",
+			"sha256": "a934fbff14d0470f0078348270e995ccf7033fe3332dcdf5b168a1ca1aed8c41"
+		},
+		{
+			"path": "_quarto-dailies.yml",
+			"sha256": "a4164bb33a0bca873ae9169d65b729f66b7f31c90dff725790447cb039f5ace6"
+		},
+		{
+			"path": "_quarto-positron.yml",
+			"sha256": "e999295c0c923bd746bd68a408d30402f8dca6d2b63894591ded23fb0672003c"
+		},
+		{
+			"path": "_quarto-workbench.yml",
+			"sha256": "7ddcb58c93da56702584d109308b7b0f63b82690a52265d2fec67e0f19e034c1"
+		},
+		{
+			"path": "_quarto.yml",
+			"sha256": "398aeba45062822e08b93a44754f152c92f092a0c1af2bf7b64dd870cae2015b"
+		},
+		{
+			"path": "_redirects",
+			"sha256": "38023a8daf4785b5c4c47cee368580405ac45b35235d0939eb54ea3b5d975c96"
+		},
+		{
+			"path": "_rstudio-keyboard-shortcuts.qmd",
+			"sha256": "8733706c5babb14f0c8ad7e9cf99035669c261d3af2c8c3025f0cd43c1522b45"
+		},
+		{
+			"path": "_tutorial-cta.qmd",
+			"sha256": "e9dee36ab06047e82631c41c01b6004cfe01f58dd6967f4d3dc54beb21b57f8f"
+		},
+		{
+			"path": ".claude/skills/patch-update/SKILL.md",
+			"sha256": "b0df4cd296f7222b818391389af1bf3ec9265ab11e23303dfd1be8605bec8870"
+		},
+		{
+			"path": ".claude/skills/prepare-release-notes/SKILL.md",
+			"sha256": "6010e908dda30a9db32f701a3c0967c6d4c9c7f63874766ba909ab26d1c8d4d5"
+		},
+		{
+			"path": ".claude/skills/release-update/SKILL.md",
+			"sha256": "0e450cf802c0b71ab3247d812ac6315f0db10f5dfd307eeb7713549e19d51c2e"
+		},
+		{
+			"path": ".gitattributes",
+			"sha256": "c6e5805a6443503c9236f0ed7c73699d086afc1845b00b514d75334c7a44aca3"
+		},
+		{
+			"path": ".github/workflows/build-and-deploy.yml",
+			"sha256": "54e325a50e5bd80388c770ace51a26150074f888e47df3d1d1ca6769c1347d7e"
+		},
+		{
+			"path": ".github/workflows/lint.yml",
+			"sha256": "9767d1716b2a63748c12709a100664be3e1851b3d1c47e456ab4cda3093b02e6"
+		},
+		{
+			"path": ".github/workflows/publish-release-notes-assets.yml",
+			"sha256": "d32cd5da3868d45b663abd522eab59d459f2fa84aec38887a5bd2f4150954a7a"
+		},
+		{
+			"path": ".github/workflows/publish-release-notes.yml",
+			"sha256": "1f5264f9b2b96869874feaf21da9f084654cbfab4c8d7ad491bce9017201ca6b"
+		},
+		{
+			"path": ".github/workflows/publish-videos.yml",
+			"sha256": "7dd69e4a65217cd202f1e4056313cb5ba1924cc4789d8b7f1175ab8bfcb5f530"
+		},
+		{
+			"path": ".github/workflows/release-docs-bundles.yml",
+			"sha256": "ae4d44d5df0ce063954492e5334ab001b7d217eddb6d0b07eb69e4c49d4e47ea"
+		},
+		{
+			"path": ".github/workflows/update-all-releases-json.yml",
+			"sha256": "29396bdb62e14c8130b14a79615b2ea7f5ede8f6a4fd8ce501acec77a64b9919"
+		},
+		{
+			"path": ".gitignore",
+			"sha256": "37b13a6d8a5689dba8a0749042eb3016f2c86f40cf79fb5626343daea7bdfc03"
+		},
+		{
+			"path": ".quarto-version",
+			"sha256": "47007bcc5246ecf6a3587b0a9182b2af1a66230a2c61c0ed7a1a36f374a01a9a"
+		},
+		{
+			"path": ".vscode/launch.json",
+			"sha256": "75c92b3f6ff5227d5afa421d044281ee7379ff00cd807f0958dd2caba85d4122"
+		},
+		{
+			"path": ".vscode/snippets.code-snippets",
+			"sha256": "601a6ae2fe3bb409abdfacaaabe2458ed32c20578bee3146a34e80e688f39c73"
+		},
+		{
+			"path": "404.qmd",
+			"sha256": "dca4b1b438966feb26e12553e489bb69446bfe3ef4e54205ac3f162d2168a367"
+		},
+		{
+			"path": "about.qmd",
+			"sha256": "79fee092073369a1aeba12db9ed63cc0e69699c0ea515a41a568d235ca0d53db"
+		},
+		{
+			"path": "action-bars.qmd",
+			"sha256": "f88356115503a90e48a5bfba2184d7aa8329bd456324ec6e7804bdaefca6d89b"
+		},
+		{
+			"path": "add-to-path.qmd",
+			"sha256": "e0197cb0c9ff12080e8e44cc2f5fe7487435f8f833eceb58acaa70c9f102aae0"
+		},
+		{
+			"path": "ai-configuration.qmd",
+			"sha256": "199f17a5d349859bb4b4931ca2e3b942a5821937452efb4faf417169e06c2d20"
+		},
+		{
+			"path": "ai-features.qmd",
+			"sha256": "df277f2e6b1760cd12d3e271b24446612d1b7ea3b9031ebc834658b140832a9b"
+		},
+		{
+			"path": "assets/_kapa-ai.html",
+			"sha256": "ea151c73aaf5ff4b3bd0535cc0a3d0c663d096ffd0960fa71f13f51b05c6b21b"
+		},
+		{
+			"path": "assets/images/exclamation-circle-dm.svg",
+			"sha256": "4f1ffa39aa31372ee4a6dee0d6ddf7730c7dfa390b99f1a4e9131bfdbbb2e2fa"
+		},
+		{
+			"path": "assets/images/exclamation-circle.svg",
+			"sha256": "d57f990d3a6fcdaa7caa7a10c358b8f1111eca2e96702b26d7ad6330cf8e4b66"
+		},
+		{
+			"path": "assets/images/exclamation-triangle-dm.svg",
+			"sha256": "62381f6df54860b4b821133450a7e739c1f71d2113fd9934c8ce098307f7c891"
+		},
+		{
+			"path": "assets/images/exclamation-triangle.svg",
+			"sha256": "059bed0bf67456ee5c7b99cbd7cf8781b28caa5efe57878e5e45f6c1d0df67e1"
+		},
+		{
+			"path": "assets/images/info-circle-dm.svg",
+			"sha256": "3e5a7e7f2a7bdcc20e8c2cb5dcd40970671cc03673e43ac1199120a7cc9c5938"
+		},
+		{
+			"path": "assets/images/info-circle.svg",
+			"sha256": "1a9fa0e4c777122cb26bac9ca581f27920e967e75556be3a6cfb889231825fec"
+		},
+		{
+			"path": "assets/images/positron-icon.svg",
+			"sha256": "3f147c2253b05b86672e0eba0ff9fff22c15606a8ea537c60d7d35626fe37b3b"
+		},
+		{
+			"path": "assets/images/positron-logo_fullcolor-TM.png",
+			"sha256": "2f36ffa235b84950a2419fbb1973d258764d28f39e3fe5f92802b14ca33d6985"
+		},
+		{
+			"path": "assistant-chat-agents.qmd",
+			"sha256": "ec63a52d44f11441965c2b2d52138277532a36e4716102acca95bb04032ee8a3"
+		},
+		{
+			"path": "assistant-chat-commands-participants.qmd",
+			"sha256": "5711338b78f923e697f1a567876f95362c6e4f4b7908de05bb33b75678388e62"
+		},
+		{
+			"path": "assistant-chat-context.qmd",
+			"sha256": "f1798c6650023721fc67840cbc943e9e362743f47a7445990a7c2dbf839822d6"
+		},
+		{
+			"path": "assistant-chat-instructions.qmd",
+			"sha256": "03a386939139bc3ea3adfac5698fe9929d66b4a3b76ada998b893f9bd8e644c1"
+		},
+		{
+			"path": "assistant-chat.qmd",
+			"sha256": "8d01e113abad7a00d53edbb956cbd38d1d5ebd552bc8b742a361daf5ac259d90"
+		},
+		{
+			"path": "assistant-completions.qmd",
+			"sha256": "aa6cdc0b3910cd7ff3b377c2f372afed00f11c168de7bb5e5717ace3b1d6e9f9"
+		},
+		{
+			"path": "assistant-getting-started.qmd",
+			"sha256": "75a6ba7ebd98d882850583a54dbee288465d45fec7361347435b39f9b7880f80"
+		},
+		{
+			"path": "assistant-provider-info.qmd",
+			"sha256": "d4b970a13c516841665c57220902054128e7a9f0fec3b179b058890110f61551"
+		},
+		{
+			"path": "assistant-providers.qmd",
+			"sha256": "418b8df03daea0d3a0a36122f5e329ea9679b901895cc3078ef0440419a78aa6"
+		},
+		{
+			"path": "assistant-tips.qmd",
+			"sha256": "8c08ae2ae72f5b9a69c0fa6907a7b24200a56488828a15fb23cd450fbc560f21"
+		},
+		{
+			"path": "assistant-troubleshooting.qmd",
+			"sha256": "e0615f87561442f8bdb7ca012e9b55827b6a6efcd8e29dfa051e1df41e2c2cdd"
+		},
+		{
+			"path": "assistant.qmd",
+			"sha256": "268750a8f10004d4aa244d91ae5e8c13fe539871a6ccb2ceb5e90a98897378dc"
+		},
+		{
+			"path": "catalog-explorer.qmd",
+			"sha256": "d4b705f8057acd0bef909cec0825b1cf4c7bfed2e097d2e669f4cc7b9f4f8adf"
+		},
+		{
+			"path": "CLAUDE.md",
+			"sha256": "90c239685fe3d70754296e041e98262ab62cf9bbc94c17a4868da36316728d2f"
+		},
+		{
+			"path": "code-cells.qmd",
+			"sha256": "372e438c3fb741e51f5cd6c8727de6baeff8351a7a2bb7b0c4b0844f5e348df3"
+		},
+		{
+			"path": "command-palette.qmd",
+			"sha256": "d102f6d972c56e3265ab6e9572880c57ba77987f7c51b4dc10247a91b2470758"
+		},
+		{
+			"path": "connections-pane.qmd",
+			"sha256": "9b91e8b46c3cd567d74e3dc7099b237af95bb5137ae1023280c62b6f3ed9014f"
+		},
+		{
+			"path": "css/_posit-colors.scss",
+			"sha256": "7e3beb7315bdae743fc0c5804ca166fbe47c1ead4db6ab18de13b084874e8cb6"
+		},
+		{
+			"path": "css/theme-workbench.scss",
+			"sha256": "bc4741691911d2ebcb3c2946d2ffa7aff3b86ec9f40418bd06bd81f09a562d7e"
+		},
+		{
+			"path": "css/theme.scss",
+			"sha256": "6005cc2bdc786ea0a026aba7187dab0e63fd52a0dc935cb39a347d49e82b6142"
+		},
+		{
+			"path": "data-explorer-data-grid.qmd",
+			"sha256": "e5978bfb50401a532c1cb93a08d3805cbd80366184cd7448bbd244a8a4ead491"
+		},
+		{
+			"path": "data-explorer-filter-bar.qmd",
+			"sha256": "e202ce94facfc2f4a048ab5b2250d03077c4c24e6b50739e5b90358fe5103d3f"
+		},
+		{
+			"path": "data-explorer-summary-panel.qmd",
+			"sha256": "245df148335137dbaff727055ead5cb0cfa777fde2b872f873a557c4e48af738"
+		},
+		{
+			"path": "data-explorer.qmd",
+			"sha256": "a6beb5c39bfd7f6ca440f7a4185b40be523f77d7862d86c4ed2898bb4628b4ec"
+		},
+		{
+			"path": "databot.qmd",
+			"sha256": "c2712082102f9158ec8cde158151c7afecb98f51a9e35ee1274a59b95e2d22ab"
+		},
+		{
+			"path": "dev-containers.qmd",
+			"sha256": "9e47917b59ee4c60519fb376af3432e222f3a8951aca3bae99317efe24aacbce"
+		},
+		{
+			"path": "develop-data-apps.qmd",
+			"sha256": "9f282252974989614eb1838fad3789e78f0cade12fc30518ebf20259e2e2115c"
+		},
+		{
+			"path": "download.qmd",
+			"sha256": "545b8816b97bb80ec49dc3dab913b119d4efc6805c427008369dff74c6a137c0"
+		},
+		{
+			"path": "education.qmd",
+			"sha256": "8f9e70b6a4877dabbd717a39c3b8467a15152c5d00ca33a5e355231118b4df1c"
+		},
+		{
+			"path": "environment-modules.qmd",
+			"sha256": "d48012cf03f1e62878b8ca03ca1e1cb0074bdce066bfdc7c0bbb84bcb659e066"
+		},
+		{
+			"path": "extending-connections.qmd",
+			"sha256": "4a082902cbb19ff2f09f4eb9c243135f5dec75269576a24536be45b2bac2e67f"
+		},
+		{
+			"path": "extension-development.qmd",
+			"sha256": "71b1e465e2ccd0f91d2d0a37cb7f11143bc06c564519b147dbf89f43bc4f9eff"
+		},
+		{
+			"path": "extensions.qmd",
+			"sha256": "70ff2787dc43acab95dbf068c04b2ac6a71356b9531cf8e7d3d39df32d37604c"
+		},
+		{
+			"path": "faqs.qmd",
+			"sha256": "fd1e8da6067bb45b7ed7c65cafca2ebfa4ab2bf74be6f2a16c55e44b8be87554"
+		},
+		{
+			"path": "features.qmd",
+			"sha256": "1716afa132c36f06d8298195c7726dae2fe9d00eca87e4b1c4ae8456d1d00da0"
+		},
+		{
+			"path": "feedback.qmd",
+			"sha256": "5be56d907db9fce8cdf95fdf36e2b5def093dc4ab390047564e4d2c700d06bf8"
+		},
+		{
+			"path": "folder-templates.qmd",
+			"sha256": "ad7caee074f59031625d26964057111325cdb2405b83ed032ddef3d0d204ea55"
+		},
+		{
+			"path": "git.qmd",
+			"sha256": "f978a2bd31849f92192ef35f39fa7f04df66eae7ad70d9f279085ce5141dddc0"
+		},
+		{
+			"path": "guide-python.qmd",
+			"sha256": "cd3a3dd2bf166a9ed9a252c42479cbec0587f5476a681db0543ca58d0dac8aff"
+		},
+		{
+			"path": "guide-r-air.qmd",
+			"sha256": "44ab968042b6008cec6137f286239f4ac56d35bad6970e45b0b4df3b5d8a18f4"
+		},
+		{
+			"path": "guide-r-debugging.qmd",
+			"sha256": "4276b3294b9bb058b95376834fb811d878e827b45e3a8e65f44efaef0b95390c"
+		},
+		{
+			"path": "guide-r-session-hooks.qmd",
+			"sha256": "2b34378dd6adca5292a68de795bd891478a9c8603b8ba8d020382c875896fddb"
+		},
+		{
+			"path": "guide-r.qmd",
+			"sha256": "0b99005b5d3738b1f056aff028beafc3adba96479727c3b19eaf62d6388512c2"
+		},
+		{
+			"path": "help-pane.qmd",
+			"sha256": "5639d897f5687db45d79ebe09659c190d743fd947bae74b6c66629326d22856f"
+		},
+		{
+			"path": "images/action-bar-button-with-text.png",
+			"sha256": "eabfd4021b080c3906cbc3995b53ccae5eef4c1942c89f9c1e77f30070d7cbdc"
+		},
+		{
+			"path": "images/action-bar-button.png",
+			"sha256": "ec6b14ba1b3f686797b2923a46ad38cdada569c025749f767e20a04302400b55"
+		},
+		{
+			"path": "images/action-bar-checkbox.png",
+			"sha256": "b52e65da269f3ed46e3f0fd5276e7eb153ec784fa352f5758b72bcb3267ac2c8"
+		},
+		{
+			"path": "images/action-bar-information.png",
+			"sha256": "e965ac6feb99365377a08b7ee8c5ab4917dde33ed9da1c8e55e448eb9c0183bb"
+		},
+		{
+			"path": "images/action-bar-menu-button.png",
+			"sha256": "8f2d83dc11155318155f764400cacf5636ff0ea7014da086dc1ad4b6584b0e81"
+		},
+		{
+			"path": "images/action-bar-overflow-button.png",
+			"sha256": "13ac1fc5b9c164fdebdc687232dddfa62001d8852853863842904367735d41a2"
+		},
+		{
+			"path": "images/action-bar-regions.png",
+			"sha256": "c15c2ae5d21b6d06b70d3997b6830241f7661a3b5162f2a063950ce1a088244b"
+		},
+		{
+			"path": "images/action-bar-separator.png",
+			"sha256": "bd72a4282788897c9a236e80bafa517cc1bf43c44afbf4b222008f9ef27869eb"
+		},
+		{
+			"path": "images/action-bar-split-menu-button-left.png",
+			"sha256": "d55b0ea71a38c2191b4893807fd9617061b9d7994ad6ecbab5209714539f81ea"
+		},
+		{
+			"path": "images/action-bar-split-menu-button-right.png",
+			"sha256": "bacba6022bc75cdf48a745fc95f3996d4f1b35fb20cf96000105f87b197f8cc4"
+		},
+		{
+			"path": "images/action-bar-toggle.png",
+			"sha256": "387efe8c562c5eb8fa8418bdbd3aa80db236ca4739bfb844191fe84468ebf3b0"
+		},
+		{
+			"path": "images/action-bar-tooltip.png",
+			"sha256": "9695703d03d78d0e898f2ce12bb3c9eb50deb3de49a11af25ba620e04afe0ee6"
+		},
+		{
+			"path": "images/action-bars.png",
+			"sha256": "e103737ee0e487988b094c054843841ac8b6224d8f5ed515cca0bd357c2496cb"
+		},
+		{
+			"path": "images/active-interpreter-session.png",
+			"sha256": "7afee7808687e2e0eb924d5f51356bc055216d5456479bc0932c7b0ba1a621f3"
+		},
+		{
+			"path": "images/assistant-provider-modal-amazon-bedrock.png",
+			"sha256": "a546945c30bc2e1d32d381c1a9180248864ad6d67a4ec733c90cdd38f8f8e739"
+		},
+		{
+			"path": "images/assistant-provider-modal-anthropic.png",
+			"sha256": "9eda6ea3e032fa16b8d99a4897fb1560a929e59258b9e39fd2e2b565e7da4584"
+		},
+		{
+			"path": "images/assistant-provider-modal-custom-provider.png",
+			"sha256": "220c8eb42a0b3954b98dd869b0f895011a351d91ae8e0712bbe4712a7cdfc2e3"
+		},
+		{
+			"path": "images/assistant-provider-modal-github-copilot.png",
+			"sha256": "8dd138db930354abb29ab7cc8b35a976d3409bd64c74ac37d84712b3e859e3b7"
+		},
+		{
+			"path": "images/assistant-provider-modal-microsoft-foundry.png",
+			"sha256": "f827e477e766ee28aa63f21f2294836a06f285fe6207c2f70c2e3f881227c35e"
+		},
+		{
+			"path": "images/assistant-provider-modal-openai.png",
+			"sha256": "1f3afb08d32939cbe0de9152db703c7aea70106d0a0cf50203e25f353eb10be8"
+		},
+		{
+			"path": "images/assistant-provider-modal-snowflake-cortex.png",
+			"sha256": "2b7b332106c2c246b74073d46da286ebee8ece306c9c790eff98a2554b6e214a"
+		},
+		{
+			"path": "images/assistant-sidebar-icon.png",
+			"sha256": "65cb58728fa8ea7111c485d416e8c81728cbe59b5e5db45ab27a9c5e8297c2d3"
+		},
+		{
+			"path": "images/assistant-status-bar-icon.png",
+			"sha256": "242fc8d7e9fff532641c46bb2432ddf82259ee0823aca73c4aa8766477170bf7"
+		},
+		{
+			"path": "images/astropy.png",
+			"sha256": "e29bb754b605505aab14bc36584988ea816e2a1891e3a5c16945ee1eaed63cec"
+		},
+		{
+			"path": "images/code-cells.png",
+			"sha256": "70d4314a7ad123b2615c89b00ba62594fa7e5a71b54363dae2b526d7e5393fd4"
+		},
+		{
+			"path": "images/connections-pane-new-connection.png",
+			"sha256": "7d54a86fcbb7c8b4447f28fcce9d43116517cf944be22776bf14e7d36b4107e8"
+		},
+		{
+			"path": "images/connections-pane-schema-explorer.png",
+			"sha256": "21a83c3765a09781bdd193db7fa475aa6a556dbf76574155c868ecfc725f1900"
+		},
+		{
+			"path": "images/connections-pane-variables-pane.png",
+			"sha256": "b899644841b4d1a341521ccea7c094f90b3b184002f894fa62dffb2193d88f10"
+		},
+		{
+			"path": "images/connections-pane.png",
+			"sha256": "80cb5cc8e2537f689e8fe431e797413b810106c00009d2bcc569df28f3ab1cd1"
+		},
+		{
+			"path": "images/console-pane-interpreter-session-status.png",
+			"sha256": "bc1d7722d3f09f1aea805fce704ca2a055769a124be40f96a3ce0aaf07cf7581"
+		},
+		{
+			"path": "images/create-python-environment.png",
+			"sha256": "f84c029856ad1e587b8c91836d35894d7ba4cf5c8eafa699c0b3f04d9a759850"
+		},
+		{
+			"path": "images/create-python-project.png",
+			"sha256": "251e1572979dc3299c1e80529f29bd874dc198a0708f413551a34cf9a71abc76"
+		},
+		{
+			"path": "images/create-r-environment.png",
+			"sha256": "c3ed4d84885e075fec55568ff008c68880a98c19f88f1085dd98fb7bafcf30af"
+		},
+		{
+			"path": "images/create-r-project.png",
+			"sha256": "607d549e9c22cdd3d0883f73a231206de50a6612af8810033e14793a80e227ac"
+		},
+		{
+			"path": "images/data-explorer-cell-menu.png",
+			"sha256": "4b0985f65c79864c0d5aa355b115c0898d5dd8823a5cbde84a198f5aa4f78689"
+		},
+		{
+			"path": "images/data-explorer-cell-value-tooltip.png",
+			"sha256": "9764a15a6df6737ddc0810aa65b435838d89bb995912bdab18810e8f79933b69"
+		},
+		{
+			"path": "images/data-explorer-column-label-summary-panel.png",
+			"sha256": "5f1e545e44abb98ed640c82683a9731bef255e838a1035b8bc17c3c5cc9023b3"
+		},
+		{
+			"path": "images/data-explorer-column-menu.png",
+			"sha256": "ff2449370ca41c99cc50fee02403e8e3e05ac7010d0282b6273acbfff51c6916"
+		},
+		{
+			"path": "images/data-explorer-copy-cell-context-menu.png",
+			"sha256": "2d39528cecc8185bf93843a7988f5db9431f86ba28e345419a537b92eb81d5f3"
+		},
+		{
+			"path": "images/data-explorer-copy-rectangular-range.png",
+			"sha256": "0ebd40a25a76bb266218cb712c840c96efba65e139fa6354ba0ca5fee09a0137"
+		},
+		{
+			"path": "images/data-explorer-copy-whole-columns.png",
+			"sha256": "8fc1d69b5588c00423e393abbb77bdf1d1b9eeaddd8140b7d2450d4c17ff7ffb"
+		},
+		{
+			"path": "images/data-explorer-copy-whole-rows.png",
+			"sha256": "ef1ca3eb1ef155e398a941d1b8fb16f87c50104eb7ad1af2bc11ea8ff9d7244a"
+		},
+		{
+			"path": "images/data-explorer-filter-ui.png",
+			"sha256": "7d0a738bda57cf5e31d31b967a663fb5d007dbed138cc427dee3d449a3dcaf82"
+		},
+		{
+			"path": "images/data-explorer-filter.png",
+			"sha256": "90ca1f6760a7999ebdcc2889b2259a97f2e14fc5c355453a0fc97d5dea94da9e"
+		},
+		{
+			"path": "images/data-explorer-flights.png",
+			"sha256": "a02638601438f375e9d1c5b6959778a8a0ada657679b1defc2b8ace508983cb4"
+		},
+		{
+			"path": "images/data-explorer-grid-example.png",
+			"sha256": "3345753bca9f7608d4b01eb822537bb6a446774490cc977ad3ae85bdf4855880"
+		},
+		{
+			"path": "images/data-explorer-loading-indicators.png",
+			"sha256": "bc7b263ef2cf3f5019fb52c17d4edb337d14daad993aa2f8cf821b223567694e"
+		},
+		{
+			"path": "images/data-explorer-row-menu.png",
+			"sha256": "9f85542123030aa1464672c75bb320840c5fb9b92ff288cd4a7709f0f38af139"
+		},
+		{
+			"path": "images/data-explorer-sort-context-menu.png",
+			"sha256": "63e33891ec9f75c5e1b30be9c1458b31113e521d2599766320b79aba0f1632c7"
+		},
+		{
+			"path": "images/data-explorer-sort-multiple-columns.png",
+			"sha256": "98dacbebd9561a97a660f0a575fdfa8eb7cc653d129c855279a7506d33dbf676"
+		},
+		{
+			"path": "images/data-explorer-summary-config.png",
+			"sha256": "7a862c2d71337c1de5cbaadb60a7cbcfff7374c81aeddd92169dda3ed82e8f85"
+		},
+		{
+			"path": "images/data-explorer-summary-data-type-tooltip.png",
+			"sha256": "f4d854e410fd6806647fda0247a5b8b7eb25239f19b9002546c4704fbc2a6156"
+		},
+		{
+			"path": "images/data-explorer-summary-missing-tooltip.png",
+			"sha256": "d3743b75709dac0acd589e6dc3ce9463c1f52878674f994e59df346a541edac6"
+		},
+		{
+			"path": "images/data-explorer-summary-panel.png",
+			"sha256": "56d886380204152e4ec5e94263e669def1a3a8769f42ff5f044d862d7c7ebe1d"
+		},
+		{
+			"path": "images/data-explorer-summary-sparkline-tooltip.png",
+			"sha256": "667d12b06e87760417b2b0aca3edcba8b0db1422dab38fae4defabcda834356c"
+		},
+		{
+			"path": "images/data-explorer.png",
+			"sha256": "6050e1af6ce1fc11519425ae052e4fd47b89931f1d2aa1be900d74bbcbf0a566"
+		},
+		{
+			"path": "images/databot-welcome.png",
+			"sha256": "eba63d4648bd2f52b61f62d88772a796d679ea1c78c3b901e1541fee5109f3ae"
+		},
+		{
+			"path": "images/dev-containers-remote-explorer.png",
+			"sha256": "726a6db719dc1001d012a9545b20a62e88c9d0eeb92046bae541d9d669ede0d1"
+		},
+		{
+			"path": "images/dev-containers-reopen.png",
+			"sha256": "ba7ac04f10cc022909b08cb125d71a229a7759d97238ae6df99b71a4fd73aa8f"
+		},
+		{
+			"path": "images/dev-containers-setting.png",
+			"sha256": "aa3527d1448a8f2c67e08f3e73a881c43c502c6eb1b07181f99d59f521af1efd"
+		},
+		{
+			"path": "images/download-button.png",
+			"sha256": "7a208fdf2d9690d23b372e78a25583b1197a129b5be1608d679157c8389dd651"
+		},
+		{
+			"path": "images/extension-publisher-trust.png",
+			"sha256": "46a21d10319f6428edbad1c35f62017aac50c8bd3fb2f9f44592e1091e24c186"
+		},
+		{
+			"path": "images/extension-verified-publisher.png",
+			"sha256": "9426975bec3c74c72595731cfe15971ab848baff718c463b6b7391d7005d8ec0"
+		},
+		{
+			"path": "images/favicon.svg",
+			"sha256": "1928ae2c1964d8df879eb517c68d50aa572f9767f6c76f9ed7c53e9bed4086d2"
+		},
+		{
+			"path": "images/features-bridge.svg",
+			"sha256": "c260b71748fc7c1d82e7b1188ff0e27855ce434cea06e6f911cf099e56701cb0"
+		},
+		{
+			"path": "images/features-enterprise.svg",
+			"sha256": "4967fc4c8017c16dec3f72579b5a7f3b0b5a70609fb3963c3cc7a531d1585342"
+		},
+		{
+			"path": "images/features-explore.svg",
+			"sha256": "ba0950c79f2bd6fc7e5c5e127477dd09f01291ebc080529564c7a46abae8034e"
+		},
+		{
+			"path": "images/features-publish.svg",
+			"sha256": "f89f971ae4d51e9bffaa696027102ace63b0e60cf42dbf8bac0d2a6e5a97ee9e"
+		},
+		{
+			"path": "images/installer-windows-add-to-directory-context-menu.png",
+			"sha256": "aadb8478916f621e18d445de9ef158e260374261dce9e7ac6c05df689c3fcffb"
+		},
+		{
+			"path": "images/installer-windows-add-to-path.png",
+			"sha256": "e3eea6b1be77716a7d8af00a575d5cff35bc85a68532358de16cbe6fcb44997e"
+		},
+		{
+			"path": "images/jupyter-notebook-option.png",
+			"sha256": "11aaf33fd1651bc71ec4e29f8b2ecdeec38c5154b016348e57826ba26ceefe51"
+		},
+		{
+			"path": "images/jupyter-notebooks-kernel-selector.png",
+			"sha256": "949217068b53a1358e634bb0773ace0ae4ab305a7629cc9b034073de8f19151c"
+		},
+		{
+			"path": "images/new-folder-from-template.png",
+			"sha256": "3edfe5b4a4eb1d22e549b1590b27f542d7443c6ffbe20e9020d5f7eaf9baad0d"
+		},
+		{
+			"path": "images/new-quarto-document.png",
+			"sha256": "5d76f742f34b6a7077e4bf57fc4aaabea97bf5cec9e63f14d003d46094c013c2"
+		},
+		{
+			"path": "images/open-folder.png",
+			"sha256": "9386d8033fd48057f4dec9f27a4b3f2c20cf0171d5f6ceedabc9c02f3fc08d61"
+		},
+		{
+			"path": "images/posit-guide-ltmd.svg",
+			"sha256": "7a3c3f7ca830c562178a442a5f6e7e82e65a73be04dd903092e53ca6ccf554e7"
+		},
+		{
+			"path": "images/posit-icon-fullcolor.svg",
+			"sha256": "95ab31b50715af1e4a44e4d9b9de35a28b95a106079a32c88b19f0fe2c536e01"
+		},
+		{
+			"path": "images/posit-logo-black-TM.svg",
+			"sha256": "5efaac6e859d1aa7e4fe46ce9dc5bcccd1094a29d09c1ae80a2d5a71417e5f76"
+		},
+		{
+			"path": "images/positron-notebook-assistant-action-bar.png",
+			"sha256": "e41fa4e8f3d1d0ac8376fe33561de42b336f921b7ccf96ff810a4e40c1a3265d"
+		},
+		{
+			"path": "images/positron-notebook-assistant-panel.png",
+			"sha256": "31de72fe6e487462a6debfc245eda5414d4c3be21e0b80244a2745fcec0362d4"
+		},
+		{
+			"path": "images/positron-notebook-editor-kernel-selector.png",
+			"sha256": "c696f9cb3d203083d207f53750774e1c646a34379b8621c3711a0c983243209d"
+		},
+		{
+			"path": "images/positron-notebook-layout.png",
+			"sha256": "3ab670b9a6f13259d991681e25bc35ab2ef99f0ad2555fd18a1936f14da6f9a5"
+		},
+		{
+			"path": "images/positron-notebook.png",
+			"sha256": "eb9b755094c56de13776095e9a024058e3198dbb58203fa5ef02a29340a60fec"
+		},
+		{
+			"path": "images/positron-path.png",
+			"sha256": "8aa76a6402f2f72132f7c32173b03fb60b63c63579cdc53e0e3b47fb96257fbb"
+		},
+		{
+			"path": "images/positron-social.png",
+			"sha256": "732d2f3651ef63e3ca19255f0be94db50a06816dec3669078ba1a80c0f0443ed"
+		},
+		{
+			"path": "images/project-manager-activity-bar.png",
+			"sha256": "e7f65298b5378cceb2e530c7a93696eedecce4a440be5de2c295df95c7c8528f"
+		},
+		{
+			"path": "images/project-manager-commands-greatest-hits.png",
+			"sha256": "c70396f99e536adedc04d70f696a61d98f0b961f0b65c84eea4e4edc6a3749fd"
+		},
+		{
+			"path": "images/python-project-template.png",
+			"sha256": "006c450d6f20177899b80677b41ede1d35186a73c6e0914658faf68d7a0c91d4"
+		},
+		{
+			"path": "images/quarto-hello-python.png",
+			"sha256": "d644fd0ceb9db97f03ddbe59b82acf10b43094b750bc517ffb6e743046abf815"
+		},
+		{
+			"path": "images/r-project-template.png",
+			"sha256": "462fa111efdbd3cf0beba63c1bc4330a17d8ea847cd539e2e6232c1eeef95e1b"
+		},
+		{
+			"path": "images/remote-ssh-menu.png",
+			"sha256": "935ef3fe89a29a0e69164dc2616f55126568dc8a25a02ee7a8ec11f0ebbf7ac1"
+		},
+		{
+			"path": "images/remote-ssh-port-forwarding.png",
+			"sha256": "3b68b149d9b7542bf15d7fa606dd5df9a24451e07728febf3e4361d4241b46af"
+		},
+		{
+			"path": "images/remote-ssh-server-template.png",
+			"sha256": "5f7b18089ad8ba252b2491baaa96040b8b77c04bef343e214646e3830fd02972"
+		},
+		{
+			"path": "images/remote-ssh-shutdown-timeout.png",
+			"sha256": "bc33d3ec77da04585819895c5d5ccc6d013204d9fd7d7df2c431f0e4f77dcbea"
+		},
+		{
+			"path": "images/remote-ssh-status.png",
+			"sha256": "a3b77b1171f6165b21d9c1e1df74dd39802ee4678d295c752d81efd226769c1a"
+		},
+		{
+			"path": "images/reticulate-interpreter-list.png",
+			"sha256": "8b72016fbd2070410cd3fa6642c12af2224d70bffd4fd06d6ea65760a4aaa22f"
+		},
+		{
+			"path": "images/reticulate-interpreter.png",
+			"sha256": "35c20405480350e646508cead819daa06cde77efefce71a41d91b4af9662cd9f"
+		},
+		{
+			"path": "images/reticulate-python-objs.png",
+			"sha256": "42eb9bf59e4e082299bfde12b305022f5cced3575d020f441f17ac7bb9e052bd"
+		},
+		{
+			"path": "images/run-app-button.png",
+			"sha256": "70cd35df8897e8a4f2ab8c8bcdf4c584d1597ca65521e3a65ec5956edc35f54c"
+		},
+		{
+			"path": "images/run-app-debug-breakpoint.png",
+			"sha256": "7562820b9ac20f3be88a2c0099385132d80c489440720222d6a1a3456863a62a"
+		},
+		{
+			"path": "images/run-app-debug-streamlit-paused-at-breakpoint.png",
+			"sha256": "f1d67ede3c54b123202037f3267be1a91a0254682ed4c645ae6852c108ec1b85"
+		},
+		{
+			"path": "images/run-app-debug-streamlit.png",
+			"sha256": "870dade1e59d4bcb5c5cca9f1b8e6c9b909b0c5d91068e0cf9defc3a51fba139"
+		},
+		{
+			"path": "images/run-app-play-button.png",
+			"sha256": "3d860c2e7f857012b7144bcc59e9a14924c674c219b60ecc342c817e74c01781"
+		},
+		{
+			"path": "images/run-app-streamlit.png",
+			"sha256": "2f368fdc1bd16791805dfc5c97f28ddb3fb5786f3f79e2ed4d3b7f85f6205884"
+		},
+		{
+			"path": "images/save-notebook.png",
+			"sha256": "6b574592d1070ce859a61f5959562ac720a21d356b8393a674ac2cbc848f4af9"
+		},
+		{
+			"path": "images/snippets-configure-language-specific-snippets.png",
+			"sha256": "dbfa9c69376bb591d4f29f62ac5a97f8f20e4af5f732f92fcda6fd4870ca471c"
+		},
+		{
+			"path": "images/snippets-configure-snippets.png",
+			"sha256": "48d8f22489f81ed6720e83ca74bd973dca2f7ff9ae008a76bdbee8dd02b6878f"
+		},
+		{
+			"path": "images/snippets-for-example.png",
+			"sha256": "cd7a5e120ee0f7fa191968daf692ed50079627b65d4096f6b147d26c562fed2a"
+		},
+		{
+			"path": "images/snippets-keyword-with-two-items.png",
+			"sha256": "a43575f878073db455244494bcde392a7274b6e45074c60e4636c5eb66ed2e12"
+		},
+		{
+			"path": "images/tbid.png",
+			"sha256": "9a93a179a4cd3b7dcf523d521a00597c72f08c4e033f70ddf13e80ed0f6c4e4a"
+		},
+		{
+			"path": "images/top-action-bar.png",
+			"sha256": "b7ea04e2336d7ade13531977b712d63954bb08dd687678fbfa04beb97d0dd3ad"
+		},
+		{
+			"path": "images/tutorial-keyboard-shortcuts-command-palette.png",
+			"sha256": "5300295a9eda6e2d5a46db64ee6846a0627fd8b33047525693ebdabf261522a5"
+		},
+		{
+			"path": "images/tutorial-layout-buttons.png",
+			"sha256": "7fbd63f47a46debbc6adc648a616a55d65701eb7d0f732c7b927e322a8a2288d"
+		},
+		{
+			"path": "images/tutorial-migrate-command-palette.png",
+			"sha256": "ab5ea0302b9c90ccb5b57e93afdf4cce9fc384e6406683b20b2da6f70b0fe040"
+		},
+		{
+			"path": "images/tutorial-migrate-extensions.png",
+			"sha256": "3369d94974a41cc90c09d978424cd1aba4d70bb179bd1e14fdd07c2790262915"
+		},
+		{
+			"path": "images/tutorial-migrate-open-keybindings.png",
+			"sha256": "ac548b339bf8ec721ccf4d3800058817f2f5ee7713de61a78ef95f673b1fa7f2"
+		},
+		{
+			"path": "images/tutorial-migrate-open-settings.png",
+			"sha256": "c442d0b0aa73c055a4450b79b617711ae1cc09a6de63299ce7538067a3ed0ba2"
+		},
+		{
+			"path": "images/tutorial-python-ai-assistant.png",
+			"sha256": "08e7114de5fb409803d41a4f3c452ebef9d87fecfe02928d95dabf0e3ff764b9"
+		},
+		{
+			"path": "images/tutorial-python-ai-chart.png",
+			"sha256": "f8b0064739d4690deeae4f726ed31c833333ab1488e2dd0f739d29ef069b782a"
+		},
+		{
+			"path": "images/tutorial-python-ai-configure-model.png",
+			"sha256": "619d2195ac269ddab2e698e182f3aac437f046e4d71a9884b5c565e5cdd9578f"
+		},
+		{
+			"path": "images/tutorial-python-ai-convert-to-qmd.png",
+			"sha256": "fd360a1df50f1c49aa8161e2e56eb2d1c4f7f24ea0955a8b3b9ad4e2d9d3a644"
+		},
+		{
+			"path": "images/tutorial-python-ai-dashboard.png",
+			"sha256": "519d02d00a42fc8ab573241077e1d553cccba13cec8d2c3ee05dff45eb2d3fe9"
+		},
+		{
+			"path": "images/tutorial-python-ai-environment.png",
+			"sha256": "be4696d49277335c011b08e7e3704a82e106696badd74438a781a54ec0d6b5b1"
+		},
+		{
+			"path": "images/tutorial-python-ai-explain-error.png",
+			"sha256": "5524e08d3b329e71af5cc8a76017072e99deebcf9fa767ff3402e6b9a5e6ed6c"
+		},
+		{
+			"path": "images/tutorial-python-ai-explorer.png",
+			"sha256": "db015a626d8dca3bb6eb115e2e6c68710eb1a4e717e8d730aefa2db0e19d06d5"
+		},
+		{
+			"path": "images/tutorial-python-ai-ghost-cell.png",
+			"sha256": "1d62a9e53556093f07ac61ff4c299cb3dc7f71deac05123b7e19cf021a8cd83a"
+		},
+		{
+			"path": "images/tutorial-python-ai-git.png",
+			"sha256": "08557a5b49e0debff02411d95463525eb45c153664d27218e9da9ddb5b5865f5"
+		},
+		{
+			"path": "images/tutorial-python-ai-notebook-assistant.png",
+			"sha256": "20e80bd7a781666217467675a5beabe4096c96a3debefb072e8c2e978ca26e55"
+		},
+		{
+			"path": "images/tutorial-python-ai-notebook.png",
+			"sha256": "53200389f790ef03747b4e790f8e64e7736d14427420fc5708985bacddc85b5c"
+		},
+		{
+			"path": "images/tutorial-python-ai-notification.png",
+			"sha256": "76cdeaf2b7b1f329e5aed2d5ff4a9b785023aa7f62c11ea47d16f9f28411aec8"
+		},
+		{
+			"path": "images/tutorial-python-ai-permission.png",
+			"sha256": "e9bb39e8d72e3aae39749456397705edca59706306474742d4b83add945a4bd4"
+		},
+		{
+			"path": "images/tutorial-python-ai-results.png",
+			"sha256": "c47741c67b5ff8d8459763d38efb892f5cca32aca4dc242a50634fbeca7c860b"
+		},
+		{
+			"path": "images/tutorial-r-ai-assistant.png",
+			"sha256": "2c7cbe0821185321bd75d7878aeeeaa25ed614883c8baf6a345dec83f0a18fe5"
+		},
+		{
+			"path": "images/tutorial-r-ai-chart.png",
+			"sha256": "347f056a1530f4005e92f7518a86253d5086a01bdc6c95843ff52075586f544b"
+		},
+		{
+			"path": "images/tutorial-r-ai-completion.png",
+			"sha256": "bc46c72ff6e4f7d8fd7fe681ea67c449a54efaf75b8a36aba3321eecc5c6740e"
+		},
+		{
+			"path": "images/tutorial-r-ai-dashboard.png",
+			"sha256": "eed06cbb9d3cc8fe4f1cfd45899efe1fb5671b85f73cc97c991781ea499024d7"
+		},
+		{
+			"path": "images/tutorial-r-ai-donut.png",
+			"sha256": "1c3a0ee4f5501695e9b6f9ddbe6c766f08088ed44901bd8378f26a344394e964"
+		},
+		{
+			"path": "images/tutorial-r-ai-explain-error.png",
+			"sha256": "ed5b9ee164d308d12d6850f08816d8f727d66f7894127f6c9afa2715146ded41"
+		},
+		{
+			"path": "images/tutorial-r-ai-git.png",
+			"sha256": "f36bd5b9a19ffc19528e806fdc796104e5f282f75b4947deb394f7b350c76b50"
+		},
+		{
+			"path": "images/tutorial-r-ai-permission.png",
+			"sha256": "474f72f73ae4c10da7b4aa07c6b1eb9335f1bfec4b264a0800fdb6ba99823693"
+		},
+		{
+			"path": "images/tutorial-r-ai-renv.png",
+			"sha256": "41c62a2dba2590e8dadeeed2f42a2904fe8227ee81a843f90f253df21581da48"
+		},
+		{
+			"path": "images/tutorial-r-ai-report.png",
+			"sha256": "38ffc54304cd78f0eca0bee13fcb7625dcd8d6cb3bf6f2dd6e6795dc73138dd2"
+		},
+		{
+			"path": "images/tutorial-r-ai-results.png",
+			"sha256": "ee571ba55c245c927f0df3bbb86c522c0ecb85d67c919a56a50aef9293328b3b"
+		},
+		{
+			"path": "images/tutorial-vscode-available-interpreters.png",
+			"sha256": "62f55f1089eb859155dbad3acdd3f3400fdb4dc00f71663b48a18d43246f8093"
+		},
+		{
+			"path": "images/tutorial-vscode-console.png",
+			"sha256": "004dab69007b4d7279b7223fbcef8382ae88ac4794829d5104e5c9a1ede66c7d"
+		},
+		{
+			"path": "images/tutorial-vscode-copilot.png",
+			"sha256": "7d533f798acd21a430ce30c6a0e6f251d04638569ad47ad2f0faa9d3a58bbdcb"
+		},
+		{
+			"path": "images/tutorial-vscode-data-explorer.png",
+			"sha256": "17dcb0547195d44323125b608d84d28039421e5c6a51ecc708784a237239da92"
+		},
+		{
+			"path": "images/tutorial-vscode-import-settings.png",
+			"sha256": "2895743dce0c62692ff41956b982a7e6c31a7b4c6794b412dfbb80b75c7fd7de"
+		},
+		{
+			"path": "images/user-interface-for-rstudio-migration.jpeg",
+			"sha256": "22f6bddcabfadf354fa7c67e7fe4de833efca8981e1610d718a587b22f3b7626"
+		},
+		{
+			"path": "images/user-interface-rstudio-vs-positron.jpeg",
+			"sha256": "79ede439b38809bf9188e61649870a256ae5deb31ed9f7f0d67e1156cf1afa08"
+		},
+		{
+			"path": "images/variables-pane-mpg.png",
+			"sha256": "93f771f80781ed21a9babeeb4d1c5d35b1469bf10d50c491ea1cc6e6f4d390fd"
+		},
+		{
+			"path": "images/variables-pane-starwars.png",
+			"sha256": "23b558482b6b16baf5052ed279a882aade23abcab87826c18ac2c54bcbf34947"
+		},
+		{
+			"path": "images/variables-pane.png",
+			"sha256": "ca4abcd422b619d489d9fe94aa1d716a89bffb321140cdcddf32a2e553638b42"
+		},
+		{
+			"path": "index.qmd",
+			"sha256": "8a9526926d1eed884376feddd355feec0f98d1b5c9f246cbcc5b70378cf052e8"
+		},
+		{
+			"path": "interpreter-startup.qmd",
+			"sha256": "6c131c1c66d607627a9d9b3649808a92cd5f727ae33a4acd0ee40489185ae9d5"
+		},
+		{
+			"path": "jupyter-notebooks.qmd",
+			"sha256": "6496f24aab8176c584c8ce0183ada0db12c3d89a0ca9ba8edd5614116da311db"
+		},
+		{
+			"path": "keyboard-shortcuts.qmd",
+			"sha256": "ffc4d04c02a71634dfce4d0df221df7adfe91eaa47e2e45b3308ffbfba6f623f"
+		},
+		{
+			"path": "language-guides.qmd",
+			"sha256": "4edba5b1735391a3cf241eb4b0ab8f3ebfa822b84a95fafe74692fcb8bc6ea69"
+		},
+		{
+			"path": "layout.qmd",
+			"sha256": "6026cc6d7cf968ca517b8ae4fdee48fcfb4dd1b808baffc248e1326570048894"
+		},
+		{
+			"path": "legacy-notebook-editor.qmd",
+			"sha256": "54a251caaaf8b5b4274ef1c3402d35d924395808ccaa2f6a148c0321f6a96058"
+		},
+		{
+			"path": "LICENSE.md",
+			"sha256": "1e10c0ecb86a1d42cc6fbd4744cef94ea8cb18ad30981a34907d69a6267d239b"
+		},
+		{
+			"path": "licensing.qmd",
+			"sha256": "f1fc4e64b020a8a104bf26ec1e228b43c1870a29d0f3a2aad5c1081b3748aea6"
+		},
+		{
+			"path": "lychee.toml",
+			"sha256": "f3a2fa4662abd0631799d930de03687dee81b5ed4448b07184f4ed6f4dc48fb5"
+		},
+		{
+			"path": "managing-interpreters.qmd",
+			"sha256": "8425eafa47703fa49a88654188bc3ebe8e72150818d4d7ab3abe65d54011a6f3"
+		},
+		{
+			"path": "migrate-rstudio-compare.qmd",
+			"sha256": "48e553b871933e0396bf6637fabb07fde8a7d3e671e1d04449a13f2b7aed938a"
+		},
+		{
+			"path": "migrate-rstudio-keybindings.qmd",
+			"sha256": "3932920c9b9c76611bab78c190b6f8abcac9cb809a8fd452fe1c7889af8761fa"
+		},
+		{
+			"path": "migrate-rstudio-rproj.qmd",
+			"sha256": "caa1976b558b306f52129703e51e6cf2177fdc8bb9e19b9f91aced56c7b4a9d0"
+		},
+		{
+			"path": "migrate-rstudio-settings-and-extensions.qmd",
+			"sha256": "b4cb962b6bd274ee12d5093d76565ce382c768bc8fde13df202ff349e8d5c5fa"
+		},
+		{
+			"path": "migrate-rstudio-snippets.qmd",
+			"sha256": "17121c510818135354e9915813f05b020f4885bf5399a567e3402a585f971e47"
+		},
+		{
+			"path": "migrate-rstudio.qmd",
+			"sha256": "433d873e291d515f511aac7a28c63b84d83d26cf94607e9fe789d64131250cd8"
+		},
+		{
+			"path": "migrate-vscode.qmd",
+			"sha256": "daf7719dc9943027185ca2bd56023e38e630a5efa89ddfa5b287e0a8cf790455"
+		},
+		{
+			"path": "older-releases.qmd",
+			"sha256": "1229aea8c74e3a0a70cbab28f2946628845f50508efd774b61bc98ef4f69f925"
+		},
+		{
+			"path": "packages-pane.qmd",
+			"sha256": "cdb7c1b6fd4babe9d9d657a0c8ee87de504e1db78cc99bbf5d195ee4c84ca655"
+		},
+		{
+			"path": "plots-pane.qmd",
+			"sha256": "090e641b325eef6837401cdfd2859b5707b7d0f7d87b174ae349e3a689d59f90"
+		},
+		{
+			"path": "positron-notebook-editor.qmd",
+			"sha256": "fdd010270171153eb52955a6f7d6b1f20e9870916d62673279faedbf4d0baa4f"
+		},
+		{
+			"path": "privacy.qmd",
+			"sha256": "d582a3cc22b69f5cc3acfab355622633b51cc2843a26b2376d273b9dea4b4f0d"
+		},
+		{
+			"path": "publish-to-connect.qmd",
+			"sha256": "fb534ca9672bdd7b446919bb24ecdaf81e14471f908f16eeca3f297498705f07"
+		},
+		{
+			"path": "python-installations.qmd",
+			"sha256": "944a8d437e4977df269354605d9258bfa8517acd65e8e46f0da87dc3280e62c1"
+		},
+		{
+			"path": "quarto-inline-output.qmd",
+			"sha256": "f90000034a11fe41aad5c73be05c3f99b08060b09e6265794507fd51476049cc"
+		},
+		{
+			"path": "quarto.qmd",
+			"sha256": "59045b3e3fed3e177b4420a2df6b8404fa8f99b7f950f0f35ece273710f2f8b7"
+		},
+		{
+			"path": "r-installations.qmd",
+			"sha256": "94d3ef73fb35ac08200ed92d87327ef8c2623ec6e346fc1d97410de761782ad5"
+		},
+		{
+			"path": "README.md",
+			"sha256": "0f1aa4b642264e84676a5d33f7bb589b345b7acd15fa2a1f88168f8efbedfa14"
+		},
+		{
+			"path": "release-notes/assets/2026-07-packages-pane.gif",
+			"sha256": "882bee5df0c03f8eca317e66abff31a3a740e6698217421471cae96a2e56efb9"
+		},
+		{
+			"path": "release-notes/assets/2026-08-data-connections.gif",
+			"sha256": "54ae0add023d5a27ae16dcfa3bcfb2a89a4b9e9a42834e36c4244a923b167d9c"
+		},
+		{
+			"path": "release-notes/assets/README.md",
+			"sha256": "a3306e32e3375838207e84368c6ff923f0c004a20cba4c521f609d9ff4f7d699"
+		},
+		{
+			"path": "release-notes/next.md",
+			"sha256": "a5b2412a9077b9d6cda00e88b268a3aa7c86fcbf44fd036808facaacc4a83699"
+		},
+		{
+			"path": "release-notes/release-2025-07.qmd",
+			"sha256": "903b7bff31ec822bd9ab544e6c99ddfb809fa89f0a7dbe07cbdc0aa221efb3ae"
+		},
+		{
+			"path": "release-notes/release-2025-08.qmd",
+			"sha256": "e6b026be95fdc2965ceeb8ac21240e6ffdd8bf82be11acec68da5bff6065d386"
+		},
+		{
+			"path": "release-notes/release-2025-09.qmd",
+			"sha256": "0d042a01a4e501c995ecff0bb5224ab9b568fbc7e604151267569de9979e7f7a"
+		},
+		{
+			"path": "release-notes/release-2025-10.qmd",
+			"sha256": "dee1b91d3b0ea199386890dd638cd1224dfea3ec8dd17511c6b56da097977dd5"
+		},
+		{
+			"path": "release-notes/release-2025-11.qmd",
+			"sha256": "78c76d456df1ecf35d0e63c82add5508dc0b69e4ccc879fbbb08fbbb2f919664"
+		},
+		{
+			"path": "release-notes/release-2025-12.qmd",
+			"sha256": "9bf959d06bbe6c6c6f843011aff0a9e737e2e9468672d5f2619ab199fbabb92b"
+		},
+		{
+			"path": "release-notes/release-2026-01.qmd",
+			"sha256": "7c457175c5b6dafd8ee1b9c29398187f8e3d684bf55d45fd0f37f769ca96980c"
+		},
+		{
+			"path": "release-notes/release-2026-02.qmd",
+			"sha256": "b5d14cabc6a41c93b02183fb83d4473da92572615b5ed275afaa45c19c2ef1a0"
+		},
+		{
+			"path": "release-notes/release-2026-03.qmd",
+			"sha256": "2c41951251d865346620b3bee972e29cafe5e556c9b07c77acabd993507fb972"
+		},
+		{
+			"path": "release-notes/release-2026-04.qmd",
+			"sha256": "e23f42ccb0e8a19abdb4bea993f2e49e60f83315b085e4b4ce050c4ec93b2a25"
+		},
+		{
+			"path": "release-notes/release-2026-05.qmd",
+			"sha256": "475565842b93a0bd05c997ff51d13f4ac9d6bb0d870d5842dc1b39aee732bf21"
+		},
+		{
+			"path": "release-notes/release-2026-06.qmd",
+			"sha256": "05e9261380dbdbd2cb1c9113a6ba96bb4b709181aaf21d2166f831adfac9dd33"
+		},
+		{
+			"path": "release-notes/release-2026-07.qmd",
+			"sha256": "374cbb83a85ddf73dbe0fb595ea9a83eaa2339e0f2304b66f873b0ecae789958"
+		},
+		{
+			"path": "release-notes/release-notes-template.md",
+			"sha256": "a5b2412a9077b9d6cda00e88b268a3aa7c86fcbf44fd036808facaacc4a83699"
+		},
+		{
+			"path": "release-notes/release.md",
+			"sha256": "2f47c7b0c4b57f232f2ace70cefe6c842f54fb22aa321a9e033fccd96c88e279"
+		},
+		{
+			"path": "release-notes.qmd",
+			"sha256": "44c9571a5c6d7442344abb4e2f981ef75e5821363b46945754a43d97f0f75f06"
+		},
+		{
+			"path": "remote-ssh.qmd",
+			"sha256": "e07fbb5d9e03487af21cc3dba19027c26c9159120344c245d98bfbbbaa737845"
+		},
+		{
+			"path": "reticulate.qmd",
+			"sha256": "5a144e053d68b0e954399226820d40ae8337e4a26a196e826701a7731092b574"
+		},
+		{
+			"path": "scripts/build-llms-bundle.sh",
+			"sha256": "c7b4e61eeaaa8ee108c039bf4a87ed78fc8091e9a168f0c1f34c0b73a21eee9a"
+		},
+		{
+			"path": "scripts/generate-redirect-stubs.sh",
+			"sha256": "40af422db867c69a992b5da77185941606f3f9a9a9ffb2d4850a9a71462ba6aa"
+		},
+		{
+			"path": "scripts/test-build-llms-bundle.sh",
+			"sha256": "ecdca6fcbcdb63d818218ef1146cd9d3c351ce6b340a92c964fdd233d8fdfef6"
+		},
+		{
+			"path": "scripts/test-generate-redirect-stubs.sh",
+			"sha256": "2198781b34f844d3a8b4793e17110fa1012f725b8c4364a0583a6e0a465271d2"
+		},
+		{
+			"path": "scripts/workbench-metadata/update-all-releases.py",
+			"sha256": "17723ae4aaaa847d6707b0b48f4a0637a399982f007490fb2e252fd0e512b66b"
+		},
+		{
+			"path": "templates/feature-card.ejs",
+			"sha256": "e28aef973025dc96e983e4c57d89f0b654ac8f46e8c71d0b41d47d3fb31f508d"
+		},
+		{
+			"path": "templates/tutorial-listing.ejs",
+			"sha256": "cdebf4e658c5c1be9ff3e7ead8ffaff405fbfeca5d8899340bfa2ce28ab5ce55"
+		},
+		{
+			"path": "templates/welcome-card.ejs",
+			"sha256": "0e882e3c5e1b65673502d6a372fad3e4fdafe0add251a6c52d933be0269ef965"
+		},
+		{
+			"path": "troubleshooting.qmd",
+			"sha256": "28c1c3577c5c17b789c39483b3fe92c5a5726438fd309748227ce8a8da9d1a4d"
+		},
+		{
+			"path": "tutorial-ai-notebooks.qmd",
+			"sha256": "c55c681b27fd8f8ce5b36ef6f611acb4373ef86278353b5e37bab922399b2f89"
+		},
+		{
+			"path": "tutorial-ai-quarto.qmd",
+			"sha256": "6a6dd1bd5fec263047d2125c6232c74927a1675d08ed067e5a2958f44f8370f4"
+		},
+		{
+			"path": "tutorial-get-started-ipynb.qmd",
+			"sha256": "6a096c85820ec849f1917b29d1126d6c3246ba363070ca8d0b22f9c76b3a291f"
+		},
+		{
+			"path": "tutorial-get-started-quarto.qmd",
+			"sha256": "a110c3d1213b4ab2fa30a0951b27e1c536c717aa9ecd7ecfae52a8f90847dd64"
+		},
+		{
+			"path": "tutorial-migrate-from-RStudio.qmd",
+			"sha256": "a2cf3a08b08922a5248a632e2fb726410b80a32d04d8edeed7830cbce8516ed8"
+		},
+		{
+			"path": "tutorial-migrate-from-vscode.qmd",
+			"sha256": "aecb772ca7f44b20577b03e90c3e5777aeefc9f0ed39e87b8e7771bbbc4778e1"
+		},
+		{
+			"path": "tutorials.qmd",
+			"sha256": "1662e1ee54c874a59afe988a1f6abdc4b2bf4c0916fa3737760755841e8fd869"
+		},
+		{
+			"path": "updating.qmd",
+			"sha256": "a3c689aa0bc41efa516d61ea48b742c4b20020554d12c9e568b299a9aa591cc3"
+		},
+		{
+			"path": "variables-pane.qmd",
+			"sha256": "24487ed6348a32012f771c1feac7a848074f8fc5f5ce91cc7cc1b437a1c5b778"
+		},
+		{
+			"path": "videos/deploy-to-connect-poster.jpg",
+			"sha256": "3e5a6aa11e6f1c713d13acc27342af1134361495234cf355ce7489ef91e7a74a"
+		},
+		{
+			"path": "videos/deploy-to-connect.mp4",
+			"sha256": "a3172802df4c9a4ba5ce042424bf179481f2bfc4346788b338b4cb495daec5bb"
+		},
+		{
+			"path": "videos/generate-posters.sh",
+			"sha256": "fdeb272248670755bc13fcd3fd84054f1096f1c514ea74c438446a28a74ecfe9"
+		},
+		{
+			"path": "videos/notebook-ai-quick-actions-poster.jpg",
+			"sha256": "512aca8661cc42562ea885c05d885a4713b0a62ee45b686aa91734baf370ca8d"
+		},
+		{
+			"path": "videos/notebook-ai-quick-actions.mp4",
+			"sha256": "145453ac8992b931e28a2407ed481d1b721859ddbd77c389f6dbac0c3fbc2582"
+		},
+		{
+			"path": "videos/notebook-fix-error-poster.jpg",
+			"sha256": "accb59749b215da19b924ca4ee8fa015d8e02cd35ae9d0a9482b67c7050d8329"
+		},
+		{
+			"path": "videos/notebook-fix-error.mp4",
+			"sha256": "bea36cef01a11678c679b5ccfb79eda8c6ee3129d83fe32e54643e053b0cc056"
+		},
+		{
+			"path": "videos/plots-poster.jpg",
+			"sha256": "d40d3e41f1e3030d645f5f861e4a6e3ee0f8e927f4c10e2bc1e836472ec87745"
+		},
+		{
+			"path": "videos/plots.mp4",
+			"sha256": "8f0a8cb90aa42830fe323d3963d19cdeb5c1075b03f082b0750c8f92611e68d6"
+		},
+		{
+			"path": "videos/positron-hero-fast-tour-poster.jpg",
+			"sha256": "df544f7c3dc1e85fe31efcb4bb2d3fadf5d7bf9bd5bed6200b6b70d863d29372"
+		},
+		{
+			"path": "videos/positron-hero-fast-tour.mp4",
+			"sha256": "bbcc83b7f94f75b29b5b447a21417ce71f99401a470b56ffb20cc577e435e4c8"
+		},
+		{
+			"path": "videos/README.md",
+			"sha256": "0c6e58366b60515a4190123ace21927a35c2b8edb0b6e7bcbf5646eeb055452d"
+		},
+		{
+			"path": "videos/tutorial-explore-python-poster.jpg",
+			"sha256": "60142c9e42cfa7e65fbe7ccee358b77d3a0ae86408d4f0f6161f1049d15d279d"
+		},
+		{
+			"path": "videos/tutorial-explore-python.mp4",
+			"sha256": "b1a1c344d7df1dea498b0bdcd94bff30d38c29ce6d966dfa1aa0abc3506bdeba"
+		},
+		{
+			"path": "videos/tutorial-explore-r-poster.jpg",
+			"sha256": "6b5d2c23475c392b819a35c499d9a49b5482d420551926ec0239a449d98160a7"
+		},
+		{
+			"path": "videos/tutorial-explore-r.mp4",
+			"sha256": "83f6b314ba39c42b2bef7ab9e80ae64235a821832be72a7cb810ec0b52493a50"
+		},
+		{
+			"path": "videos/tutorial-filter-python-poster.jpg",
+			"sha256": "88c7b458f8fd488c01541e964e08fe1816539fd38e69ab0e721fd9b3861fde31"
+		},
+		{
+			"path": "videos/tutorial-filter-python.mp4",
+			"sha256": "0abcd06dc9994f265f6dc4b3c5582947679a43dfae56855bb795c929bcd758f5"
+		},
+		{
+			"path": "videos/tutorial-load-python-poster.jpg",
+			"sha256": "2a6d74ed99eb626bc9eae2708c82540bef2563824668a72afc7e1249a9b7f537"
+		},
+		{
+			"path": "videos/tutorial-load-python.mp4",
+			"sha256": "f25d5eccea67cfc69227c204c5c957f24b85c8d68449510fd1693a47400dce9f"
+		},
+		{
+			"path": "videos/tutorial-load-r-poster.jpg",
+			"sha256": "d79f77c4b84b939d943f7282021747db8d45043cdf7163e38c2afeba5cf79148"
+		},
+		{
+			"path": "videos/tutorial-load-r.mp4",
+			"sha256": "15a24c42b0a2cb043f39a8c0f1dccb4fa9bdcf8d6a9299de4211ae289e175d28"
+		},
+		{
+			"path": "videos/tutorial-migrate-color-themes-poster.jpg",
+			"sha256": "833d78fd693ac9a88fc7bc93df73910d75ea361329dc6d38e86d3b462a251b7d"
+		},
+		{
+			"path": "videos/tutorial-migrate-color-themes.mp4",
+			"sha256": "ffa178933a4590e134198a850db11d0c157919484c14a954d3b3455290d80da0"
+		},
+		{
+			"path": "videos/tutorial-render-r-poster.jpg",
+			"sha256": "32fcb0385fad36c58f709efa58e92fe49c9566790bb05bb96ead42b9d1ad9fbd"
+		},
+		{
+			"path": "videos/tutorial-render-r.mp4",
+			"sha256": "5584af5ac7c07ac2999339bb0eaffbc5c7a2593011145a127cf5efa6ffd3a749"
+		},
+		{
+			"path": "videos/tutorial-test-python-poster.jpg",
+			"sha256": "fe62dec65db6623e7f2d89cee56e7ae375e0c57b4af386c227bd8798ea53cdc6"
+		},
+		{
+			"path": "videos/tutorial-test-python.mp4",
+			"sha256": "0080f7eb4b5b73fa0c2060d09e857df92c21fe2721ea5456626a06cf74f8dde8"
+		},
+		{
+			"path": "videos/tutorial-vscode-notebooks-poster.jpg",
+			"sha256": "26e665c18998559b9efb3c9fcc4b2463fa0f0cf93e1f471cda65faa7243e25ff"
+		},
+		{
+			"path": "videos/tutorial-vscode-notebooks.mp4",
+			"sha256": "9ee1a937ad0ef3821effd2472622bf5f3fa610d6b33ae363ae8b2940611ea811"
+		},
+		{
+			"path": "welcome.qmd",
+			"sha256": "5b55b0fc4c958a0a434a910bebf747002c9309ce8b366809e727a1e6a6518632"
+		}
+	]
+}

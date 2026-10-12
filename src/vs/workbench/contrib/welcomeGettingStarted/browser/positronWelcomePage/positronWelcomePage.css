@@ -1,0 +1,80 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+/*
+ * This page renders inside .gettingStartedContainer, so gettingStarted.css
+ * applies to everything here. Its rules use four-class selectors on bare
+ * elements, so the overrides in this folder repeat the container chain to win on
+ * specificity.
+ *
+ * Do not add a page-wide reset. The page also hosts widgets the editor pane
+ * builds -- the recent list, the connect action, the startup checkbox -- and
+ * gettingStarted.css is what styles those correctly. Override on your own
+ * elements only.
+ */
+
+/* No horizontal padding: .gettingStartedSlideCategories already supplies 24px. */
+.positron-welcome-page {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin: 0 auto;
+	max-width: 1400px;
+	min-height: 100%;
+}
+
+/*
+ * Lets the user select and copy the text on this page.
+ *
+ * The workbench turns selection off for everything (`user-select: none` on
+ * `body` in workbench/browser/media/style.css). gettingStarted.css tries to undo
+ * that with `user-select: initial` on .gettingStartedContainer, but `initial`
+ * means `auto`, and `auto` on a non-editable element resolves to whatever the
+ * parent ended up with -- still `none`. `text` is the value that actually turns
+ * selection back on, which is what editorplaceholder.css uses.
+ *
+ * Listed section by section rather than on .positron-welcome-page, because this
+ * inherits: on the page container it would also reach the recent list and the
+ * startup checkbox, which the editor pane builds and this folder does not own.
+ */
+.positron-welcome-page-header,
+.positron-welcome-page-environment-setup,
+.positron-welcome-page-walkthrough-banner {
+	user-select: text;
+	-webkit-user-select: text;
+}
+
+/*
+ * Buttons stay unselectable. A button is something to press, not text to copy,
+ * and dragging across one leaves its label highlighted instead of pressing it.
+ * The rule above inherits into them, so each one has to opt back out.
+ *
+ * This targets the element, not a class, so it also covers the buttons here that
+ * are styled to look like links -- those are still actions.
+ */
+.positron-welcome-page-header button,
+.positron-welcome-page-environment-setup button,
+.positron-welcome-page-walkthrough-banner button {
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+/*
+ * Pins the footer to the bottom of the page. The min-height above leaves free
+ * space when the content is short, and this margin takes all of it.
+ */
+.positron-welcome-page .positron-welcome-page-footer {
+	margin-top: auto;
+}
+
+/* Opt-in link color, for elements this page owns rather than the editor pane. */
+.monaco-workbench .part.editor > .content .gettingStartedContainer .positron-welcome-page .positron-welcome-page-link {
+	color: var(--vscode-textLink-foreground);
+	text-decoration: var(--text-link-decoration);
+}
+
+.monaco-workbench .part.editor > .content .gettingStartedContainer .positron-welcome-page .positron-welcome-page-link:hover {
+	color: var(--vscode-textLink-activeForeground);
+}

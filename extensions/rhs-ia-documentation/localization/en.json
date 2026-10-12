@@ -1,0 +1,23 @@
+{
+	"navigation": "Documentation navigation",
+	"back": "Back",
+	"forward": "Forward",
+	"home": "RHS-IA Documentation",
+	"fallback": "This page is not available in Spanish. The English version is shown.",
+	"blockedLink": "RHS-IA Documentation blocked an unsupported link.",
+	"httpsOnly": "RHS-IA Documentation only opens HTTPS links.",
+	"loadError": "The documentation page could not be loaded.",
+	"retry": "Retry",
+	"search": "Search Documentation",
+	"searchHint": "Search this language",
+	"searchEmpty": "No results found.",
+	"searchLoading": "Searching…",
+	"searchError": "Search could not be loaded. Try again.",
+	"searchResults": "Results (up to 20)",
+	"contents": "Contents",
+	"onThisPage": "On This Page",
+	"previous": "Previous",
+	"next": "Next",
+	"closeSearch": "Close Search",
+	"actionError": "The application action could not be opened."
+}

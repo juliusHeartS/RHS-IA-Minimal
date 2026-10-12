@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Database Connections"
+---
+
+The Connections view represents data sources registered by a supported runtime or extension. Expand a connection to browse catalogs, schemas, tables, and fields supplied by its provider.
+
+Connection actions can open objects, preview data, refresh metadata, or disconnect. Credentials and drivers remain the responsibility of the database client or provider; do not place secrets directly in project files.
+
+Close unused connections and use read-only credentials when exploration does not require writes. See [Connection Extensions](extensions.qmd) for provider integration.

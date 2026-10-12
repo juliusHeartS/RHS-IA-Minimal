@@ -1,0 +1,6 @@
+{
+	"category.notebook": "Cuaderno",
+	"command.positronNotebook.export.title": "Exportar...",
+	"description": "Exporta cuadernos de Jupyter a otros formatos de archivo.",
+	"displayName": "Exportación de cuadernos"
+}

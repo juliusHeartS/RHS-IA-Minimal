@@ -1,0 +1,851 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { Disposable, DisposableStore } from '../../../../base/common/lifecycle.js';
+import { ICodeEditor, IEditorMouseEvent, MouseTargetType } from '../../../../editor/browser/editorBrowser.js';
+import { IEditorContribution } from '../../../../editor/common/editorCommon.js';
+import { Selection } from '../../../../editor/common/core/selection.js';
+import { ITextModel } from '../../../../editor/common/model.js';
+import { IContextKeyService } from '../../../../platform/contextkey/common/contextkey.js';
+import { ILogService } from '../../../../platform/log/common/log.js';
+import { IQuartoDocumentModelService } from './quartoDocumentModelService.js';
+import { IQuartoExecutionManager } from '../common/quartoExecutionTypes.js';
+import { QuartoCodeCell, IQuartoDocumentModel, QuartoCellChangeEvent } from '../common/quartoTypes.js';
+import { QuartoCellToolbar } from './quartoCellToolbar.js';
+import { QuartoOutputContribution } from './quartoOutputManager.js';
+import { computeDeleteCellEdit, computeInsertCellEdit, computeJoinCellsEdit } from './quartoCellOperations.js';
+import { POSITRON_QUARTO_INLINE_OUTPUT_SHOW_CELL_TOOLBAR_KEY, QUARTO_INLINE_OUTPUT_ENABLED, QUARTO_INLINE_OUTPUT_SHOW_CELL_TOOLBAR_KEY, affectsQuartoConfig, isQuartoDocument, usingQuartoCellToolbar } from '../common/positronQuartoConfig.js';
+import { IHoverService } from '../../../../platform/hover/browser/hover.js';
+import { IKeybindingService } from '../../../../platform/keybinding/common/keybinding.js';
+import { IClipboardService } from '../../../../platform/clipboard/common/clipboardService.js';
+import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
+import { INotificationService, Severity } from '../../../../platform/notification/common/notification.js';
+import { CustomContextMenuEntry, showCustomContextMenu } from '../../../browser/positronComponents/customContextMenu/customContextMenu.js';
+import { CustomContextMenuItem } from '../../../browser/positronComponents/customContextMenu/customContextMenuItem.js';
+import { CustomContextMenuSeparator } from '../../../browser/positronComponents/customContextMenu/customContextMenuSeparator.js';
+import { localize } from '../../../../nls.js';
+
+/**
+ * Editor contribution that manages cell toolbars for Quarto documents.
+ * Creates and manages toolbar widgets for each code cell, providing
+ * Run Cell, Run Above, and Run Below actions.
+ */
+export class QuartoCellToolbarController extends Disposable implements IEditorContribution {
+	static readonly ID = 'editor.contrib.quartoCellToolbarController';
+
+	private readonly _toolbars = new Map<string, QuartoCellToolbar>();
+	private readonly _disposables = this._register(new DisposableStore());
+	private _quartoModel: IQuartoDocumentModel | undefined;
+	private _currentCellId: string | undefined;
+	private _mouseCellId: string | undefined;
+
+	constructor(
+		private readonly _editor: ICodeEditor,
+		@IQuartoDocumentModelService private readonly _documentModelService: IQuartoDocumentModelService,
+		@IQuartoExecutionManager private readonly _executionManager: IQuartoExecutionManager,
+		@IContextKeyService private readonly _contextKeyService: IContextKeyService,
+		@IHoverService private readonly _hoverService: IHoverService,
+		@IKeybindingService private readonly _keybindingService: IKeybindingService,
+		@IClipboardService private readonly _clipboardService: IClipboardService,
+		@IConfigurationService private readonly _configurationService: IConfigurationService,
+		@ILogService private readonly _logService: ILogService,
+		@INotificationService private readonly _notificationService: INotificationService,
+	) {
+		super();
+
+		// Listen for model changes
+		this._register(this._editor.onDidChangeModel(() => {
+			this._logService.debug('[QuartoCellToolbarController] Editor model changed');
+			this._onEditorModelChanged();
+		}));
+
+		// Listen for context key changes (feature enabled/disabled)
+		this._register(this._contextKeyService.onDidChangeContext(e => {
+			if (e.affectsSome(new Set([QUARTO_INLINE_OUTPUT_ENABLED.key]))) {
+				this._logService.debug('[QuartoCellToolbarController] Context key changed');
+				this._onEditorModelChanged();
+			}
+		}));
+
+		// Listen for the "show cell toolbar" setting being toggled so toolbars
+		// appear/disappear live without requiring a reload.
+		this._register(this._configurationService.onDidChangeConfiguration(e => {
+			if (affectsQuartoConfig(e, QUARTO_INLINE_OUTPUT_SHOW_CELL_TOOLBAR_KEY, POSITRON_QUARTO_INLINE_OUTPUT_SHOW_CELL_TOOLBAR_KEY)) {
+				this._logService.debug('[QuartoCellToolbarController] Show cell toolbar setting changed');
+				this._onEditorModelChanged();
+			}
+		}));
+
+		// Initial setup
+		this._onEditorModelChanged();
+	}
+
+	/**
+	 * Called when the editor model changes.
+	 * Sets up or tears down toolbars based on whether this is a Quarto document.
+	 */
+	private _onEditorModelChanged(): void {
+		this._logService.debug('[QuartoCellToolbarController] _onEditorModelChanged called');
+
+		// Clean up previous toolbars
+		this._disposables.clear();
+		this._clearToolbars();
+		this._quartoModel = undefined;
+		this._currentCellId = undefined;
+		this._mouseCellId = undefined;
+
+		const model = this._editor.getModel();
+		if (!model) {
+			this._logService.debug('[QuartoCellToolbarController] No model found');
+			return;
+		}
+
+		// Check if feature is enabled (context key checks both setting and extension installation)
+		const enabled = this._contextKeyService.getContextKeyValue<boolean>(QUARTO_INLINE_OUTPUT_ENABLED.key) ?? false;
+		if (!enabled) {
+			return;
+		}
+
+		// Respect the user setting controlling whether the cell toolbar is shown.
+		if (!usingQuartoCellToolbar(this._configurationService)) {
+			this._logService.debug('[QuartoCellToolbarController] Cell toolbar disabled by setting');
+			return;
+		}
+
+		// Check if this is a Quarto or RMarkdown document (by extension or language ID)
+		const uri = model.uri;
+		const languageId = model.getLanguageId();
+		this._logService.debug(`[QuartoCellToolbarController] File path: ${uri.path}, language: ${languageId}`);
+		if (!isQuartoDocument(uri.path, languageId)) {
+			this._logService.debug('[QuartoCellToolbarController] Not a Quarto/RMarkdown file, skipping');
+			return;
+		}
+
+		this._logService.debug('[QuartoCellToolbarController] Detected Quarto document, setting up toolbars');
+
+		// Get the Quarto document model
+		this._quartoModel = this._documentModelService.getModel(model);
+		this._logService.debug(`[QuartoCellToolbarController] Got Quarto model, cells: ${this._quartoModel.cells.length}`);
+
+		// Listen for execution state changes
+		this._disposables.add(this._executionManager.onDidChangeExecutionState((event) => {
+			const toolbar = this._toolbars.get(event.execution.cellId);
+			if (toolbar) {
+				toolbar.setExecutionState(event.execution.state, event.execution.executionId);
+			}
+		}));
+
+		// Listen for cell changes in the document model
+		this._disposables.add(this._quartoModel.onDidChangeCells((event) => {
+			this._logService.debug('[QuartoCellToolbarController] Cells changed, updating toolbars incrementally');
+			this._handleCellChanges(event);
+			// Re-evaluate cursor position after cells change
+			this._updateToolbarVisibilityForCursor();
+		}));
+
+		// Listen for document parse events to update toolbar positions
+		// This is needed because onDidChangeCells doesn't fire when cells move
+		// without content changes (e.g., inserting text between cells)
+		this._disposables.add(this._quartoModel.onDidParse(() => {
+			this._logService.debug('[QuartoCellToolbarController] Document parsed, updating toolbar positions');
+			this._updateToolbarPositions();
+		}));
+
+		// Listen for cursor position changes
+		this._disposables.add(this._editor.onDidChangeCursorPosition(() => {
+			this._updateToolbarVisibilityForCursor();
+		}));
+
+		// Listen for mouse movements to show toolbar when mouse is in a cell
+		this._disposables.add(this._editor.onMouseMove((e: IEditorMouseEvent) => {
+			this._updateToolbarVisibilityForMouse(e);
+		}));
+
+		// Listen for mouse leaving the editor
+		this._disposables.add(this._editor.onMouseLeave(() => {
+			// Clear mouse-hovered cell when mouse leaves the editor
+			this._setMouseCell(undefined);
+		}));
+
+		// Initial toolbar build
+		this._rebuildToolbars();
+
+		// Initial cursor position check
+		this._updateToolbarVisibilityForCursor();
+	}
+
+	/**
+	 * Rebuild all toolbars based on current document state.
+	 */
+	private _rebuildToolbars(): void {
+		this._logService.debug('[QuartoCellToolbarController] _rebuildToolbars called');
+
+		// Clear existing toolbars
+		this._clearToolbars();
+
+		const model = this._editor.getModel();
+		if (!model) {
+			this._logService.debug('[QuartoCellToolbarController] No model in _rebuildToolbars');
+			return;
+		}
+
+		// Get the Quarto document model
+		const quartoModel = this._documentModelService.getModel(model);
+		const cells = quartoModel.cells;
+
+		// Create a toolbar for each cell
+		for (let i = 0; i < cells.length; i++) {
+			const cell = cells[i];
+			this._logService.debug(`[QuartoCellToolbarController] Creating toolbar for cell ${i}: id=${cell.id}, line=${cell.startLine}`);
+			const toolbar = new QuartoCellToolbar(
+				this._editor,
+				cell,
+				i,
+				cells.length,
+				// Use toolbar.cell instead of captured cell to get the current cell after updates
+				() => this._runCell(toolbar.cell),
+				() => this._cancelCell(toolbar.cell),
+				() => this._stopCell(toolbar.cell),
+				() => this._runCellsAboveFromToolbar(toolbar),
+				() => this._runCellAndBelowFromToolbar(toolbar),
+				() => this._showMoreActions(toolbar),
+				this._hoverService,
+				this._keybindingService
+			);
+
+			// Set initial execution state
+			const state = this._executionManager.getExecutionState(cell.id);
+			toolbar.setExecutionState(state);
+
+			this._toolbars.set(cell.id, toolbar);
+			this._logService.debug(`[QuartoCellToolbarController] Toolbar created and added for cell ${cell.id}`);
+		}
+
+		this._logService.debug(`[QuartoCellToolbarController] Total toolbars created: ${this._toolbars.size}`);
+	}
+
+	/**
+	 * Handle incremental cell changes without destroying all toolbars.
+	 * This prevents flickering when typing in cells.
+	 */
+	private _handleCellChanges(event: QuartoCellChangeEvent): void {
+		const model = this._editor.getModel();
+		if (!model) {
+			return;
+		}
+
+		const quartoModel = this._documentModelService.getModel(model);
+		const cells = quartoModel.cells;
+		const totalCells = cells.length;
+
+		// Build index-based mappings for removed and added cells
+		// This helps us match unlabeled cells that appear as removed+added when content changes
+		const removedByIndex = new Map<number, string>();
+		for (const removedId of event.removed) {
+			const toolbar = this._toolbars.get(removedId);
+			if (toolbar) {
+				removedByIndex.set(toolbar.cell.index, removedId);
+			}
+		}
+
+		const addedByIndex = new Map<number, QuartoCodeCell>();
+		for (const addedCell of event.added) {
+			addedByIndex.set(addedCell.index, addedCell);
+		}
+
+		// Track which removed cells were matched with added cells at the same index
+		const matchedRemovedIds = new Set<string>();
+		const matchedAddedIds = new Set<string>();
+
+		// Match removed+added at same index (unlabeled cell content changes)
+		for (const [index, removedId] of removedByIndex) {
+			const addedCell = addedByIndex.get(index);
+			if (addedCell) {
+				const toolbar = this._toolbars.get(removedId);
+				if (toolbar) {
+					this._logService.debug(`[QuartoCellToolbarController] Reusing toolbar at index ${index}: ${removedId} -> ${addedCell.id}`);
+					// Update the toolbar with new cell data instead of disposing it
+					toolbar.updateCell(addedCell, addedCell.index, totalCells);
+					// Re-map the toolbar under the new cell ID
+					this._toolbars.delete(removedId);
+					this._toolbars.set(addedCell.id, toolbar);
+					matchedRemovedIds.add(removedId);
+					matchedAddedIds.add(addedCell.id);
+				}
+			}
+		}
+
+		// Handle truly removed cells - dispose their toolbars
+		for (const removedId of event.removed) {
+			if (matchedRemovedIds.has(removedId)) {
+				continue; // Already handled as a match with an added cell
+			}
+			const toolbar = this._toolbars.get(removedId);
+			if (toolbar) {
+				this._logService.debug(`[QuartoCellToolbarController] Disposing toolbar for removed cell ${removedId}`);
+				toolbar.dispose();
+				this._toolbars.delete(removedId);
+			}
+		}
+
+		// Handle modified cells - update existing toolbars with new cell data
+		// The modified map contains oldId -> newCell mapping
+		for (const [oldId, newCell] of event.modified) {
+			const toolbar = this._toolbars.get(oldId);
+			if (toolbar) {
+				this._logService.debug(`[QuartoCellToolbarController] Updating toolbar for modified cell ${oldId} -> ${newCell.id}`);
+				// Update the toolbar with new cell data
+				toolbar.updateCell(newCell, newCell.index, totalCells);
+				// Re-map the toolbar under the new cell ID
+				this._toolbars.delete(oldId);
+				this._toolbars.set(newCell.id, toolbar);
+			}
+		}
+
+		// Handle truly added cells - create new toolbars
+		for (const addedCell of event.added) {
+			if (matchedAddedIds.has(addedCell.id)) {
+				continue; // Already handled as a match with a removed cell
+			}
+			if (!this._toolbars.has(addedCell.id)) {
+				this._logService.debug(`[QuartoCellToolbarController] Creating toolbar for added cell ${addedCell.id}`);
+				const toolbar = new QuartoCellToolbar(
+					this._editor,
+					addedCell,
+					addedCell.index,
+					totalCells,
+					// Use toolbar.cell instead of captured cell to get the current cell after updates
+					() => this._runCell(toolbar.cell),
+					() => this._cancelCell(toolbar.cell),
+					() => this._stopCell(toolbar.cell),
+					() => this._runCellsAboveFromToolbar(toolbar),
+					() => this._runCellAndBelowFromToolbar(toolbar),
+					() => this._showMoreActions(toolbar),
+					this._hoverService,
+					this._keybindingService
+				);
+
+				// Set initial execution state
+				const state = this._executionManager.getExecutionState(addedCell.id);
+				toolbar.setExecutionState(state);
+
+				this._toolbars.set(addedCell.id, toolbar);
+			}
+		}
+
+		// Update cell references and positions for all existing toolbars
+		// This ensures both button visibility and position are correct after cells change
+		// (cells may have moved due to insertions/deletions above them)
+		for (const [id, toolbar] of this._toolbars) {
+			const cell = quartoModel.getCellById(id);
+			if (cell) {
+				toolbar.updateCell(cell, cell.index, totalCells);
+			}
+		}
+	}
+
+	/**
+	 * Clear all toolbars.
+	 */
+	private _clearToolbars(): void {
+		for (const toolbar of this._toolbars.values()) {
+			toolbar.dispose();
+		}
+		this._toolbars.clear();
+	}
+
+	/**
+	 * Update toolbar positions when cells move without content changes.
+	 * This is called from onDidParse to ensure toolbars stay in sync with cell positions.
+	 *
+	 * Cell IDs include the cell index, so when cells shift positions (e.g., a new
+	 * cell is inserted above), their IDs change even though content is identical.
+	 * This method reconciles the toolbar map by matching orphaned toolbars to their
+	 * new cell IDs via content hash, and disposes any truly orphaned toolbars.
+	 */
+	private _updateToolbarPositions(): void {
+		if (!this._quartoModel) {
+			return;
+		}
+
+		const cells = this._quartoModel.cells;
+		const totalCells = cells.length;
+
+		// Build a set of current cell IDs for quick lookup, and a map by
+		// content hash so we can match toolbars whose cell IDs changed
+		const currentCellIds = new Set<string>();
+		const cellsByHash = new Map<string, QuartoCodeCell>();
+		for (const cell of cells) {
+			currentCellIds.add(cell.id);
+			cellsByHash.set(cell.contentHash, cell);
+		}
+
+		// Collect re-mappings and orphans in a first pass, then apply them.
+		// We can't mutate the map while iterating it.
+		const remaps: { oldId: string; toolbar: QuartoCellToolbar; newCell: QuartoCodeCell }[] = [];
+		const orphans: string[] = [];
+
+		for (const [id, toolbar] of this._toolbars) {
+			if (currentCellIds.has(id)) {
+				// ID still valid, just refresh position
+				const cell = this._quartoModel.getCellById(id)!;
+				toolbar.updateCell(cell, cell.index, totalCells);
+			} else {
+				// ID no longer in model, try to match by content hash
+				const matched = cellsByHash.get(toolbar.cell.contentHash);
+				if (matched && !this._toolbars.has(matched.id)) {
+					remaps.push({ oldId: id, toolbar, newCell: matched });
+				} else {
+					orphans.push(id);
+				}
+			}
+		}
+
+		// Apply re-mappings
+		for (const { oldId, toolbar, newCell } of remaps) {
+			this._toolbars.delete(oldId);
+			toolbar.updateCell(newCell, newCell.index, totalCells);
+			this._toolbars.set(newCell.id, toolbar);
+		}
+
+		// Dispose orphaned toolbars
+		for (const id of orphans) {
+			const toolbar = this._toolbars.get(id);
+			if (toolbar) {
+				this._logService.debug(`[QuartoCellToolbarController] Disposing orphaned toolbar ${id}`);
+				toolbar.dispose();
+				this._toolbars.delete(id);
+			}
+		}
+	}
+
+	/**
+	 * Find the cell that contains the given line number.
+	 */
+	private _findCellAtLine(lineNumber: number): QuartoCodeCell | undefined {
+		if (!this._quartoModel) {
+			return undefined;
+		}
+		for (const cell of this._quartoModel.cells) {
+			if (lineNumber >= cell.startLine && lineNumber <= cell.endLine) {
+				return cell;
+			}
+		}
+		return undefined;
+	}
+
+	/**
+	 * Update toolbar visibility based on cursor position.
+	 */
+	private _updateToolbarVisibilityForCursor(): void {
+		const position = this._editor.getPosition();
+		if (!position) {
+			this._setCurrentCell(undefined);
+			return;
+		}
+
+		const cell = this._findCellAtLine(position.lineNumber);
+		this._setCurrentCell(cell?.id);
+	}
+
+	/**
+	 * Update toolbar visibility based on mouse position.
+	 */
+	private _updateToolbarVisibilityForMouse(e: IEditorMouseEvent): void {
+		// Only handle content area mouse events
+		if (e.target.type !== MouseTargetType.CONTENT_TEXT &&
+			e.target.type !== MouseTargetType.CONTENT_EMPTY) {
+			// Mouse is not over content, clear mouse cell
+			this._setMouseCell(undefined);
+			return;
+		}
+
+		const position = e.target.position;
+		if (!position) {
+			this._setMouseCell(undefined);
+			return;
+		}
+
+		const cell = this._findCellAtLine(position.lineNumber);
+		this._setMouseCell(cell?.id);
+	}
+
+	/**
+	 * Set the cell the mouse is currently over and update toolbar visibility.
+	 */
+	private _setMouseCell(cellId: string | undefined): void {
+		if (this._mouseCellId === cellId) {
+			return;
+		}
+
+		// Hide previous mouse-hovered cell's toolbar (unless it's the cursor cell)
+		if (this._mouseCellId && this._mouseCellId !== this._currentCellId) {
+			const previousToolbar = this._toolbars.get(this._mouseCellId);
+			if (previousToolbar) {
+				previousToolbar.setCursorInCell(false);
+			}
+		}
+
+		this._mouseCellId = cellId;
+
+		// Show new mouse-hovered cell's toolbar and hide all others
+		if (cellId) {
+			this._showToolbarExclusively(cellId);
+		}
+	}
+
+	/**
+	 * Set the current cell and update toolbar visibility.
+	 */
+	private _setCurrentCell(cellId: string | undefined): void {
+		if (this._currentCellId === cellId) {
+			return;
+		}
+
+		// Hide previous cell's toolbar. We always reset _isCursorInCell even
+		// when the mouse is over the toolbar; _updateVisualVisibility will
+		// keep it visible while hovered but hide it once the mouse leaves.
+		if (this._currentCellId && this._currentCellId !== this._mouseCellId) {
+			const previousToolbar = this._toolbars.get(this._currentCellId);
+			if (previousToolbar) {
+				previousToolbar.setCursorInCell(false);
+			}
+		}
+
+		this._currentCellId = cellId;
+
+		// Show new cell's toolbar and hide all others
+		if (cellId) {
+			this._showToolbarExclusively(cellId);
+		}
+	}
+
+	/**
+	 * Show the toolbar for the specified cell and hide all others.
+	 * This ensures only one toolbar is visible at a time.
+	 *
+	 * Note: We always call setCursorInCell(false) on non-target toolbars,
+	 * even when the mouse is over them. The toolbar's _updateVisualVisibility
+	 * will keep it visible while the mouse hovers, but once the mouse leaves,
+	 * it will properly hide since _isCursorInCell is false.
+	 */
+	private _showToolbarExclusively(cellId: string): void {
+		for (const [id, toolbar] of this._toolbars) {
+			if (id === cellId) {
+				toolbar.setCursorInCell(true);
+			} else {
+				toolbar.setCursorInCell(false);
+			}
+		}
+	}
+
+	/**
+	 * Execute a single cell.
+	 */
+	private async _runCell(cell: QuartoCodeCell): Promise<void> {
+		const model = this._editor.getModel();
+		if (!model) {
+			return;
+		}
+		await this._executionManager.executeCell(model.uri, cell);
+	}
+
+	/**
+	 * Cancels a cell's previously pending execution.
+	 * This is used when a cell is queued but hasn't started running yet.
+	 * It removes the cell from the execution queue without interrupting
+	 * any currently running cell.
+	 */
+	private async _cancelCell(cell: QuartoCodeCell): Promise<void> {
+		const model = this._editor.getModel();
+		if (!model) {
+			return;
+		}
+		await this._executionManager.cancelQueuedCell(model.uri, cell.id);
+	}
+
+	/**
+	 * Stop execution for a cell.
+	 */
+	private async _stopCell(cell: QuartoCodeCell): Promise<void> {
+		const model = this._editor.getModel();
+		if (!model) {
+			return;
+		}
+		await this._executionManager.cancelExecution(model.uri, cell.id);
+	}
+
+	/**
+	 * Execute all cells above the toolbar's current cell.
+	 * Gets fresh cell list from document model to handle cell changes.
+	 */
+	private async _runCellsAboveFromToolbar(toolbar: QuartoCellToolbar): Promise<void> {
+		const model = this._editor.getModel();
+		if (!model) {
+			return;
+		}
+		const quartoModel = this._documentModelService.getModel(model);
+		const cells = quartoModel.cells;
+		const currentIndex = toolbar.cell.index;
+		const cellsToRun = cells.slice(0, currentIndex);
+		await this._executionManager.executeCells(model.uri, [...cellsToRun]);
+	}
+
+	/**
+	 * Execute the toolbar's current cell and all cells below it.
+	 * Gets fresh cell list from document model to handle cell changes.
+	 */
+	private async _runCellAndBelowFromToolbar(toolbar: QuartoCellToolbar): Promise<void> {
+		const model = this._editor.getModel();
+		if (!model) {
+			return;
+		}
+		const quartoModel = this._documentModelService.getModel(model);
+		const cells = quartoModel.cells;
+		const currentIndex = toolbar.cell.index;
+		const cellsToRun = cells.slice(currentIndex);
+		await this._executionManager.executeCells(model.uri, [...cellsToRun]);
+	}
+
+	/**
+	 * Build and show the "more cell actions" context menu, anchored to the
+	 * toolbar's more button. The cell list is read fresh from the document
+	 * model so indices and enablement reflect the current state.
+	 */
+	private _showMoreActions(toolbar: QuartoCellToolbar): void {
+		const resolved = this._resolveCellContext(toolbar.cell);
+		if (!resolved) {
+			return;
+		}
+		const { quartoModel, fresh: cell } = resolved;
+		const cells = quartoModel.cells;
+		const isFirst = cell.index === 0;
+		const isLast = cell.index === cells.length - 1;
+		const hasOutput = this._getOutputContribution()?.hasCopiableOutputForCellAtLine(cell.codeStartLine) ?? false;
+
+		// The `icon` values are codicon names (without the `codicon-` prefix);
+		// the custom context menu renders them as a leading icon.
+		const entries: CustomContextMenuEntry[] = [
+			new CustomContextMenuItem({
+				label: localize('quarto.cell.cut', "Cut Cell"),
+				onSelected: () => this._cutCell(cell),
+			}),
+			new CustomContextMenuItem({
+				icon: 'copy',
+				label: localize('quarto.cell.copyCode', "Copy Cell Code"),
+				onSelected: () => this._copyCellCode(cell),
+			}),
+			new CustomContextMenuItem({
+				icon: 'output',
+				label: localize('quarto.cell.copyOutput', "Copy Cell Output"),
+				disabled: !hasOutput,
+				onSelected: () => this._copyCellOutput(cell),
+			}),
+			new CustomContextMenuItem({
+				icon: 'trash',
+				label: localize('quarto.cell.delete', "Delete Cell"),
+				onSelected: () => this._deleteCell(cell),
+			}),
+			new CustomContextMenuSeparator(),
+			new CustomContextMenuItem({
+				icon: 'merge',
+				label: localize('quarto.cell.joinAbove', "Join with Cell Above"),
+				disabled: isFirst,
+				onSelected: () => this._joinWithAbove(cell),
+			}),
+			new CustomContextMenuItem({
+				label: localize('quarto.cell.joinBelow', "Join with Cell Below"),
+				disabled: isLast,
+				onSelected: () => this._joinWithBelow(cell),
+			}),
+			new CustomContextMenuSeparator(),
+			new CustomContextMenuItem({
+				icon: 'arrow-up',
+				label: localize('quarto.cell.insertAbove', "Insert Cell Above"),
+				onSelected: () => this._insertCellAbove(cell),
+			}),
+			new CustomContextMenuItem({
+				icon: 'arrow-down',
+				label: localize('quarto.cell.insertBelow', "Insert Cell Below"),
+				onSelected: () => this._insertCellBelow(cell),
+			}),
+		];
+
+		// Keep the toolbar pinned while the menu is open; otherwise moving the
+		// mouse onto the menu fires mouseleave and hides a hover-revealed toolbar.
+		toolbar.setMenuOpen(true);
+		showCustomContextMenu({
+			anchorElement: toolbar.moreButton,
+			popupPosition: 'auto',
+			popupAlignment: 'auto',
+			width: 'auto',
+			entries,
+			onClose: () => toolbar.setMenuOpen(false),
+		});
+	}
+
+	/**
+	 * Get the output contribution for the active editor, used for output-related
+	 * cell actions (copy output, output presence checks).
+	 */
+	private _getOutputContribution(): QuartoOutputContribution | null {
+		return this._editor.getContribution<QuartoOutputContribution>(QuartoOutputContribution.ID);
+	}
+
+	/**
+	 * Resolve the active editor model, its Quarto document model, and the
+	 * freshest version of a cell (by ID, falling back to the passed-in cell).
+	 * Returns undefined when the editor has no model, letting callers bail with
+	 * a single guard instead of repeating the model/null-check boilerplate.
+	 */
+	private _resolveCellContext(cell: QuartoCodeCell): { model: ITextModel; quartoModel: IQuartoDocumentModel; fresh: QuartoCodeCell } | undefined {
+		const model = this._editor.getModel();
+		if (!model) {
+			return undefined;
+		}
+		const quartoModel = this._documentModelService.getModel(model);
+		return { model, quartoModel, fresh: quartoModel.getCellById(cell.id) ?? cell };
+	}
+
+	/**
+	 * Copy the code of a cell (without its fences) to the clipboard.
+	 */
+	private _copyCellCode(cell: QuartoCodeCell): void {
+		const resolved = this._resolveCellContext(cell);
+		if (!resolved) {
+			return;
+		}
+		this._clipboardService.writeText(resolved.quartoModel.getCellCode(resolved.fresh));
+	}
+
+	/**
+	 * Copy a cell's output to the clipboard, reusing the output contribution.
+	 */
+	private _copyCellOutput(cell: QuartoCodeCell): void {
+		const resolved = this._resolveCellContext(cell);
+		if (!resolved) {
+			return;
+		}
+		this._getOutputContribution()?.copyOutputForCellAtLine(resolved.fresh.codeStartLine);
+	}
+
+	/**
+	 * Cut a cell: copy the entire cell (including its fences) to the clipboard,
+	 * then delete the cell. This mirrors Delete, which also removes the fences,
+	 * so what lands on the clipboard matches what was removed.
+	 */
+	private async _cutCell(cell: QuartoCodeCell): Promise<void> {
+		const resolved = this._resolveCellContext(cell);
+		if (!resolved) {
+			return;
+		}
+		const { model, fresh } = resolved;
+
+		const lines: string[] = [];
+		for (let i = fresh.startLine; i <= fresh.endLine; i++) {
+			lines.push(model.getLineContent(i));
+		}
+
+		// Only delete the cell once the copy to the clipboard succeeds.
+		// Deleting after a failed write would discard the cell's content
+		// with no way to paste it back, causing unrecoverable data loss.
+		try {
+			await this._clipboardService.writeText(lines.join('\n'));
+		} catch (error) {
+			this._logService.error('[QuartoCellToolbarController] Failed to copy cell to clipboard during cut; cell not deleted', error);
+			this._notificationService.notify({
+				severity: Severity.Error,
+				message: localize('quarto.cell.cutFailed', "Failed to cut the cell because its contents could not be copied to the clipboard. The cell was not deleted."),
+			});
+			return;
+		}
+
+		this._deleteCell(fresh);
+	}
+
+	/**
+	 * Delete a cell (its fences and code) from the document.
+	 */
+	private _deleteCell(cell: QuartoCodeCell): void {
+		const resolved = this._resolveCellContext(cell);
+		if (!resolved) {
+			return;
+		}
+		this._editor.executeEdits('quartoCellToolbar', computeDeleteCellEdit(resolved.model, resolved.fresh));
+	}
+
+	/**
+	 * Join a cell with the cell above it, merging both into a single chunk.
+	 */
+	private _joinWithAbove(cell: QuartoCodeCell): void {
+		const resolved = this._resolveCellContext(cell);
+		if (!resolved) {
+			return;
+		}
+		const { model, quartoModel, fresh } = resolved;
+		const previous = quartoModel.getCellByIndex(fresh.index - 1);
+		if (!previous) {
+			return;
+		}
+		this._editor.executeEdits('quartoCellToolbar', computeJoinCellsEdit(model, previous, fresh));
+	}
+
+	/**
+	 * Join a cell with the cell below it, merging both into a single chunk.
+	 */
+	private _joinWithBelow(cell: QuartoCodeCell): void {
+		const resolved = this._resolveCellContext(cell);
+		if (!resolved) {
+			return;
+		}
+		const { model, quartoModel, fresh } = resolved;
+		const next = quartoModel.getCellByIndex(fresh.index + 1);
+		if (!next) {
+			return;
+		}
+		this._editor.executeEdits('quartoCellToolbar', computeJoinCellsEdit(model, fresh, next));
+	}
+
+	/**
+	 * Insert a new, empty code cell directly above the given cell.
+	 */
+	private _insertCellAbove(cell: QuartoCodeCell): void {
+		const resolved = this._resolveCellContext(cell);
+		if (!resolved) {
+			return;
+		}
+		// Insert just before the cell's opening fence.
+		this._insertNewCell(resolved.model, resolved.fresh.language, resolved.fresh.startLine);
+	}
+
+	/**
+	 * Insert a new, empty code cell directly below the given cell.
+	 */
+	private _insertCellBelow(cell: QuartoCodeCell): void {
+		const resolved = this._resolveCellContext(cell);
+		if (!resolved) {
+			return;
+		}
+		// Insert just after the cell's closing fence.
+		this._insertNewCell(resolved.model, resolved.fresh.language, resolved.fresh.endLine + 1);
+	}
+
+	/**
+	 * Insert a new, empty code cell at the start of the given line (1-based),
+	 * placing the cursor on the new cell's empty code line. The edit math lives
+	 * in `computeInsertCellEdit` so it can be unit-tested without an editor.
+	 */
+	private _insertNewCell(model: ITextModel, language: string, insertLine: number): void {
+		const { edits, cursorLine } = computeInsertCellEdit(model, language, insertLine);
+		this._editor.executeEdits('quartoCellToolbar', edits);
+		this._editor.setSelection(new Selection(cursorLine, 1, cursorLine, 1));
+		this._editor.focus();
+	}
+
+	override dispose(): void {
+		this._clearToolbars();
+		super.dispose();
+	}
+}

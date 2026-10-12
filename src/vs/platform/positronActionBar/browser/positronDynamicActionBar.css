@@ -1,0 +1,54 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.exemplar {
+	top: -10000px;
+	left: -10000px;
+	font-size: 12px;
+	position: absolute;
+}
+
+.positron-dynamic-action-bar {
+	width: 100%;
+	display: grid;
+	align-items: center;
+	box-sizing: border-box;
+	grid-template-rows: 1fr;
+	height: var(--vscode-positronActionBar-height);
+}
+
+.positron-dynamic-action-bar .container {
+	width: 100%;
+	display: flex;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+}
+
+/*
+ * The empty '1fr' gap between the left and right action groups. It stretches to
+ * the full height (overriding the grid's align-items: center, which would
+ * otherwise collapse this content-less element) so it can be a right-click
+ * target. It remains transparent and adds no visible space.
+ */
+.positron-dynamic-action-bar .action-bar-gap {
+	align-self: stretch;
+}
+
+.positron-dynamic-action-bar:not(.transparent-background) {
+	background-color: var(--vscode-positronActionBar-background);
+}
+
+.positron-dynamic-action-bar.transparent-background {
+	background-color: transparent;
+}
+
+.positron-dynamic-action-bar.border-top {
+	border-top: 1px solid var(--vscode-positronActionBar-border);
+}
+
+.positron-dynamic-action-bar.border-bottom {
+	border-bottom: 1px solid var(--vscode-positronActionBar-border);
+}

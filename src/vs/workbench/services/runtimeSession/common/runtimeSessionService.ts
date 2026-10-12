@@ -1,0 +1,1068 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { CancellationToken } from '../../../../base/common/cancellation.js';
+import { Event } from '../../../../base/common/event.js';
+import { URI } from '../../../../base/common/uri.js';
+import { createDecorator } from '../../../../platform/instantiation/common/instantiation.js';
+import { UiClientInstance, IRuntimeClientEvent } from '../../languageRuntime/common/languageRuntimeUiClient.js';
+import { ILanguageRuntimeMetadata, LanguageRuntimeSessionMode, ILanguageRuntimeSessionState, RuntimeState, ILanguageRuntimeInfo, ILanguageRuntimeStartupFailure, ILanguageRuntimeExit, ILanguageRuntimeClientCreatedEvent, ILanguageRuntimeMessageOutput, ILanguageRuntimeMessageStream, ILanguageRuntimeMessageInput, ILanguageRuntimeMessageError, ILanguageRuntimeMessagePrompt, ILanguageRuntimeMessageState, RuntimeCodeExecutionMode, RuntimeErrorBehavior, RuntimeCodeFragmentStatus, RuntimeExitReason, ILanguageRuntimeMessageResult, ILanguageRuntimeMessageClearOutput, ILanguageRuntimeMessageIPyWidget, ILanguageRuntimeMessageUpdateOutput, ILanguageRuntimeResourceUsage, ILanguageRuntimeLaunchInfo } from '../../languageRuntime/common/languageRuntimeService.js';
+import { RuntimeClientType, IRuntimeClientInstance } from '../../languageRuntime/common/languageRuntimeClientInstance.js';
+import { IDisposable } from '../../../../base/common/lifecycle.js';
+import { ActiveRuntimeSession } from './activeRuntimeSession.js';
+import { IConsoleCodeAttribution } from '../../positronConsole/common/positronConsoleCodeExecution.js';
+import { ICodeLocation } from '../../positronConsole/common/codeLocation.js';
+
+export const IRuntimeSessionService =
+	createDecorator<IRuntimeSessionService>('runtimeSessionService');
+
+export interface ILanguageRuntimeGlobalEvent {
+	/** The ID of the session from which the event originated */
+	session_id: string;
+
+	/** The event itself */
+	event: IRuntimeClientEvent;
+}
+
+/**
+ * The mode in which a runtime session is starting.
+ */
+export enum RuntimeStartMode {
+	/** A new runtime is starting. */
+	Starting = 'starting',
+
+	/** An existing runtime is restarting. */
+	Restarting = 'restarting',
+
+	/** An existing runtime is reconnecting. */
+	Reconnecting = 'reconnecting',
+
+	/** The previous runtime is being switched to a new runtime. */
+	Switching = 'switching',
+}
+
+/**
+ * The output channels provided by a language runtime.
+ * Copy for core Positron code.
+ */
+export enum LanguageRuntimeSessionChannel {
+	Console = 'console',
+	Kernel = 'kernel',
+	LSP = 'lsp',
+}
+
+/**
+ * Event that fires when a runtime session is about to start.
+ */
+export interface IRuntimeSessionWillStartEvent {
+	/** The mode in which the session is starting. */
+	startMode: RuntimeStartMode;
+
+	/** Whether the runtime should be activated when it starts */
+	activate: boolean;
+
+	/** Whether the runtime has a console */
+	hasConsole: boolean;
+
+	/** The session about to start */
+	session: ILanguageRuntimeSession;
+}
+
+export interface ILanguageRuntimeSessionStateEvent {
+	/** The ID of the session that changed states */
+	session_id: string;
+
+	/** The runtime's previous state */
+	old_state: RuntimeState;
+
+	/** The runtime's new state */
+	new_state: RuntimeState;
+}
+
+export interface IStartNewRuntimeSessionOptions {
+	/**
+	 * True when the user explicitly selected this runtime. Passed in a trailing
+	 * options object rather than as another positional boolean so it cannot be
+	 * transposed with `activate` at a call site.
+	 */
+	readonly userSelected?: boolean;
+}
+
+export interface IRuntimeSessionMetadata {
+	/** The unique identifier of the session */
+	readonly sessionId: string;
+
+	/** The session's mode  */
+	readonly sessionMode: LanguageRuntimeSessionMode;
+
+	/** The notebook associated with the session, if any */
+	readonly notebookUri: URI | undefined;
+
+	/** The starting working directory of the session, if any */
+	readonly workingDirectory?: string;
+
+	/**
+	 * A timestamp (in milliseconds since the Epoch) representing the time at
+	 * which the runtime session was created.
+	 */
+	readonly createdTimestamp: number;
+
+	/**
+	 * The reason the session was started; non-localized and only used for
+	 * debugging.
+	 */
+	readonly startReason: string;
+
+	/**
+	 * True when the session is being created because the user explicitly
+	 * selected this runtime. Absent or false for automatic, restored,
+	 * duplicated, and programmatic starts.
+	 *
+	 * Only the direct console start paths set this today. Notebook kernel
+	 * selection goes through `selectRuntime`, which cannot yet tell a user's
+	 * pick apart from the automatic starts that share the same entry point, so
+	 * notebook sessions leave this unset even when the user picked the kernel.
+	 */
+	readonly userSelected?: boolean;
+}
+
+/**
+ * Statistics about code execution in a session, surfaced for diagnostics.
+ */
+export interface IRuntimeExecutionStatistics {
+	/** The number of executions that have been submitted to the runtime. */
+	readonly executionCount: number;
+
+	/**
+	 * The average latency, in milliseconds, between submitting an execution and
+	 * receiving the corresponding input echo back from the runtime on iopub.
+	 * `undefined` if no latency samples have been collected yet.
+	 */
+	readonly averageInputLatencyMs: number | undefined;
+}
+
+/**
+ * The main interface for interacting with a language runtime session.
+ */
+
+export interface ILanguageRuntimeSession extends IDisposable {
+	/** The language runtime's static metadata */
+	readonly runtimeMetadata: ILanguageRuntimeMetadata;
+
+	/** Information about the runtime that is only available after starting. */
+	readonly runtimeInfo: ILanguageRuntimeInfo | undefined;
+
+	/** The session's static metadata */
+	readonly metadata: IRuntimeSessionMetadata;
+
+	/** The unique identifier of the session */
+	readonly sessionId: string;
+
+	/** The language runtime's dynamic metadata */
+	dynState: ILanguageRuntimeSessionState;
+
+	/** An object that emits events when the runtime state changes */
+	onDidChangeRuntimeState: Event<RuntimeState>;
+
+	/** An object that emits an event when the runtime completes startup */
+	onDidCompleteStartup: Event<ILanguageRuntimeInfo>;
+
+	/** An object that emits an event when runtime startup fails */
+	onDidEncounterStartupFailure: Event<ILanguageRuntimeStartupFailure>;
+
+	/** An object that emits an event when the runtime exits */
+	onDidEndSession: Event<ILanguageRuntimeExit>;
+
+	/**
+	 * An object that emits an event when a client instance (comm) is created
+	 * from the runtime side. Note that this only fires when an instance is
+	 * created from the runtime side; it does not fire when
+	 * `createClient` is called from the front end.
+	 */
+	onDidCreateClientInstance: Event<ILanguageRuntimeClientCreatedEvent>;
+
+	onDidReceiveRuntimeMessageClearOutput: Event<ILanguageRuntimeMessageClearOutput>;
+	onDidReceiveRuntimeMessageOutput: Event<ILanguageRuntimeMessageOutput>;
+	onDidReceiveRuntimeMessageResult: Event<ILanguageRuntimeMessageResult>;
+	onDidReceiveRuntimeMessageStream: Event<ILanguageRuntimeMessageStream>;
+	onDidReceiveRuntimeMessageInput: Event<ILanguageRuntimeMessageInput>;
+	onDidReceiveRuntimeMessageError: Event<ILanguageRuntimeMessageError>;
+	onDidReceiveRuntimeMessagePrompt: Event<ILanguageRuntimeMessagePrompt>;
+	onDidReceiveRuntimeMessageState: Event<ILanguageRuntimeMessageState>;
+	onDidReceiveRuntimeMessageUpdateOutput: Event<ILanguageRuntimeMessageUpdateOutput>;
+	onDidReceiveRuntimeClientEvent: Event<IRuntimeClientEvent>;
+	onDidReceiveRuntimeMessagePromptConfig: Event<void>;
+	onDidReceiveRuntimeMessageIPyWidget: Event<ILanguageRuntimeMessageIPyWidget>;
+
+	/** An event that fires when the runtime's resource usage is updated */
+	onDidUpdateResourceUsage: Event<ILanguageRuntimeResourceUsage>;
+
+	/** The current state of the runtime (tracks events above) */
+	getRuntimeState(): RuntimeState;
+
+	/** Timestamp of when the runtime was last used */
+	get lastUsed(): number;
+
+	/**
+	 * The (cached) current set of client instances that are known to Positron.
+	 * Note that this list may not reflect the full set of clients that are
+	 * known to the the backend; to request the full set of clients from the
+	 * backend, use `listClients`.
+	 */
+	clientInstances: IRuntimeClientInstance<unknown, unknown>[];
+
+	/**
+	 * Opens a resource in the runtime.
+	 * @param resource The resource to open.
+	 * @returns true if the resource was opened; otherwise, false.
+	 */
+	openResource(resource: URI | string): Thenable<boolean>;
+
+	/**
+	 * Execute code in the runtime.
+	 *
+	 * The returned promise signals ACCEPTANCE of the code for execution, not
+	 * completion of the execution. When `mode` is
+	 * `RuntimeCodeExecutionMode.Unprocessed`, the promise rejects if the code
+	 * is found to be incomplete (error `name` is
+	 * `RUNTIME_CODE_INCOMPLETE_ERROR`) or the submission was cancelled (error
+	 * `name` is `RUNTIME_EXECUTION_CANCELLED_ERROR`).
+	 */
+	execute(
+		code: string,
+		id: string,
+		mode: RuntimeCodeExecutionMode,
+		errorBehavior: RuntimeErrorBehavior,
+		attribution?: IConsoleCodeAttribution,
+		executionMetadata?: Record<string, unknown>,
+	): Promise<void>;
+
+	/**
+	 * Returns the source code location that was attributed to a recent
+	 * execution, if one was provided via the execution's attribution. This lets
+	 * consumers link an output (e.g. a plot) back to the source code that
+	 * produced it, keyed by the execution id (the id passed to {@link execute}).
+	 *
+	 * Only a bounded number of recent executions are retained, and only those
+	 * that carried a code location; other executions return `undefined`.
+	 *
+	 * @param executionId The execution id to look up.
+	 * @returns The associated code location, or `undefined` if unknown.
+	 */
+	getExecutionCodeLocation?(executionId: string): ICodeLocation | undefined;
+
+	/**
+	 * Returns statistics about code execution in this session (execution count
+	 * and average input-echo latency), for diagnostics. Optional; not all
+	 * session implementations track these.
+	 */
+	getExecutionStatistics?(): IRuntimeExecutionStatistics;
+
+	/**
+	 * Calls a runtime-specific method and returns the result.
+	 * Implementations may expose only a subset of methods.
+	 */
+	callMethod?(method: string, ...args: unknown[]): Thenable<unknown>;
+
+	/** Test a code fragment for completeness */
+	isCodeFragmentComplete(code: string): Thenable<RuntimeCodeFragmentStatus>;
+
+	/**
+	 * Create a new instance of a client; return null if the client type
+	 * is not supported by this runtime.
+	 *
+	 * @param type The type of client to create
+	 * @param params The parameters to pass to the client constructor
+	 * @param metadata The metadata to pass to the client constructor
+	 * @param id The unique identifier for the client instance. Defaults to a randomly generated ID.
+	 */
+	createClient<T, U>(type: RuntimeClientType, params: unknown, metadata?: unknown, id?: string): Thenable<IRuntimeClientInstance<T, U>>;
+
+	/** Get a list of all known clients */
+	listClients(type?: RuntimeClientType): Thenable<Array<IRuntimeClientInstance<unknown, unknown>>>;
+
+	/** Reply to an input prompt that the runtime issued
+	 * (via a LanguageRuntimePrompt message)
+	 */
+	replyToPrompt(id: string, value: string): void;
+
+	/**
+	 * Set the runtime's working directory.
+	 */
+	setWorkingDirectory(directory: string): Thenable<void>;
+
+	start(): Thenable<ILanguageRuntimeInfo>;
+
+	/** Interrupt the runtime */
+	interrupt(): void;
+
+	/** Restart the runtime */
+	restart(workingDirectory?: string): Thenable<void>;
+
+	/** Shut down the runtime */
+	shutdown(exitReason?: RuntimeExitReason): Thenable<void>;
+
+	/** Force quit the runtime */
+	forceQuit(): Thenable<void>;
+
+	/**
+	 * Returns the kernel launch parameters used to start this session,
+	 * if available. This includes the command line, environment variables,
+	 * and other kernel spec fields.
+	 */
+	getLaunchInfo?(): Thenable<ILanguageRuntimeLaunchInfo | undefined>;
+
+	/** Show output log of the runtime */
+	showOutput(channel?: LanguageRuntimeSessionChannel): void;
+
+	/** Retrieve list of output channels provided by this Language Runtime */
+	listOutputChannels(): Thenable<LanguageRuntimeSessionChannel[]>;
+
+	/** Show profiler log of the runtime, if supported */
+	showProfile(): Thenable<void>;
+
+	/** Updates the session's name */
+	updateSessionName(sessionName: string): void;
+
+	/**
+	 * Get the package manager for this session, if available.
+	 *
+	 * Returns undefined if the runtime does not support package management.
+	 */
+	getPackageManager?(): ILanguageRuntimePackageManager;
+
+	/**
+	 * Statically analyze code (or a file) and return packages that are
+	 * referenced but NOT installed AND that can be installed in this session's
+	 * environment. Returns undefined if the runtime does not support this.
+	 *
+	 * @param target The code or file to analyze.
+	 * @param token Optional cancellation token.
+	 */
+	listMissingPackages?(target: IRuntimeMissingPackagesTarget, token?: CancellationToken): Promise<IRuntimeMissingPackage[]>;
+
+	/**
+	 * Given a console error from this session, return a code snippet that
+	 * references the missing package (for the frontend to analyze via
+	 * `listMissingPackages`), or undefined when the error is not a recognized
+	 * missing-package error. Returns undefined if the runtime does not support
+	 * this.
+	 *
+	 * @param error The console error to inspect.
+	 * @param token Optional cancellation token.
+	 */
+	getMissingPackageProbe?(error: IRuntimeConsoleError, token?: CancellationToken): Promise<string | undefined>;
+}
+
+export interface INotebookRuntimeSessionMetadata extends IRuntimeSessionMetadata {
+	notebookUri: URI;
+}
+
+export interface INotebookLanguageRuntimeSession extends ILanguageRuntimeSession {
+	metadata: INotebookRuntimeSessionMetadata;
+}
+
+/**
+ * A lightweight object containing display-relevant properties from a session.
+ */
+export interface IRuntimeSessionDisplayInfo {
+	readonly sessionName: string;
+	readonly sessionMode: LanguageRuntimeSessionMode;
+	readonly notebookUri?: URI;
+	readonly runtimeId: string;
+	readonly runtimeName: string;
+	readonly languageName: string;
+	readonly languageId: string;
+	readonly base64EncodedIconSvg: string | undefined;
+	readonly sessionState: RuntimeState;
+}
+
+export interface ILanguageRuntimePackage {
+	id: string;
+	name: string;
+	displayName: string;
+	version: string;
+
+	/** License information */
+	license?: string;
+
+	/** Latest available version from repository */
+	latestVersion?: string;
+
+	/** Publication/release date */
+	publishedDate?: string;
+
+	/**
+	 * Whether the package is currently attached to the runtime's search path.
+	 * In R, this is `paste0("package:", name) %in% search()` - distinct from
+	 * "loaded" (loadedNamespaces()), which is a strict superset that includes
+	 * transitively loaded dependencies.
+	 */
+	attached?: boolean;
+
+	/**
+	 * Whether the installed version is strictly older than the latest
+	 * available version. Computed by the language runtime using native
+	 * version semantics (R's `numeric_version`, Python's PEP 440) so the
+	 * frontend never re-implements version comparison.
+	 */
+	outdated?: boolean;
+
+	/** Optional short description or summary. */
+	description?: string;
+
+	/**
+	 * The package's primary external URL (its homepage, falling back to its
+	 * repository, etc.). Chosen by the language runtime from whatever metadata
+	 * it has. The Packages pane validates it (http/https only) and surfaces it
+	 * via the row's external-link button.
+	 */
+	url?: string;
+
+	/** One-line title/summary, richer than `description`. From the detail RPC. */
+	title?: string;
+
+	/** Display-ready author/maintainer string (already normalized by the runtime). */
+	author?: string;
+
+	/** Source repository label or URL (e.g. "CRAN", or a Project-URL). */
+	sourceRepository?: string;
+
+	/**
+	 * Known security advisories affecting the *installed* version, from the
+	 * Posit Package Manager instance the environment installs from. Three
+	 * states: `undefined` means no vulnerability data is available (no PPM
+	 * resolved, or the package/version isn't in the repository); an empty array
+	 * means the repository knows the version and reports no advisories; a
+	 * non-empty array lists the advisories, already deduplicated across aliased
+	 * records (PYSEC/GHSA/CVE).
+	 *
+	 * Populated by Positron's own vulnerability lookup, not by the language
+	 * runtime -- runtimes only report which repository they install from.
+	 */
+	vulnerabilities?: IPackageVulnerability[];
+}
+
+/**
+ * A Package Manager API request, performed on the host the runtime runs on.
+ * Deliberately minimal: the workbench composes the URL and body, the runtime's
+ * host only carries it.
+ */
+export interface IPackageRepositoryRequest {
+	readonly url: string;
+	readonly method?: 'GET' | 'POST';
+	readonly headers?: Record<string, string>;
+	readonly body?: string;
+	/** Abort the request after this many milliseconds. */
+	readonly timeoutMs?: number;
+}
+
+/** The response to an {@link IPackageRepositoryRequest}. */
+export interface IPackageRepositoryResponse {
+	readonly status: number;
+	readonly body: string;
+}
+
+/**
+ * A single security advisory affecting an installed package version.
+ * Normalized from the OSV-format records served by Posit Package Manager.
+ */
+export interface IPackageVulnerability {
+	/** Preferred display id: the CVE when one exists, otherwise the OSV id. */
+	readonly id: string;
+
+	/** OSV record id (PYSEC-*, GHSA-*, RSEC-*) the advisory came from. */
+	readonly osvId: string;
+
+	/**
+	 * CVSS base score (0-10). Absent when no aliased record carries a score,
+	 * which is the common case for CRAN's RSEC advisories -- "vulnerable,
+	 * score unknown" is a first-class state, not an error.
+	 */
+	readonly score?: number;
+
+	/** Which CVSS revision `score` came from, so the UI can label it. */
+	readonly scoreVersion?: 'v3' | 'v4';
+
+	/** One-line advisory summary. */
+	readonly summary?: string;
+
+	/**
+	 * Display-ready fixed version(s), e.g. "1.26.5" or "1.26.5, 2.0.2" when the
+	 * advisory has fixes on multiple release branches. Not machine-comparable;
+	 * version semantics stay with the language runtimes.
+	 */
+	readonly fixedIn?: string;
+
+	/** ISO 8601 publication date of the advisory. */
+	readonly published?: string;
+
+	/** Advisory URL (NVD page for CVEs, osv.dev page otherwise). */
+	readonly url?: string;
+}
+
+/**
+ * Represents a package to install or update, with an optional version.
+ */
+export interface IPackageSpec {
+	/** The package name */
+	name: string;
+	/** Optional version to install (if not specified, installs latest) */
+	version?: string;
+}
+
+/**
+ * Describes a package that is referenced by code but not installed in a
+ * session's environment, and that the session knows how to install.
+ */
+export interface IRuntimeMissingPackage {
+	/** Name to pass to installPackages (the installable/repository name). */
+	readonly name: string;
+
+	/**
+	 * The symbol as referenced in code, when it differs from `name` (e.g.
+	 * python import `cv2` -> install `opencv-python`). Used for display only.
+	 */
+	readonly referencedName?: string;
+}
+
+/**
+ * Describes the code to analyze for missing packages. Callers supply either
+ * raw code or the URI of a saved file (not both).
+ */
+export interface IRuntimeMissingPackagesTarget {
+	/** Raw code to analyze (notebook cells, quarto chunks, unsaved buffers). */
+	readonly code?: string;
+
+	/** URI of a saved file to analyze. The runtime may read/parse it directly. */
+	readonly uri?: string;
+}
+
+/**
+ * A runtime error surfaced in the console, passed to `getMissingPackageProbe`.
+ */
+export interface IRuntimeConsoleError {
+	/** The error name, e.g. "ModuleNotFoundError". May be empty. */
+	readonly name: string;
+	/** The error message, e.g. "No module named 'foo'". */
+	readonly message: string;
+	/** The error traceback, one entry per line. */
+	readonly traceback: string[];
+}
+
+/**
+ * Interface for package management functionality.
+ *
+ * Provides package management operations for a language runtime session.
+ */
+export interface ILanguageRuntimePackageManager {
+	/**
+	 * Get list of installed packages.
+	 * @param token Optional cancellation token
+	 */
+	getPackages(token?: CancellationToken): Promise<ILanguageRuntimePackage[]>;
+
+	/**
+	 * Install the list of packages.
+	 * @param packages Array of package install requests with name and optional version
+	 * @param token Optional cancellation token
+	 */
+	installPackages(packages: IPackageSpec[], token?: CancellationToken): Promise<void>;
+
+	/**
+	 * Uninstall the list of packages.
+	 * @param packageNames Array of package names to uninstall
+	 * @param token Optional cancellation token
+	 */
+	uninstallPackages(packageNames: string[], token?: CancellationToken): Promise<void>;
+
+	/**
+	 * Update the list of packages.
+	 * @param packages Array of package install requests with name and optional version
+	 * @param token Optional cancellation token
+	 */
+	updatePackages(packages: IPackageSpec[], token?: CancellationToken): Promise<void>;
+
+	/**
+	 * Update all installed packages.
+	 * @param token Optional cancellation token
+	 */
+	updateAllPackages(token?: CancellationToken): Promise<void>;
+
+	/**
+	 * Search a repository for packages matching the query.
+	 * @param query Search query string
+	 * @param token Optional cancellation token
+	 */
+	searchPackages(query: string, token?: CancellationToken): Promise<ILanguageRuntimePackage[]>;
+
+	/**
+	 * Search a repository for available versions of a package.
+	 * @param name Package name
+	 * @param token Optional cancellation token
+	 */
+	searchPackageVersions(name: string, token?: CancellationToken): Promise<string[]>;
+
+	/**
+	 * Fetch additional metadata for packages from external sources (e.g., P3M).
+	 * This is called separately from getPackages() to allow the UI to display
+	 * the basic package list quickly while metadata loads in the background.
+	 * @param packageNames Array of package names to fetch metadata for
+	 * @param token Optional cancellation token
+	 * @returns Map of package name (lowercase) to partial package metadata, or undefined if not supported
+	 */
+	getPackageMetadata?(
+		packageNames: string[],
+		token?: CancellationToken,
+	): Promise<Map<string, Partial<ILanguageRuntimePackage>> | undefined>;
+
+	/**
+	 * The repository (R) or package index (Python) URL this environment installs
+	 * from, when the runtime can determine it. Used to decide which Posit
+	 * Package Manager instance, if any, to ask for security advisories.
+	 *
+	 * Only the runtime knows the precedence its installer follows (r-versions
+	 * `Repo:`, `repos.conf`, `pip config`, environment variables), so resolution
+	 * stays on that side. Resolves undefined when nothing is configured beyond
+	 * the language's public default.
+	 *
+	 * @param token Optional cancellation token
+	 */
+	packageRepositoryUrl?(token?: CancellationToken): Promise<string | undefined>;
+
+	/**
+	 * Perform a Package Manager API request against the repository this
+	 * environment installs from, from the host the runtime runs on.
+	 *
+	 * The workbench can't make this request itself. In the desktop app the
+	 * renderer's `fetch` is subject to CORS and the Package Manager `__api__`
+	 * endpoints send no `Access-Control-Allow-Origin`; in a server deployment the
+	 * browser is on a different machine from the repository. The runtime's host
+	 * is the right place in both cases: it has the route, the proxy
+	 * configuration, and the certificate trust that the environment installs
+	 * with.
+	 *
+	 * @param request The request to perform.
+	 * @param token Optional cancellation token
+	 */
+	repositoryRequest?(request: IPackageRepositoryRequest, token?: CancellationToken): Promise<IPackageRepositoryResponse>;
+
+	/**
+	 * Fetch detailed metadata for a single package, called when the package
+	 * detail editor opens. Cheap, kernel-local fields only (title, author,
+	 * source repository, published date); never network or
+	 * expensive filesystem walks. Returns a partial package to merge over the
+	 * list entry, or undefined when unsupported / not found.
+	 * @param name Package name
+	 * @param token Optional cancellation token
+	 */
+	getPackageDetail?(
+		name: string,
+		token?: CancellationToken,
+	): Promise<Partial<ILanguageRuntimePackage> | undefined>;
+}
+
+/**
+ * A manager for runtime sessions.
+ */
+export interface ILanguageRuntimeSessionManager {
+	/**
+	 * Indicate whether this session manager is responsible for the given runtime.
+	 *
+	 * @param runtimeId The runtime identifier to check.
+	 */
+	managesRuntime(runtime: ILanguageRuntimeMetadata): Promise<boolean>;
+
+	/**
+	 * Create (provision) a new session.
+	 *
+	 * @param runtimeMetadata The metadata of the runtime for which a session is
+	 *  	to be created.
+	 * @param sessionMetadata The metadata of the session to be created.
+	 *
+	 * @returns A promise that resolves to the new session.
+	 */
+	createSession(
+		runtimeMetadata: ILanguageRuntimeMetadata,
+		sessionMetadata: IRuntimeSessionMetadata,
+		sessionName: string,
+	):
+		Promise<ILanguageRuntimeSession>;
+
+	/**
+	 * Validates an existing (persisted) session.
+	 */
+	validateSession(runtimeMetadata: ILanguageRuntimeMetadata, sessionId: string): Promise<boolean>;
+
+	/**
+	 * Restore (reconnect to) an existing session.
+	 *
+	 * @param runtimeMetadata The metadata of the runtime for which a session is
+	 *  	to be restored (reconnected).
+	 * @param sessionMetadata The metadata of the session to be restored.
+	 * @param sessionName A human-readable (displayed) name for the session.
+	 *
+	 * @returns A promise that resolves to the reconnected session.
+	 */
+	restoreSession(
+		runtimeMetadata: ILanguageRuntimeMetadata,
+		sessionMetadata: IRuntimeSessionMetadata,
+		sessionName: string):
+		Promise<ILanguageRuntimeSession>;
+
+	/**
+	 * Validates a runtime metadata object. Returns the updated metadata object,
+	 * or throws an error if the metadata is invalid.
+	 *
+	 * @param metadata The metadata of the runtime to validate.
+	 *
+	 * @returns A promise that resolves to the validated metadata.
+	 */
+	validateMetadata(metadata: ILanguageRuntimeMetadata): Promise<ILanguageRuntimeMetadata>;
+}
+
+
+/**
+ * The runtime session service is the main interface for interacting with
+ * runtime sessions; it manages the set of active sessions and provides
+ * facilities for starting, stopping, and interacting with them.
+ */
+/**
+ * Event that fires when a notebook session's URI has been updated.
+ *
+ * This event is for components that track notebook URIs (like the variables view)
+ * to update their references when a notebook is saved with a new URI. Without this event,
+ * UI components would continue to display the old URI even after saving.
+ */
+export interface INotebookSessionUriChangedEvent {
+	/** The session ID that was updated */
+	readonly sessionId: string;
+	/** The previous URI associated with the session (typically an untitled URI) */
+	readonly oldUri: URI;
+	/** The new URI associated with the session (typically a file URI after saving) */
+	readonly newUri: URI;
+}
+
+export interface IRuntimeSessionService {
+	// Needed for service branding in dependency injector.
+	readonly _serviceBrand: undefined;
+
+	// An event that fires when a runtime session is about to start.
+	readonly onWillStartSession: Event<IRuntimeSessionWillStartEvent>;
+
+	// An event that fires when a runtime session starts.
+	readonly onDidStartRuntime: Event<ILanguageRuntimeSession>;
+
+	// An event that fires when a runtime fails to start.
+	readonly onDidFailStartRuntime: Event<ILanguageRuntimeSession>;
+
+	// An event that fires when a runtime changes state.
+	readonly onDidChangeRuntimeState: Event<ILanguageRuntimeSessionStateEvent>;
+
+	// An event that fires when a runtime receives a global event.
+	readonly onDidReceiveRuntimeEvent: Event<ILanguageRuntimeGlobalEvent>;
+
+	// An event that fires when the active runtime changes.
+	readonly onDidChangeForegroundSession: Event<ILanguageRuntimeSession | undefined>;
+
+	// An event that fires when the foreground session display info changes.
+	// This can be driven by a live foreground session change or by falling
+	// back to cached session info for an exited notebook session.
+	readonly onDidChangeForegroundSessionDisplayInfo: Event<IRuntimeSessionDisplayInfo | undefined>;
+
+	// An event that fires when a session's display state changes.
+	readonly onDidChangeDisplayRuntimeState: Event<{ sessionId: string; state: RuntimeState }>;
+
+	// The current display info for the foreground session. May contain
+	// session details from an exited session if an actual session is not
+	// available to be the foreground session.
+	foregroundSessionDisplayInfo: IRuntimeSessionDisplayInfo | undefined;
+
+	// An event that fires when a runtime session is deleted.
+	readonly onDidDeleteRuntimeSession: Event<string>;
+
+	// An event that fires when a notebook session's URI is updated.
+	readonly onDidUpdateNotebookSessionUri: Event<INotebookSessionUriChangedEvent>;
+
+	// An event that fires when a runtime session name changes.
+	readonly onDidUpdateSessionName: Event<ILanguageRuntimeSession>;
+
+	/**
+	 * Gets the active runtime sessions
+	 */
+	readonly activeSessions: ILanguageRuntimeSession[];
+
+	/**
+	 * Register a session manager.
+	 */
+	registerSessionManager(manager: ILanguageRuntimeSessionManager): IDisposable;
+
+	/**
+	 * Gets a specific runtime session by session identifier.
+	 */
+	getSession(sessionId: string): ILanguageRuntimeSession | undefined;
+
+	/**
+	 * Gets the display state for a session. Returns undefined if the session is not active.
+	 */
+	getDisplayRuntimeState(sessionId: string): RuntimeState | undefined;
+
+	/**
+	 * Gets a currently active session for a runtime.
+	 */
+	getActiveSession(sessionId: string): ActiveRuntimeSession | undefined;
+
+	/**
+	 * Gets the last created console session by runtime identifier
+	 */
+	getConsoleSessionForRuntime(runtimeId: string): ILanguageRuntimeSession | undefined;
+
+	/**
+	 * Gets the last used console session by language identifier
+	 */
+	getConsoleSessionForLanguage(languageId: string): ILanguageRuntimeSession | undefined;
+
+	/**
+	 * Gets the last active console session, regardless of language.
+	 */
+	getLastActiveConsoleSession(): ILanguageRuntimeSession | undefined;
+
+	/**
+	 * Gets a specific notebook session by notebook URI. Currently, only one
+	 * notebook session can exist per notebook URI.
+	 */
+	getNotebookSessionForNotebookUri(notebookUri: URI): INotebookLanguageRuntimeSession | undefined;
+
+	/**
+	 * Gets the last known session display info for a notebook URI.
+	 * This persists after the session has exited and been disposed,
+	 * allowing UI components to show what runtime was last used.
+	 */
+	getLastNotebookSessionInfo(notebookUri: URI): IRuntimeSessionDisplayInfo | undefined;
+
+	/**
+	 * List all active runtime sessions.
+	 */
+	getActiveSessions(): ActiveRuntimeSession[];
+
+	/**
+	 * Checks for a starting or running console for the given language ID.
+	 *
+	 * @param languageId The language ID to check for; if undefined, checks for
+	 * 	any starting or running console.
+	 */
+	hasStartingOrRunningConsole(languageId?: string | undefined): boolean;
+
+	/**
+	 * Gets or sets the active foreground runtime session, if any.
+	 */
+	foregroundSession: ILanguageRuntimeSession | undefined;
+
+	/**
+	 * Starts a new session for a runtime. Use to start a new runtime at the
+	 * behest of a user gesture.
+	 *
+	 * @param runtimeId The runtime identifier of the runtime to start.
+	 * @param sessionName A human-readable (displayed) name for the session to start.
+	 * @param sessionMode The mode of the session to start.
+	 * @param source The source of the request to start the runtime, for debugging purposes
+	 *  (not displayed to the user)
+	 * @param startMode The mode in which to start the runtime.
+	 * @param activate Whether to activate/focus the session after it is
+	 * started.
+	 * @param options Additional properties for the new session, e.g. whether
+	 * the user explicitly selected the runtime.
+	 *
+	 * Returns a promise that resolves to the session ID of the new session.
+	 */
+	startNewRuntimeSession(
+		runtimeId: string,
+		sessionName: string,
+		sessionMode: LanguageRuntimeSessionMode,
+		notebookUri: URI | undefined,
+		source: string,
+		startMode: RuntimeStartMode,
+		activate: boolean,
+		options?: IStartNewRuntimeSessionOptions): Promise<string>;
+
+	/**
+	 * Validates a persisted runtime session before reconnecting to it.
+	 *
+	 * @param runtimeMetadata The metadata of the runtime.
+	 * @param sessionId The ID of the session to validate.
+	 */
+	validateRuntimeSession(
+		runtimeMetadata: ILanguageRuntimeMetadata,
+		sessionId: string): Promise<boolean>;
+
+	/**
+	 * Restores (reconnects to) a runtime session that was previously started.
+	 *
+	 * @param runtimeMetadata The metadata of the runtime to start.
+	 * @param sessionMetadata The metadata of the session to start.
+	 * @param sessionName A human-readable (displayed) name for the session.
+	 * @param createConsole Whether to create a console for the session.
+	 * @param activate Whether to activate/focus the session after it is reconnected.
+	 */
+	restoreRuntimeSession(
+		runtimeMetadata: ILanguageRuntimeMetadata,
+		sessionMetadata: IRuntimeSessionMetadata,
+		sessionName: string,
+		createConsole: boolean,
+		activate: boolean): Promise<void>;
+
+	/**
+	 * Automatically starts a runtime.
+	 *
+	 * @param runtime The runtime to start.
+	 * @param source The source of the request to start the runtime.
+	 * @param activate Whether to activate/focus the session after it is
+	 * started.
+	 *
+	 * @returns A promise that resolves with a session ID for the new session,
+	 * if one was started.
+	 */
+	autoStartRuntime(
+		metadata: ILanguageRuntimeMetadata,
+		source: string,
+		activate: boolean): Promise<string>;
+
+	/**
+	 * Selects a previously registered runtime as the active runtime.
+	 *
+	 * @param runtimeId The identifier of the runtime to select.
+	 * @param source The source of the request to select the runtime, for debugging purposes.
+	 * @param notebookUri The URI of the notebook selecting the runtime, if any.
+	 */
+	selectRuntime(runtimeId: string, source: string, notebookUri?: URI): Promise<void>;
+
+	deleteSession(sessionId: string): Promise<boolean>;
+
+	/**
+	 * Focus the runtime session by making it the foreground session if it's
+	 * a console session.
+	 *
+	 * @param sessionId The identifier of the session to focus.
+	 */
+	focusSession(sessionId: string): void;
+
+	/**
+	 * Restart a runtime session.
+	 *
+	 * If the session is busy, the user is prompted whether to interrupt it
+	 * before restarting.
+	 *
+	 * @param sessionId The identifier of the session to restart.
+	 * @param source The source of the request to restart the session, for debugging purposes.
+	 * @returns `true` if the session was restarted (or a restart already
+	 *  in progress completed), `false` if the restart was declined by
+	 *  the user. Rejects if the session is not found or not in a
+	 *  restartable state.
+	 */
+	restartSession(sessionId: string, source: string, interrupt?: boolean): Promise<boolean>;
+
+	/**
+	 * Interrupt a runtime session.
+	 *
+	 * @param sessionId The identifier of the session to interrupt.
+	 */
+	interruptSession(sessionId: string): Promise<void>;
+
+	/**
+	 * Update the name of an active runtime session.
+	 *
+	 * @param sessionId The identifier of the session to update.
+	 * @param name The new name for the session.
+	 */
+	updateSessionName(sessionId: string, name: string): void;
+
+	/**
+	 * Shutdown a runtime session for a notebook.
+	 *
+	 * @param notebookUri The notebook's URI.
+	 * @param exitReason The reason for exiting.
+	 * @param source The source of the request to shutdown the session, for debugging purposes.
+	 * @returns A promise that resolves when the session has exited.
+	 */
+	shutdownNotebookSession(notebookUri: URI, exitReason: RuntimeExitReason, source: string): Promise<void>;
+
+	/**
+	 * Updates the URI of a notebook session to maintain session continuity when
+	 * a notebook is saved under a new URI.
+	 *
+	 * This is a crucial operation during the Untitled → Saved file transition, as it:
+	 * 1. Preserves all runtime state (variables, execution context, kernel connections)
+	 * 2. Updates internal mappings to reflect the new URI
+	 * 3. Notifies dependent components about the change (via the onDidUpdateNotebookSessionUri event)
+	 *
+	 * The implementation carefully orders operations to maintain state consistency even if
+	 * an error occurs during the update process.
+	 *
+	 * Implementation notes:
+	 * - Concurrency: Operations are ordered specifically to handle concurrent access safely.
+	 *   We first add the new mapping before removing the old one, ensuring the session is
+	 *   always accessible even if interrupted mid-operation.
+	 *
+	 * - URI Validation: Both URIs need to be valid, and oldUri must map to an active session.
+	 *   We check that the session isn't terminated before attempting the transfer.
+	 *
+	 * - Error Handling: If something goes wrong after adding the new mapping but before
+	 *   removing the old one, the session will be accessible via both URIs - not ideal
+	 *   but better than losing access completely.
+	 *
+	 * @param oldUri The original URI of the notebook (typically an untitled:// URI)
+	 * @param newUri The new URI of the notebook (typically a file:// URI after saving)
+	 * @returns The session ID of the updated session, or undefined if no update occurred
+	 */
+	updateNotebookSessionUri(oldUri: URI, newUri: URI): Promise<string | undefined>;
+
+	/**
+	 * Updates the active languages with the update service. This has to be pushed to the update
+	 * service since it is in the platform layer.z
+	 *
+	 */
+	updateActiveLanguages(): void;
+
+	/**
+	 * Event that fires when the UI client has started. This allows other services
+	 * to interact with the UI client, e.g. to send notifications or requests to
+	 * backends.
+	 *
+	 * Note that `UiClientInstance` is a disposable. You can attach
+	 * resources to it (such as event handlers) via the `register()` method, these
+	 * will be cleaned up when the UI client is torn down (e.g. after a
+	 * disconnect).
+	 *
+	 * Dev note: In the future the UI client will move to an extension-land middleware,
+	 * see https://github.com/posit-dev/positron/issues/4997. Do not introduce
+	 * dependencies that can't eventually be solved with regular events.
+	 */
+	readonly onDidStartUiClient: Event<{ sessionId: string; uiClient: UiClientInstance }>;
+
+	/**
+	 * Register handler for the `onDidStartUiClient` event and run handler if already started.
+	 *
+	 * This ensures `handler` is run for both current and future instances of a session's UI client.
+	 * If the handler returns an `IDisposable`, it is disposed before the handler is called again
+	 * with a new client (e.g. after restart).
+	 *
+	 * @param sessionId The ID of the session to observe.
+	 * @param handler Called with started UI clients. May return an `IDisposable` for per-client cleanup.
+	 * @returns An `IDisposable` to clean up the event handler.
+	 */
+	watchUiClient(sessionId: string, handler: (uiClient: UiClientInstance) => IDisposable | void): IDisposable;
+
+	/**
+	 * When true, suppresses implicit runtime auto-start triggered by
+	 * opening files with a matching language ID. Used during new folder
+	 * initialization to prevent starting the wrong runtime before the
+	 * intended environment is ready.
+	 */
+	implicitStartupSuppressed: boolean;
+}
+
+export { RuntimeClientType };
+
+export type { IRuntimeClientInstance };

@@ -1,0 +1,98 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as positron from 'positron';
+import * as vscode from 'vscode';
+import { LanguageClient, Position, Range, RequestType, VersionedTextDocumentIdentifier } from 'vscode-languageclient/node';
+
+enum StatementRangeKind {
+	Success = 'success',
+	Rejection = 'rejection'
+}
+
+enum StatementRangeRejectionKind {
+	Syntax = 'syntax'
+}
+
+interface StatementRangeParams {
+	textDocument: VersionedTextDocumentIdentifier;
+	position: Position;
+}
+
+type StatementRangeResponse = StatementRangeSuccess | StatementRangeRejection;
+
+interface StatementRangeSuccess {
+	readonly kind: StatementRangeKind.Success;
+	readonly range: Range;
+	readonly code?: string;
+}
+
+type StatementRangeRejection = StatementRangeSyntaxRejection;
+
+interface StatementRangeSyntaxRejection {
+	readonly kind: StatementRangeKind.Rejection;
+	readonly rejectionKind: StatementRangeRejectionKind.Syntax;
+	readonly line?: number;
+}
+
+export namespace StatementRangeRequest {
+	export const type: RequestType<StatementRangeParams, StatementRangeResponse | undefined, any> = new RequestType('positron/textDocument/statementRange');
+}
+
+/**
+ * A StatementRangeProvider implementation for R
+ */
+export class RStatementRangeProvider implements positron.StatementRangeProvider {
+
+	/** The language client instance */
+	private readonly _client: LanguageClient;
+
+	constructor(
+		readonly client: LanguageClient,
+	) {
+		this._client = client;
+	}
+
+	async provideStatementRange(
+		document: vscode.TextDocument,
+		position: vscode.Position,
+		token: vscode.CancellationToken
+	): Promise<positron.StatementRange | undefined> {
+
+		const params: StatementRangeParams = {
+			textDocument: this._client.code2ProtocolConverter.asVersionedTextDocumentIdentifier(document),
+			position: this._client.code2ProtocolConverter.asPosition(position)
+		};
+
+		const data = await this._client.sendRequest(StatementRangeRequest.type, params, token);
+
+		if (!data) {
+			return undefined;
+		}
+
+		switch (data.kind) {
+			case StatementRangeKind.Success: {
+				return {
+					range: this._client.protocol2CodeConverter.asRange(data.range),
+					// Explicitly normalize non-strings to `undefined` (i.e. a possible `null`)
+					code: typeof data.code === 'string' ? data.code : undefined
+				} satisfies positron.StatementRange;
+			}
+			case StatementRangeKind.Rejection: {
+				switch (data.rejectionKind) {
+					case StatementRangeRejectionKind.Syntax: {
+						throw new positron.StatementRangeSyntaxError(data.line);
+					}
+					default: {
+						throw new Error(`Unrecognized 'StatementRangeRejectionKind': ${data.rejectionKind}`);
+					}
+				}
+			}
+			default: {
+				throw new Error(`Unrecognized 'StatementRangeKind': ${data}`);
+			}
+		}
+	}
+}

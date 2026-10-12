@@ -1,0 +1,1382 @@
+[
+	{
+		"c": "#",
+		"t": "source.cpp meta.preprocessor.macro.cpp keyword.control.directive.define.cpp punctuation.definition.directive.cpp",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": "define",
+		"t": "source.cpp meta.preprocessor.macro.cpp keyword.control.directive.define.cpp",
+		"r": {
+			"hc_black": "keyword.control: #C586C0",
+			"2026-light": "keyword.control: #AF00DB",
+			"2026-dark": "keyword.control: #C586C0",
+			"rhs_ia_dark": "keyword.control: #C586C0",
+			"rhs_ia_light": "keyword.control: #BC729C",
+			"hc_light": "keyword.control: #B5200D"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "DOCTEST_IMPLEMENT_FIXTURE",
+		"t": "source.cpp meta.preprocessor.macro.cpp entity.name.function.preprocessor.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function.preprocessor: #0000FF",
+			"2026-dark": "entity.name.function.preprocessor: #569CD6",
+			"rhs_ia_dark": "entity.name.function.preprocessor: #569CD6",
+			"rhs_ia_light": "entity.name.function.preprocessor: #0000FF",
+			"hc_light": "entity.name.function.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp meta.preprocessor.macro.cpp punctuation.definition.parameters.begin.preprocessor.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "der",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp variable.parameter.preprocessor.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp punctuation.separator.parameters.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "base",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp variable.parameter.preprocessor.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp punctuation.separator.parameters.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "func",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp variable.parameter.preprocessor.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp punctuation.separator.parameters.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "decorators",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.function.preprocessor.parameters.cpp variable.parameter.preprocessor.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable: #953800",
+			"2026-dark": "variable: #FFA657",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp meta.preprocessor.macro.cpp punctuation.definition.parameters.end.preprocessor.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                     ",
+		"t": "source.cpp meta.preprocessor.macro.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "    ",
+		"t": "source.cpp meta.preprocessor.macro.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "namespace",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.head.namespace.cpp keyword.other.namespace.definition.cpp storage.type.namespace.definition.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.head.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.head.namespace.cpp punctuation.section.block.begin.bracket.curly.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                                                                    ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "        ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "struct",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp storage.type.struct.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "der",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp entity.name.type.struct.cpp",
+		"r": {
+			"hc_black": "entity.name.type: #4EC9B0",
+			"2026-light": "entity.name.type: #267F99",
+			"2026-dark": "entity.name.type: #4EC9B0",
+			"rhs_ia_dark": "entity.name.type: #4EC9B0",
+			"rhs_ia_light": "entity.name.type: #2D9BA9",
+			"hc_light": "entity.name.type: #185E73"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp punctuation.separator.colon.inheritance.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "public",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp storage.type.modifier.access.public.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "base",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp meta.qualified-type.cpp entity.name.type.cpp",
+		"r": {
+			"hc_black": "entity.name.type: #4EC9B0",
+			"2026-light": "entity.name.type: #267F99",
+			"2026-dark": "entity.name.type: #4EC9B0",
+			"rhs_ia_dark": "entity.name.type: #4EC9B0",
+			"rhs_ia_light": "entity.name.type: #2D9BA9",
+			"hc_light": "entity.name.type: #185E73"
+		}
+	},
+	{
+		"c": "                                                                   ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "        ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.head.struct.cpp punctuation.section.block.begin.bracket.curly.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                                                                          ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "            ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.cpp meta.head.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "void",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.cpp meta.qualified-type.cpp storage.type.primitive.cpp storage.type.built-in.primitive.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "f",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.cpp meta.head.function.definition.cpp entity.name.function.definition.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.cpp meta.head.function.definition.cpp punctuation.section.parameters.begin.bracket.round.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp meta.function.definition.cpp meta.head.function.definition.cpp punctuation.section.parameters.end.bracket.round.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp punctuation.terminator.statement.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                                                              ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "        ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp meta.body.struct.cpp punctuation.section.block.end.bracket.curly.struct.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.block.struct.cpp punctuation.terminator.statement.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                                                                         ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "        ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.head.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "static",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp storage.modifier.static.cpp",
+		"r": {
+			"hc_black": "storage.modifier: #569CD6",
+			"2026-light": "storage.modifier: #0000FF",
+			"2026-dark": "storage.modifier: #569CD6",
+			"rhs_ia_dark": "storage.modifier: #569CD6",
+			"rhs_ia_light": "storage.modifier: #0000FF",
+			"hc_light": "storage.modifier: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "void",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.qualified-type.cpp storage.type.primitive.cpp storage.type.built-in.primitive.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "func",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.head.function.definition.cpp entity.name.function.definition.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.head.function.definition.cpp punctuation.section.parameters.begin.bracket.round.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.head.function.definition.cpp punctuation.section.parameters.end.bracket.round.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.head.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "{",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.head.function.definition.cpp punctuation.section.block.begin.bracket.curly.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                                                       ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "            ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp meta.declaration.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "der",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp meta.declaration.cpp meta.qualified-type.cpp entity.name.type.cpp",
+		"r": {
+			"hc_black": "entity.name.type: #4EC9B0",
+			"2026-light": "entity.name.type: #267F99",
+			"2026-dark": "entity.name.type: #4EC9B0",
+			"rhs_ia_dark": "entity.name.type: #4EC9B0",
+			"rhs_ia_light": "entity.name.type: #2D9BA9",
+			"hc_light": "entity.name.type: #185E73"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp meta.declaration.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "v",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp meta.declaration.cpp meta.declaration.cpp variable.lower-case.cpp variable.other.declare.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp punctuation.terminator.statement.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                                                                 ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "            ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "v",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp variable.lower-case.cpp variable.other.object.access.v.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ".",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp punctuation.separator.dot-access.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "f",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp entity.name.function.member.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp punctuation.section.arguments.begin.bracket.round.function.member.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp punctuation.section.arguments.end.bracket.round.function.member.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": ";",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp punctuation.terminator.statement.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                                                                 ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "        ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp meta.function.definition.cpp meta.body.function.definition.cpp punctuation.section.block.end.bracket.curly.function.definition.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                                                                          ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "        ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "DOCTEST_REGISTER_FUNCTION",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp entity.name.function.call.upper-case.cpp entity.name.function.call.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp punctuation.section.arguments.begin.bracket.round.function.call.cpp punctuation.section.arguments.begin.bracket.round.function.call.upper-case.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "DOCTEST_EMPTY",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp variable.snake-case.cpp variable.other.unknown.DOCTEST_EMPTY.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp punctuation.separator.delimiter.comma.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "func",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp variable.lower-case.cpp variable.other.unknown.func.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ",",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp punctuation.separator.delimiter.comma.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "punctuation.separator.delimiter: #3D3D3D",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "decorators",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp variable.lower-case.cpp variable.other.unknown.decorators.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp punctuation.section.arguments.end.bracket.round.function.call.cpp punctuation.section.arguments.begin.bracket.round.function.call.upper-case.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                 ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "    ",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "}",
+		"t": "source.cpp meta.preprocessor.macro.cpp meta.block.namespace.cpp meta.body.namespace.cpp punctuation.section.block.end.bracket.curly.namespace.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.block: #1F2328",
+			"2026-dark": "meta.block: #C9D1D9",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "                                                                                              ",
+		"t": "source.cpp meta.preprocessor.macro.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "\\",
+		"t": "source.cpp meta.preprocessor.macro.cpp constant.character.escape.line-continuation.cpp",
+		"r": {
+			"hc_black": "constant.character: #569CD6",
+			"2026-light": "constant.character.escape: #EE0000",
+			"2026-dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_dark": "constant.character.escape: #D7BA7D",
+			"rhs_ia_light": "constant.character.escape: #66476B",
+			"hc_light": "constant.character.escape: #EE0000"
+		}
+	},
+	{
+		"c": "    ",
+		"t": "source.cpp meta.preprocessor.macro.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "inline",
+		"t": "source.cpp meta.preprocessor.macro.cpp storage.modifier.specifier.functional.pre-parameters.inline.cpp",
+		"r": {
+			"hc_black": "storage.modifier: #569CD6",
+			"2026-light": "storage.modifier: #0000FF",
+			"2026-dark": "storage.modifier: #569CD6",
+			"rhs_ia_dark": "storage.modifier: #569CD6",
+			"rhs_ia_light": "storage.modifier: #0000FF",
+			"hc_light": "storage.modifier: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "DOCTEST_NOINLINE",
+		"t": "source.cpp meta.preprocessor.macro.cpp variable.snake-case.cpp variable.other.unknown.DOCTEST_NOINLINE.cpp",
+		"r": {
+			"hc_black": "variable: #9CDCFE",
+			"2026-light": "variable.other: #1F2328",
+			"2026-dark": "variable.other: #C9D1D9",
+			"rhs_ia_dark": "variable: #9CDCFE",
+			"rhs_ia_light": "variable: #67898E",
+			"hc_light": "variable: #001080"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "void",
+		"t": "source.cpp meta.preprocessor.macro.cpp storage.type.primitive.cpp storage.type.built-in.primitive.cpp",
+		"r": {
+			"hc_black": "storage.type: #569CD6",
+			"2026-light": "storage.type: #CF222E",
+			"2026-dark": "storage.type: #FF7B72",
+			"rhs_ia_dark": "storage.type: #569CD6",
+			"rhs_ia_light": "storage.type: #0000FF",
+			"hc_light": "storage.type: #0F4A85"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.cpp meta.preprocessor.macro.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "der",
+		"t": "source.cpp meta.preprocessor.macro.cpp entity.name.scope-resolution.cpp",
+		"r": {
+			"hc_black": "entity.name.scope-resolution: #4EC9B0",
+			"2026-light": "entity.name.scope-resolution: #267F99",
+			"2026-dark": "entity.name.scope-resolution: #4EC9B0",
+			"rhs_ia_dark": "entity.name.scope-resolution: #4EC9B0",
+			"rhs_ia_light": "entity.name.scope-resolution: #267F99",
+			"hc_light": "entity.name.scope-resolution: #185E73"
+		}
+	},
+	{
+		"c": "::",
+		"t": "source.cpp meta.preprocessor.macro.cpp punctuation.separator.namespace.access.cpp punctuation.separator.scope-resolution.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": "f",
+		"t": "source.cpp meta.preprocessor.macro.cpp entity.name.function.call.cpp",
+		"r": {
+			"hc_black": "entity.name.function: #DCDCAA",
+			"2026-light": "entity.name.function: #8250DF",
+			"2026-dark": "entity.name.function: #D2A8FF",
+			"rhs_ia_dark": "entity.name.function: #DCDCAA",
+			"rhs_ia_light": "entity.name.function: #007BC4",
+			"hc_light": "entity.name.function: #5E2CBC"
+		}
+	},
+	{
+		"c": "(",
+		"t": "source.cpp meta.preprocessor.macro.cpp punctuation.section.arguments.begin.bracket.round.function.call.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	},
+	{
+		"c": ")",
+		"t": "source.cpp meta.preprocessor.macro.cpp punctuation.section.arguments.end.bracket.round.function.call.cpp",
+		"r": {
+			"hc_black": "meta.preprocessor: #569CD6",
+			"2026-light": "meta.preprocessor: #0000FF",
+			"2026-dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_dark": "meta.preprocessor: #569CD6",
+			"rhs_ia_light": "meta.preprocessor: #0000FF",
+			"hc_light": "meta.preprocessor: #0F4A85"
+		}
+	}
+]

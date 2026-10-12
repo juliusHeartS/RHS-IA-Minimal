@@ -1,0 +1,198 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { parse as parseYaml, YamlMapNode, YamlNode } from '../../../../base/common/yaml.js';
+
+/**
+ * Execution options parsed from cell YAML comments.
+ * These are Quarto-specific options that control cell execution behavior.
+ */
+export interface QuartoCellExecutionOptions {
+	/**
+	 * Whether to evaluate the cell.
+	 * Default: true
+	 *
+	 * When false and multiple cells are passed to executeInlineCells,
+	 * the cell is silently dropped from the queue.
+	 * When false and it's the ONLY cell passed, it executes anyway.
+	 */
+	readonly eval: boolean;
+
+	/**
+	 * Whether errors should stop execution of subsequent cells.
+	 * Default: true (stop on error)
+	 *
+	 * When true and an error occurs, remaining cells in the queue are removed.
+	 * When false, errors are non-fatal and the queue continues processing.
+	 */
+	readonly error: boolean;
+}
+
+/**
+ * Default cell execution options.
+ */
+export const DEFAULT_CELL_EXECUTION_OPTIONS: QuartoCellExecutionOptions = {
+	eval: true,
+	error: true,
+};
+
+/**
+ * Regex to match Quarto option lines: optional whitespace + #| + optional whitespace + content
+ * Examples:
+ *   #| eval: false
+ *   #|eval: true
+ *     #| error: false
+ */
+const OPTION_LINE_REGEX = /^\s*#\|\s?(.*)$/;
+
+/**
+ * Result of parsing cell execution options.
+ */
+export interface ParsedCellOptions {
+	/** The parsed execution options */
+	options: QuartoCellExecutionOptions;
+	/** Number of option lines at the start of the code */
+	optionLineCount: number;
+	/** All non-execution cell options as a plain key-value record */
+	metadata: Record<string, unknown>;
+}
+
+/**
+ * Recursively convert a YAML AST node to a plain JavaScript value.
+ */
+function yamlNodeToValue(node: YamlNode): unknown {
+	switch (node.type) {
+		case 'scalar': {
+			const val = node.value;
+			// Interpret scalar values
+			if (val === 'null' || val === '~' || val === '') {
+				return null;
+			}
+			if (val === 'true') {
+				return true;
+			}
+			if (val === 'false') {
+				return false;
+			}
+			// Try to parse as number
+			const num = Number(val);
+			if (!isNaN(num) && val.trim() !== '') {
+				return num;
+			}
+			return val;
+		}
+		case 'sequence': return node.items.map(yamlNodeToValue);
+		case 'map': {
+			const result: Record<string, unknown> = {};
+			for (const prop of node.properties) {
+				result[prop.key.value] = yamlNodeToValue(prop.value);
+			}
+			return result;
+		}
+	}
+}
+
+/**
+ * Keys that are handled as execution options and should not appear in metadata.
+ */
+const EXECUTION_OPTION_KEYS = new Set(['eval', 'error']);
+
+/**
+ * Parse execution options from cell code content.
+ *
+ * Quarto cells can specify execution options using YAML-style comments at the top of the cell:
+ * ```{python}
+ * #| eval: true
+ * #| error: false
+ *
+ * statements...
+ * ```
+ *
+ * Lines beginning with optional whitespace followed by `#|` are option lines.
+ * These are parsed as YAML (after stripping the `#|` prefix).
+ *
+ * @param code The full cell code (including any option lines)
+ * @returns Parsed options and the number of option lines at the start
+ */
+export function parseCellExecutionOptions(code: string): ParsedCellOptions {
+	const lines = code.replace(/\r\n?/g, '\n').split('\n');
+	const optionLines: string[] = [];
+	let optionLineCount = 0;
+
+	// Collect all leading option lines
+	for (const line of lines) {
+		const match = line.match(OPTION_LINE_REGEX);
+		if (match) {
+			optionLines.push(match[1]);
+			optionLineCount++;
+		} else {
+			// Stop at first non-option line
+			break;
+		}
+	}
+
+	// Start with defaults
+	const options: QuartoCellExecutionOptions = { ...DEFAULT_CELL_EXECUTION_OPTIONS };
+	const metadata: Record<string, unknown> = {};
+
+	if (optionLines.length > 0) {
+		// Parse accumulated option lines as YAML
+		const yamlContent = optionLines.join('\n');
+		const errors: import('../../../../base/common/yaml.js').YamlParseError[] = [];
+		const parsed = parseYaml(yamlContent, errors);
+
+		if (parsed && parsed.type === 'map') {
+			const obj = parsed as YamlMapNode;
+			for (const prop of obj.properties) {
+				const key = prop.key.value;
+				const value = prop.value;
+
+				if (key === 'eval' && value.type === 'scalar') {
+					const boolValue = value.value.toLowerCase();
+					if (boolValue === 'true' || boolValue === 'false') {
+						(options as { eval: boolean }).eval = boolValue === 'true';
+					}
+				}
+				if (key === 'error' && value.type === 'scalar') {
+					const boolValue = value.value.toLowerCase();
+					if (boolValue === 'true' || boolValue === 'false') {
+						(options as { error: boolean }).error = boolValue === 'true';
+					}
+				}
+
+				// Collect non-execution options as metadata
+				if (!EXECUTION_OPTION_KEYS.has(key)) {
+					metadata[key] = yamlNodeToValue(value);
+				}
+			}
+		}
+	}
+
+	return { options, optionLineCount, metadata };
+}
+
+/**
+ * Extract just the executable code from cell content, removing option lines.
+ *
+ * @param code The full cell code (including any option lines)
+ * @returns The code with option lines removed
+ */
+export function extractExecutableCode(code: string): string {
+	const { optionLineCount } = parseCellExecutionOptions(code);
+	const lines = code.replace(/\r\n?/g, '\n').split('\n');
+	return lines.slice(optionLineCount).join('\n');
+}
+
+/**
+ * Get the number of option lines at the start of the code.
+ * This is useful for calculating effective code ranges.
+ *
+ * @param code The full cell code (including any option lines)
+ * @returns The number of option lines
+ */
+export function getOptionLineCount(code: string): number {
+	const { optionLineCount } = parseCellExecutionOptions(code);
+	return optionLineCount;
+}

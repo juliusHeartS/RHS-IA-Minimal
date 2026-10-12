@@ -1,0 +1,342 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { expect, BrowserContext } from '@playwright/test';
+import { Code } from '../../infra/code.js';
+import { QuickInput } from '../quickInput.js';
+import { completeDatabricksOktaSignIn } from '../../utils/databricksOAuth.js';
+
+export class DashboardPage {
+	get title() { return this.code.driver.currentPage.getByRole('link', { name: 'Workbench projects' }); }
+	get launchButton() { return this.code.driver.currentPage.getByRole('button', { name: 'Launch' }); }
+	get quitButton() { return this.code.driver.currentPage.getByRole('button', { name: 'Quit' }); }
+	get newSessionButton() { return this.code.driver.currentPage.getByRole('button', { name: 'New Session', exact: true }).first(); }
+	get positronProButton() { return this.code.driver.currentPage.getByRole('tab', { name: 'Positron Pro' }); }
+	get sessionNameInput() { return this.code.driver.currentPage.getByRole('textbox', { name: 'Session Name' }); }
+	// Anchor on the table row: the project name renders as a link while a session runs but as a
+	// button once it is gone, so neither a link role nor a fixed `.locator('..')` climb out of it
+	// survives both states. A leaked session can leave two rows for one project, hence `.first()`.
+	projectRow = (projectName: string) => this.code.driver.currentPage.getByRole('table', { name: 'Projects table' }).getByRole('row', { name: projectName });
+	projectNewSessionButton = (projectName: string) => this.projectRow(projectName).getByRole('button', { name: 'Create new session' }).first();
+	// The row checkbox is named for the *session* ("select Positron Pro Session"), not the project,
+	// so a `select <project>` name matches nothing and quitSession silently quits nothing. Take
+	// whatever checkbox the project's row holds instead.
+	projectCheckbox = (projectName: string) => this.projectRow(projectName).getByRole('checkbox');
+
+	constructor(private code: Code, private quickInput: QuickInput) { }
+
+	// #region Actions
+
+	async goTo(): Promise<void> {
+		await this.code.driver.currentPage.goto('http://localhost:8787');
+		await this.expectHeaderToBeVisible();
+	}
+
+	/**
+	 * Ensures a project exists, creating it if necessary
+	 * @param folderToOpen The folder name to create/check for
+	 * @param context Optional BrowserContext for setting up managed credentials via OAuth
+	 * @param managedCredentials Optional credential filter: 'snowflake', 'databricks', or undefined for both
+	 * @returns true if a new session was created, false if project already existed
+	 */
+	async ensureProjectExists(folderToOpen = 'test-files', context?: BrowserContext, managedCredentials?: 'snowflake' | 'databricks' | 'azure'): Promise<boolean> {
+		const existingProject = this.projectRow(folderToOpen).first();
+
+		try {
+			await expect(existingProject).toBeVisible({ timeout: 3000 });
+			return false; // Project already exists
+		} catch {
+			// Project doesn't exist, create it
+			await this.createNewProject(folderToOpen, context, managedCredentials);
+			return true; // New project was created
+		}
+	}
+
+	/**
+	 * Creates a new project/session with the specified folder
+	 * @param folderToOpen The folder name for the new project
+	 * @param context Optional BrowserContext for setting up managed credentials via OAuth
+	 * @param managedCredentials Optional credential filter: 'snowflake', 'databricks', or undefined for both
+	 */
+	private async createNewProject(folderToOpen: string, context?: BrowserContext, managedCredentials?: 'snowflake' | 'databricks' | 'azure'): Promise<void> {
+		await this.newSessionButton.click();
+		await this.positronProButton.click();
+
+		// Setup managed credentials if context is provided and credentials section is visible
+		if (context) {
+			await this.setupManagedCredentialsIfNeeded(context, managedCredentials);
+		}
+
+		await this.sessionNameInput.fill(folderToOpen);
+		await this.launchButton.click();
+
+		// Azure JIT-provisioned users (rstudio-ide-test) don't have test-files in their
+		// home directory at launch time. The fixture handles copying the workspace into the JIT
+		// user's home and calling openWorkspaceFolder() once Positron is up.
+		if (managedCredentials === 'azure') {
+			return;
+		}
+
+		await this.openWorkspaceFolder(folderToOpen);
+	}
+
+	/**
+	 * Opens the given folder via Positron's welcome view "Open Folder" button + quick input.
+	 * Used both from the dashboard flow (after Launch) and externally by the Azure fixture once
+	 * the JIT user's workspace has been copied into place.
+	 */
+	async openWorkspaceFolder(folderToOpen: string): Promise<void> {
+		await this.code.driver.currentPage.getByRole('button', { name: 'Open Folder', exact: true }).click();
+		await this.quickInput.waitForQuickInputOpened();
+
+		// The Open Folder picker can open in one of two states depending on the Workbench
+		// build and timing:
+		//   - prefilled *inside* the target folder: the input path ends with the folder name
+		//     and the list shows the folder's *contents* (no row matches the folder name);
+		//     confirming with OK opens it.
+		//   - opened at the *parent*: the list shows a row for the folder that must be
+		//     selected first.
+		// Reading the input value immediately after the picker opens races the (slower) stable
+		// Workbench build still prefilling the path -- it returns '' or the parent path, so we
+		// wrongly try to select a folder row that never appears and time out. Wait for the
+		// picker to settle into either recognizable state before deciding what to do. Reading
+		// the actual prefilled path (rather than hard-coding a home dir) keeps this correct for
+		// both the user1 dashboard flow and the Azure JIT user's differing home directory.
+		const input = this.code.driver.currentPage.locator('.quick-input-widget .quick-input-box input');
+		// Match how selectQuickInputElementContaining targets the row (aria-label *contains* the
+		// folder name), so "parent" detection agrees with the row we would go on to select.
+		const folderRow = this.code.driver.currentPage
+			.locator(`.quick-input-widget .quick-input-list .monaco-list-row[aria-label*="${folderToOpen}"]`)
+			.first();
+
+		let prefilledInsideFolder = false;
+		await expect(async () => {
+			const currentPath = (await input.inputValue().catch(() => '')).replace(/\/$/, '');
+			if (currentPath.endsWith(`/${folderToOpen}`)) {
+				prefilledInsideFolder = true;
+				return;
+			}
+			await expect(folderRow).toBeVisible({ timeout: 250 });
+		}).toPass({ timeout: 10000 });
+
+		if (!prefilledInsideFolder) {
+			await this.quickInput.selectQuickInputElementContaining(folderToOpen);
+		}
+		await this.quickInput.clickOkButton();
+	}
+
+	/**
+	 * Opens a session for the specified project, creating it if necessary
+	 * @param projectName The project name to open
+	 * @param context Optional BrowserContext for setting up managed credentials via OAuth
+	 * @param managedCredentials Optional credential filter: 'snowflake', 'databricks', or undefined for both
+	 */
+	async openSession(projectName = 'test-files', context?: BrowserContext, managedCredentials?: 'snowflake' | 'databricks' | 'azure'): Promise<void> {
+		// Ensure the project exists before trying to open it
+		// If a new project is created, it will auto-launch and set up managed credentials
+		const newProjectCreated = await this.ensureProjectExists(projectName, context, managedCredentials);
+
+		if (!newProjectCreated) {
+			// Project already existed, so we need to launch it. Sweep up any session left behind
+			// by a failed teardown first, so they can't accumulate to the point where new sessions
+			// no longer launch; quitSession no-ops when nothing is running.
+			await this.quitSession(projectName);
+
+			const startNewSessionButton = this.projectNewSessionButton(projectName);
+			await expect(startNewSessionButton).toBeVisible();
+			await startNewSessionButton.click();
+			await this.launchButton.click();
+		}
+	}
+
+	/**
+	 * Sets up managed credentials if credentials aren't already configured
+	 * Note: Called from createNewProject when the New Session dialog is already open
+	 * @param context BrowserContext for handling OAuth flows in new tabs
+	 * @param managedCredentials Credential to set up: 'snowflake' sets up only Snowflake, 'databricks'
+	 *                           sets up only Databricks. If undefined, no credentials are configured.
+	 */
+	private async setupManagedCredentialsIfNeeded(context: BrowserContext, managedCredentials?: 'snowflake' | 'databricks' | 'azure'): Promise<void> {
+		if (managedCredentials === undefined) {
+			return;
+		}
+
+		const page = this.code.driver.currentPage;
+
+		// Wait for Session Credentials section to appear
+		const credentialsSection = page.getByText('Session Credentials');
+		try {
+			await expect(credentialsSection).toBeVisible({ timeout: 5000 });
+		} catch {
+			// No credentials section - managed credentials not configured on this workbench instance
+			this.code.logger.log('Session Credentials section not found - managed credentials are not configured on this Workbench instance');
+			return;
+		}
+
+		if (managedCredentials === 'snowflake') {
+			await this.setupSnowflakeOAuth(context);
+		} else if (managedCredentials === 'databricks') {
+			await this.setupDatabricksOAuth(context);
+		}
+	}
+
+	/**
+	 * Sets up Databricks managed credential via OAuth flow
+	 * @param context BrowserContext for handling OAuth in new tab
+	 */
+	private async setupDatabricksOAuth(context: BrowserContext): Promise<void> {
+		const page = this.code.driver.currentPage;
+
+		// Check if already enabled - wait 3 seconds for state to stabilize
+		const enabledWidget = page.locator('[aria-label*="Databricks"][aria-label*="Enabled"]');
+		try {
+			await expect(enabledWidget).toBeVisible({ timeout: 3000 });
+			this.code.logger.log('Databricks credential already configured, skipping setup');
+			return;
+		} catch {
+			// Not enabled yet, proceed with setup
+		}
+
+		this.code.logger.log('Setting up Databricks OAuth...');
+
+		// Click Databricks sign in - opens OAuth in new tab
+		const [oauthPage] = await Promise.all([
+			context.waitForEvent('page'),
+			page.locator('[aria-label*="Databricks"]').first().click(),
+		]);
+
+		// From here the flow is the same Okta-fronted sign-in the desktop provider drives,
+		// so it lives in a shared helper. Workbench completes by redirecting back to its
+		// own callback on the dashboard origin.
+		const reachedCallback = await completeDatabricksOktaSignIn(oauthPage, {
+			completionUrl: /oauth_redirect_callback|localhost:8787/,
+			logger: this.code.logger,
+			label: 'Workbench',
+		});
+
+		try {
+			if (reachedCallback) {
+				await oauthPage.waitForTimeout(2000);
+			}
+			if (!oauthPage.isClosed()) {
+				await oauthPage.close();
+			}
+		} catch {
+			this.code.logger.log('OAuth page closed or timed out (may be expected)');
+		}
+
+		// Verify credentials are enabled
+		await expect(enabledWidget).toBeVisible({ timeout: 30000 });
+		this.code.logger.log('Databricks OAuth setup complete');
+	}
+
+	/**
+	 * Sets up Snowflake managed credential via OAuth flow
+	 * @param context BrowserContext for handling OAuth in new tab
+	 */
+	private async setupSnowflakeOAuth(context: BrowserContext): Promise<void> {
+		const page = this.code.driver.currentPage;
+
+		// Check if already enabled - wait 3 seconds for state to stabilize
+		const enabledWidget = page.locator('[aria-label*="Snowflake"][aria-label*="Enabled"]');
+		try {
+			await expect(enabledWidget).toBeVisible({ timeout: 3000 });
+			this.code.logger.log('Snowflake credential already configured, skipping setup');
+			return;
+		} catch {
+			// Not enabled yet, proceed with setup
+		}
+
+		this.code.logger.log('Setting up Snowflake OAuth...');
+
+		const snowflakeUsername = process.env.SNOWFLAKE_USERNAME!;
+		const snowflakePassword = process.env.SNOWFLAKE_PASSWORD!;
+
+		// Click Snowflake sign in - opens OAuth in new tab
+		const snowflakeWidget = page.locator('[aria-label*="Snowflake"]').first();
+		const [oauthPage] = await Promise.all([
+			context.waitForEvent('page'),
+			snowflakeWidget.click(),
+		]);
+
+		// Wait for Snowflake login page to load
+		await oauthPage.waitForLoadState('networkidle');
+
+		// Enter Snowflake credentials
+		await oauthPage.fill('[autocomplete="username"]', snowflakeUsername);
+		await oauthPage.fill('[autocomplete="current-password"]', snowflakePassword);
+
+		// Click sign in button
+		const signInButton = oauthPage.getByRole('button', { name: 'Sign In' }).nth(1);
+		await expect(signInButton).toBeVisible({ timeout: 10000 });
+		await signInButton.click();
+
+		// Check for "Allow" authorization button (may appear on first OAuth flow)
+		const allowButton = oauthPage.getByRole('button', { name: 'Allow' });
+		try {
+			await allowButton.waitFor({ timeout: 5000 });
+			await allowButton.click();
+			this.code.logger.log('Clicked "Allow" authorization button');
+		} catch {
+			this.code.logger.log('No "Allow" button found, proceeding...');
+		}
+
+		// Wait for OAuth to complete and widget to reach its final state
+		// Use expect.toPass to handle the race between widget state updates
+		await expect(async () => {
+			// Check if already enabled - if so, we're done
+			const isEnabled = await enabledWidget.isVisible().catch(() => false);
+			if (isEnabled) {
+				this.code.logger.log('Snowflake credential already enabled after OAuth');
+				return;
+			}
+
+			// Otherwise, look for disabled widget and click to enable
+			const disabledWidget = page.locator('[aria-label*="Snowflake"][aria-label*="Disabled"]');
+			const isDisabled = await disabledWidget.isVisible().catch(() => false);
+			if (isDisabled) {
+				await disabledWidget.click();
+				this.code.logger.log('Clicked disabled widget to enable Snowflake credential');
+			}
+
+			// Verify it's now enabled
+			await expect(enabledWidget).toBeVisible({ timeout: 2000 });
+		}).toPass({ timeout: 15000 });
+
+		this.code.logger.log('Snowflake OAuth setup complete');
+	}
+
+	/**
+	 * Quits the specified project session
+	 * @param projectName The project name to quit
+	 */
+	async quitSession(projectName = 'test-files'): Promise<void> {
+		// A prior teardown that failed to quit can leave a session behind, so more
+		// than one row for the same project may be present. Selecting by the shared
+		// "select <project>" checkbox name then matches multiple elements, which is
+		// a strict-mode violation for `.check()` -- so nothing gets quit and the
+		// leaked sessions accumulate until new sessions can no longer launch. The
+		// workbench lane runs serially (workers=1), so it's safe to check every
+		// matching row and quit them all, which also sweeps up any leaked session.
+		const checkboxes = this.projectCheckbox(projectName);
+		const count = await checkboxes.count();
+		for (let i = 0; i < count; i++) {
+			await checkboxes.nth(i).check();
+		}
+		if (count > 0) {
+			await this.quitButton.click();
+		}
+	}
+
+	// #endregion
+
+	// #region Verifications
+
+	async expectHeaderToBeVisible() {
+		await expect(this.title).toBeVisible();
+	}
+
+	// #endregion
+}

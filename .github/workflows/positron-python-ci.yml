@@ -1,0 +1,446 @@
+name: 'Python CI'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'prerelease/**'
+      - 'release/**'
+    paths:
+      - '.github/workflows/positron-python-ci.yml'
+      - 'extensions/positron-python/**'
+  pull_request:
+    branches:
+      - main
+      - 'prerelease/**'
+      - 'release/**'
+    paths:
+      - '.github/workflows/positron-python-ci.yml'
+      - 'extensions/positron-python/**'
+
+
+defaults:
+ run:
+   working-directory: 'extensions/positron-python'
+
+env:
+  NODE_VERSION: '22.21.1'
+  PROJECT_DIR: 'extensions/positron-python'
+  PYTHON_SRC_DIR: 'extensions/positron-python/python_files'
+  # Force a path with spaces and to test extension works in these scenarios
+  # Unicode characters are causing 2.7 failures so skip that for now.
+  special-working-directory: './path with spaces'
+  special-working-directory-relative: 'path with spaces'
+
+# Scope the github.token's permissions for safety
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v7
+        with:
+          cache: 'npm'
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: '3.14'
+          enable-cache: true
+          activate-environment: true
+
+      - name: Add pip to uv venv
+        run: uv pip install pip
+
+      - name: Install Node dependencies
+        run: npm ci --fetch-timeout 120000
+        env:
+          POSITRON_GITHUB_RO_PAT: ${{ github.token }}
+
+      - name: Run `gulp prePublishNonBundle`
+        run: npm run prePublish
+
+      - name: Check dependencies
+        run: npm run checkDependencies
+
+      - name: Lint TypeScript code
+        run: npm run lint
+
+      - name: Check TypeScript format
+        run: npm run format-check
+
+      - name: Lint and Check Formatting with Ruff
+        run: |
+          uv pip install ruff
+          ruff check .
+          ruff format --check
+        working-directory: ${{ env.PYTHON_SRC_DIR }}
+
+  check-types:
+    name: Check Python types
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Run pyright on the oldest and most recent versions of Python.
+        python: ['3.9', '3.14']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+          activate-environment: true
+
+      - name: Add pip to uv venv
+        run: uv pip install pip
+
+      - name: Install base Python requirements
+        # Use uv run pip instead of uv pip so we can filter by implementation
+        run: 'uv run pip install --no-deps --require-hashes --only-binary :all: -t ./python_files/lib/python --no-cache-dir --implementation py -r requirements.txt'
+
+      - name: Install RHS-IA IPyKernel requirements
+        run: uv run scripts/vendor.py
+
+      - name: Install other Python requirements
+        run: |
+          uv run pip --disable-pip-version-check install -t ./python_files/lib/python --no-cache-dir --implementation py --no-deps --upgrade --pre debugpy
+          uv pip install --upgrade -r build/test-requirements.txt
+          uv sync --active --inexact --frozen --project python_files/posit
+
+      - name: Run Pyright
+        uses: jakebailey/pyright-action@8ec14b5cfe41f26e5f41686a31eb6012758217ef # v3.0.2
+        with:
+          version: 1.1.308
+          working-directory: ${{ env.PYTHON_SRC_DIR }}
+
+  python-tests:
+    name: Python Tests
+    # The value of runs-on is the OS of the current job (specified in the strategy matrix below) instead of being hardcoded.
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ${{ env.special-working-directory }}/${{ env.PROJECT_DIR}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        # Run the tests on the oldest and most recent versions of Python.
+        python: ['3.9', '3.14']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          path: ${{ env.special-working-directory-relative }}
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+          activate-environment: true
+
+      - name: Install specific pytest version
+        run: |
+          uv pip install pytest
+
+      - name: Install specific pytest version
+        run: uv run pytest --version
+
+      - name: Install base Python requirements
+        run: 'uv run pip install --no-deps --require-hashes --only-binary :all: -t ./python_files/lib/python --no-cache-dir --implementation py -r requirements.txt'
+
+      - name: Install test requirements
+        run: uv pip install -r build/test-requirements.txt
+
+      - name: Run Python unit tests
+        # `--active` targets the setup-uv activated environment. As of uv 0.12.0,
+        # `uv run <script>` discovers the project relative to the script path, so
+        # this would otherwise pick python_files/.venv (which lacks pytest) instead
+        # of the active venv where dependencies were installed. See astral-sh/uv#20225.
+        run: uv run --active python_files/tests/run_all.py
+
+  positron-ipykernel-tests:
+    name: Test RHS-IA IPyKernel
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: 'macos-latest'
+            python: '3.9'
+          - os: 'windows-latest'
+            python: '3.10'
+          - os: 'ubuntu-latest'
+            python: '3.11'
+          - os: 'ubuntu-latest'
+            python: '3.12'
+          - os: 'ubuntu-latest'
+            python: '3.13'
+          - os: 'ubuntu-latest'
+            python: '3.14'
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+          activate-environment: true
+
+      - name: Add pip to uv venv
+        run: uv pip install pip
+
+      - name: Install RHS-IA IPyKernel requirements
+        run: uv run scripts/vendor.py
+
+      - name: Install RHS-IA IPyKernel test requirements
+        run: uv sync --active --inexact --frozen --project python_files/posit
+
+      - name: Run RHS-IA IPyKernel unit tests
+        run: uv run pytest python_files/posit
+
+  python-minimum-dependencies:
+    name: Test Minimum RHS-IA IPyKernel Dependencies
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          # currently only running on oldest supported Python version
+          - os: 'ubuntu-latest'
+            python: '3.9'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+          activate-environment: true
+
+      - name: Add pip to uv venv
+        run: uv pip install pip
+
+      - name: Install testing requirements
+        run: |
+          uv run scripts/vendor.py
+          uv pip install nox
+
+      - name: Run tests
+        run: npm run positron:testMinimumPythonReqs
+
+  typescript-tests:
+    name: Test TypeScript
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ${{ env.special-working-directory }}/${{ env.PROJECT_DIR}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ['3.x']
+        test-suite:
+          [ts-unit, single-workspace, debugger, functional] # venv is removed from this list, see https://github.com/posit-dev/positron/pull/10187
+        # TODO: Add integration tests on windows and ubuntu. This requires updating
+        # src/test/positron/testElectron.ts to support installing Positron on these platforms.
+        exclude:
+          # venv disabled for now, see https://github.com/posit-dev/positron/pull/10187
+          # - os: windows-latest
+          #   test-suite: venv
+          - os: windows-latest
+            test-suite: debugger
+          - os: windows-latest
+            test-suite: single-workspace
+          # - os: ubuntu-latest
+          #   test-suite: venv
+          - os: ubuntu-latest
+            test-suite: debugger
+          - os: ubuntu-latest
+            test-suite: single-workspace
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          path: ${{ env.special-working-directory-relative }}
+
+      - name: Install Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: ${{ env.special-working-directory-relative }}/${{ env.PROJECT_DIR }}/package-lock.json
+
+      - name: Use Python ${{ matrix.python }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+          cache: 'pip'
+
+      - name: Install Node dependencies
+        run: npm ci --fetch-timeout 120000
+        env:
+          POSITRON_GITHUB_RO_PAT: ${{ github.token }}
+
+      - name: Run `gulp prePublishNonBundle`
+        run: npm run prePublish
+
+      - name: Localization
+        run: npx @vscode/l10n-dev@latest export ./src
+
+      - name: Install test requirements
+        run: python -m pip install --upgrade -r ./build/test-requirements.txt
+
+      - name: Install functional test requirements
+        run: python -m pip install --upgrade -r ./build/functional-test-requirements.txt
+        if: matrix.test-suite == 'functional'
+
+      - name: Prepare pipenv for venv tests
+        env:
+          TEST_FILES_SUFFIX: testvirtualenvs
+          PYTHON_VIRTUAL_ENVS_LOCATION: './src/tmp/envPaths.json'
+        shell: pwsh
+        if: matrix.test-suite == 'venv'
+        run: |
+          python -m pip install pipenv
+          python -m pipenv run python ./build/ci/addEnvPath.py ${{ env.PYTHON_VIRTUAL_ENVS_LOCATION }} pipenvPath
+
+      - name: Prepare poetry for venv tests
+        env:
+          TEST_FILES_SUFFIX: testvirtualenvs
+        shell: pwsh
+        if: matrix.test-suite == 'venv'
+        run: |
+          python -m pip install poetry
+          Move-Item -Path ".\build\ci\pyproject.toml" -Destination .
+          poetry env use python
+
+      - name: Prepare virtualenv for venv tests
+        env:
+          TEST_FILES_SUFFIX: testvirtualenvs
+          PYTHON_VIRTUAL_ENVS_LOCATION: './src/tmp/envPaths.json'
+        shell: pwsh
+        if: matrix.test-suite == 'venv'
+        run: |
+          python -m pip install virtualenv
+          python -m virtualenv .virtualenv/
+          if ('${{ matrix.os }}' -match 'windows-latest') {
+            & ".virtualenv/Scripts/python.exe" ./build/ci/addEnvPath.py ${{ env.PYTHON_VIRTUAL_ENVS_LOCATION }} virtualEnvPath
+          } else {
+            & ".virtualenv/bin/python" ./build/ci/addEnvPath.py ${{ env.PYTHON_VIRTUAL_ENVS_LOCATION }} virtualEnvPath
+          }
+
+      - name: Prepare venv for venv tests
+        env:
+          TEST_FILES_SUFFIX: testvirtualenvs
+          PYTHON_VIRTUAL_ENVS_LOCATION: './src/tmp/envPaths.json'
+        shell: pwsh
+        if: matrix.test-suite == 'venv' && startsWith(matrix.python, 3.)
+        run: |
+          python -m venv .venv
+          if ('${{ matrix.os }}' -match 'windows-latest') {
+            & ".venv/Scripts/python.exe" ./build/ci/addEnvPath.py ${{ env.PYTHON_VIRTUAL_ENVS_LOCATION }} venvPath
+          } else {
+            & ".venv/bin/python" ./build/ci/addEnvPath.py ${{ env.PYTHON_VIRTUAL_ENVS_LOCATION }} venvPath
+          }
+
+      - name: Install miniconda
+        shell: bash
+        if: matrix.os == 'macos-latest' && matrix.test-suite == 'venv'
+        run: |
+          curl -fsSLo Miniforge3.sh "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-$(uname -m).sh"
+          bash Miniforge3.sh -b -p "${HOME}/conda"
+          source "${HOME}/conda/etc/profile.d/conda.sh"
+
+      - name: Prepare conda for venv tests
+        env:
+          TEST_FILES_SUFFIX: testvirtualenvs
+          PYTHON_VIRTUAL_ENVS_LOCATION: './src/tmp/envPaths.json'
+        shell: pwsh
+        if: matrix.test-suite == 'venv'
+        run: |
+          # 1. For `*.testvirtualenvs.test.ts`
+          if ('${{ matrix.os }}' -match 'windows-latest') {
+            $condaPythonPath = Join-Path -Path $Env:CONDA -ChildPath python.exe
+            $condaExecPath = Join-Path -Path $Env:CONDA -ChildPath Scripts | Join-Path -ChildPath conda
+          } else{
+            $condaPythonPath = Join-Path -Path $Env:CONDA -ChildPath bin | Join-Path -ChildPath python
+            $condaExecPath = Join-Path -Path $Env:CONDA -ChildPath bin | Join-Path -ChildPath conda
+          }
+          & $condaPythonPath ./build/ci/addEnvPath.py ${{ env.PYTHON_VIRTUAL_ENVS_LOCATION }} condaExecPath $condaExecPath
+          & $condaPythonPath ./build/ci/addEnvPath.py ${{ env.PYTHON_VIRTUAL_ENVS_LOCATION }} condaPath
+          & $condaExecPath init --all
+
+      - name: Set CI_PYTHON_PATH and CI_DISABLE_AUTO_SELECTION
+        run: |
+          echo "CI_PYTHON_PATH=$(which python)" >> $GITHUB_ENV
+          echo "CI_DISABLE_AUTO_SELECTION=1" >> $GITHUB_ENV
+        shell: bash
+        if: matrix.test-suite != 'ts-unit'
+
+      # Run TypeScript unit tests only for Python 3.X.
+      - name: Run TypeScript unit tests
+        run: npm run test:unittests
+        if: matrix.test-suite == 'ts-unit' && startsWith(matrix.python, 3.)
+
+      # The virtual environment based tests use the `testSingleWorkspace` set of tests
+      # with the environment variable `TEST_FILES_SUFFIX` set to `testvirtualenvs`,
+      # which is set in the "Prepare environment for venv tests" step.
+      # We also use a third-party GitHub Action to install xvfb on Linux,
+      # run tests and then clean up the process once the tests ran.
+      # See https://github.com/GabrielBB/xvfb-action
+      - name: Run venv tests
+        env:
+          TEST_FILES_SUFFIX: testvirtualenvs
+          CI_PYTHON_VERSION: ${{ matrix.python }}
+          POSITRON_GITHUB_RO_PAT: ${{ github.token }}
+        uses: GabrielBB/xvfb-action@b706e4e27b14669b486812790492dc50ca16b465 # v1.7
+        with:
+          run: npm run testSingleWorkspace
+          working-directory: ${{ env.special-working-directory }}/${{ env.PROJECT_DIR }}
+        if: matrix.test-suite == 'venv'
+
+      - name: Run single-workspace tests
+        env:
+          CI_PYTHON_VERSION: ${{ matrix.python }}
+          POSITRON_GITHUB_RO_PAT: ${{ github.token }}
+        uses: GabrielBB/xvfb-action@b706e4e27b14669b486812790492dc50ca16b465 # v1.7
+        with:
+          run: npm run testSingleWorkspace
+          working-directory: ${{ env.special-working-directory }}/${{ env.PROJECT_DIR }}
+        if: matrix.test-suite == 'single-workspace'
+
+      - name: Run debugger tests
+        env:
+          CI_PYTHON_VERSION: ${{ matrix.python }}
+          POSITRON_GITHUB_RO_PAT: ${{ github.token }}
+        uses: GabrielBB/xvfb-action@b706e4e27b14669b486812790492dc50ca16b465 # v1.7
+        with:
+          run: npm run testDebugger
+          working-directory: ${{ env.special-working-directory }}/${{ env.PROJECT_DIR }}
+        if: matrix.test-suite == 'debugger'
+
+      - name: Run TypeScript functional tests
+        run: npm run test:functional
+        if: matrix.test-suite == 'functional'

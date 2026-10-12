@@ -1,0 +1,77 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { localize } from '../../../../../nls.js';
+import { ActivityItem, TrimScrollbackResult } from './activityItem.js';
+
+/**
+ * Localized strings.
+ */
+const positronHTMLOutput = localize('positronHTMLOutput', "[HTML output]");
+
+/**
+ * Represents formatted HTML output by a language runtime.
+ */
+export class ActivityItemOutputHtml extends ActivityItem {
+	//#region Constructor
+
+	/**
+	 * Constructor.
+	 *
+	 * @param id The identifier.
+	 * @param parentId The parent identifier.
+	 * @param when The date.
+	 * @param html The HTML content returned from the runtime.
+	 * @param text The text content returned from the runtime.
+	 * @param outputId The optional identifier of the output associated with this activity item.
+	 */
+	constructor(
+		id: string,
+		parentId: string,
+		when: Date,
+		readonly html: string,
+		readonly text: string | undefined,
+		readonly outputId?: string
+	) {
+		// Call the base class's constructor.
+		super(id, parentId, when);
+	}
+
+	//#endregion Constructor
+
+	//#region Public Methods
+
+	/**
+	 * Trim scrollback.
+	 * @param scrollbackSize A number representing the scrollback size.
+	 * @returns A TrimScrollbackResult indicating the result of the trim scrollback operation.
+	 */
+	public override trimScrollback(scrollbackSize: number): TrimScrollbackResult {
+		// We should never be called with a scrollback size <= 0.
+		if (scrollbackSize <= 0) {
+			return {
+				trimmed: false,
+				remainingScrollbackSize: 0
+			};
+		}
+
+		// Counts as one scrollback item; nothing is trimmed in place.
+		return {
+			trimmed: false,
+			remainingScrollbackSize: scrollbackSize - 1
+		};
+	}
+
+	/**
+	 * Gets the clipboard representation of the activity item.
+	 * @param commentPrefix The comment prefix to use.
+	 * @returns The clipboard representation of the activity item.
+	 */
+	public override getClipboardRepresentation(commentPrefix: string): string[] {
+		return [commentPrefix + (this.text ?? positronHTMLOutput)];
+	}
+
+	//#endregion Public Methods
+}

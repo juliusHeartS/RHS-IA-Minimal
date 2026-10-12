@@ -1,0 +1,849 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as nls from '../../../../nls.js';
+import severity from '../../../../base/common/severity.js';
+import { Disposable, MutableDisposable } from '../../../../base/common/lifecycle.js';
+import { URI } from '../../../../base/common/uri.js';
+import { IActivityService, NumberBadge, IBadge, ProgressBadge } from '../../../services/activity/common/activity.js';
+import { IInstantiationService, ServicesAccessor } from '../../../../platform/instantiation/common/instantiation.js';
+import { IOpenerService } from '../../../../platform/opener/common/opener.js';
+import { IWorkbenchContribution } from '../../../common/contributions.js';
+import { IStorageService, StorageScope, StorageTarget } from '../../../../platform/storage/common/storage.js';
+// --- Start Positron ---
+// Add IUpdate, DisablementReason for Positron's update workflow.
+import { IUpdateService, State as UpdateState, StateType, IUpdate } from '../../../../platform/update/common/update.js';
+// --- End Positron ---
+import { INotificationService, NotificationPriority, Severity } from '../../../../platform/notification/common/notification.js';
+// --- Start Positron ---
+// Add INotificationSource so update notifications can carry a filterable source.
+// eslint-disable-next-line no-duplicate-imports
+import { INotificationSource } from '../../../../platform/notification/common/notification.js';
+// --- End Positron ---
+import { IDialogService } from '../../../../platform/dialogs/common/dialogs.js';
+import { IBrowserWorkbenchEnvironmentService } from '../../../services/environment/browser/environmentService.js';
+import { ReleaseNotesManager } from './releaseNotesEditor.js';
+// --- Start Positron ---
+// isMacintosh / isWindows are used by Positron's update notification flow.
+import { isMacintosh, isWeb, isWindows } from '../../../../base/common/platform.js';
+// --- End Positron ---
+import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
+import { RawContextKey, IContextKey, IContextKeyService, ContextKeyExpr } from '../../../../platform/contextkey/common/contextkey.js';
+import { MenuRegistry, MenuId, registerAction2, Action2 } from '../../../../platform/actions/common/actions.js';
+import { CommandsRegistry } from '../../../../platform/commands/common/commands.js';
+import { IHostService } from '../../../services/host/browser/host.js';
+import { IProductService } from '../../../../platform/product/common/productService.js';
+import { IUserDataSyncEnablementService, IUserDataSyncService, IUserDataSyncStoreManagementService, SyncStatus, UserDataSyncStoreType } from '../../../../platform/userDataSync/common/userDataSync.js';
+import { IsWebContext } from '../../../../platform/contextkey/common/contextkeys.js';
+import { Promises, Throttler } from '../../../../base/common/async.js';
+import { IUserDataSyncWorkbenchService } from '../../../services/userDataSync/common/userDataSync.js';
+import { Event } from '../../../../base/common/event.js';
+import { IDefaultAccountService } from '../../../../platform/defaultAccount/common/defaultAccount.js';
+import { getInternalOrg } from '../../../../platform/assignment/common/assignment.js';
+
+// --- Start Positron ---
+// Upstream's IVersion / tryParseVersion are unused — Positron uses calver parsing below.
+import { IPositronVersion, parse } from '../../../../platform/update/common/positronVersion.js';
+import { UpdateNotificationThrottle } from '../common/positronUpdateNotificationThrottle.js';
+// --- End Positron ---
+
+export const CONTEXT_UPDATE_STATE = new RawContextKey<string>('updateState', StateType.Uninitialized);
+export const MAJOR_MINOR_UPDATE_AVAILABLE = new RawContextKey<boolean>('majorMinorUpdateAvailable', false);
+
+// --- Start Positron ---
+/**
+ * Tags update notifications with a filterable source, so users can mute them from the
+ * notification's own gear menu or via "Do Not Disturb Mode By Source...".
+ *
+ * Only notifications with `DEFAULT` or `OPTIONAL` priority are silenced by that filter,
+ * so results of an explicit "Check for Updates" (which use `URGENT`) still show through.
+ */
+export const UPDATE_NOTIFICATION_SOURCE: INotificationSource = {
+	id: 'update',
+	label: nls.localize('positron.updateNotificationSource', "Update")
+};
+// --- End Positron ---
+
+let releaseNotesManager: ReleaseNotesManager | undefined = undefined;
+
+export function showReleaseNotesInEditor(instantiationService: IInstantiationService, version: string, useCurrentFile: boolean) {
+	if (!releaseNotesManager) {
+		releaseNotesManager = instantiationService.createInstance(ReleaseNotesManager);
+	}
+
+	return releaseNotesManager.show(version, useCurrentFile);
+}
+
+async function openLatestReleaseNotesInBrowser(accessor: ServicesAccessor) {
+	const openerService = accessor.get(IOpenerService);
+	const productService = accessor.get(IProductService);
+
+	if (productService.releaseNotesUrl) {
+		const uri = URI.parse(productService.releaseNotesUrl);
+		await openerService.open(uri);
+	} else {
+		throw new Error(nls.localize('update.noReleaseNotesOnline', "This version of {0} does not have release notes online", productService.nameLong));
+	}
+}
+
+async function showReleaseNotes(accessor: ServicesAccessor, version: string) {
+	const instantiationService = accessor.get(IInstantiationService);
+	try {
+		await showReleaseNotesInEditor(instantiationService, version, false);
+	} catch (err) {
+		try {
+			await instantiationService.invokeFunction(openLatestReleaseNotesInBrowser);
+		} catch (err2) {
+			throw new Error(`${err.message} and ${err2.message}`);
+		}
+	}
+}
+
+/**
+ * Appends update-related menu items to the given menu. This registers menu items
+ * for all update states (idle, checking, downloading, etc.) that show the current
+ * update status. The underlying commands (`update.check`, `update.restart`, etc.)
+ * must be registered separately.
+ */
+export function appendUpdateMenuItems(menuId: MenuId, group: string): void {
+	MenuRegistry.appendMenuItem(menuId, {
+		group,
+		command: {
+			id: 'update.check',
+			title: nls.localize('checkForUpdates', "Check for Updates...")
+		},
+		when: CONTEXT_UPDATE_STATE.isEqualTo(StateType.Idle)
+	});
+
+	MenuRegistry.appendMenuItem(menuId, {
+		group,
+		command: {
+			id: 'update.checking',
+			title: nls.localize('checkingForUpdates2', "Checking for Updates..."),
+			precondition: ContextKeyExpr.false()
+		},
+		when: CONTEXT_UPDATE_STATE.isEqualTo(StateType.CheckingForUpdates)
+	});
+
+	MenuRegistry.appendMenuItem(menuId, {
+		group,
+		command: {
+			id: 'update.downloadNow',
+			title: nls.localize('download update_1', "Download Update (1)")
+		},
+		when: CONTEXT_UPDATE_STATE.isEqualTo(StateType.AvailableForDownload)
+	});
+
+	MenuRegistry.appendMenuItem(menuId, {
+		group,
+		command: {
+			id: 'update.downloading',
+			title: nls.localize('DownloadingUpdate', "Downloading Update..."),
+			precondition: ContextKeyExpr.false()
+		},
+		when: CONTEXT_UPDATE_STATE.isEqualTo(StateType.Downloading)
+	});
+
+	MenuRegistry.appendMenuItem(menuId, {
+		group,
+		command: {
+			id: 'update.install',
+			title: nls.localize('installUpdate...', "Install Update... (1)")
+		},
+		when: CONTEXT_UPDATE_STATE.isEqualTo(StateType.Downloaded)
+	});
+
+	MenuRegistry.appendMenuItem(menuId, {
+		group,
+		command: {
+			id: 'update.updating',
+			title: nls.localize('installingUpdate', "Installing Update..."),
+			precondition: ContextKeyExpr.false()
+		},
+		when: CONTEXT_UPDATE_STATE.isEqualTo(StateType.Updating)
+	});
+
+	MenuRegistry.appendMenuItem(menuId, {
+		group,
+		command: {
+			id: 'update.cancelling',
+			title: nls.localize('cancellingUpdateMenuEntry', "Cancelling Update..."),
+			precondition: ContextKeyExpr.false()
+		},
+		when: CONTEXT_UPDATE_STATE.isEqualTo(StateType.Cancelling)
+	});
+
+	MenuRegistry.appendMenuItem(menuId, {
+		group,
+		order: 2,
+		command: {
+			id: 'update.restart',
+			title: nls.localize('restartToUpdate', "Restart to Update (1)")
+		},
+		when: CONTEXT_UPDATE_STATE.isEqualTo(StateType.Ready)
+	});
+}
+
+// --- Start Positron ---
+// Positron uses calver so we override the upstream semver parsing/comparison logic.
+// The upstream `IVersion { major; minor; patch; }` and `tryParseVersion` are not used here.
+export function storeLastUpdateVersion(accessor: ServicesAccessor, version: string): void {
+	const storageService = accessor.get(IStorageService);
+	storageService.store(ProductContribution.KEY, version, StorageScope.APPLICATION, StorageTarget.MACHINE);
+}
+
+function parseVersion(version: string): IPositronVersion | undefined {
+	return parse(version);
+}
+
+function isMajorMinorUpdate(before: IPositronVersion, after: IPositronVersion): boolean {
+	return before.year < after.year || before.month < after.month;
+}
+// --- End Positron ---
+
+export class ProductContribution implements IWorkbenchContribution {
+
+	// --- Start Positron ---
+	public static readonly KEY = 'positronReleaseNotes/lastVersion';
+	// --- End Positron ---
+
+	constructor(
+		@IStorageService storageService: IStorageService,
+		@IInstantiationService instantiationService: IInstantiationService,
+		@INotificationService notificationService: INotificationService,
+		@IBrowserWorkbenchEnvironmentService environmentService: IBrowserWorkbenchEnvironmentService,
+		@IOpenerService openerService: IOpenerService,
+		@IConfigurationService configurationService: IConfigurationService,
+		@IHostService hostService: IHostService,
+		@IProductService productService: IProductService,
+	) {
+		if (isWeb) {
+			return;
+		}
+
+		hostService.hadLastFocus().then(async hadLastFocus => {
+			if (!hadLastFocus) {
+				return;
+			}
+
+			// --- Start Positron ---
+			// Positron uses its calver `parseVersion` (rather than upstream's semver `tryParseVersion`),
+			// `productService.positronVersion`, `productService.releaseNotesUrl`, and gates on the Positron
+			// `update.positron.channel === 'releases'` setting.
+			const lastVersion = parseVersion(storageService.get(ProductContribution.KEY, StorageScope.APPLICATION, ''));
+			const currentVersion = parseVersion(productService.positronVersion);
+			const shouldShowReleaseNotes = configurationService.getValue<boolean>('update.showReleaseNotes');
+			const shouldShowPostInstallInfo = configurationService.getValue<boolean>('update.showPostInstallInfo');
+			const releaseNotesUrl = productService.releaseNotesUrl;
+			const channel = configurationService.getValue<string>('update.positron.channel');
+
+			// was there a major/minor update? if so, open release notes (unless post-install info is enabled, which takes over)
+			if (shouldShowReleaseNotes && !shouldShowPostInstallInfo && !environmentService.skipReleaseNotes
+				&& releaseNotesUrl && lastVersion && currentVersion
+				&& isMajorMinorUpdate(lastVersion, currentVersion)
+				&& channel === 'releases'
+			) {
+				showReleaseNotesInEditor(instantiationService, productService.positronVersion, false)
+					// --- End Positron ---
+					.then(undefined, () => {
+						notificationService.prompt(
+							severity.Info,
+							nls.localize('read the release notes', "Welcome to {0} v{1}! Would you like to read the Release Notes?", productService.nameLong, productService.positronVersion),
+							[{
+								label: nls.localize('releaseNotes', "Release Notes"),
+								run: () => {
+									// view release notes on the Positron website
+									const uri = URI.parse(releaseNotesUrl);
+									openerService.open(uri);
+								}
+							}],
+							{ priority: NotificationPriority.OPTIONAL }
+						);
+					});
+			}
+
+			storageService.store(ProductContribution.KEY, productService.positronVersion, StorageScope.APPLICATION, StorageTarget.MACHINE);
+			// --- End Positron ---
+		});
+	}
+}
+
+export class UpdateContribution extends Disposable implements IWorkbenchContribution {
+
+	private state: UpdateState;
+	private readonly badgeDisposable = this._register(new MutableDisposable());
+	private updateStateContextKey: IContextKey<string>;
+	private majorMinorUpdateAvailableContextKey: IContextKey<boolean>;
+	// --- Start Positron ---
+	private explicitCheck: boolean = false;
+	private readonly notificationThrottle = new UpdateNotificationThrottle();
+	// --- End Positron ---
+
+	constructor(
+		// --- Start Positron ---
+		// Positron's customizations call this.notificationService / this.configurationService /
+		// this.storageService inside methods that upstream removed or moved. Keep them injected
+		// as private fields until those flows are reconciled.
+		@IStorageService private readonly storageService: IStorageService,
+		// --- End Positron ---
+		@IInstantiationService private readonly instantiationService: IInstantiationService,
+		@IUpdateService private readonly updateService: IUpdateService,
+		@IActivityService private readonly activityService: IActivityService,
+		@IContextKeyService contextKeyService: IContextKeyService,
+		@IProductService private readonly productService: IProductService,
+		// --- Start Positron ---
+		@INotificationService private readonly notificationService: INotificationService,
+		@IConfigurationService private readonly configurationService: IConfigurationService,
+		// --- End Positron ---
+	) {
+		super();
+		this.state = updateService.state;
+		this.updateStateContextKey = CONTEXT_UPDATE_STATE.bindTo(contextKeyService);
+		this.majorMinorUpdateAvailableContextKey = MAJOR_MINOR_UPDATE_AVAILABLE.bindTo(contextKeyService);
+
+		this._register(updateService.onStateChange(this.onUpdateStateChange, this));
+		this.onUpdateStateChange(this.updateService.state);
+
+		/*
+		The `update/lastKnownVersion` and `update/updateNotificationTime` storage keys are used in
+		combination to figure out when to show a message to the user that he should update.
+
+		This message should appear if the user has received an update notification but hasn't
+		updated since 5 days.
+		*/
+
+		const currentVersion = this.productService.commit;
+		const lastKnownVersion = storageService.get('update/lastKnownVersion', StorageScope.APPLICATION);
+
+		// if current version != stored version, clear both fields
+		if (currentVersion !== lastKnownVersion) {
+			storageService.remove('update/lastKnownVersion', StorageScope.APPLICATION);
+			storageService.remove('update/updateNotificationTime', StorageScope.APPLICATION);
+		}
+
+		this.registerGlobalActivityActions();
+	}
+
+	private async onUpdateStateChange(state: UpdateState): Promise<void> {
+		this.updateStateContextKey.set(state.type);
+
+		switch (state.type) {
+			// --- Start Positron ---
+			case StateType.CheckingForUpdates:
+				// Track whether this is a manual check so we can show notifications appropriately
+				// Once set to true, keep it true until the update flow completes
+				// (Don't let automatic checks reset an explicit check in progress)
+				if (state.explicit) {
+					this.explicitCheck = true;
+				}
+				break;
+			// --- End Positron ---
+
+
+			// --- Start Positron ---
+			case StateType.Idle:
+				if (this.state.type === StateType.CheckingForUpdates && this.state.explicit && !state.error) {
+					this.onUpdateNotAvailable();
+				}
+				// Only reset explicit check flag if we actually returned to idle (no update available)
+				// Keep it true if we're in an update flow (downloading, ready, etc.)
+				if (this.state.type === StateType.CheckingForUpdates) {
+					this.explicitCheck = false;
+				}
+				break;
+			// --- End Positron ---
+
+			// --- Start Positron ---
+			case StateType.AvailableForDownload:
+				this.onUpdateAvailable(state.update);
+				break;
+
+			case StateType.Downloading:
+				// With auto-update, we go directly from CheckingForUpdates to Downloading
+				// Show notification for explicit checks since they never see AvailableForDownload
+				if (this.explicitCheck) {
+					this.onUpdateDownloading();
+				}
+				break;
+
+			case StateType.Downloaded:
+				this.onUpdateDownloaded(state.update);
+				break;
+			// --- End Positron ---
+
+
+			case StateType.Ready: {
+				// --- Start Positron ---
+				// const productVersion = state.update.productVersion;
+				// Use version fallback like we do elsewhere
+				const productVersion = state.update.productVersion || state.update.version;
+				if (productVersion) {
+					// --- Start Positron ---
+					// Use Positron's calver `parseVersion` and tolerate failures (we still want
+					// to surface the update notification even if we can't compute major/minor).
+					try {
+						const currentVersion = parseVersion(this.productService.version);
+						const nextVersion = parseVersion(productVersion);
+						const isMajorMinor = Boolean(currentVersion && nextVersion && isMajorMinorUpdate(currentVersion, nextVersion));
+						this.majorMinorUpdateAvailableContextKey.set(isMajorMinor);
+					} catch (e) {
+						this.majorMinorUpdateAvailableContextKey.set(false);
+					}
+					this.onUpdateReady(state.update);
+				} else {
+					try {
+						this.onUpdateReady(state.update);
+					} catch (e) {
+					}
+				}
+
+				// Reset explicitCheck after showing the Ready notification — the manual check flow is now complete.
+				this.explicitCheck = false;
+				// --- End Positron ---
+				break;
+			}
+		}
+
+		let badge: IBadge | undefined = undefined;
+
+		if (state.type === StateType.AvailableForDownload || state.type === StateType.Downloaded || state.type === StateType.Ready) {
+			badge = new NumberBadge(1, () => nls.localize('updateIsReady', "New {0} update available.", this.productService.nameShort));
+		} else if (state.type === StateType.CheckingForUpdates) {
+			badge = new ProgressBadge(() => nls.localize('checkingForUpdates', "Checking for {0} updates...", this.productService.nameShort));
+		} else if (state.type === StateType.Downloading) {
+			badge = new ProgressBadge(() => nls.localize('downloading', "Downloading {0} update...", this.productService.nameShort));
+		} else if (state.type === StateType.Updating) {
+			badge = new ProgressBadge(() => nls.localize('updating', "Updating {0}...", this.productService.nameShort));
+		} else if (state.type === StateType.Cancelling) {
+			badge = new ProgressBadge(() => nls.localize('cancellingUpdate', "Cancelling {0} update...", this.productService.nameShort));
+		}
+
+		this.badgeDisposable.clear();
+
+		if (badge) {
+			this.badgeDisposable.value = this.activityService.showGlobalActivity({ badge });
+		}
+
+		this.state = state;
+	}
+
+	// --- Start Positron ---
+	private onUpdateNotAvailable(): void {
+		// Surface the result of an explicit "Check for Updates" when no update is available.
+		this.notificationService.notify({
+			severity: Severity.Info,
+			message: nls.localize('noUpdatesAvailable', "There are currently no updates available."),
+			priority: NotificationPriority.OPTIONAL,
+			source: UPDATE_NOTIFICATION_SOURCE,
+		});
+	}
+
+	private onUpdateDownloading(): void {
+		// Show notification when downloading starts (macOS auto-update flow)
+		this.notificationService.notify({
+			severity: Severity.Info,
+			message: nls.localize('updateDownloading', "Downloading update... You'll be notified when it's ready to install."),
+			priority: NotificationPriority.URGENT,
+			sticky: false, // Auto-dismiss since we'll show another notification when ready
+			source: UPDATE_NOTIFICATION_SOURCE,
+		});
+	}
+	// --- End Positron ---
+
+	// linux
+	private onUpdateAvailable(update: IUpdate): void {
+		if (!this.shouldShowNotification()) {
+			return;
+		}
+
+		const productVersion = update.productVersion;
+		if (!productVersion) {
+			return;
+		}
+
+		// --- Start Positron ---
+		// Cap repeats at one notification per pending version per window session.
+		// Checked here, below the early return above, so we only ever record a
+		// notification we actually showed.
+		if (!this.explicitCheck && !this.notificationThrottle.shouldNotify('availableForDownload', update)) {
+			return;
+		}
+		// --- End Positron ---
+
+		this.notificationService.prompt(
+			severity.Info,
+			nls.localize('thereIsUpdateAvailable', "There is an available update."),
+			[{
+				label: nls.localize('download update', "Download Update"),
+				run: () => this.updateService.downloadUpdate(true)
+			}, {
+				label: nls.localize('later', "Later"),
+				run: () => { }
+			}, {
+				label: nls.localize('releaseNotes', "Release Notes"),
+				run: () => {
+					this.instantiationService.invokeFunction(accessor => showReleaseNotes(accessor, productVersion));
+				}
+			}],
+			// --- Start Positron ---
+			// { priority: NotificationPriority.OPTIONAL }
+			{ priority: NotificationPriority.OPTIONAL, source: UPDATE_NOTIFICATION_SOURCE }
+			// --- End Positron ---
+		);
+	}
+
+	// windows fast updates
+	private onUpdateDownloaded(update: IUpdate): void {
+		if (isMacintosh) {
+			return;
+		}
+		if (this.configurationService.getValue('update.enableWindowsBackgroundUpdates') && this.productService.target === 'user') {
+			return;
+		}
+
+		// --- Start Positron ---
+		// if (!this.shouldShowNotification()) {
+		// Always show notification for manual checks, otherwise respect the throttle
+		if (!this.explicitCheck && !this.shouldShowNotification()) {
+			// --- End Positron ---
+			return;
+		}
+
+		const productVersion = update.productVersion;
+		if (!productVersion) {
+			return;
+		}
+
+		// --- Start Positron ---
+		// Cap repeats at one notification per pending version per window session.
+		// Checked here, below the early return above, so we only ever record a
+		// notification we actually showed.
+		if (!this.explicitCheck && !this.notificationThrottle.shouldNotify('downloaded', update)) {
+			return;
+		}
+		// --- End Positron ---
+
+		this.notificationService.prompt(
+			severity.Info,
+			nls.localize('updateAvailable', "There's an update available: {0} {1}", this.productService.nameLong, productVersion),
+			[{
+				label: nls.localize('installUpdate', "Install Update"),
+				run: () => this.updateService.applyUpdate()
+			}, {
+				label: nls.localize('later', "Later"),
+				run: () => { }
+			}, {
+				label: nls.localize('releaseNotes', "Release Notes"),
+				run: () => {
+					this.instantiationService.invokeFunction(accessor => showReleaseNotes(accessor, productVersion));
+				}
+			}],
+			// --- Start Positron ---
+			// { priority: NotificationPriority.OPTIONAL }
+			{
+				priority: this.explicitCheck ? NotificationPriority.URGENT : NotificationPriority.OPTIONAL,
+				sticky: this.explicitCheck,
+				source: UPDATE_NOTIFICATION_SOURCE
+			}
+			// --- End Positron ---
+		);
+	}
+
+	// windows and mac
+	private onUpdateReady(update: IUpdate): void {
+		// --- Start Positron ---
+		// Always show for: Windows system-wide installs OR manual checks
+		// Otherwise respect the throttle
+		const isWindowsSystemWide = isWindows && this.productService.target !== 'user';
+		if (!isWindowsSystemWide && !this.explicitCheck && !this.shouldShowNotification()) {
+			return;
+		}
+
+		// Then cap repeats at one notification per pending version per window
+		// session. The update service can re-enter `Ready` indefinitely for a
+		// single pending update, and upstream's staleness gate above has no
+		// ceiling once it opens. See #15031.
+		//
+		// Unlike that gate, this cap also applies to Windows system-wide
+		// installs, which are just as capable of storming. Only an explicit
+		// "Check for Updates" skips it, because the user asked just now.
+		if (!this.explicitCheck && !this.notificationThrottle.shouldNotify('ready', update)) {
+			return;
+		}
+		// --- End Positron ---
+
+		const actions = [{
+			label: nls.localize('updateNow', "Update Now"),
+			run: () => this.updateService.quitAndInstall()
+		}, {
+			label: nls.localize('later', "Later"),
+			run: () => { }
+		}];
+
+		const productVersion = update.productVersion;
+		if (productVersion) {
+			actions.push({
+				label: nls.localize('releaseNotes', "Release Notes"),
+				run: () => {
+					this.instantiationService.invokeFunction(accessor => showReleaseNotes(accessor, productVersion));
+				}
+			});
+		}
+		// --- Start Positron ---
+		// Show prominent notification with version information
+		const message = productVersion
+			? nls.localize('updateReadyWithVersions', "{0} {1} update is now ready. Restart to apply.", this.productService.nameLong, productVersion)
+			: nls.localize('updateAvailableAfterRestart', "Restart {0} to apply the latest update.", this.productService.nameLong);
+		// --- End Positron ---
+
+		// windows user fast updates and mac
+		this.notificationService.prompt(
+			severity.Info,
+			// --- Start Positron ---
+			// nls.localize('updateAvailableAfterRestart', "Restart {0} to apply the latest update.", this.productService.nameLong),
+			message,
+			// --- End Positron ---
+			actions,
+			{
+				sticky: true,
+				// --- Start Positron ---
+				// priority: NotificationPriority.OPTIONAL
+				priority: this.explicitCheck ? NotificationPriority.URGENT : NotificationPriority.OPTIONAL,
+				source: UPDATE_NOTIFICATION_SOURCE
+				// --- End Positron ---
+
+			}
+		);
+	}
+
+	private shouldShowNotification(): boolean {
+		const currentVersion = this.productService.commit;
+		const currentMillis = new Date().getTime();
+		const lastKnownVersion = this.storageService.get('update/lastKnownVersion', StorageScope.APPLICATION);
+
+		// if version != stored version, save version and date
+		if (currentVersion !== lastKnownVersion) {
+			this.storageService.store('update/lastKnownVersion', currentVersion, StorageScope.APPLICATION, StorageTarget.MACHINE);
+			this.storageService.store('update/updateNotificationTime', currentMillis, StorageScope.APPLICATION, StorageTarget.MACHINE);
+		}
+
+		const updateNotificationMillis = this.storageService.getNumber('update/updateNotificationTime', StorageScope.APPLICATION, currentMillis);
+		const diffDays = (currentMillis - updateNotificationMillis) / (1000 * 60 * 60 * 24);
+
+		return diffDays > 5;
+	}
+	// --- End Positron ---
+
+	private registerGlobalActivityActions(): void {
+		CommandsRegistry.registerCommand('update.check', () => this.updateService.checkForUpdates(true));
+		CommandsRegistry.registerCommand('update.checking', () => { });
+		CommandsRegistry.registerCommand('update.downloadNow', () => this.updateService.downloadUpdate(true));
+		CommandsRegistry.registerCommand('update.downloading', () => { });
+		CommandsRegistry.registerCommand('update.install', () => this.updateService.applyUpdate());
+		CommandsRegistry.registerCommand('update.updating', () => { });
+		CommandsRegistry.registerCommand('update.cancelling', () => { });
+		CommandsRegistry.registerCommand('update.restart', () => this.updateService.quitAndInstall());
+		CommandsRegistry.registerCommand('_update.state', () => {
+			return this.state;
+		});
+
+		appendUpdateMenuItems(MenuId.GlobalActivity, '7_update');
+
+		if (this.productService.quality === 'stable') {
+			CommandsRegistry.registerCommand('update.showUpdateReleaseNotes', () => {
+				if (this.updateService.state.type !== StateType.Ready) {
+					return;
+				}
+
+				const productVersion = this.updateService.state.update.productVersion;
+				if (productVersion) {
+					this.instantiationService.invokeFunction(accessor => showReleaseNotes(accessor, productVersion));
+				}
+
+			});
+			MenuRegistry.appendMenuItem(MenuId.GlobalActivity, {
+				group: '7_update',
+				order: 1,
+				command: {
+					id: 'update.showUpdateReleaseNotes',
+					title: nls.localize('showUpdateReleaseNotes', "Show Update Release Notes")
+				},
+				when: ContextKeyExpr.and(CONTEXT_UPDATE_STATE.isEqualTo(StateType.Ready), MAJOR_MINOR_UPDATE_AVAILABLE)
+			});
+		}
+	}
+}
+
+export class SwitchProductQualityContribution extends Disposable implements IWorkbenchContribution {
+
+	constructor(
+		@IProductService private readonly productService: IProductService,
+		@IBrowserWorkbenchEnvironmentService private readonly environmentService: IBrowserWorkbenchEnvironmentService
+	) {
+		super();
+
+		this.registerGlobalActivityActions();
+	}
+
+	private registerGlobalActivityActions(): void {
+		const quality = this.productService.quality;
+		const productQualityChangeHandler = this.environmentService.options?.productQualityChangeHandler;
+		if (productQualityChangeHandler && (quality === 'stable' || quality === 'insider')) {
+			const newQuality = quality === 'stable' ? 'insider' : 'stable';
+			const commandId = `update.switchQuality.${newQuality}`;
+			const isSwitchingToInsiders = newQuality === 'insider';
+			this._register(registerAction2(class SwitchQuality extends Action2 {
+				constructor() {
+					super({
+						id: commandId,
+						title: isSwitchingToInsiders ? nls.localize('switchToInsiders', "Switch to Insiders Version...") : nls.localize('switchToStable', "Switch to Stable Version..."),
+						precondition: IsWebContext,
+						menu: {
+							id: MenuId.GlobalActivity,
+							when: IsWebContext,
+							group: '7_update',
+						}
+					});
+				}
+
+				async run(accessor: ServicesAccessor): Promise<void> {
+					const dialogService = accessor.get(IDialogService);
+					const userDataSyncEnablementService = accessor.get(IUserDataSyncEnablementService);
+					const userDataSyncStoreManagementService = accessor.get(IUserDataSyncStoreManagementService);
+					const storageService = accessor.get(IStorageService);
+					const userDataSyncWorkbenchService = accessor.get(IUserDataSyncWorkbenchService);
+					const userDataSyncService = accessor.get(IUserDataSyncService);
+					const notificationService = accessor.get(INotificationService);
+
+					try {
+						const selectSettingsSyncServiceDialogShownKey = 'switchQuality.selectSettingsSyncServiceDialogShown';
+						const userDataSyncStore = userDataSyncStoreManagementService.userDataSyncStore;
+						let userDataSyncStoreType: UserDataSyncStoreType | undefined;
+						if (userDataSyncStore && isSwitchingToInsiders && userDataSyncEnablementService.isEnabled()
+							&& !storageService.getBoolean(selectSettingsSyncServiceDialogShownKey, StorageScope.APPLICATION, false)) {
+							userDataSyncStoreType = await this.selectSettingsSyncService(dialogService);
+							if (!userDataSyncStoreType) {
+								return;
+							}
+							storageService.store(selectSettingsSyncServiceDialogShownKey, true, StorageScope.APPLICATION, StorageTarget.USER);
+							if (userDataSyncStoreType === 'stable') {
+								// Update the stable service type in the current window, so that it uses stable service after switched to insiders version (after reload).
+								await userDataSyncStoreManagementService.switch(userDataSyncStoreType);
+							}
+						}
+
+						const res = await dialogService.confirm({
+							type: 'info',
+							message: nls.localize('relaunchMessage', "Changing the version requires a reload to take effect"),
+							detail: newQuality === 'insider' ?
+								nls.localize('relaunchDetailInsiders', "Press the reload button to switch to the Insiders version of VS Code.") :
+								nls.localize('relaunchDetailStable', "Press the reload button to switch to the Stable version of VS Code."),
+							primaryButton: nls.localize({ key: 'reload', comment: ['&& denotes a mnemonic'] }, "&&Reload")
+						});
+
+						if (res.confirmed) {
+							const promises: Promise<unknown>[] = [];
+
+							// If sync is happening wait until it is finished before reload
+							if (userDataSyncService.status === SyncStatus.Syncing) {
+								promises.push(Event.toPromise(Event.filter(userDataSyncService.onDidChangeStatus, status => status !== SyncStatus.Syncing)));
+							}
+
+							// If user chose the sync service then synchronise the store type option in insiders service, so that other clients using insiders service are also updated.
+							if (isSwitchingToInsiders && userDataSyncStoreType) {
+								promises.push(userDataSyncWorkbenchService.synchroniseUserDataSyncStoreType());
+							}
+
+							await Promises.settled(promises);
+
+							productQualityChangeHandler(newQuality);
+						} else {
+							// Reset
+							if (userDataSyncStoreType) {
+								storageService.remove(selectSettingsSyncServiceDialogShownKey, StorageScope.APPLICATION);
+							}
+						}
+					} catch (error) {
+						notificationService.error(error);
+					}
+				}
+
+				private async selectSettingsSyncService(dialogService: IDialogService): Promise<UserDataSyncStoreType | undefined> {
+					const { result } = await dialogService.prompt<UserDataSyncStoreType>({
+						type: Severity.Info,
+						message: nls.localize('selectSyncService.message', "Choose the settings sync service to use after changing the version"),
+						detail: nls.localize('selectSyncService.detail', "The Insiders version of VS Code will synchronize your settings, keybindings, extensions, snippets and UI State using separate insiders settings sync service by default."),
+						buttons: [
+							{
+								label: nls.localize({ key: 'use insiders', comment: ['&& denotes a mnemonic'] }, "&&Insiders"),
+								run: () => 'insiders'
+							},
+							{
+								label: nls.localize({ key: 'use stable', comment: ['&& denotes a mnemonic'] }, "&&Stable (current)"),
+								run: () => 'stable'
+							}
+						],
+						cancelButton: true
+					});
+					return result;
+				}
+			}));
+		}
+	}
+}
+
+export class DefaultAccountUpdateContribution extends Disposable implements IWorkbenchContribution {
+
+	private static readonly STORAGE_KEY = 'update/internalOrg';
+	#internalOrg: string | undefined = undefined;
+	private throttler: Throttler = this._register(new Throttler());
+
+	constructor(
+		@IUpdateService private readonly updateService: IUpdateService,
+		@IDefaultAccountService private readonly defaultAccountService: IDefaultAccountService,
+		@IStorageService private readonly storageService: IStorageService
+	) {
+		super();
+
+		if (isWeb) {
+			return; // Electron only
+		}
+
+		this.#internalOrg = this.storageService.get(DefaultAccountUpdateContribution.STORAGE_KEY, StorageScope.APPLICATION, undefined);
+		this.throttler.queue(() => this.updateService.setInternalOrg(this.#internalOrg));
+
+		// Check on startup
+		this.refresh();
+
+		// Listen for account changes
+		this._register(this.defaultAccountService.onDidChangeDefaultAccount(() => this.refresh()));
+	}
+
+	private refresh(): void {
+		this.throttler.queue(() => this.doRefresh());
+	}
+
+	private async doRefresh(): Promise<void> {
+		try {
+			const defaultAccount = await this.defaultAccountService.getDefaultAccount();
+			const internalOrg = getInternalOrg(defaultAccount?.entitlementsData?.organization_login_list);
+
+			if (internalOrg === this.#internalOrg) {
+				return;
+			}
+
+			this.#internalOrg = internalOrg;
+			await this.updateService.setInternalOrg(this.#internalOrg);
+
+			if (this.#internalOrg) {
+				this.storageService.store(DefaultAccountUpdateContribution.STORAGE_KEY, internalOrg, StorageScope.APPLICATION, StorageTarget.MACHINE);
+			} else {
+				this.storageService.remove(DefaultAccountUpdateContribution.STORAGE_KEY, StorageScope.APPLICATION);
+			}
+		} catch (error) {
+			// Silently ignore errors - if we can't get the account, we don't disable background updates
+		}
+	}
+}

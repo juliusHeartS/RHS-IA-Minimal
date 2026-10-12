@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "About RHS-IA"
+---
+
+RHS-IA is an integrated development environment focused on data analysis and scientific computing. It brings source editing, terminals, source control, Python and R runtimes, notebooks, executable documents, variables, plots, and data exploration into one workbench.
+
+This bundled guide documents the RHS-IA software available in the current build. Features supplied by third-party extensions can have separate documentation and support terms.
+
+See [Documentation Attribution and License](documentation-license.qmd) for the provenance and reuse terms of this guide.

@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Desarrollo de extensiones"
+---
+
+RHS-IA admite extensiones creadas para su API de extensiones compatible. Empieza con un proyecto de extensión, declara las contribuciones y el comportamiento de activación en `package.json` e implementa el punto de entrada del host de la extensión.
+
+Presiona F5 desde un espacio de trabajo de extensión para iniciar un Extension Development Host. Usa el registro del host de la extensión, las herramientas de desarrollo y las pruebas automatizadas para diagnosticar problemas de activación y contribuciones.
+
+Usa únicamente las API presentes en la compilación de RHS-IA a la que te diriges. Empaqueta la extensión como VSIX para instalarla localmente y pruébala en un perfil limpio antes de distribuirla.

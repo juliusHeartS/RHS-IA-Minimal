@@ -1,0 +1,6 @@
+{
+	"description": "Notificaciones para subidas y descargas de archivos",
+	"displayName": "Transferencia de archivos",
+	"fileTransfer.configuration.showNotifications.description": "Mostrar una notificación cuando un archivo es cargado o descargado desde el espacio de trabajo a través del explorador de archivos.",
+	"fileTransfer.configuration.title": "Transferencia de archivos"
+}

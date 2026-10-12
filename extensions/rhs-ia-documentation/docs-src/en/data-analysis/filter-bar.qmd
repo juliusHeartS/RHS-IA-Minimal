@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Data Explorer Filter Bar"
+---
+
+The filter bar narrows the displayed rows without changing the source object. Add a filter, choose a column and condition, and enter the comparison value. Multiple active filters are combined by the viewer.
+
+Conditions vary by data type. Text, numeric, logical, date, and missing values expose different operations. Invalid values are reported before a filter is applied.
+
+Disable or remove a filter to restore rows. Translate important exploratory filters into source code before sharing or rerunning an analysis.

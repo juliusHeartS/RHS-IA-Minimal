@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Administración de paquetes"
+---
+
+La vista **Packages** muestra los paquetes del tiempo de ejecución activo de Python o R y ofrece acciones compatibles para instalarlos, actualizarlos, quitarlos y cargarlos. Las operaciones de paquetes se ejecutan en el entorno de esa sesión.
+
+Confirma el intérprete activo antes de cambiar paquetes. Para proyectos reproducibles, usa un entorno del proyecto y el archivo de bloqueo de dependencias o de requisitos del lenguaje en lugar de depender solo de la biblioteca global.
+
+Reinicia el tiempo de ejecución si un paquete instalado no se puede importar inmediatamente, especialmente después de cambiar dependencias compiladas o rutas de bibliotecas.

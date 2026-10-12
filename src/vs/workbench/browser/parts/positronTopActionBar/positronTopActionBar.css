@@ -1,0 +1,37 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2022-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.top-action-bar-container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	padding-right: 8px;
+	align-items: center;
+	box-sizing: border-box;
+	background-color: var(--vscode-positronActionBar-background);
+	border-bottom: 1px solid var(--vscode-positronActionBar-border);
+}
+
+.positron-top-bar-logo {
+	width: 182px;
+	height: 64px;
+	padding-left: 16px;
+	padding-right: 16px;
+	box-sizing: content-box;
+	background-origin: content-box;
+	background-clip: content-box;
+	flex-shrink: 0;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.vs .positron-top-bar-logo, .hc-light .positron-top-bar-logo {
+	background-image: url('../../media/rhs-logo.svg');
+}
+
+.vs-dark .positron-top-bar-logo, .hc-black .positron-top-bar-logo {
+	background-image: url('../../media/rhs-logo-dark.svg');
+}

@@ -1,0 +1,24 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Preguntas frecuentes"
+---
+
+## ¿La documentación requiere conexión a internet? {#does-documentation-require-internet-access}
+
+No. Las páginas del producto, los estilos y las imágenes están incluidos con RHS-IA. Solo las referencias HTTPS externas seleccionadas explícitamente usan tu navegador.
+
+## ¿Por qué falta mi intérprete? {#why-is-my-interpreter-missing}
+
+Confirma que se ejecute en un terminal, actualiza la detección de intérpretes y vuelve a cargar la ventana. Los espacios de trabajo remotos detectan los intérpretes en el host remoto.
+
+## ¿Dónde están mis variables o gráficos? {#where-did-my-variables-or-plots-go}
+
+Pertenecen a una sesión de tiempo de ejecución. Selecciona la sesión correcta o vuelve a ejecutar el código fuente después de reiniciar.
+
+## ¿Cómo restablezco la interfaz? {#how-do-i-reset-the-interface}
+
+Usa la acción de restablecimiento de la distribución en la **Paleta de comandos** y vuelve a abrir la vista necesaria por su nombre.

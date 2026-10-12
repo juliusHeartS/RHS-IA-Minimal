@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Air para R"
+---
+
+RHS-IA incluye herramientas de lenguaje R basadas en Air cuando la extensión incluida está habilitada. Proporciona funciones del editor, como diagnósticos y formato, sin requerir una consola de R activa para cada operación.
+
+Usa **Dar formato al documento** o la configuración de formato al guardar para aplicar el estilo configurado. Los diagnósticos aparecen en el editor y en la vista **Problemas**. La configuración del espacio de trabajo puede sustituir la configuración del usuario para un proyecto.
+
+Si los resultados difieren de la sesión de R en ejecución, confirma que ambas herramientas usen los archivos del proyecto y el contexto de biblioteca previstos; después revisa los registros de R y de la extensión.

@@ -1,0 +1,4 @@
+{
+	"No selected file to open in the browser. Open an HTML file in an editor before running this command.": "No hay ningún archivo seleccionado para abrir en el navegador. Abra un archivo HTML en un editor antes de ejecutar este comando.",
+	"The file {0} does not appear to be an HTML file, so it will not be opened in the browser.": "El archivo {0} no parece ser un archivo HTML, por lo que no se abrirá en el navegador."
+}

@@ -1,0 +1,155 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.configure-data-connection-container {
+	/* padding: 16px; */
+	/* border-radius: 6px; */
+	/* border: 1px solid var(--vscode-widget-border); */
+}
+
+.configure-data-connection {
+	gap: 8px;
+	display: flex;
+	flex-direction: column;
+}
+
+.configure-data-connection .driver-header {
+	gap: 6px;
+	display: flex;
+	/* padding: 10px; */
+	border-radius: 6px;
+	align-items: center;
+	/* background: var(--vscode-sideBar-background); */
+	/* border: 1px solid var(--vscode-widget-border); */
+}
+
+.configure-data-connection .driver-header-badge {
+	width: 20px;
+	height: 20px;
+	display: flex;
+	flex-shrink: 0;
+	border-radius: 3px;
+	align-items: center;
+	background: #f8f8f8;
+	justify-content: center;
+	border: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.configure-data-connection .driver-header-icon {
+	width: 16px;
+	height: 16px;
+	object-fit: contain;
+}
+
+.configure-data-connection .driver-header-name {
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.configure-data-connection .parameter-field {
+	gap: 2px;
+	display: flex;
+	flex-direction: column;
+}
+
+/*
+ * Every other parameter is a label line above a control, and the 8px gap between fields separates
+ * those pairs. A checkbox carries its label inline, so it has no label line to act as its header and
+ * the bare gap leaves it reading as part of the field above it. The extra space stands in for the
+ * missing line, putting the checkbox back in the same rhythm as its neighbors.
+ */
+.configure-data-connection .parameter-checkbox-field {
+	margin-top: 6px;
+}
+
+.configure-data-connection .parameter-label {
+	font-size: 11px;
+	color: var(--vscode-descriptionForeground);
+}
+
+.configure-data-connection .parameter-description {
+	font-size: 11px;
+	opacity: 0.8;
+	margin-top: 2px;
+	color: var(--vscode-descriptionForeground);
+}
+
+.configure-data-connection .parameter-optional {
+	margin-left: 4px;
+	opacity: 0.7;
+	font-style: italic;
+}
+
+.configure-data-connection .parameter-input {
+	width: 100%;
+	padding: 4px 6px;
+	/* font-size: 13px; */
+	border-radius: 4px;
+	box-sizing: border-box;
+	color: var(--vscode-input-foreground);
+	background: var(--vscode-input-background);
+	border: 1px solid var(--vscode-input-border);
+}
+
+/* Override Chromium's default focus outline (which uses a different color for password fields). */
+.configure-data-connection .parameter-input:focus {
+	outline: 1px solid var(--vscode-focusBorder);
+	outline-offset: 0;
+}
+
+.configure-data-connection .parameter-input.error {
+	outline: 1px solid var(--vscode-inputValidation-errorBorder);
+	outline-offset: 1px;
+}
+
+.configure-data-connection .parameter-input.error:focus {
+	box-shadow: 0 0 0 1px var(--vscode-focusBorder);
+	outline: 1px solid var(--vscode-inputValidation-errorBorder);
+	outline-offset: 2px;
+}
+
+/* File parameter: text input paired with a Browse button on one row. */
+.configure-data-connection .parameter-file-input {
+	gap: 6px;
+	display: flex;
+	align-items: stretch;
+}
+
+.configure-data-connection .parameter-file-input .parameter-input {
+	flex: 1;
+	min-width: 0;
+}
+
+.configure-data-connection .parameter-file-input .browse-button {
+	padding: 0 8px;
+	white-space: nowrap;
+	border-radius: 4px;
+	color: var(--vscode-positronModalDialog-buttonForeground);
+	background: var(--vscode-positronModalDialog-buttonBackground);
+	border: 1px solid var(--vscode-button-border);
+}
+
+.configure-data-connection .parameter-file-input .browse-button:focus {
+	outline: none !important;
+}
+
+.configure-data-connection .parameter-file-input .browse-button:focus-visible {
+	outline-offset: 2px;
+	outline: 1px solid var(--vscode-focusBorder) !important;
+}
+
+/*
+ * The select sits inside a .select-container, whose pseudo-element draws the workbench dropdown
+ * chevron over the right edge. Keep the text clear of it so a long option (an ODBC driver name,
+ * say) is truncated rather than running underneath.
+ */
+.configure-data-connection .parameter-select {
+	height: 26px;
+	padding-right: 24px;
+}
+
+.configure-data-connection .parameter-checkbox {
+	margin: 0;
+}

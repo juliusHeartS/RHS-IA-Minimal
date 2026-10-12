@@ -1,0 +1,276 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import test, { expect, Locator } from '@playwright/test';
+import { Code } from '../infra/code';
+
+const QUICK_INPUT_LIST = '.quick-input-widget .quick-input-list';
+
+export class QuickInput {
+	private static QUICK_INPUT = '.quick-input-widget';
+	private static QUICK_INPUT_INPUT = `${QuickInput.QUICK_INPUT} .quick-input-box input`;
+	private static QUICK_INPUT_RESULT = `${QuickInput.QUICK_INPUT} .quick-input-list .monaco-list-row`;
+	// Note: this only grabs the label and not the description or detail
+	static readonly QUICK_INPUT_ENTRY_LABEL = `${this.QUICK_INPUT_RESULT} .quick-input-list-row > .monaco-icon-label .label-name`;
+	private static quickInputActionButton(label: string): string {
+		return `.quick-input-widget .quick-input-action a:has-text('${label}')`;
+	}
+	quickInputList: Locator;
+	quickInput: Locator;
+	quickInputTitleBar: Locator;
+	quickInputResult: Locator;
+	widget: Locator;
+
+	constructor(private code: Code) {
+		this.quickInputList = this.code.driver.currentPage.locator(QUICK_INPUT_LIST);
+		this.quickInput = this.code.driver.currentPage.locator(
+			QuickInput.QUICK_INPUT_INPUT,
+		);
+		this.quickInputTitleBar =
+			this.code.driver.currentPage.locator(`.quick-input-title`);
+		this.quickInputResult = this.code.driver.currentPage.locator(
+			QuickInput.QUICK_INPUT_RESULT,
+		);
+		this.widget = this.code.driver.currentPage.locator(QuickInput.QUICK_INPUT);
+	}
+
+	/**
+	 * Locator for a quick-pick row whose aria-label starts with `prefix`.
+	 * Monaco-list rows are virtualized, so aria-label is the most stable
+	 * way to address a specific item without relying on DOM index.
+	 */
+	rowByAriaLabelPrefix(prefix: string): Locator {
+		return this.code.driver.currentPage.locator(
+			`${QUICK_INPUT_LIST} .monaco-list-row[aria-label^="${prefix}"]`,
+		);
+	}
+
+	/**
+	 * Press ArrowDown until every passed row is rendered in the picker. Use
+	 * when a screenshot needs alphabetical neighbors visible together (the
+	 * virtualized window only renders ~20 rows, so simply scrolling to one
+	 * target may leave neighbors below it un-rendered).
+	 *
+	 * Wheel-scroll the picker isn't reliable across platforms (no-ops in
+	 * Linux CI), so we drive selection through the keyboard.
+	 */
+	async scrollIntoView(
+		rows: Locator[],
+		options?: { timeout?: number; intervalMs?: number },
+	): Promise<void> {
+		const timeout = options?.timeout ?? 60_000;
+		const intervalMs = options?.intervalMs ?? 50;
+		await expect(async () => {
+			await this.code.driver.currentPage.keyboard.press('ArrowDown');
+			for (const row of rows) {
+				await expect(row).toBeVisible({ timeout: 100 });
+			}
+		}).toPass({ timeout, intervals: [intervalMs] });
+	}
+
+	async expectTitleBarToHaveText(text: string): Promise<void> {
+		await expect(this.quickInputTitleBar).toHaveText(text);
+	}
+
+	async expectQuickInputResultsToContain(titles: string[]): Promise<void> {
+		await test.step('Verify Quick Input results contain expected title', async () => {
+			for (let i = 0; i < titles.length; i++) {
+				await expect(
+					this.quickInputResult.filter({ hasText: titles[i] }),
+				).toBeVisible();
+			}
+		});
+	}
+
+	/**
+	 * Verify the quick pick offers no entry matching each of the given titles.
+	 *
+	 * Filters the list by each title before asserting. The results list is
+	 * virtualized, so an entry that exists but sits below the fold would read as
+	 * absent and the assertion would pass for the wrong reason.
+	 */
+	async expectQuickInputResultsToNotContain(titles: string[]): Promise<void> {
+		await test.step(`Verify Quick Input results do not contain: ${titles}`, async () => {
+			for (const title of titles) {
+				await this.type(title);
+				await expect(this.quickInputResult.filter({ hasText: title })).toHaveCount(0);
+			}
+			await this.type('');
+		});
+	}
+
+	async waitForQuickInputOpened({
+		timeout = 3000,
+	}: { timeout?: number } = {}): Promise<void> {
+		await expect(
+			this.code.driver.currentPage.locator(QuickInput.QUICK_INPUT_INPUT),
+		).toBeVisible({ timeout });
+	}
+
+	/**
+	 * Wait for the runtime quick pick to finish interpreter discovery before
+	 * interacting with the list. While discovery is in progress the picker sets
+	 * its input placeholder to "Discovering interpreters..." (see
+	 * languageRuntimeActions.ts) and lists only the interpreters found so far.
+	 * Selecting during this window races discovery: a version-string match can
+	 * land on a fast-discovered source (e.g. a uv base install) instead of the
+	 * intended interpreter.
+	 *
+	 * Wait for this picker to be on screen before reading the placeholder: the
+	 * quick input widget is a singleton that an earlier picker (e.g. the reuse
+	 * scan's session quick pick) leaves hidden in the DOM carrying no
+	 * placeholder, so asserting the negative straight away passes against that
+	 * stale element while discovery is still running.
+	 */
+	async waitForInterpreterDiscoveryToComplete({ timeout = 30000 }: { timeout?: number } = {}): Promise<void> {
+		await this.waitForQuickInputOpened({ timeout });
+		await expect(
+			this.code.driver.currentPage.locator(QuickInput.QUICK_INPUT_INPUT),
+		).not.toHaveAttribute('placeholder', /Discovering interpreters/i, { timeout });
+	}
+
+	async type(value: string): Promise<void> {
+		await this.code.driver.currentPage
+			.locator(QuickInput.QUICK_INPUT_INPUT)
+			.selectText();
+		await this.code.driver.currentPage.keyboard.press('Backspace');
+		await this.code.driver.currentPage
+			.locator(QuickInput.QUICK_INPUT_INPUT)
+			.fill(value);
+	}
+
+	async waitForQuickInputElementText(): Promise<string> {
+		const quickInputResult = this.code.driver.currentPage.locator(
+			QuickInput.QUICK_INPUT_RESULT,
+		);
+
+		// Wait for at least one matching element with non-empty text
+		await expect(async () => {
+			const texts = await quickInputResult.allTextContents();
+			return texts.some((text) => text.trim() !== '');
+		}).toPass();
+
+		// Retrieve the text content of the first matching element
+		const text = await quickInputResult.first().textContent();
+		return text?.trim() || '';
+	}
+
+	async closeQuickInput(): Promise<void> {
+		await this.code.driver.currentPage.keyboard.press('Escape');
+		await this.waitForQuickInputClosed();
+	}
+
+	async waitForQuickInputElements(
+		accept: (names: string[]) => boolean,
+	): Promise<void> {
+		const locator = this.code.driver.currentPage.locator(
+			QuickInput.QUICK_INPUT_ENTRY_LABEL,
+		);
+
+		await expect(async () => {
+			const names = await locator.allTextContents();
+			return accept(names);
+		}).toPass();
+	}
+
+	async waitForQuickInputClosed(): Promise<void> {
+		await expect(
+			this.code.driver.currentPage.locator(QuickInput.QUICK_INPUT_INPUT),
+		).not.toBeVisible({ timeout: 5000 });
+	}
+
+	async selectQuickInputElement(
+		index: number,
+		keepOpen?: boolean,
+	): Promise<void> {
+		await this.waitForQuickInputOpened();
+
+		const row = this.code.driver.currentPage
+			.locator(QuickInput.QUICK_INPUT_RESULT)
+			.nth(index);
+		const input = this.code.driver.currentPage.locator(QuickInput.QUICK_INPUT_INPUT);
+		await row.click();
+
+		if (!keepOpen) {
+			// The accept-click occasionally fails to register under parallel-load
+			// focus contention (something steals focus from the picker), leaving it
+			// open. Re-click the row until the picker closes rather than waiting out
+			// a single click; re-accepting the same row is idempotent.
+			await expect(async () => {
+				if (await input.isVisible()) {
+					await row.click();
+				}
+				await expect(input).not.toBeVisible({ timeout: 2000 });
+			}).toPass({ timeout: 15000 });
+		}
+	}
+
+	async selectQuickInputElementContaining(
+		text: string,
+		{ timeout, force = true, deprioritize }: { timeout?: number; force?: boolean; deprioritize?: string[] } = {},
+	): Promise<string> {
+		const matches = this.code.driver.currentPage
+			.locator(`${QuickInput.QUICK_INPUT_RESULT}[aria-label*="${text}"]`);
+
+		// By default select the first matching row. When `deprioritize` is set and
+		// several rows share `text` (e.g. a project venv and a base pyenv both
+		// labeled "Python 3.10.12"), prefer the first row whose aria-label contains
+		// none of the deprioritized source markers. Falls back to the first match
+		// when every match is deprioritized (e.g. a platform where only the base
+		// interpreter is installed).
+		let target = matches.first();
+		if (deprioritize?.length) {
+			await expect(target).toBeVisible({ timeout });
+			const count = await matches.count();
+			for (let i = 0; i < count; i++) {
+				const row = matches.nth(i);
+				const ariaLabel = (await row.getAttribute('aria-label')) ?? '';
+				if (!deprioritize.some(source => ariaLabel.includes(source))) {
+					target = row;
+					break;
+				}
+			}
+		}
+
+		const targetResult =
+			(await target
+				.locator('.quick-input-list-row')
+				.nth(0)
+				.textContent({ timeout })) || '';
+		await target.click({ force, timeout });
+		await this.code.driver.currentPage.mouse.move(0, 0);
+
+		return targetResult.trim();
+	}
+
+	async selectQuickInputElementExact(
+		text: string,
+		{ timeout, force = true }: { timeout?: number; force?: boolean } = {},
+	): Promise<void> {
+		await this.waitForQuickInputOpened();
+		const exactMatch = this.code.driver.currentPage
+			.locator(`${QuickInput.QUICK_INPUT_RESULT}[aria-label="${text}"]`)
+			.first();
+		await expect(exactMatch).toBeVisible({ timeout });
+		await exactMatch.click({ force, timeout });
+		await this.code.driver.currentPage.mouse.move(0, 0);
+	}
+
+	async clickOkButton(label: string = 'OK'): Promise<void> {
+		await this.code.driver.currentPage
+			.locator(QuickInput.quickInputActionButton(label))
+			.click();
+	}
+
+	async toggleCheckbox(text: string): Promise<void> {
+		const row = this.code.driver.currentPage
+			.locator(`${QuickInput.QUICK_INPUT_RESULT}[role="checkbox"][aria-label="${text}"]`);
+		await row.click();
+	}
+
+	async submitInputBox(): Promise<void> {
+		await this.code.driver.currentPage.keyboard.press('Enter');
+	}
+}

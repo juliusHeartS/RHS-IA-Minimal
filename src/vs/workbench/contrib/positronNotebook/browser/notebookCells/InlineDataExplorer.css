@@ -1,0 +1,167 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.inline-data-explorer-container {
+	display: flex;
+	flex-direction: column;
+	/* If you change the border width, update BORDER in quartoInlineDataExplorerLayout.ts */
+	border: 1px solid var(--vscode-panel-border);
+	border-radius: 4px;
+	overflow: hidden;
+	/* height is set via inline style from configuration */
+	margin: 4px 0;
+	/* Drives the @container query that collapses header buttons to icon-only. */
+	container-type: inline-size;
+}
+
+.inline-data-explorer-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 8px;
+	/* If you change the height or border, update TOOLBAR_HEIGHT in quartoInlineDataExplorerLayout.ts */
+	height: 24px; /* Match .positron-notebook-code-cell-footer height */
+	background-color: var(--vscode-editorWidget-background);
+	border-bottom: 1px solid var(--vscode-panel-border);
+	flex-shrink: 0;
+}
+
+/* Reserve right padding to clear the floating .cell-output-action-bar that sits
+over notebook cells on hover. Quarto inline outputs have no such overlay, so
+they leave the modifier off and use the symmetric default.
+TODO(#13012): drop this modifier once the notebook output action bar is replaced
+with the Quarto-style overlay layout. */
+.inline-data-explorer-container--clears-output-actions .inline-data-explorer-header {
+	padding-right: 44px;
+}
+
+.inline-data-explorer-info {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	/* Allow flex children to shrink so the spans below can ellipsis-truncate. */
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.inline-data-explorer-header-actions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	/* Cap actions at 50% so the title side keeps a useful slice when narrow. */
+	max-width: 50%;
+	flex-shrink: 1;
+}
+
+.inline-data-explorer-title,
+.inline-data-explorer-shape {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+.inline-data-explorer-header-actions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.inline-data-explorer-title {
+	font-weight: 500;
+	color: var(--vscode-foreground);
+	flex-shrink: 0;
+}
+
+.inline-data-explorer-shape {
+	font-size: 0.9em;
+	color: var(--vscode-descriptionForeground);
+}
+
+.inline-data-explorer-open-button {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 8px;
+	border: none;
+	background-color: transparent;
+	color: var(--vscode-textLink-foreground);
+	cursor: pointer;
+	font-size: 12px;
+	border-radius: 2px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+	user-select: none;
+}
+
+.inline-data-explorer-open-button > * {
+	/* Make the button the sole hover target so cursor: pointer applies. */
+	pointer-events: none;
+}
+
+.inline-data-explorer-open-button > .codicon {
+	flex-shrink: 0;
+}
+
+.inline-data-explorer-open-button-label {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+/* Collapse header action buttons to icon-only when the container is narrow. */
+@container (max-width: 400px) {
+	.inline-data-explorer-open-button-label {
+		display: none;
+	}
+}
+
+.inline-data-explorer-open-button:hover {
+	background-color: var(--vscode-toolbar-hoverBackground);
+}
+
+.inline-data-explorer-open-button:focus {
+	outline: 1px solid var(--vscode-focusBorder);
+}
+
+.inline-data-explorer-content {
+	flex: 1;
+	overflow: hidden;
+	position: relative;
+}
+
+.inline-data-explorer-loading,
+.inline-data-explorer-disconnected,
+.inline-data-explorer-error {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	height: 100%;
+	min-height: 100px;
+	color: var(--vscode-descriptionForeground);
+	font-style: italic;
+}
+
+.inline-data-explorer-error {
+	color: var(--vscode-errorForeground);
+}
+
+.inline-data-explorer-disconnected .codicon-warning {
+	color: var(--vscode-editorWarning-foreground);
+}
+
+.inline-data-explorer-error .codicon-error {
+	color: var(--vscode-errorForeground);
+}
+
+/* Ensure the data grid takes full space */
+.inline-data-explorer-content .positron-data-grid {
+	height: 100%;
+	width: 100%;
+}

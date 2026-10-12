@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Variables"
+---
+
+The Variables view shows objects in the active runtime session. Entries include a name, type, and compact representation when the runtime can provide one.
+
+Expand supported objects to inspect their children. Use contextual actions to view tabular data, copy values, or remove objects when available. The view updates as code creates and changes variables.
+
+Switching sessions changes the displayed environment. Treat the view as a live inspection tool; source code, not the session object list, is the reproducible record of an analysis.

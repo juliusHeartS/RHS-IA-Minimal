@@ -1,0 +1,25 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+/* Markdown cell rendered output container */
+.positron-notebook-markdown-cell .positron-notebook-cell-outputs {
+	padding-inline: 1rem;
+	padding-block: 1rem; /* Match CellEditorMonacoWidget padding for consistent spacing between cell action bar and rendered text */
+	cursor: pointer; /* Entire area is clickable (to edit markdown cell) */
+
+	/* NOTE: the border and border-radius styles are handled by NotebookCellSelection.css to keep selection styling together */
+
+	/* Empty cell message styling */
+	.empty-output-msg {
+		opacity: 0.75;
+		font-style: italic;
+		text-align: center;
+	}
+
+	/* Markdown images should respect container width */
+	img {
+		max-width: 100%;
+	}
+}

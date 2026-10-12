@@ -1,0 +1,94 @@
+{
+	"name": "rhs-ia-documentation",
+	"displayName": "%displayName%",
+	"description": "%description%",
+	"version": "0.0.5",
+	"publisher": "paho",
+	"private": true,
+	"engines": {
+		"vscode": "^1.95.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"extensionKind": [
+		"ui"
+	],
+	"capabilities": {
+		"virtualWorkspaces": true,
+		"untrustedWorkspaces": {
+			"supported": true
+		}
+	},
+	"activationEvents": [
+		"onCommand:rhs-ia.documentation.open",
+		"onView:rhs-ia.documentation.view",
+		"onCommand:rhs-ia.documentation.home",
+		"onCommand:rhs-ia.documentation.search"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"viewsContainers": {
+			"auxiliarybar": [
+				{
+					"id": "rhs-ia-documentation",
+					"title": "%viewContainer.title%",
+					"icon": "media/documentation.svg",
+					"order": 0
+				}
+			]
+		},
+		"views": {
+			"rhs-ia-documentation": [
+				{
+					"id": "rhs-ia.documentation.view",
+					"name": "%view.title%",
+					"type": "webview",
+					"contextualTitle": "%view.contextualTitle%"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "rhs-ia.documentation.open",
+				"title": "%command.open.title%",
+				"category": "RHS-IA"
+			},
+			{
+				"command": "rhs-ia.documentation.home",
+				"title": "%command.home.title%",
+				"category": "RHS-IA"
+			},
+			{
+				"command": "rhs-ia.documentation.search",
+				"title": "%command.search.title%",
+				"category": "RHS-IA"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "rhs-ia.documentation.open",
+				"key": "ctrl+shift+h",
+				"mac": "cmd+shift+h"
+			}
+		]
+	},
+	"scripts": {
+		"build-docs": "node ./scripts/build-docs.mjs",
+		"generate-navigation": "node ./scripts/generate-navigation.mjs",
+		"inventory": "node ./scripts/inventory.mjs",
+		"validate-manifest": "node ./scripts/validate-manifest.mjs",
+		"audit-branding": "node ./scripts/audit-branding.mjs",
+		"audit-exclusions": "node ./scripts/audit-exclusions.mjs",
+		"audit-links": "node ./scripts/audit-links.mjs",
+		"audit-offline": "node ./scripts/audit-offline.mjs",
+		"compile": "npm run generate-navigation && node ./esbuild.mts",
+		"watch": "node ./esbuild.mts --watch",
+		"vscode:prepublish": "npm run audit-translations && npm run build-docs && npm run check-docs && npm run bundle",
+		"audit-translations": "node ./scripts/audit-translations.mjs",
+		"test-docs": "node --test ./scripts/translation-qa.test.mjs ./scripts/search-index.test.mjs",
+		"check-docs": "npm run validate-manifest && npm run audit-translations && npm run audit-branding && npm run audit-exclusions && npm run audit-links && npm run audit-offline && npm run audit-search",
+		"bundle": "node ./esbuild.mts",
+		"audit-search": "node ./scripts/audit-search.mjs"
+	}
+}

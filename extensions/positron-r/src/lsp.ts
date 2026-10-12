@@ -1,0 +1,491 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2022-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as vscode from 'vscode';
+import * as positron from 'positron';
+import * as path from 'path';
+import { PromiseHandles, timeout } from './util';
+import { RStatementRangeProvider } from './statement-range';
+import { RInputBoundaryProvider } from './input-boundaries';
+import { LOGGER } from './extension';
+import { RErrorHandler } from './error-handler';
+
+import {
+	LanguageClient,
+	LanguageClientOptions,
+	State,
+	StreamInfo,
+	RevealOutputChannelOn
+} from 'vscode-languageclient/node';
+
+import { Socket } from 'net';
+import { RHelpTopicProvider } from './help';
+import { R_DOCUMENT_SELECTORS } from './provider';
+import { VirtualDocumentProvider } from './virtual-documents';
+import { isQuartoInlineOutputEnabled } from './quarto';
+
+// Regex to match Quarto virtual document files: .vdoc.[uuid].[ext]
+const VDOC_PATTERN = /^\.vdoc\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.\w+$/i;
+
+// Selector for Quarto virtual documents.
+const VDOC_SELECTOR = { language: 'r', pattern: '**/.vdoc.*.{r,R}' };
+const QUARTO_INPUT_BOUNDARY_SELECTOR = { language: 'r', scheme: 'inmemory', pattern: '**/quarto-input-boundaries/*' };
+
+// Regex to match notebook console REPL URIs: /notebook-repl-<lang>-<uuid>
+const NOTEBOOK_REPL_PATTERN = /^\/notebook-repl-/;
+
+// Positron core creates a hidden notebook of this type for each open Quarto
+// document, so that language servers see the embedded code cells as ordinary
+// notebook cells. See
+// src/vs/workbench/contrib/positronQuarto/common/quartoVirtualNotebookTypes.ts.
+const QUARTO_CELLS_NOTEBOOK_TYPE = 'quarto-cells';
+
+// Matches the path of a Quarto or R Markdown document.
+const QUARTO_PATH_PATTERN = /\.(qmd|rmd)$/i;
+
+// Selector for the cells of Quarto virtual notebooks.
+//
+// Ark declares no `notebookDocumentSync` capability, so the language client
+// syncs these cells as ordinary text documents and the document selector is the
+// only gate. Matching the notebook's type keeps the cells of real notebooks
+// (.ipynb) out, since no other notebook carries this type, and it cannot be
+// fooled by a document whose name resembles a Quarto one.
+const QUARTO_CELL_SELECTOR = {
+	notebook: { notebookType: QUARTO_CELLS_NOTEBOOK_TYPE },
+	language: 'r',
+};
+
+/**
+ * Whether a document is a cell of a Quarto virtual notebook.
+ */
+function isQuartoVirtualCell(document: vscode.TextDocument): boolean {
+	if (document.uri.scheme !== 'vscode-notebook-cell') {
+		return false;
+	}
+	return vscode.workspace.notebookDocuments.some(
+		notebook => notebook.notebookType === QUARTO_CELLS_NOTEBOOK_TYPE &&
+			notebook.getCells().some(
+				cell => cell.document.uri.toString() === document.uri.toString())
+	);
+}
+
+/**
+ * Global output channel for R LSP sessions
+ *
+ * Since we only have one LSP session active at any time, and since the start of
+ * a new session is logged with a session ID, we use a single output channel for
+ * all LSP sessions. Watch out for session start log messages to find the
+ * relevant section of the log.
+ */
+let _lspOutputChannel: vscode.LogOutputChannel | undefined;
+function getLspOutputChannel(): vscode.LogOutputChannel {
+	if (!_lspOutputChannel) {
+		_lspOutputChannel = positron.window.createRawLogOutputChannel('R Language Server');
+	}
+	return _lspOutputChannel;
+}
+
+/**
+ * The state of the language server.
+ */
+export enum ArkLspState {
+	Uninitialized = 'uninitialized',
+	Starting = 'starting',
+	Stopped = 'stopped',
+	Running = 'running',
+}
+
+export interface ArkLspStateChangeEvent {
+	oldState: ArkLspState;
+	newState: ArkLspState;
+}
+
+/**
+ * Wraps an instance of the client side of the ARK LSP.
+ */
+export class ArkLsp implements vscode.Disposable {
+	/** The language client instance, if it has been created */
+	private client?: LanguageClient;
+
+	private _state: ArkLspState = ArkLspState.Uninitialized;
+	private _stateEmitter = new vscode.EventEmitter<ArkLspStateChangeEvent>();
+	onDidChangeState = this._stateEmitter.event;
+
+	/** Promise that resolves after initialization is complete */
+	private _initializing?: Promise<void>;
+
+	/** Disposable for per-activation items */
+	private activationDisposables: vscode.Disposable[] = [];
+
+	private languageClientName: string;
+
+	public constructor(
+		private readonly _version: string,
+		private readonly _metadata: positron.RuntimeSessionMetadata,
+		private readonly _dynState: positron.LanguageRuntimeDynState,
+	) {
+		this.languageClientName = `Ark (R ${this._version} language client) for session ${_dynState.sessionName} - '${_metadata.sessionId}'`;
+	}
+
+	private setState(state: ArkLspState) {
+		const old = this._state;
+		this._state = state;
+		this._stateEmitter.fire({ oldState: old, newState: state });
+	}
+
+	/**
+	 * Activate the language server; returns a promise that resolves when the LSP is
+	 * activated.
+	 *
+	 * @param port The port on which the language server is listening.
+	 * @param host The host on which the language server is listening. Must match
+	 *   the bind address passed to `startPositronLsp`, otherwise the connect can
+	 *   resolve to a different address family than the server bound to (e.g.
+	 *   `::1` when the server is bound to `127.0.0.1` and IPv4 is disabled).
+	 */
+	public async activate(port: number, host: string): Promise<void> {
+
+		// Clean up disposables from any previous activation
+		this.activationDisposables.forEach(d => d.dispose());
+		this.activationDisposables = [];
+
+		// Define server options for the language server. Connects to `host:port`.
+		const serverOptions = async (): Promise<StreamInfo> => {
+			const out = new PromiseHandles<StreamInfo>();
+			const socket = new Socket();
+
+			socket.on('ready', () => {
+				const streams: StreamInfo = {
+					reader: socket,
+					writer: socket
+				};
+				out.resolve(streams);
+			});
+			socket.on('error', (error) => {
+				out.reject(error);
+			});
+			socket.connect(port, host);
+
+			return out.promise;
+		};
+
+		const { notebookUri } = this._metadata;
+
+		// Matches the cells of this client's own notebook.
+		//
+		// Skipped for Quarto sessions, whose session URI is the .qmd document.
+		// The only R documents under that path are the cells of the document's
+		// virtual notebook, and the console client serves those, so matching
+		// them here would only duplicate it. For a real notebook (.ipynb) this
+		// is what matches the notebook's own cells.
+		const ownNotebookCellSelectors = notebookUri && !QUARTO_PATH_PATTERN.test(notebookUri.path)
+			? [{ language: 'r', pattern: notebookUri.fsPath }]
+			: [];
+
+		const clientOptions: LanguageClientOptions = {
+			// If this client belongs to a notebook, set the document selector to only include that notebook,
+			// Quarto virtual documents (vdocs), and notebook console inputs (inmemory scheme).
+			// Otherwise, this is the main client for this language, so set the document selector to include
+			// untitled R files, in-memory R files (e.g. the console), and R / Quarto / R Markdown files on disk.
+			documentSelector: notebookUri ?
+				[
+					...ownNotebookCellSelectors,
+					// Match Quarto virtual documents (vdocs). Vdocs are
+					// temporary .r files created for LSP features in
+					// embedded code blocks (e.g. completions, hover).
+					// They may be in the document's directory or in a
+					// system temp directory, so use a global pattern.
+					VDOC_SELECTOR,
+					// Match notebook console inputs. These use the
+					// inmemory scheme with a notebook-repl path prefix
+					// to distinguish them from regular console inputs.
+					{ language: 'r', scheme: 'inmemory' },
+				] :
+				[
+					...R_DOCUMENT_SELECTORS,
+					// Match Quarto virtual notebook cells. The console client
+					// serves these for every open Quarto document. A Quarto
+					// session starts only for the active pinned editor and only
+					// when inline output is enabled, so routing these cells to a
+					// session instead would leave every other open Quarto
+					// document without language features.
+					QUARTO_CELL_SELECTOR,
+				],
+			synchronize: notebookUri ?
+				undefined :
+				{
+					fileEvents: vscode.workspace.createFileSystemWatcher('**/*.R')
+				},
+			errorHandler: new RErrorHandler(this._version, port),
+			outputChannel: getLspOutputChannel(),
+			revealOutputChannelOn: RevealOutputChannelOn.Never,
+			middleware: {
+				handleDiagnostics(uri, diagnostics, next) {
+					// Disable diagnostics for Assistant code confirmation widgets:
+					// https://github.com/posit-dev/positron/issues/7750
+					if (uri.scheme === 'assistant-code-confirmation-widget') {
+						return undefined;
+					}
+					// Disable diagnostics for Quarto virtual documents:
+					// https://github.com/quarto-dev/quarto/issues/855
+					// Only check file URIs because vdocs are files on disk
+					if (uri.scheme === 'file') {
+						const baseName = path.basename(uri.fsPath);
+						if (VDOC_PATTERN.test(baseName)) {
+							return undefined;
+						}
+					}
+					return next(uri, diagnostics);
+				},
+				// Filter completions so each LSP only handles its own
+				// documents. The console LSP skips vdocs and notebook
+				// console inputs; the notebook LSP skips regular console
+				// inputs.
+				provideCompletionItem(document, position, context, token, next) {
+					if (!notebookUri) {
+						// Console LSP: skip vdoc files when inline output
+						// is enabled, because a notebook LSP handles them.
+						// When inline output is disabled, no notebook LSP
+						// exists, so the console LSP must handle vdocs.
+						if (document.uri.scheme === 'file') {
+							const baseName = path.basename(document.uri.fsPath);
+							if (VDOC_PATTERN.test(baseName) && isQuartoInlineOutputEnabled()) {
+								return undefined;
+							}
+						}
+						// Console LSP: skip notebook console inputs
+						if (document.uri.scheme === 'inmemory' &&
+							NOTEBOOK_REPL_PATTERN.test(document.uri.path)) {
+							return undefined;
+						}
+					} else {
+						// Notebook LSP: skip Quarto virtual notebook cells, which the console LSP serves
+						if (isQuartoVirtualCell(document)) {
+							return undefined;
+						}
+						// Notebook LSP: skip regular (non-notebook) console inputs
+						if (document.uri.scheme === 'inmemory' &&
+							!NOTEBOOK_REPL_PATTERN.test(document.uri.path)) {
+							return undefined;
+						}
+					}
+					return next(document, position, context, token);
+				},
+			}
+		};
+
+		// With a `.` rather than a `-` so vscode-languageserver can look up related options correctly
+		const id = 'positron.r';
+
+		const message = `Creating language client ${this._dynState.sessionName} for session ${this._metadata.sessionId} on port ${port}`;
+
+		LOGGER.info(message);
+		getLspOutputChannel().appendLine(message);
+
+		this.client = new LanguageClient(id, this.languageClientName, serverOptions, clientOptions);
+
+		const out = new PromiseHandles<void>();
+		this._initializing = out.promise;
+
+		this.activationDisposables.push(this.client.onDidChangeState(event => {
+			const oldState = this._state;
+			// Convert the state to our own enum
+			switch (event.newState) {
+				case State.Starting:
+					this.setState(ArkLspState.Starting);
+					break;
+				case State.Running:
+					if (this._initializing) {
+						LOGGER.info(`${this.languageClientName} init successful`);
+						this._initializing = undefined;
+						if (this.client) {
+							// Register Positron-specific LSP extension methods
+							this.registerPositronLspExtensions(this.client);
+						}
+						out.resolve();
+					}
+					this.setState(ArkLspState.Running);
+					break;
+				case State.Stopped:
+					if (this._initializing) {
+						LOGGER.info(`${this.languageClientName} init failed`);
+						out.reject('Ark LSP client stopped before initialization');
+					}
+					this.setState(ArkLspState.Stopped);
+					break;
+			}
+			LOGGER.info(`${this.languageClientName} state changed ${oldState} => ${this._state}`);
+		}));
+
+		this.client.start();
+		await out.promise;
+	}
+
+	/**
+	 * Stops the client instance.
+	 *
+	 * @returns A promise that resolves when the client has been stopped.
+	 */
+	public async deactivate() {
+		if (!this.client) {
+			// No client to stop, so just resolve
+			return;
+		}
+
+		// If we don't need to stop the client, just resolve
+		if (!this.client.needsStop()) {
+			return;
+		}
+
+		LOGGER.info(`${this.languageClientName} is stopping`);
+
+		// First wait for initialization to complete.
+		// `stop()` should not be called on a
+		// partially initialized client.
+		await this._initializing;
+
+		// Suppress the "Connection to server got closed" toast that
+		// vscode-languageclient force-shows when the connection close races
+		// with `stop()`: if the socket close handler fires while `$state ===
+		// Stopping` (between `connection.dispose()` and the `finally` block
+		// in `shutdown()`), our `RErrorHandler.closed()` is bypassed and the
+		// notification is forced. See posit-dev/positron#7593.
+		const origError = this.client.error.bind(this.client);
+		this.client.error = (message, data, showNotification) => {
+			if (typeof message === 'string' && /Connection to server got closed/.test(message)) {
+				origError(message, data, false);
+				return;
+			}
+			origError(message, data, showNotification);
+		};
+
+		// Ideally we'd just wait for `this._client!.stop()`. In practice, the
+		// promise returned by `stop()` never resolves if the server side is
+		// disconnected, so rather than awaiting it when the runtime has exited,
+		// we wait for the client to change state to `stopped`, which does
+		// happen reliably.
+		const stopped = new Promise<void>((resolve) => {
+			const disposable = this.client!.onDidChangeState((event) => {
+				if (event.newState === State.Stopped) {
+					LOGGER.info(`${this.languageClientName} is stopped`);
+					resolve();
+					disposable.dispose();
+				}
+			});
+		});
+
+		this.client!.stop();
+
+		// Don't wait more than a couple of seconds for the client to stop
+		await Promise.race([stopped, timeout(2000, 'waiting for client to stop')]);
+	}
+
+	/**
+	 * Gets the current state of the client.
+	 */
+	get state(): ArkLspState {
+		return this._state;
+	}
+
+	/**
+	 * Wait for the LSP to be connected.
+	 *
+	 * Resolves to `true` once the LSP is connected. Resolves to `false` if the
+	 * LSP has been stopped. Rejects if the LSP fails to start.
+	 */
+	async wait(): Promise<boolean> {
+		switch (this.state) {
+			case ArkLspState.Running: return true;
+			case ArkLspState.Stopped: return false;
+
+			case ArkLspState.Starting: {
+				// Inherit init promise. This can reject if init fails.
+				await this._initializing;
+				return true;
+			}
+
+			case ArkLspState.Uninitialized: {
+				const handles = new PromiseHandles<boolean>();
+
+				const cleanup = this.onDidChangeState(_state => {
+					let out: boolean;
+					switch (this.state) {
+						case ArkLspState.Running: out = true; break;
+						case ArkLspState.Stopped: out = false; break;
+						case ArkLspState.Uninitialized: return;
+						case ArkLspState.Starting: {
+							// Inherit init promise
+							if (this._initializing) {
+								cleanup.dispose();
+								this._initializing.
+									then(() => handles.resolve(true)).
+									catch((err) => handles.reject(err));
+							}
+							return;
+						}
+					}
+
+					cleanup.dispose();
+					handles.resolve(out);
+				});
+
+				return await handles.promise;
+			}
+		}
+	}
+
+	/**
+	 * Registers additional Positron-specific LSP methods. These programmatic
+	 * language features are not part of the LSP specification, and are
+	 * consequently not covered by vscode-languageserver, but are used by
+	 * Positron to provide additional functionality.
+	 *
+	 * @param client The language client instance
+	 */
+	private registerPositronLspExtensions(client: LanguageClient) {
+		// Provide virtual documents.
+		const vdocDisposable = vscode.workspace.registerTextDocumentContentProvider('ark',
+			new VirtualDocumentProvider(client));
+		this.activationDisposables.push(vdocDisposable);
+
+		// Register the statement range and help topic providers with a
+		// selector appropriate for the session type:
+		// - Console sessions: register for 'r' to cover all R documents
+		// - Notebook sessions: register for vdoc files (Quarto virtual
+		//   documents) and notebook cells. We must not match regular .r
+		//   script files to avoid competing with the console session's
+		//   provider for files that aren't synced to the notebook LSP.
+		const selector: vscode.DocumentSelector = this._metadata.notebookUri
+			? [VDOC_SELECTOR, { language: 'r', scheme: 'vscode-notebook-cell' }]
+			: 'r';
+		const inputBoundarySelector: vscode.DocumentSelector = this._metadata.notebookUri
+			? [VDOC_SELECTOR, { language: 'r', scheme: 'vscode-notebook-cell' }, QUARTO_INPUT_BOUNDARY_SELECTOR]
+			: selector;
+
+		const rangeDisposable = positron.languages.registerStatementRangeProvider(selector,
+			new RStatementRangeProvider(client));
+		this.activationDisposables.push(rangeDisposable);
+
+		const inputBoundaryDisposable = positron.languages.registerInputBoundaryProvider(inputBoundarySelector,
+			new RInputBoundaryProvider(client));
+		this.activationDisposables.push(inputBoundaryDisposable);
+
+		const helpDisposable = positron.languages.registerHelpTopicProvider(selector,
+			new RHelpTopicProvider(client));
+		this.activationDisposables.push(helpDisposable);
+	}
+
+	/**
+	 * Dispose of the client instance.
+	 */
+	async dispose() {
+		this.activationDisposables.forEach(d => d.dispose());
+		await this.deactivate();
+	}
+
+	public showOutput() {
+		getLspOutputChannel().show();
+	}
+}

@@ -1,0 +1,6 @@
+{
+	"command.positronNotebookHelpers.convertImageToBase64.title": "Convertir imagen a Base64",
+	"command.positronNotebookHelpers.fetchRemoteImage.title": "Obtener imagen remota",
+	"description": "RHS-IA Editor de cuadernos",
+	"displayName": "RHS-IA Editor de cuadernos"
+}

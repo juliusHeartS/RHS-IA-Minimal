@@ -1,0 +1,4 @@
+{
+	"description": "Proporciona un controlador de conexión de datos PostgreSQL para el panel de conexiones de datos.",
+	"displayName": "RHS-IA Controlador de conexión de datos PostgreSQL"
+}

@@ -1,0 +1,560 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2022-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+/**
+ * The set of possible statuses for a language runtime
+ */
+export enum RuntimeState {
+	/** The runtime has not been started or initialized yet. */
+	Uninitialized = 'uninitialized',
+
+	/** The runtime is initializing (preparing to start). */
+	Initializing = 'initializing',
+
+	/** The runtime is in the process of starting up. It isn't ready for messages. */
+	Starting = 'starting',
+
+	/** The runtime has a heartbeat and is ready for messages. */
+	Ready = 'ready',
+
+	/** The runtime is ready to execute code. */
+	Idle = 'idle',
+
+	/** The runtime is busy executing code. */
+	Busy = 'busy',
+
+	/** The runtime is in the process of restarting. */
+	Restarting = 'restarting',
+
+	/** The runtime is in the process of shutting down. */
+	Exiting = 'exiting',
+
+	/** The runtime's host process has ended. */
+	Exited = 'exited',
+
+	/** The runtime is not responding to heartbeats and is presumed offline. */
+	Offline = 'offline',
+
+	/** The user has interrupted a busy runtime, but the runtime is not idle yet. */
+	Interrupting = 'interrupting',
+}
+
+
+/** Possible states for the language runtime while online */
+export enum RuntimeOnlineState {
+	/** The runtime is starting up */
+	Starting = 'starting',
+
+	/** The runtime is currently processing an instruction or code fragment */
+	Busy = 'busy',
+
+	/** The runtime is idle */
+	Idle = 'idle',
+}
+
+/**
+ * The CPU architecture of an interpreter.
+ * Used to detect architecture mismatches between the interpreter and the system.
+ */
+export enum LanguageRuntimeArchitecture {
+	/** 64-bit ARM architecture (Apple Silicon, ARM64 Windows, etc.) */
+	Arm64 = 'arm64',
+	/** 64-bit x86 architecture (Intel/AMD) */
+	X64 = 'x64',
+	/** Architecture was detected but is not arm64 or x64 */
+	Other = 'other'
+}
+
+/** The set of possible language runtime messages */
+export enum LanguageRuntimeMessageType {
+	/** A message instructing the frontend to clear the output of a runtime execution. */
+	ClearOutput = 'clear_output',
+
+	/** A message representing output (text, plots, etc.) */
+	Output = 'output',
+
+	/** A message representing the computational result of a runtime execution */
+	Result = 'result',
+
+	/** A message representing output from one of the standard streams (stdout or stderr) */
+	Stream = 'stream',
+
+	/** A message representing echoed user input */
+	Input = 'input',
+
+	/** A message representing an error that occurred while executing user code */
+	Error = 'error',
+
+	/** A message representing a prompt for user input */
+	Prompt = 'prompt',
+
+	/** A message representing a change in the runtime's online state */
+	State = 'state',
+
+	/** A message representing a runtime event */
+	Event = 'event',
+
+	/** A message representing a new comm (client instance) being opened from the rutime side */
+	CommOpen = 'comm_open',
+
+	/** A message representing data received via a comm */
+	CommData = 'comm_data',
+
+	/** A message indicating that a comm (client instance) was closed from the server side */
+	CommClosed = 'comm_closed',
+
+	/** A message representing a debug event to the frontend */
+	DebugEvent = 'debug_event',
+
+	/** A message representing a debug reply to the frontend */
+	DebugReply = 'debug_reply',
+
+	/** A message that should be handled by an IPyWidget */
+	IPyWidget = 'ipywidget',
+
+	/** A message representing a request to update an output */
+	UpdateOutput = 'update_output',
+}
+
+/**
+ * LanguageRuntimeSessionMode is an enum representing the set of possible
+ * modes for a language runtime session.
+ */
+export enum LanguageRuntimeSessionMode {
+	/**
+	 * The runtime session is bound to a Positron console. Typically,
+	 * there's only one console session per language.
+	 */
+	Console = 'console',
+
+	/** The runtime session backs a notebook. */
+	Notebook = 'notebook',
+
+	/** The runtime session is a background session (not attached to any UI). */
+	Background = 'background',
+}
+
+/**
+ * The set of stand stream names supported for streaming textual output.
+ */
+export enum LanguageRuntimeStreamName {
+	Stdout = 'stdout',
+	Stderr = 'stderr'
+}
+
+/**
+ * Results of analyzing code fragment for completeness
+ */
+export enum RuntimeCodeFragmentStatus {
+	/** The code fragment is complete: it is a valid, self-contained expression */
+	Complete = 'complete',
+
+	/** The code is incomplete: it is an expression that is missing elements or operands, such as "1 +" or "foo(" */
+	Incomplete = 'incomplete',
+
+	/** The code is invalid: an expression that cannot be parsed because of a syntax error */
+	Invalid = 'invalid',
+
+	/** It was not possible to ascertain the code fragment's status */
+	Unknown = 'unknown'
+}
+
+/**
+ * The set of possible output locations for a LanguageRuntimeWebOutput.
+ */
+export enum PositronOutputLocation {
+	/** The output should be displayed inline in Positron's Console */
+	Console = 'console',
+
+	/** The output should be displayed in Positron's Viewer pane */
+	Viewer = 'viewer',
+
+	/** The output should be displayed in Positron's Plots pane */
+	Plot = 'plot',
+}
+
+/**
+ * The set of chat modes supported by an AI assistant.
+ */
+export enum PositronChatMode {
+	/** The chat mode for asking questions */
+	Ask = 'ask',
+
+	/** The chat mode for editing code */
+	Edit = 'edit',
+
+	/** Agent mode */
+	Agent = 'agent',
+}
+
+/**
+ * The set of client types that can be generated by a language runtime. Note
+ * that, because client types can share a namespace with other kinds of
+ * widgets, each client type in Positron's API is prefixed with the string
+ * "positron".
+ */
+export enum RuntimeClientType {
+	Variables = 'positron.variables',
+	Lsp = 'positron.lsp',
+	Plot = 'positron.plot',
+	DataExplorer = 'positron.dataExplorer',
+	Ui = 'positron.ui',
+	Help = 'positron.help',
+	Connection = 'positron.connection',
+	Reticulate = 'positron.reticulate',
+	IPyWidget = 'jupyter.widget',
+	IPyWidgetControl = 'jupyter.widget.control',
+
+	// Future client types may include:
+	// - Watch window/variable explorer
+	// - Code inspector
+	// - etc.
+}
+
+/**
+ * The possible states for a language runtime client instance. These
+ * represent the state of the communications channel between the client and
+ * the runtime.
+ */
+export enum RuntimeClientState {
+	/** The client has not yet been initialized */
+	Uninitialized = 'uninitialized',
+
+	/** The connection between the server and the client is being opened */
+	Opening = 'opening',
+
+	/** The connection between the server and the client has been established */
+	Connected = 'connected',
+
+	/** The connection between the server and the client is being closed */
+	Closing = 'closing',
+
+	/** The connection between the server and the client is closed */
+	Closed = 'closed',
+}
+
+/**
+ * Possible code execution modes for a language runtime
+ */
+export enum RuntimeCodeExecutionMode {
+	/**
+	 * Interactive code execution:
+	 *          Displayed to user: Yes
+	 * Combined with pending code: Yes
+	 *          Stored in history: Yes
+	 */
+	Interactive = 'interactive',
+
+	/**
+	 * Non-interactive code execution:
+	 *          Displayed to user: Yes
+	 * Combined with pending code: No
+	 *          Stored in history: Yes
+	 */
+	NonInteractive = 'non-interactive',
+
+	/**
+	 * Transient code execution:
+	 *          Displayed to user: Yes
+	 * Combined with pending code: No
+	 *          Stored in history: No
+	 */
+	Transient = 'transient',
+
+	/**
+	 * Silent code execution:
+	 *          Displayed to user: No
+	 * Combined with pending code: No
+	 *          Stored in history: No
+	 */
+	Silent = 'silent',
+
+	/**
+	 * Unprocessed code execution: behaves like `Interactive`, but the code has
+	 * not been checked for completeness; the session checks it before executing.
+	 */
+	Unprocessed = 'unprocessed'
+}
+
+/**
+ * Possible error dispositions for a language runtime
+ */
+export enum RuntimeErrorBehavior {
+	/** The runtime should stop when an error is encountered. */
+	Stop = 'stop',
+
+	/** The runtime should continue execution when an error is encountered */
+	Continue = 'continue',
+}
+
+/**
+ * Determines what happens when code is submitted for evaluation while the target
+ * runtime is busy.
+ */
+export enum RuntimeBusyBehavior {
+	/** Queue the code to run when the runtime next becomes idle. */
+	Queue = 'queue',
+
+	/** Reject the evaluation with an error instead of queueing it. */
+	Reject = 'reject',
+}
+
+/**
+ * Possible reasons a language runtime could exit.
+ */
+export enum RuntimeExitReason {
+	/** The runtime exited because it could not start correctly. */
+	StartupFailed = 'startupFailed',
+
+	/** The runtime is shutting down at the request of the user. */
+	Shutdown = 'shutdown',
+
+	/** The runtime exited because it was forced to quit. */
+	ForcedQuit = 'forcedQuit',
+
+	/** The runtime is exiting in order to restart. */
+	Restart = 'restart',
+
+	/** The runtime is exiting in order to switch to a new runtime. */
+	SwitchRuntime = 'switchRuntime',
+
+	/** The runtime exited because of an error, most often a crash. */
+	Error = 'error',
+
+	/**
+	 * The runtime session was transferred somewhere else. This happens when
+	 * it is loaded into a different Positron window; it 'exits' from the
+	 * old window and is reconnected in the new window.
+	 */
+	Transferred = 'transferred',
+
+	/** The runtime exited because the extension hosting it was stopped. */
+	ExtensionHost = 'extensionHost',
+
+	/**
+	 * The runtime exited for an unknown reason. This typically means that
+	 * it exited unexpectedly but with a normal exit code (0).
+	 */
+	Unknown = 'unknown',
+}
+
+/**
+ * An enum representing the set of runtime method error codes; these map to
+ * JSON-RPC error codes.
+ */
+export enum RuntimeMethodErrorCode {
+	ParseError = -32700,
+	InvalidRequest = -32600,
+	MethodNotFound = -32601,
+	InvalidParams = -32602,
+	InternalError = -32603,
+	ServerErrorStart = -32000,
+	ServerErrorEnd = -32099
+}
+
+export enum LanguageRuntimeStartupBehavior {
+	/**
+	 * The runtime should be started immediately after registration; usually used for runtimes
+	 * that are affiliated with the current workspace.
+	 */
+	Immediate = 'immediate',
+
+	/**
+	 * The runtime should start automatically; usually used for runtimes that provide LSPs
+	 */
+	Implicit = 'implicit',
+
+	/**
+	 * The runtime should start when the user explicitly requests it;
+	 * usually used for runtimes that only provide REPLs
+	 */
+	Explicit = 'explicit',
+
+	/**
+	 * The runtime only starts up if manually requested by the user.
+	 * The difference from Explicit, is that Manual startup never
+	 * starts automatically, even if the run time is affiliated to the
+	 * workspace.
+	 */
+	Manual = 'manual'
+}
+
+/**
+ * An enumeration of possible locations for runtime sessions.
+ */
+export enum LanguageRuntimeSessionLocation {
+	/**
+	 * The runtime session is persistent on the machine; it should be
+	 * restored when the workspace is re-opened, and may persist across
+	 * Positron sessions.
+	 */
+	Machine = 'machine',
+
+	/**
+	 * The runtime session is located in the current workspace (usually a
+	 * terminal); it should be restored when the workspace is re-opened in
+	 * the same Positron session (e.g. during a browser reload or
+	 * reconnect)
+	 */
+	Workspace = 'workspace',
+
+	/**
+	 * The runtime session is browser-only; it should not be restored when the
+	 * workspace is re-opened.
+	 */
+	Browser = 'browser',
+}
+
+/**
+ * An enumeration of possible channels for runtime sessions.
+ * Copy for ExtHost API.
+ */
+export enum LanguageRuntimeSessionChannel {
+	Console = 'console',
+	Kernel = 'kernel',
+	LSP = 'lsp',
+}
+
+/**
+ * The possible types of language model that can be used with the Positron Assistant.
+ */
+export enum PositronLanguageModelType {
+	Chat = 'chat',
+	Completion = 'completion',
+}
+
+// Equivalent in positron.d.ts API: LanguageModelAutoconfigureType
+export enum LanguageModelAutoconfigureType {
+	EnvVariable = 0,
+	Custom = 1
+}
+
+
+/**
+ * The possible locations a Positron Assistant chat request can be invoked from.
+ */
+export enum PositronChatAgentLocation {
+	Panel = 'panel',
+	Terminal = 'terminal',
+	Notebook = 'notebook',
+	Editor = 'editor',
+}
+
+/**
+ * Selects which environment variable contributions
+ * getEnvironmentContributions returns.
+ */
+export enum EnvironmentContributionFilter {
+	ProcessCreation = 'processCreation',
+}
+
+/**
+ * Code attribution sources for code executed in the Console.
+ */
+export enum CodeAttributionSource {
+	Assistant = 'assistant',
+	Extension = 'extension',
+	Interactive = 'interactive',
+	Notebook = 'notebook',
+	Paste = 'paste',
+	Script = 'script',
+}
+
+
+/**
+ * The type of source that opened a preview.
+ */
+export enum PreviewSourceType {
+	/** The preview was opened by a language runtime. */
+	Runtime = 'runtime',
+	/** The preview was opened by a terminal. */
+	Terminal = 'terminal',
+}
+
+/**
+ * An error thrown by a {@link StatementRangeProvider} to indicate that a statement range
+ * cannot be provided due to a syntax error in the document.
+ */
+export class StatementRangeSyntaxError extends Error {
+	/**
+	 * Zero indexed line number where the syntax error occurred.
+	 */
+	readonly line?: number;
+
+	/**
+	 * Creates a new statement range syntax error.
+	 *
+	 * @param line Zero indexed line number where the syntax error occurred.
+	 */
+	constructor(line?: number) {
+		super();
+		Object.setPrototypeOf(this, StatementRangeSyntaxError.prototype);
+		this.line = line;
+	}
+}
+
+export enum DataConnectionParameterType {
+	Boolean = 'boolean',
+	File = 'file',
+	Number = 'number',
+	Option = 'option',
+	Password = 'password',
+	String = 'string',
+}
+
+export enum DataConnectionNodeKind {
+	Database = 'database',
+	// A catalog: the level above a schema in a three-part namespace, e.g. a Unity Catalog catalog
+	// (positron-data-driver-databricks).
+	Catalog = 'catalog',
+	Schema = 'schema',
+	Table = 'table',
+	View = 'view',
+	Field = 'field',
+	GroupDatabases = 'group-databases',
+	GroupCatalogs = 'group-catalogs',
+	GroupSchemas = 'group-schemas',
+	GroupTables = 'group-tables',
+	GroupViews = 'group-views',
+	GroupColumns = 'group-columns',
+	GroupIndexes = 'group-indexes',
+	GroupStages = 'group-stages',
+	GroupVolumes = 'group-volumes',
+	Index = 'index',
+	// A Snowflake stage: a named location for staging files (positron-data-driver-snowflake).
+	Stage = 'stage',
+	// A Unity Catalog volume: a governed location for non-tabular files
+	// (positron-data-driver-databricks).
+	Volume = 'volume',
+	// A directory inside a volume, and a file inside one.
+	Directory = 'directory',
+	File = 'file',
+	// The owner (user) that a group of pins belongs to (positron-data-driver-pins).
+	Owner = 'owner',
+	// A pin on a Posit Connect server (positron-data-driver-pins).
+	Pin = 'pin',
+	// A version (bundle) of a pin on a Posit Connect server (positron-data-driver-pins).
+	Version = 'version',
+}
+
+/**
+ * The reason the Positron window is shutting down. Mirrors the workbench's
+ * internal `ShutdownReason` enum so extensions can distinguish a quit from a
+ * window reload.
+ */
+export enum ShutdownReason {
+	/** The window was closed (e.g. last window of the application). */
+	Close = 1,
+	/** The application is quitting. */
+	Quit = 2,
+	/** The window is reloading. */
+	Reload = 3,
+	/** The window is loading a different workspace. */
+	Load = 4,
+}
+
+export { UiRuntimeNotifications } from '../../../services/languageRuntime/common/languageRuntimeService.js';
+export type { PlotRenderSettings } from '../../../services/positronPlots/common/positronPlots.js';
+export { PlotRenderFormat } from '../../../services/positronPlots/common/positronPlots.js';

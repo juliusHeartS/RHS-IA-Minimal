@@ -1,0 +1,160 @@
+// Place your key bindings in this file to override the defaults
+// Note use cmd as modifier here, `copyKeybindings()` will correctly change to ctrl for Windows/Linux
+[
+    {
+        "key": "cmd+j j",
+        "command": "jupyter-cell-tags.addTag" // Add Cell Tag
+    },
+    {
+        "key": "cmd+j k",
+        "command": "workbench.action.openWorkspaceSettingsFile" // Preferences: Open Workspace Settings (JSON)
+    },
+        {
+        "key": "cmd+j f",
+        "command": "positron.workbench.action.newFolderFromTemplate" // Workspaces: New Folder from Template
+    },
+        {
+        "key": "cmd+j w",
+        "command": "workbench.action.closeFolder" // Workspaces: Close Workspace
+    },
+    {
+        "key": "cmd+j l",
+        "command": "workbench.action.openWalkthrough" // Open New Welcome Experience
+    },
+    {
+        "key": "cmd+j u",
+        "command": "workbench.action.openSettingsJson" // Preferences: Open User Settings (JSON)
+    },{
+        "key": "cmd+j i",
+        "command": "positron.workbench.action.importSettings" // Preferences: Import Settings...
+    }, {
+        "key": "cmd+j a",
+        "command": "workbench.action.closeAuxiliaryBar" // Views: Hide Secondary Side Bar
+    },{
+        "key": "cmd+j b",
+        "command": "workbench.action.showAuxiliaryBar" // Views: Show Secondary Side Bar
+    },
+    {
+        "key": "cmd+j g",
+        "command": "workbench.action.fullSizedAuxiliaryBar" // Views: Full Size Auxiliary Bar
+    },
+    {
+        "key": "cmd+j h",
+        "command": "workbench.action.positronFourPaneDataScienceLayout" // Views: Stacked Layout
+    },
+    {
+        "key": "cmd+b r",
+        "command": "workbench.action.reloadWindow"
+    },
+    {
+        // Disable the dev-only Ctrl+R reload binding (ReloadWindowAction, gated on
+        // IsDevelopmentContext) so it does not shadow the console's Ctrl+R reverse
+        // history search. This binding only exists in the compiled build the e2e
+        // suite runs against, not in built Positron; reload is driven via the entry
+        // above instead.
+        "key": "cmd+r",
+        "command": "-workbench.action.reloadWindow"
+    },
+    {
+        "key": "cmd+j x",
+        "command": "resetGettingStartedProgress" // Reset Welcome Walkthrough Progress
+    },
+    {
+        "key": "cmd+j o",
+        "command": "workbench.action.executeCode.console" // Execute Code in Console
+    },
+    {
+        "key": "cmd+j c",
+        "command": "workbench.action.togglePanel"
+    },
+    {
+        "key": "cmd+j n",
+        "command": "workbench.action.positronNotebookLayout" // View: Notebook Layout
+    },
+    {
+        "key": "cmd+b c",
+        "command": "workbench.action.closeSidebar" // View: Close Primary Side Bar
+    },
+    {
+       "key": "cmd+j p",
+       "command": "workbench.action.minimizePanel" // View: Minimize Bottom Panel
+    },
+	{
+        "key": "cmd+j v",
+        "command": "workbench.action.restorePanel" // Restore Bottom Panel
+    },
+	{
+        "key": "cmd+j q",
+        "command": "workbench.action.files.openFolder" // Open Folder
+    },
+    {
+        "key": "cmd+j z",
+        "command": "workbench.action.positronDataExplorer.collapseSummary" // Collapse the Summary Panel in DE
+    },
+    {
+        "key": "cmd+j y",
+        "command": "workbench.action.positronDataExplorer.expandSummary" // Show the Summary Panel in DE
+    },
+    {
+        "key": "cmd+j m",
+        "command": "workbench.action.positronDataExplorer.summaryOnRight" // Move the DE Summary Panel to the right side
+    },
+    {
+        "key": "cmd+j t",
+        "command": "workbench.action.terminal.killAll" // Kill all terminals
+    },
+    {
+        "key": "cmd+j d",
+        "command": "positronNotebook.selectKernel" // Select Notebook Kernel
+    },
+    {
+        "key": "cmd+shift+g",
+        "command": "positronNotebook.triggerGhostCell" // Trigger Ghost Cell Suggestion
+    },
+    {
+        "key": "cmd+j s",
+        "command": "workbench.debug.viewlet.action.removeAllBreakpoints" // Debugger: Clear All Breakpoints
+    },    {
+        "key": "cmd+l a",
+        "command": "notebook.debugCell" // Debugger: Debug Cell
+    },
+    {
+        "key": "cmd+l c",
+        "command": "workbench.action.positronPlots.clear" // Clear Plots
+    },
+    {
+        "key": "cmd+l f",
+        "command": "editor.action.formatDocument" // Format Document
+    },
+	{
+		"key": "ctrl+shift+g",
+		"command": "workbench.view.scm" // SCM View
+  	},
+	{
+        "key": "cmd+l p",
+        "command": "posit.publisher.deployWithEntrypoint" // Publish Document
+    },
+    {
+        "key": "cmd+l q",
+        "command": "quarto.runCurrentCell" // Quarto: Run Current Cell
+    },
+    {
+        "key": "cmd+l r",
+        "command": "quarto.runCurrent" // Quarto: Run Current Code
+    },
+    {
+        "key": "cmd+j r",
+        "command": "authentication.configureProviders" // Configure Language Model Providers
+    },
+    // Custom keybinding for command palette to avoid browser shortcut conflicts.
+    // The default Ctrl+Shift+P opens private browsing in Firefox, so we use a
+    // multi-key sequence that browsers won't intercept.
+    {
+        "key": "cmd+j e",
+        "command": "workbench.action.showCommands" // Show Command Palette
+    },
+    {
+        "key": "cmd+l b",
+        "command": "workbench.panel.positronPreview.focus"
+    }
+]

@@ -1,0 +1,16 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-preview-container {
+	position: relative;
+}
+
+.positron-preview-webview {
+	/*
+	 * A web page will have a transparent background by default and browsers commonly set a white background.
+	 * This ensures consistency with light and dark themes where the webview content does not style the background.
+	 */
+	background: white;
+}

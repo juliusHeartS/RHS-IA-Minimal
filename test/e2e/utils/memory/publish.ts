@@ -1,0 +1,459 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { request } from 'undici';
+import {
+	CONNECT_API_KEY,
+	LOCAL_API_URL,
+	PROD_API_URL,
+	platformOs,
+	platformVersion,
+	positronVersion
+} from '../metrics/metric-base.js';
+import { isMemoryLane, MemoryLane } from './lanes.js';
+import { MemoryScenario } from './scenarios.js';
+import { ExtensionHeapStatus, MemorySnapshot, ProcessRole } from './types.js';
+
+/**
+ * The roles the client knows about. Kept beside the guard below so a role added
+ * to `ProcessRole` without being added here fails to compile.
+ */
+const PROCESS_ROLES: Record<ProcessRole, true> = {
+	main: true, renderer: true, gpu: true, network: true, shared: true,
+	extension_host: true, pty_host: true, file_watcher: true, agent_host: true,
+	kernel_supervisor: true, kernel: true, language_server: true,
+	extension_child: true, zygote: true, shell: true, unlabeled: true
+};
+
+const isProcessRole = (value: string): value is ProcessRole => value in PROCESS_ROLES;
+
+/**
+ * The memory endpoints sit beside the existing metrics ones on the same service,
+ * so the host and the PROD/LOCAL split are derived from the shared constants
+ * rather than restated. Restating them means a host change fixes metrics and
+ * silently leaves memory posting into the void.
+ */
+const memoryUrl = (base: string): string => base.replace(/\/metrics$/, '/memory');
+
+/**
+ * Whether to talk to the insights API at all. Opt in with `MEMORY_PUBLISH=true`.
+ *
+ * The switch outlives the endpoints' arrival: a local or manually dispatched run
+ * still has no business writing to the dataset, and a contributor debugging the
+ * harness should not have to think about whether they are.
+ *
+ * Exactly `'true'`, not any truthy string. A workflow that sets `MEMORY_PUBLISH:
+ * 'false'` to document the switch must not thereby turn it on.
+ */
+export function publishingEnabled(): boolean {
+	return process.env.MEMORY_PUBLISH === 'true';
+}
+
+export type RunMeta = {
+	runId: string;
+	commitSha: string;
+	branch: string;
+	containerImage: string;
+};
+
+/**
+ * One request per run, carrying every launch. The existing /metrics endpoint
+ * takes a row per request, which for memory would let a partially written tree
+ * surface as a fake memory drop.
+ */
+export type MemoryPayload = {
+	/**
+	 * Wire format version. Bump when a field changes meaning or disappears, so
+	 * ingestion can reject or migrate rather than silently mis-parse. The
+	 * dashboard plan is written against version 1.
+	 */
+	payload_version: 1;
+	timestamp: string;
+	run_id: string;
+	branch: string;
+	commit_sha: string;
+	app_version: string;
+	build_number: string;
+	platform_os: string;
+	platform_version: string;
+	container_image: string;
+	/**
+	 * Which ark the build bundles, e.g. `0.1.252+209.885fac4`. Run-level, so it
+	 * sits here rather than on a launch or a process: it is sent once, and the
+	 * three launches of a POST are the same scenario against the same build.
+	 *
+	 * Optional, and omitted rather than sent as 'unknown', when the build shipped
+	 * no sidecar. The dashboard draws a marker where this value changes, so a
+	 * placeholder would draw an ark release that never happened.
+	 */
+	ark_version?: string;
+	scenario: MemoryScenario;
+	lane: MemoryLane;
+	launches: {
+		launch_index: number;
+		settle_ms: number;
+		tree_total_pss_bytes: number;
+		processes: {
+			pid: number;
+			ppid: number;
+			depth: number;
+			process_name: string;
+			process_role: string;
+			labeled: boolean;
+			cmd_basename: string;
+			pss_bytes: number;
+			rss_bytes: number;
+			pss_min: number;
+			pss_max: number;
+			/** Whether this process was sampled after a forced GC. See gc.ts. */
+			forced_gc: boolean;
+		}[];
+		extensions: {
+			extension_id: string;
+			is_builtin: boolean;
+			activation_time_ms: number | null;
+			activation_event: string | null;
+		}[];
+		/**
+		 * Per-extension partition of the extension host heap.
+		 *
+		 * Omitted rather than sent empty when the capture was never attempted, so
+		 * an endpoint that predates the field ignores it rather than rejecting the
+		 * run, and so a missing key stays distinguishable from a failed capture.
+		 * The byte counts appear only on `ok`: sending them as zero on a failure
+		 * would plot as a real collapse to zero. Every extension is sent, not a
+		 * top N -- the array is small, and letting the consumer choose a cutoff
+		 * avoids a second Positron-side change when the dashboard lands.
+		 */
+		extension_heap?: {
+			status: ExtensionHeapStatus;
+			pid?: number;
+			process_role: 'extension_host';
+			reachable_bytes?: number;
+			unattributed_bytes?: number;
+			extensions?: { extension_id: string; retained_bytes: number }[];
+		};
+	}[];
+};
+
+/**
+ * Whether this branch's runs go to the production dataset. Only `main` does;
+ * everything else is routed at the local URL, which follows the convention the
+ * rest of the metrics client uses to keep branch experiments out of the trend.
+ *
+ * Exported because the spec needs the same answer for a different question: a
+ * failed POST is a real failure on `main` and an expected one everywhere else,
+ * where nothing is listening on the local URL. Both callers reading one
+ * function means the assertion cannot start disagreeing with the routing.
+ */
+export function publishTargetIsProduction(branch: string): boolean {
+	return branch === 'main';
+}
+
+function apiUrl(branch: string): string {
+	return memoryUrl(publishTargetIsProduction(branch) ? PROD_API_URL : LOCAL_API_URL);
+}
+
+/**
+ * The container image the current run is measuring under, from the
+ * `MEMORY_CONTAINER_IMAGE` workflow environment variable
+ * (test-memory-metrics.yml). Both the publish side (`RunMeta.containerImage`,
+ * built by the spec) and the query side (`fetchBaseline` below) must read the
+ * same variable with the same fallback: a baseline written under one
+ * derivation and queried under another would never match, and the failure
+ * would look like a permanently missing baseline rather than a bug. One
+ * function rather than two copies of `?? 'unknown'` means changing the
+ * fallback cannot desync the round trip.
+ */
+export function containerImageFromEnv(): string {
+	return process.env.MEMORY_CONTAINER_IMAGE ?? 'unknown';
+}
+
+/**
+ * Drop the window title from a process name before publishing.
+ *
+ * `window [1] (my-project)` carries the workspace name, and in a manually
+ * dispatched run that can be anything on the contributor's disk. The title adds
+ * nothing to a grouped chart, so the published name keeps only the stable part.
+ * The local HTML report still renders the full name.
+ */
+export function redactProcessName(name: string): string {
+	return name.replace(/^(window \[\d+\]).*$/, '$1');
+}
+
+function buildExtensionHeap(snapshot: MemorySnapshot): MemoryPayload['launches'][number]['extension_heap'] {
+	if (!snapshot.extensionHeapStatus) {
+		return undefined;
+	}
+	const base = {
+		status: snapshot.extensionHeapStatus,
+		process_role: 'extension_host' as const,
+		...(snapshot.extensionHeapPid === undefined ? {} : { pid: snapshot.extensionHeapPid })
+	};
+	// A breakdown without an `ok` status, or the reverse, is a wiring bug; trust
+	// the status and drop the numbers rather than publishing a contradiction.
+	if (snapshot.extensionHeapStatus !== 'ok' || !snapshot.extensionHeap) {
+		return base;
+	}
+	return {
+		...base,
+		reachable_bytes: snapshot.extensionHeap.reachableBytes,
+		unattributed_bytes: snapshot.extensionHeap.unattributedBytes,
+		extensions: snapshot.extensionHeap.extensions.map(e => ({
+			extension_id: e.extensionId,
+			retained_bytes: e.retainedBytes
+		}))
+	};
+}
+
+export function buildPayload(snapshots: MemorySnapshot[], meta: RunMeta): MemoryPayload {
+	// Thrown rather than defaulted. Every other field can degrade to 'unknown' and
+	// still leave a usable row, but a payload whose scenario is undefined cannot be
+	// attributed to anything, and one silently ingested under a missing key is worse
+	// than a run that failed loudly.
+	const [first] = snapshots;
+	if (first === undefined) {
+		throw new Error('cannot build a memory payload from no snapshots');
+	}
+	// Run-level, so it is reduced here rather than sent per launch. The report
+	// test already asserts a single positronVersion across the three launches, so
+	// they are one build; the first launch that read a sidecar speaks for the run.
+	// Undefined stays undefined: JSON.stringify drops the key and the API reads a
+	// missing one as NA.
+	const arkVersion = snapshots.find(snapshot => snapshot.arkVersion !== undefined)?.arkVersion;
+	return {
+		payload_version: 1,
+		timestamp: new Date().toISOString(),
+		run_id: meta.runId,
+		branch: meta.branch,
+		commit_sha: meta.commitSha,
+		app_version: positronVersion?.positronVersion ?? 'unknown',
+		build_number: String(positronVersion?.buildNumber ?? 'unknown'),
+		platform_os: platformOs,
+		platform_version: platformVersion,
+		container_image: meta.containerImage,
+		ark_version: arkVersion,
+		scenario: first.scenario,
+		lane: first.lane,
+		launches: snapshots.map(snapshot => {
+			const extensionHeap = buildExtensionHeap(snapshot);
+			return {
+				launch_index: snapshot.launchIndex,
+				settle_ms: snapshot.settleMs,
+				tree_total_pss_bytes: snapshot.treeTotalPssBytes,
+				processes: snapshot.processes.map(p => ({
+					pid: p.pid, ppid: p.ppid, depth: p.depth,
+					process_name: redactProcessName(p.processName), process_role: p.processRole,
+					labeled: p.labeled, cmd_basename: p.cmdBasename,
+					pss_bytes: p.pssBytes, rss_bytes: p.rssBytes,
+					pss_min: p.pssMin, pss_max: p.pssMax,
+					forced_gc: p.forcedGc
+				})),
+				extensions: snapshot.extensions.map(e => ({
+					extension_id: e.extensionId,
+					is_builtin: e.isBuiltin,
+					activation_time_ms: e.activationTimeMs,
+					activation_event: e.activationEvent
+				})),
+				...(extensionHeap ? { extension_heap: extensionHeap } : {})
+			};
+		})
+	};
+}
+
+/** Returns whether the publish succeeded. Never throws: reports are the point. */
+export async function publishSnapshots(snapshots: MemorySnapshot[], meta: RunMeta): Promise<boolean> {
+	if (!publishingEnabled()) {
+		console.log('[memory] MEMORY_PUBLISH is not true, skipping publish; the report is still rendered and attached');
+		return false;
+	}
+	if (!CONNECT_API_KEY) {
+		console.log('[memory] no CONNECT_API_KEY, skipping publish');
+		return false;
+	}
+	// The spec gates on both flags before a snapshot is ever written, so this is
+	// belt and braces. It is here anyway because that guarantee rests on
+	// statement ordering in another file: gates before writeFileSync, and a
+	// publish step that requires all three launch files. A refactor could defeat
+	// either silently, and an unsettled launch that becomes the baseline is
+	// permanent, where a failed job is not.
+	const unsettled = snapshots.filter(s => s.stoppedGrowing !== true || s.treeSettled !== true);
+	if (unsettled.length > 0) {
+		console.error('[memory] refusing to publish: ' +
+			unsettled.map(s => `launch ${s.launchIndex} (stoppedGrowing=${s.stoppedGrowing}, treeSettled=${s.treeSettled})`).join(', '));
+		return false;
+	}
+	try {
+		const response = await request(apiUrl(meta.branch), {
+			method: 'POST',
+			headers: { Authorization: `Key ${CONNECT_API_KEY}`, 'Content-Type': 'application/json' },
+			body: JSON.stringify(buildPayload(snapshots, meta))
+		});
+		// undici will not release the socket until the body is consumed, so drain
+		// it even though only the status code matters here.
+		await response.body.dump();
+		console.log(`[memory] publish responded ${response.statusCode}`);
+		return response.statusCode < 400;
+	} catch (error) {
+		console.error(`[memory] publish failed: ${error}`);
+		return false;
+	}
+}
+
+/**
+ * Response shape for `GET /memory/baseline`. This is a contract with the
+ * dashboard plan, not an inference from whatever it happens to return.
+ *
+ *   GET /memory/baseline?scenario=idle&branch=main&lane=desktop&container_image=...
+ *   Authorization: Key <CONNECT_API_KEY>
+ *
+ * Every field below is required rather than defensively optional. That was
+ * settled while nothing had published yet and no released shape had to be kept
+ * compatible; publishing is on now, so widening any of these is a change to a
+ * live contract, not a local relaxation.
+ *
+ * 200 with `{ "found": false, "reason": ... }` when no baseline exists yet.
+ * That is a normal first-run state, not an error, and must not be a 404: a
+ * 404 is indistinguishable from a typo in the path.
+ *
+ * 200 with `{ "found": true, ... }` otherwise, where `snapshot` carries the
+ * median launch of the most recent main-branch nightly for the same lane,
+ * using the same field names as one entry of `MemoryPayload.launches` plus
+ * the run-level `tree_total_pss_bytes`.
+ */
+export type BaselineResponse =
+	| { found: false; reason: 'no_baseline' }
+	| { found: false; reason: 'image_mismatch'; available_container_image: string }
+	| {
+		found: true;
+		container_image: string;
+		run_id: string;
+		app_version: string;
+		lane: string;
+		snapshot: {
+			tree_total_pss_bytes: number;
+			settle_ms: number;
+			processes: { process_name: string; process_role: string; pss_bytes: number }[];
+			extensions: { extension_id: string; activation_event: string | null }[];
+		};
+	};
+
+/**
+ * Builds the query string for `GET /memory/baseline`. The baseline must match
+ * both the fetching run's lane and its container image: a server figure
+ * diffed against a desktop one, or a baseline built from a stale image,
+ * would render a delta that looks meaningful but is not.
+ */
+export function baselineQuery(scenario: MemoryScenario, lane: MemoryLane, containerImage: string): string {
+	const params = new URLSearchParams({
+		scenario, branch: 'main', lane, container_image: containerImage
+	});
+	return `?${params.toString()}`;
+}
+
+/**
+ * Map a baseline response onto a snapshot. Only the fields the report's delta
+ * actually reads are mapped; the rest are filled with neutral values rather than
+ * faked, so anything reading further gets an obvious zero instead of a plausible
+ * number.
+ */
+export function baselineToSnapshot(body: BaselineResponse, scenario: MemoryScenario): MemorySnapshot | undefined {
+	if (!body.found) {
+		return undefined;
+	}
+	if (!isMemoryLane(body.lane)) {
+		// Rejected rather than coerced. A bad process_role below falls back to
+		// 'unlabeled' because any role is safe to lump into one bucket, but there
+		// is no safe default lane: falling back to 'desktop' is exactly the
+		// cross-lane contamination this whole change exists to prevent.
+		console.error(`[memory] baseline response has an unrecognized lane '${body.lane}'; treating as no baseline rather than mislabeling it`);
+		return undefined;
+	}
+	return {
+		scenario,
+		lane: body.lane,
+		// Neutral rather than faked, per the note above: the baseline predates this run
+		// and the response carries neither field. The report reads neither for the
+		// baseline, and '' fails the freshness check loudly if anything ever starts to.
+		capturedAt: '',
+		positronVersion: '',
+		launchIndex: 0,
+		settleMs: body.snapshot.settle_ms,
+		treeTotalPssBytes: body.snapshot.tree_total_pss_bytes,
+		processes: body.snapshot.processes.map(p => ({
+			pid: 0, ppid: 0, depth: 0,
+			processName: p.process_name,
+			// Validated rather than cast. A role added server-side before the client
+			// knows it would otherwise become an invalid ProcessRole at runtime and
+			// fall through every switch downstream.
+			processRole: isProcessRole(p.process_role) ? p.process_role : 'unlabeled',
+			labeled: true, cmdBasename: '',
+			// The response carries no such field and the report reads it for neither
+			// side of the delta, so this is neutral rather than a claim -- the same
+			// reasoning as `labeled: true` above.
+			forcedGc: false,
+			pssBytes: p.pss_bytes, rssBytes: 0, pssMin: p.pss_bytes, pssMax: p.pss_bytes,
+			// One sample, because the response carries one figure per process. That
+			// also keeps a baseline out of the unstable-process report: a single
+			// sample cannot be judged unstable.
+			pssSamples: [p.pss_bytes], rssSamples: [0]
+		})),
+		extensions: body.snapshot.extensions.map(e => ({
+			extensionId: e.extension_id, isBuiltin: false,
+			activationTimeMs: null,
+			// Validated rather than cast, matching processRole above. `??` defends
+			// against absence but not against the wrong type.
+			activationEvent: typeof e.activation_event === 'string' ? e.activation_event : null
+		}))
+	};
+}
+
+/**
+ * Most recent main-branch nightly for the given lane, used for the delta in
+ * the run report. Undefined when there is no baseline yet, the image does
+ * not match, or the endpoint is unavailable, in which case the report shows
+ * absolute numbers only.
+ */
+export async function fetchBaseline(scenario: MemoryScenario, lane: MemoryLane): Promise<MemorySnapshot | undefined> {
+	if (!publishingEnabled() || !CONNECT_API_KEY) {
+		return undefined;
+	}
+	try {
+		const containerImage = containerImageFromEnv();
+		const response = await request(`${memoryUrl(PROD_API_URL)}/baseline${baselineQuery(scenario, lane, containerImage)}`, {
+			method: 'GET',
+			headers: { Authorization: `Key ${CONNECT_API_KEY}` }
+		});
+		if (response.statusCode >= 400) {
+			// Logged, not swallowed. The API returns 400 on an invalid lane, and
+			// without this that is as invisible as an empty store, so a typo in the
+			// query would read as a permanently missing baseline.
+			console.error(`[memory] baseline request failed with ${response.statusCode}: ${await response.body.text()}`);
+			return undefined;
+		}
+		const body = await response.body.json() as BaselineResponse;
+		if (!body.found) {
+			console.log(`[memory] no baseline: ${body.reason}` +
+				(body.reason === 'image_mismatch' ? ` (newest available: ${body.available_container_image})` : ''));
+			return undefined;
+		}
+		// The query already sent `lane`, but nothing upstream of this guarantees the
+		// API filters on it -- the design doc notes it may accept the parameter
+		// without filtering yet. Without this check, such a build would hand a
+		// server run a desktop baseline (or vice versa), and render.ts would happily
+		// diff the two lanes against each other: exactly the invalid comparison this
+		// whole change exists to prevent. isMemoryLane in baselineToSnapshot only
+		// catches a garbage value; it cannot catch a valid lane that is simply the
+		// wrong one.
+		if (body.lane !== lane) {
+			console.error(`[memory] baseline response lane '${body.lane}' does not match requested lane '${lane}'; treating as no baseline rather than mixing lanes`);
+			return undefined;
+		}
+		return baselineToSnapshot(body, scenario);
+	} catch (error) {
+		console.error(`[memory] could not fetch baseline: ${error}`);
+		return undefined;
+	}
+}

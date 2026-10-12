@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Data Explorer Grid"
+---
+
+The data grid displays rows and columns with headers, type indicators, and missing-value representations. Scroll to request additional visible data and resize columns by dragging header boundaries.
+
+Select a column header to access supported sorting and filtering operations. Copying a selection places its displayed values on the clipboard.
+
+The grid is an inspection surface. Perform durable transformations in Python or R code so they remain reproducible, then reopen or refresh the object to inspect the result.

@@ -1,0 +1,94 @@
+{
+  "name": "positron-proxy",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "version": "1.0.0",
+  "publisher": "positron",
+  "private": true,
+  "engines": {
+    "vscode": "^1.65.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:positronProxy.startHelpProxyServer",
+    "onCommand:positronProxy.setHelpProxyServerStyles",
+    "onCommand:positronProxy.startHtmlProxyServer",
+    "onCommand:positronProxy.startHttpProxyServer",
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "resourceLangId == html && resourceScheme == file",
+          "command": "positronProxy.showHtmlPreview",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceLangId == html && resourceScheme == file",
+          "command": "positronProxy.openBrowserPreview",
+          "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "when": "resourceLangId == html  && resourceScheme == file",
+          "command": "positronProxy.showHtmlPreview",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceLangId == html  && resourceScheme == file",
+          "command": "positronProxy.openBrowserPreview",
+          "group": "navigation"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "positronProxy.showHtmlPreview",
+        "title": "%command.positronProxy.showHtmlPreview.title%",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "positronProxy.openBrowserPreview",
+        "title": "%command.positronProxy.openBrowserPreview.title%",
+        "icon": "$(browser)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "dependencies": {
+    "express": "^4.22.0",
+    "http-proxy-middleware": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "14.x",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "@vscode/test-electron": "^2.1.2",
+    "eslint": "^8.9.0",
+    "glob": "^7.2.0",
+    "mocha": "^9.2.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.5.5",
+    "@vscode/vsce": "^3.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/posit-dev/positron"
+  },
+  "overrides": {
+    "qs": "^6.14.1"
+  }
+}

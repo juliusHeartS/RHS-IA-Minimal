@@ -1,0 +1,216 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { RuntimeItem } from './runtimeItem.js';
+import { ActivityItemStream } from './activityItemStream.js';
+import { ActivityItemPrompt } from './activityItemPrompt.js';
+import { ActivityItemOutputHtml } from './activityItemOutputHtml.js';
+import { ActivityItemOutputPlot } from './activityItemOutputPlot.js';
+import { ActivityItemErrorMessage } from './activityItemErrorMessage.js';
+import { ActivityItemErrorSuggestion } from './activityItemErrorSuggestion.js';
+import { ActivityItemOutputMessage } from './activityItemOutputMessage.js';
+import { ActivityItemInput, ActivityItemInputState } from './activityItemInput.js';
+
+/** The ActivityItemOutput type alias. */
+export type ActivityItemOutput =
+	ActivityItemOutputHtml |
+	ActivityItemOutputMessage |
+	ActivityItemOutputPlot;
+
+/**
+ * The ActivityItem type alias.
+ */
+export type ActivityItem =
+	ActivityItemStream |
+	ActivityItemErrorMessage |
+	ActivityItemErrorSuggestion |
+	ActivityItemInput |
+	ActivityItemOutput |
+	ActivityItemPrompt;
+
+/**
+ * Checks whether two ActivityItemStream objects are of the same type and have the same parent ID.
+ * @param activityItemStream1
+ * @param activityItemStream2
+ * @returns
+ */
+const isSameActivityItemStream = (
+	activityItemStream1: ActivityItemStream,
+	activityItemStream2: ActivityItemStream
+) =>
+	activityItemStream1.type === activityItemStream2.type &&
+	activityItemStream1.parentId === activityItemStream2.parentId;
+
+/**
+ * RuntimeItemActivity class.
+ */
+export class RuntimeItemActivity extends RuntimeItem {
+	//#region Private Properties
+
+	/**
+	 * Gets or sets the activity items.
+	 */
+	private _activityItems: ActivityItem[] = [];
+
+	/**
+	 * Monotonically increasing counter that is bumped whenever content rendered by RuntimeActivity
+	 * changes. Used by React.memo to determine whether to re-render or not.
+	 */
+	private _version = 0;
+
+	//#endregion Private Properties
+
+	//#region Public Properties
+
+	/**
+	 * Gets the activity items.
+	 */
+	public get activityItems() {
+		return this._activityItems;
+	}
+
+	/**
+	 * Gets the current mutation version. See `_version`.
+	 */
+	public get version() {
+		return this._version;
+	}
+
+	//#endregion Public Properties
+
+	//#region Constructor
+
+	/**
+	 * Constructor.
+	 * @param id The identifier.
+	 * @param activityItem The initial activity item.
+	 */
+	constructor(id: string, activityItem: ActivityItem) {
+		// Call the base class's constructor.
+		super(id);
+
+		// Add the initial activity item.
+		this.addActivityItem(activityItem);
+	}
+
+	//#endregion Constructor
+
+	//#region Public Methods
+
+	/**
+	 * Adds an activity item.
+	 * @param activityItem The activity item to add.
+	 */
+	public addActivityItem(activityItem: ActivityItem) {
+		// Bump the version to indicate that a mutation is occurring.
+		this._version++;
+
+		// Perform activity item processing if this is not the first activity item.
+		if (this._activityItems.length) {
+			// If the activity item being added is an ActivityItemStream, see if we can append it to
+			// the last ActivityItemStream of the same type with the same parent identifier.
+			if (activityItem instanceof ActivityItemStream) {
+				// Get the last activity item.
+				const lastActivityItem = this._activityItems[this._activityItems.length - 1];
+				if (lastActivityItem instanceof ActivityItemStream) {
+					// If the ActivityItemStream being added and the last ActivityItemStream are of
+					// the same type with the same parent identifier, add the ActivityItemStream
+					// being added to the last ActivityItemStream.
+					if (isSameActivityItemStream(lastActivityItem, activityItem)) {
+						// Add the ActivityItemStream being added to the last ActivityItemStream. If
+						// an ActivityItemStream is returned, it becomes the next activity item to
+						// add.
+						const activityItemStream = lastActivityItem.addActivityItemStream(activityItem);
+						if (!activityItemStream) {
+							return;
+						}
+
+						// Set the activity item to add.
+						activityItem = activityItemStream;
+					}
+				}
+			} else if (activityItem instanceof ActivityItemInput && activityItem.state !== ActivityItemInputState.Provisional) {
+				// When a non-provisional ActivityItemInput is being added, see if there's a
+				// provisional or already-completed ActivityItemInput for it in the activity
+				// items. If there is, replace it with the actual ActivityItemInput.
+				for (let i = this._activityItems.length - 1; i >= 0; --i) {
+					const activityItemToCheck = this._activityItems[i];
+					if (activityItemToCheck instanceof ActivityItemInput) {
+						if ((activityItemToCheck.state === ActivityItemInputState.Provisional ||
+							activityItemToCheck.state === ActivityItemInputState.Completed) &&
+							activityItemToCheck.parentId === activityItem.parentId) {
+							// If the item was already completed (idle received
+							// before the input message), propagate that state
+							// to the replacement so it doesn't show as executing.
+							if (activityItemToCheck.state === ActivityItemInputState.Completed) {
+								activityItem.state = ActivityItemInputState.Completed;
+							}
+							this._activityItems[i] = activityItem;
+							return;
+						}
+						break;
+					}
+				}
+			}
+		}
+
+		// Push the activity item.
+		this._activityItems.push(activityItem);
+	}
+
+	/**
+	 * Trim scrollback.
+	 * @param scrollbackSize A number representing the scrollback size.
+	 * @returns A number representing the remaining scrollback size.
+	 */
+	public override trimScrollback(scrollbackSize: number): number {
+		// We should never be called with a scrollback size <= 0.
+		if (scrollbackSize <= 0) {
+			return 0;
+		}
+
+		// Walk the activity items in reverse, trimming scrollback.
+		let firstKeepIndex = 0;
+		let bumpVersion = false;
+		let remainingScrollbackSize = scrollbackSize;
+		for (let i = this._activityItems.length - 1; remainingScrollbackSize > 0 && i >= 0; i--) {
+			// Trim scrollback on the activity item.
+			const result = this._activityItems[i].trimScrollback(remainingScrollbackSize);
+
+			// Adjust the first keep index, bump version flag, and remaining scrollback size.
+			firstKeepIndex = i;
+			bumpVersion ||= result.trimmed;
+			remainingScrollbackSize = Math.max(result.remainingScrollbackSize, 0);
+		}
+
+		// Drop activity items before the first activity item.
+		if (firstKeepIndex > 0) {
+			this._activityItems.splice(0, firstKeepIndex);
+			bumpVersion = true;
+		}
+
+		// Bump the render version only when something actually changed so React.memo keeps its
+		// cached render for activities that were walked-but-untouched.
+		if (bumpVersion) {
+			this._version++;
+		}
+
+		// Return the remaining scrollback size.
+		return remainingScrollbackSize;
+	}
+
+	/**
+	 * Gets the clipboard representation of the runtime item.
+	 * @param commentPrefix The comment prefix to use.
+	 * @returns The clipboard representation of the runtime item.
+	 */
+	public override getClipboardRepresentation(commentPrefix: string): string[] {
+		return this._activityItems.flatMap(activityItem =>
+			activityItem.getClipboardRepresentation(commentPrefix)
+		);
+	}
+
+	//#endregion Public Methods
+}

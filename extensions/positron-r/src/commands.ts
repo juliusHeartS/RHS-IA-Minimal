@@ -1,0 +1,856 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as vscode from 'vscode';
+import * as positron from 'positron';
+import * as path from 'path';
+import * as os from 'os';
+import { generateDirectInjectionId, PromiseHandles } from './util';
+import { checkInstalled, RStudioAddin, RmdTemplate } from './session';
+import { getRPackageName } from './contexts';
+import { getRPackageTasks } from './tasks';
+import { randomUUID } from 'crypto';
+import { RSessionManager } from './session-manager';
+import { quickPickRuntime } from './runtime-quickpick';
+import { MINIMUM_RENV_VERSION, MINIMUM_R_VERSION } from './constants';
+import { RRuntimeManager } from './runtime-manager';
+import { RMetadataExtra } from './r-installation';
+import { onDidDiscoverTestFiles } from './testing/testing';
+import { getEnvironmentHealth, logErrorTo } from './environmentHealth';
+import { LOGGER } from './extension.js';
+import { printInterpreterSettingsInfo } from './interpreter-settings.js';
+import { UnsavedScriptFiles } from './unsavedScripts';
+
+/** Backs the "run file" gesture for unsaved (untitled) R scripts. */
+let unsavedScripts: UnsavedScriptFiles;
+
+export async function registerCommands(context: vscode.ExtensionContext, runtimeManager: RRuntimeManager) {
+
+	unsavedScripts = new UnsavedScriptFiles();
+	context.subscriptions.push(unsavedScripts);
+
+	context.subscriptions.push(
+
+		// Command used to create new R files
+		vscode.commands.registerCommand('r.createNewFile', () => {
+			vscode.workspace.openTextDocument({ language: 'r' }).then((newFile) => {
+				vscode.window.showTextDocument(newFile);
+			});
+		}),
+
+		vscode.commands.registerCommand('r.insertPipe', () => {
+			const extConfig = vscode.workspace.getConfiguration('positron.r');
+			const pipeString = extConfig.get<string>('pipe') || '|>';
+			insertOperatorWithSpace(pipeString);
+		}),
+
+		vscode.commands.registerCommand('r.insertSection', () => {
+			insertSection();
+		}),
+
+		// TODO: remove this hack when we can address the Console like an editor
+		// In the meantime, note the use of the command 'default:type' instead of 'type'.
+		// This works around the fact that the vim plugin overrides the 'type' command.
+		// https://github.com/posit-dev/positron/issues/3279
+		vscode.commands.registerCommand('r.insertPipeConsole', () => {
+			const extConfig = vscode.workspace.getConfiguration('positron.r');
+			const pipeString = extConfig.get<string>('pipe') || '|>';
+			vscode.commands.executeCommand('default:type', { text: ` ${pipeString} ` });
+		}),
+
+		vscode.commands.registerCommand('r.insertLeftAssignment', () => {
+			insertOperatorWithSpace('<-');
+		}),
+
+		// TODO: remove this hack when we can address the Console like an editor
+		vscode.commands.registerCommand('r.insertLeftAssignmentConsole', () => {
+			vscode.commands.executeCommand('default:type', { text: ' <- ' });
+		}),
+
+		// Commands for package development tooling
+		vscode.commands.registerCommand('r.packageLoad', async () => {
+			executeCodeForCommand('devtools', 'devtools::load_all()');
+		}),
+
+		vscode.commands.registerCommand('r.packageBuild', async () => {
+			executeCodeForCommand('devtools', 'devtools::build()');
+		}),
+
+		vscode.commands.registerCommand('r.packageInstall', async () => {
+			const packageName = await getRPackageName();
+			const tasks = await getRPackageTasks();
+			const task = tasks.filter(task => task.definition.task === 'r.task.packageInstall')[0];
+
+			if (task.definition.pkg) {
+				const isInstalled = await checkInstalled(task.definition.pkg);
+				if (!isInstalled) {
+					return;
+				}
+			}
+			const session = await RSessionManager.instance.getConsoleSession();
+			if (!session) {
+				return;
+			}
+
+			const execution = await vscode.tasks.executeTask(task);
+			const disp1 = vscode.tasks.onDidEndTaskProcess(async e => {
+				if (e.execution === execution) {
+					if (e.exitCode === 0) {
+						vscode.commands.executeCommand('workbench.panel.positronConsole.focus');
+
+						// A promise that resolves when the runtime is ready.
+						// We establish this promise before the session has
+						// restarted so that we can ensure that we don't miss
+						// the Ready state.
+						const promise = new PromiseHandles<void>();
+						const disp2 = session.onDidChangeRuntimeState(runtimeState => {
+							if (runtimeState === positron.RuntimeState.Ready) {
+								promise.resolve();
+								disp2.dispose();
+							}
+						});
+
+						try {
+							await positron.runtime.restartSession(session.metadata.sessionId);
+						} catch (err) {
+							// If restarting promise rejects, dispose of listeners, notify user, and reject.
+							disp1.dispose();
+							disp2.dispose();
+							promise.reject(err);
+							vscode.window.showErrorMessage(vscode.l10n.t('Failed to restart R after installing R package: {0}', JSON.stringify(err)));
+							return;
+						}
+
+						// Temporary measure - generate a direct injection ID so this code execution will be added to the console history.
+						session.execute(`library(${packageName})`,
+							generateDirectInjectionId(),
+							positron.RuntimeCodeExecutionMode.Interactive,
+							positron.RuntimeErrorBehavior.Continue);
+					}
+					disp1.dispose();
+				}
+			});
+		}),
+
+		vscode.commands.registerCommand('r.packageTest', async () => {
+			const tasks = await getRPackageTasks();
+			const task = tasks.filter(task => task.definition.task === 'r.task.packageTest')[0];
+			const isInstalled = await checkInstalled(task.definition.pkg);
+			if (isInstalled) {
+				vscode.tasks.executeTask(task);
+			}
+		}),
+
+		vscode.commands.registerCommand('r.packageTestExplorer', async () => {
+			vscode.commands.executeCommand('workbench.view.testing.focus');
+
+			if (context.workspaceState.get('positron.r.testExplorerSetUp') === true) {
+				vscode.commands.executeCommand('testing.runAll');
+			} else {
+				// if this is first time opening the test explorer, wait for tests to be discovered
+				onDidDiscoverTestFiles(() => {
+					vscode.commands.executeCommand('testing.runAll');
+				});
+			}
+		}),
+
+		vscode.commands.registerCommand('r.useTestthat', async () => {
+			executeCodeForCommand('usethis', 'usethis::use_testthat()');
+		}),
+
+		vscode.commands.registerCommand('r.useTest', async () => {
+			executeCodeForCommand('usethis', 'usethis::use_test("something")');
+		}),
+
+		vscode.commands.registerCommand('r.packageCheck', async () => {
+			const tasks = await getRPackageTasks();
+			const task = tasks.filter(task => task.definition.task === 'r.task.packageCheck')[0];
+			const isInstalled = await checkInstalled(task.definition.pkg);
+			if (isInstalled) {
+				vscode.tasks.executeTask(task);
+			}
+		}),
+
+		vscode.commands.registerCommand('r.packageDocument', async () => {
+			executeCodeForCommand('devtools', 'devtools::document()');
+		}),
+
+		vscode.commands.registerCommand('r.selectInterpreter', async () => {
+			await quickPickRuntime(runtimeManager);
+		}),
+
+		vscode.commands.registerCommand('r.scriptPath', async () => {
+			const session = await RSessionManager.instance.getConsoleSession();
+			if (!session) {
+				throw new Error(`Cannot get Rscript path; no R session available`);
+			}
+			const scriptPath = (session.runtimeMetadata.extraRuntimeData as RMetadataExtra).scriptpath;
+			if (!scriptPath) {
+				throw new Error(`Cannot get Rscript path; no Rscript path available`);
+			}
+			return scriptPath;
+		}),
+
+		// Commands used to source the current file
+		vscode.commands.registerCommand('r.sourceCurrentFile', async (resource?: vscode.Uri) => {
+			sourceCurrentFile(false, resource);
+		}),
+		vscode.commands.registerCommand('r.sourceCurrentFileWithEcho', async (resource?: vscode.Uri) => {
+			sourceCurrentFile(true, resource);
+		}),
+
+		// Commands used to load R data files.
+		// RData loads immediately since the user has explicitly chosen to load.
+		// RDS opens the custom editor so the user can review/edit the variable name.
+		vscode.commands.registerCommand('r.loadRDataFile', async (resource?: vscode.Uri) => {
+			if (resource) {
+				await loadRDataFile(resource);
+			}
+		}),
+		vscode.commands.registerCommand('r.loadRdsFile', async (resource?: vscode.Uri) => {
+			if (resource) {
+				await vscode.commands.executeCommand('vscode.openWith', resource, 'positron-r.rdsLoader');
+			}
+		}),
+		vscode.commands.registerCommand('r.loadRDataFileWithPicker', async () => {
+			loadRDataFileWithPicker();
+		}),
+
+		// Command used to source the current file
+		vscode.commands.registerCommand('r.rmarkdownRender', async () => {
+			const filePath = await getEditorFilePathForCommand();
+			if (filePath) {
+				const tasks = await getRPackageTasks(filePath);
+				const task = tasks.filter(task => task.definition.task === 'r.task.rmarkdownRender')[0];
+				const isInstalled = await checkInstalled(task.definition.pkg);
+				if (isInstalled) {
+					try {
+						vscode.tasks.executeTask(task);
+					} catch (e) {
+						// This is not a valid file path, which isn't an error; it just
+						// means the active editor has something loaded into it that
+						// isn't a file on disk.
+					}
+				}
+			}
+		}),
+
+		// Command used to get the minimum version of R supported by the extension
+		vscode.commands.registerCommand('r.getMinimumRVersion', (): string => MINIMUM_R_VERSION),
+
+		// Command used to initialize a new folder with renv
+		vscode.commands.registerCommand('r.renvInit', async () => {
+			// ensure renv is installed before calling renv::init()
+			// this prompts the user to install if it's not already
+			// if the user declines, renv::init() will not be called
+			const isInstalled = await checkInstalled('renv', MINIMUM_RENV_VERSION);
+			if (isInstalled) {
+				const session = await positron.runtime.getForegroundSession();
+				if (session) {
+					session.execute(`renv::init()`, generateDirectInjectionId(), positron.RuntimeCodeExecutionMode.Interactive, positron.RuntimeErrorBehavior.Continue);
+				} else {
+					console.debug('[r.renvInit] no session available');
+				}
+			} else {
+				console.debug('[r.renvInit] renv is not installed');
+			}
+		}),
+
+		// Command used to open up the R Language Pack output channel and log information
+		// about the R interpreter settings
+		vscode.commands.registerCommand('r.interpreters.settingsInfo', async () => {
+			LOGGER.show();
+			printInterpreterSettingsInfo();
+		}),
+
+		// Returns a JSON report on whether the current R setup can start a
+		// session. Internal: consumed by a frontend, not surfaced in the palette.
+		vscode.commands.registerCommand('r.getEnvironmentHealth',
+			async () => getEnvironmentHealth(logErrorTo(LOGGER))),
+
+		// Commands used in RStudio migration walkthrough
+		vscode.commands.registerCommand('r.walkthrough.updateRStudioKeybindings', async () => {
+			vscode.commands.executeCommand('workbench.action.openSettings', 'workbench.keybindings.rstudioKeybindings');
+		}),
+		vscode.commands.registerCommand('r.walkthrough.formatOnSave', async () => {
+			vscode.commands.executeCommand('workbench.action.openSettings', '@lang:r editor.formatOnSave');
+		}),
+
+		// Commands for RStudio addins
+		vscode.commands.registerCommand('r.runAddin', async () => {
+			await runAddin();
+		}),
+
+		// Commands for R Markdown templates
+		vscode.commands.registerCommand('r.newRmdFromTemplate', async () => {
+			await newRmdFromTemplate();
+		}),
+
+		// Command to show R version info
+		vscode.commands.registerCommand('r.showRVersion', async () => {
+			await showRVersion();
+		}),
+	);
+}
+
+function insertOperatorWithSpace(op: string) {
+	// TODO: make this work in the Console too
+	if (!vscode.window.activeTextEditor) {
+		return;
+	}
+	const editor = vscode.window.activeTextEditor;
+	// make sure cursor ends up on RHS, even if selection was made right-to-left
+	editor.selections = editor.selections.map(s => new vscode.Selection(s.start, s.end));
+
+	return editor.edit(editBuilder => {
+		editor.selections.forEach(sel => {
+			const startPos = sel.start;
+			const endPos = sel.end;
+			const lineText = editor.document.lineAt(startPos).text;
+			let insertValue = op;
+
+			const precedingChar = lineText.charAt(startPos.character - 1);
+			if (!/\s/g.test(precedingChar)) {
+				insertValue = ' ' + insertValue;
+			}
+
+			const followingChar = lineText.charAt(endPos.character);
+			if (!/\s/g.test(followingChar)) {
+				insertValue = insertValue + ' ';
+			}
+
+			editBuilder.replace(sel, insertValue);
+		});
+	});
+}
+
+/**
+ * Inserts a named section into the editor, attempting to emulate the
+ * behavior of RStudio's "Insert Section" command.
+ *
+ * Note that the keybinding this command doesn't match RStudio's by default since
+ * the default keybinding for "Insert Section" in VS Code is already used
+ * for Search Again. The RStudio Keymap extension can be used to restore the
+ * original binding (Cmd+Shift+R).
+ *
+ * @see https://docs.posit.co/ide/user/ide/guide/code/code-sections.html#code-sections
+ */
+function insertSection() {
+	vscode.window.showInputBox({
+		placeHolder: vscode.l10n.t('Section label'),
+		prompt: vscode.l10n.t('Enter the name of the section to insert'),
+	}).then((sectionName) => {
+		if (sectionName) {
+			// Get the active text editor. The 'insertSection' command only
+			// lights up when an R editor is focused, so we expect this to
+			// always be defined.
+			const editor = vscode.window.activeTextEditor;
+			if (!editor) {
+				return;
+			}
+
+			// If the user has rulers enabled, we want to make sure the section
+			// header is aligned with the rulers; otherwise, just use a standard
+			// 80 character limit.
+			//
+			// Let the section header run up to 5 characters short of the first
+			// ruler.
+			const config = vscode.workspace.getConfiguration('editor');
+			const rulers = config.get<Array<number>>('rulers');
+			const targetWidth = rulers && rulers.length > 0 ? rulers[0] - 5 : 75;
+
+			// Get the current selection and text.
+			const selection = editor.selection;
+			const text = editor.document.getText(selection);
+
+			// Create the section header.
+			let section = '\n# ' + sectionName + ' ';
+
+			if (targetWidth - section.length < 4) {
+				// A section header must have at least 4 dashes
+				section += '----';
+			} else {
+				// Add dashes up to the target width.
+				for (let i = section.length; i < targetWidth; i++) {
+					section += '-';
+				}
+			}
+			section += '\n\n';
+
+			editor.edit((editBuilder) => {
+				editBuilder.replace(selection, text + section);
+			});
+		}
+	});
+}
+
+async function executeCodeForCommand(pkg: string, code: string) {
+	const isInstalled = await checkInstalled(pkg);
+	if (isInstalled) {
+		positron.runtime.executeCode(
+			'r',	// R code
+			code,	// The code to execute.
+			true,	// Focus the console after executing the code.
+			true,	// Do not check the code for completeness before executing.
+			// Specify the runtime execution mode as NonInteractive so that the
+			// code is not combined with pending code before being executed.
+			positron.RuntimeCodeExecutionMode.NonInteractive
+		);
+	}
+}
+
+/**
+ * Prompts the user to select an R data file (.RData, .rda, .rds) and loads it.
+ */
+async function loadRDataFileWithPicker() {
+	const filters: { [name: string]: string[] } = {
+		// eslint-disable-next-line @typescript-eslint/naming-convention
+		'R Data Files': ['RData', 'Rdata', 'rdata', 'rda', 'rds', 'RDS']
+	};
+
+	const fileUri = await vscode.window.showOpenDialog({
+		canSelectMany: false,
+		openLabel: vscode.l10n.t('Load'),
+		filters: filters,
+		title: vscode.l10n.t('Select R Data File to Load')
+	});
+
+	if (!fileUri || fileUri.length === 0) {
+		return;
+	}
+
+	const selectedFile = fileUri[0];
+	const ext = path.extname(selectedFile.fsPath).toLowerCase();
+
+	if (ext === '.rds') {
+		await vscode.commands.executeCommand('vscode.openWith', selectedFile, 'positron-r.rdsLoader');
+	} else {
+		// .RData, .Rdata, .rdata, .rda -- load immediately
+		await loadRDataFile(selectedFile);
+	}
+}
+
+export async function getEditorFilePathForCommand(resource?: vscode.Uri) {
+	let filePath: string | undefined;
+
+	if (resource) {
+		// Use the provided resource URI (from editor action bar button)
+		filePath = resource.fsPath;
+	} else {
+		// Fall back to active text editor (from command palette or other invocations)
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			// No editor; nothing to do
+			return;
+		}
+		filePath = editor.document.uri.fsPath;
+	}
+	if (!filePath) {
+		// File is unsaved; show a warning
+		vscode.window.showWarningMessage('Cannot save untitled file.');
+		return;
+	}
+
+	// Save the file before executing command to ensure that the contents are
+	// up to date with editor buffer.
+	if (resource) {
+		// Save the specific document
+		const document = await vscode.workspace.openTextDocument(resource);
+		if (document.isDirty) {
+			await document.save();
+		}
+	} else {
+		// Save the active editor
+		await vscode.commands.executeCommand('workbench.action.files.save');
+	}
+
+	// Check to see if the fsPath is an actual path to a file using
+	// the VS Code file system API.
+	const fsStat = await vscode.workspace.fs.stat(vscode.Uri.file(filePath));
+
+	// Return the full path, with POSIX path separators. Any additional path
+	// math, escaping, or quoting is the responsibility of the caller.
+	if (fsStat) {
+		return filePath.replace(/\\/g, '/');
+	}
+	return;
+}
+
+/** Resolves the document targeted by a run command, from a URI or the active editor. */
+function targetDocument(resource?: vscode.Uri): vscode.TextDocument | undefined {
+	if (resource) {
+		return vscode.workspace.textDocuments.find(d => d.uri.toString() === resource.toString());
+	}
+	return vscode.window.activeTextEditor?.document;
+}
+
+async function sourceCurrentFile(echo: boolean, resource?: vscode.Uri) {
+	let onFinished: (() => void) | undefined;
+	try {
+		const document = targetDocument(resource);
+
+		// Unsaved (untitled) buffers are written to a scratch file so they can
+		// be sourced without prompting the user to save first. The scratch file
+		// is cleaned up once the run finishes.
+		let filePath: string | undefined;
+		if (document?.isUntitled) {
+			filePath = await unsavedScripts.write(document);
+			// Guard so the scratch file's in-flight count is decremented
+			// once, whether cleanup is driven by the observer or the catch
+			// below.
+			let finished = false;
+			onFinished = () => {
+				if (finished) {
+					return;
+				}
+				finished = true;
+				void unsavedScripts.finished(filePath!);
+			};
+		} else {
+			filePath = await getEditorFilePathForCommand(resource);
+		}
+
+		if (filePath) {
+			const uri = vscode.Uri.file(filePath);
+
+			// Offer to install missing packages before sourcing the file. The
+			// preflight runs in the Positron frontend and returns whether to
+			// proceed (false only if the user cancels).
+			const shouldRun = await vscode.commands.executeCommand<boolean>(
+				'positron.missingPackages.preflight', uri);
+			if (shouldRun === false) {
+				onFinished?.();
+				return;
+			}
+
+			// Format the path relative to the session's working directory when
+			// possible, falling back to home-relative or absolute. On Windows,
+			// omit homeUri: R's ~ expands to the Documents folder, so a
+			// home-relative path would resolve incorrectly.
+			const formattedPath = await positron.paths.formatPathForCode(filePath, {
+				relativeTo: ['session', 'home'],
+				homeUri: process.platform !== 'win32' ? vscode.Uri.file(os.homedir()) : undefined,
+			});
+			let command = `source(${formattedPath})`;
+			if (echo) {
+				command = `source(${formattedPath}, echo = TRUE)`;
+			}
+			const observer = onFinished ? { onFinished } : undefined;
+			// Not awaited: the run proceeds asynchronously and the observer
+			// reports completion. If the call rejects (e.g. no session can be
+			// started), clean up here; onFinished is idempotent, so a
+			// redundant call after the observer already fired is a no-op.
+			Promise.resolve(
+				positron.runtime.executeCode('r', command, false, undefined, undefined, undefined, observer, undefined, uri),
+			).catch(() => onFinished?.());
+		}
+	} catch (e) {
+		// Clean up the scratch file if we wrote one but never launched the run.
+		onFinished?.();
+		// This is not a valid file path, which isn't an error; it just
+		// means the active editor has something loaded into it that
+		// isn't a file on disk.  In Positron, there is currently a bug
+		// which causes the REPL to act like an active editor. See:
+		//
+		// https://github.com/posit-dev/positron/issues/780
+	}
+
+}
+
+/**
+ * Gets the file path for loading operations.
+ * Formats the path for use in R console: forward slashes, relative to R
+ * session's working directory if possible, otherwise home-relative or absolute.
+ *
+ * @param resource Optional URI from context menu
+ * @returns The formatted file path (quoted), or undefined if not found
+ */
+export async function getFilePathForLoad(resource?: vscode.Uri): Promise<string | undefined> {
+	let filePath: string | undefined;
+
+	if (resource) {
+		// Unlikely since these Uris come from VS Code's file explorer or editor
+		// context menus, but validate that the resource has a file system path.
+		if (!resource.fsPath) {
+			LOGGER.warn('getFilePathForLoad: resource has no fsPath: ' + JSON.stringify(resource));
+			return undefined;
+		}
+		filePath = resource.fsPath;
+	} else {
+		const editor = vscode.window.activeTextEditor;
+		if (editor) {
+			filePath = editor.document.uri.fsPath;
+		}
+	}
+
+	if (!filePath) {
+		return undefined;
+	}
+
+	// Verify file exists
+	try {
+		await vscode.workspace.fs.stat(vscode.Uri.file(filePath));
+
+		// On Windows, os.homedir() returns C:\Users\name but R's ~ expands to
+		// C:\Users\name\Documents, so home-relative paths produce doubled path
+		// segments. Omit homeUri on Windows so the 'home' base is skipped and
+		// paths outside the working directory fall back to absolute.
+		return await positron.paths.formatPathForCode(filePath, {
+			relativeTo: ['session', 'home'],
+			homeUri: process.platform !== 'win32' ? vscode.Uri.file(os.homedir()) : undefined,
+		});
+	} catch {
+		return undefined;
+	}
+}
+
+/**
+ * Loads an R workspace file (.RData, .rda) into the R session immediately.
+ * Used by the right-click context menu and file picker commands, where the
+ * user has explicitly chosen to load.
+ *
+ * @param resource URI of the file to load
+ */
+async function loadRDataFile(resource: vscode.Uri): Promise<void> {
+	try {
+		const filePath = await getFilePathForLoad(resource);
+		if (!filePath) {
+			vscode.window.showErrorMessage(vscode.l10n.t('Failed to load R data file: File not found or invalid path {0}', JSON.stringify(resource)));
+			return;
+		}
+		const command = `load(${filePath})`; // filePath is already quoted
+		await positron.runtime.executeCode('r', command, true);
+	} catch (e) {
+		const message = e instanceof Error ? e.message : String(e);
+		vscode.window.showErrorMessage(vscode.l10n.t('Failed to load R data file: {0}', message));
+	}
+}
+
+/**
+ * QuickPick item for RStudio addins
+ */
+interface AddinQuickPickItem extends vscode.QuickPickItem {
+	addin: RStudioAddin;
+}
+
+/**
+ * Run an RStudio addin.
+ * Shows a QuickPick with all addins found in installed packages, then executes the selection.
+ */
+async function runAddin(): Promise<void> {
+	const session = await RSessionManager.instance.getConsoleSession();
+	if (!session) {
+		vscode.window.showErrorMessage(vscode.l10n.t('No R session available'));
+		return;
+	}
+
+	let addins: RStudioAddin[];
+	try {
+		addins = await session.getAddins();
+	} catch (err) {
+		vscode.window.showErrorMessage(vscode.l10n.t('Error loading addins: {0}', String(err)));
+		return;
+	}
+
+	if (addins.length === 0) {
+		vscode.window.showInformationMessage(
+			vscode.l10n.t('No RStudio Addins found. Install packages with addins (e.g., reprex, clipr).')
+		);
+		return;
+	}
+
+	// Sort addins by package name
+	addins.sort((a, b) => a.package.localeCompare(b.package));
+
+	// Group addins by package with separators
+	const items: (vscode.QuickPickItem | AddinQuickPickItem)[] = [];
+	let currentPackage = '';
+	for (const a of addins) {
+		if (a.package !== currentPackage) {
+			currentPackage = a.package;
+			items.push({
+				label: a.package,
+				kind: vscode.QuickPickItemKind.Separator
+			});
+		}
+		items.push({
+			label: a.name,
+			detail: a.description,
+			addin: a
+		});
+	}
+
+	const selected = await vscode.window.showQuickPick(items, {
+		placeHolder: vscode.l10n.t('Select an RStudio Addin'),
+		matchOnDetail: true
+	}) as AddinQuickPickItem | undefined;
+
+	if (selected) {
+		const addin = selected.addin;
+		const code = `${addin.package}:::${addin.binding}()`;
+		try {
+			await positron.runtime.executeCode('r', code, true);
+		} catch {
+			// R errors are already shown in the console
+		}
+	}
+}
+
+/**
+ * QuickPick item for R Markdown templates
+ */
+interface TemplateQuickPickItem extends vscode.QuickPickItem {
+	template: RmdTemplate;
+}
+
+/**
+ * Create a new R Markdown document from an installed template.
+ * Shows a QuickPick to select a template, then a save dialog for the destination.
+ */
+async function newRmdFromTemplate(): Promise<void> {
+	// Check that rmarkdown is installed first
+	const isInstalled = await checkInstalled('rmarkdown');
+	if (!isInstalled) {
+		return;
+	}
+
+	const session = await RSessionManager.instance.getConsoleSession();
+	if (!session) {
+		vscode.window.showErrorMessage(vscode.l10n.t('No R session available'));
+		return;
+	}
+
+	let templates: RmdTemplate[];
+	try {
+		templates = await session.getRmdTemplates(true);
+	} catch (err) {
+		vscode.window.showErrorMessage(vscode.l10n.t('Error loading R Markdown templates: {0}', String(err)));
+		return;
+	}
+
+	if (templates.length === 0) {
+		// The rmarkdown package itself has templates, so something must go really wrong to get here:
+		vscode.window.showInformationMessage(
+			vscode.l10n.t('No R Markdown templates found.')
+		);
+		return;
+	}
+
+	// Sort templates by package name
+	templates.sort((a, b) => a.package.localeCompare(b.package));
+
+	// Group templates by package with separators
+	const items: (vscode.QuickPickItem | TemplateQuickPickItem)[] = [];
+	let currentPackage = '';
+	for (const t of templates) {
+		if (t.package !== currentPackage) {
+			currentPackage = t.package;
+			items.push({
+				label: t.package,
+				kind: vscode.QuickPickItemKind.Separator
+			});
+		}
+		items.push({
+			label: t.name,
+			detail: t.description,
+			template: t
+		});
+	}
+
+	const selected = await vscode.window.showQuickPick(items, {
+		placeHolder: vscode.l10n.t('Select an R Markdown template'),
+		matchOnDetail: true
+	}) as TemplateQuickPickItem | undefined;
+
+	if (selected) {
+		const t = selected.template;
+
+		// Get save location from user
+		const defaultDir = vscode.workspace.workspaceFolders?.[0]?.uri
+			?? vscode.Uri.file(os.homedir());
+
+		// Find an unused filename
+		let filename = 'Untitled.Rmd';
+		let counter = 1;
+		while (true) {
+			const candidate = vscode.Uri.joinPath(defaultDir, filename);
+			try {
+				await vscode.workspace.fs.stat(candidate);
+				// File exists, try next number
+				filename = `Untitled-${counter}.Rmd`;
+				counter++;
+			} catch {
+				// File doesn't exist, use this name
+				break;
+			}
+		}
+
+		const saveUri = await vscode.window.showSaveDialog({
+			defaultUri: vscode.Uri.joinPath(defaultDir, filename)
+		});
+
+		if (!saveUri) {
+			return;
+		}
+
+		// Create document using rmarkdown::draft() and open via rstudioapi
+		const draftPath = saveUri.fsPath;
+		const code = `rmarkdown::draft(${JSON.stringify(draftPath)}, template = "${t.template}", package = "${t.package}")`;
+		try {
+			await positron.runtime.executeCode('r', code, true);
+		} catch {
+			// R errors are already shown in the console
+		}
+	}
+}
+
+/**
+ * Show R version information in a modal dialog.
+ * Uses `JupyterLanguageRuntimeSession.evaluate()` to get `R.version` and
+ * displays a friendly summary via a Positron modal dialog.
+ */
+async function showRVersion(): Promise<void> {
+	try {
+		const session = await RSessionManager.instance.getConsoleSession();
+		if (!session) {
+			vscode.window.showErrorMessage(vscode.l10n.t('No R session available'));
+			return;
+		}
+
+		const evalResult = await session.evaluate('as.list(R.version)');
+
+		const v = evalResult.result as Record<string, string>;
+		const title = v['version.string'] || 'R';
+
+		const lines: string[] = [];
+		if (v.nickname) {
+			lines.push(vscode.l10n.t('Nickname: "{0}"', v.nickname));
+		}
+		if (v.platform) {
+			lines.push(vscode.l10n.t('Platform: {0}', v.platform));
+		}
+		if (v.arch) {
+			lines.push(vscode.l10n.t('Architecture: {0}', v.arch));
+		}
+		if (v.os) {
+			lines.push(vscode.l10n.t('OS: {0}', v.os));
+		}
+		if (v.major && v.minor) {
+			lines.push(vscode.l10n.t('Version: {0}.{1}', v.major, v.minor));
+		}
+		if (v['svn rev']) {
+			lines.push(vscode.l10n.t('SVN revision: {0}', v['svn rev']));
+		}
+		if (v.year && v.month && v.day) {
+			lines.push(vscode.l10n.t('Release date: {0}-{1}-{2}', v.year, v.month, v.day));
+		}
+
+		const message = lines.join('\n');
+		await positron.window.showSimpleModalDialogMessage(title, message);
+	} catch (err) {
+		const message = err instanceof Error ? err.message : String(err);
+		vscode.window.showErrorMessage(vscode.l10n.t('Error getting R version: {0}', message));
+	}
+}

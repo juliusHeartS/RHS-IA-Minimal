@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Workspace Layout"
+---
+
+The editor occupies the center of the window. The Primary Side Bar holds Explorer, Search, Source Control, Run and Debug, and Extensions. Panels such as Console and Terminal normally appear below the editor. The Auxiliary Bar holds data-science views and Documentation.
+
+Drag view headers to rearrange them, or use **View > Appearance** and the layout controls to show, hide, and reposition workbench parts. Open a view by name from **View: Open View**.
+
+RHS-IA remembers layout changes per workspace. Use the layout reset action from the Command Palette if a view becomes difficult to locate.

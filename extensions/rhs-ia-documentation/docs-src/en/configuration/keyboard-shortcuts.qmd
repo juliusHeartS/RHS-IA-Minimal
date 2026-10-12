@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Keyboard Shortcuts"
+---
+
+Open **Keyboard Shortcuts** from the Command Palette to search actions, inspect conflicts, and change bindings. Select the edit icon beside a command, enter the new key combination, and press Enter.
+
+RHS-IA inherits familiar editor shortcuts and adds data-science actions. **Cmd/Ctrl+Shift+P** opens the Command Palette, **Cmd/Ctrl+&#96;** toggles the terminal, and **Cmd/Ctrl+Shift+H** opens Documentation. On macOS, `Cmd` commonly replaces `Ctrl`.
+
+Changes are stored in your user keybindings. Use the context-menu reset action to restore a command's default.
+
+[Open Keyboard Shortcuts](rhs-doc-action:keyboard-shortcuts).

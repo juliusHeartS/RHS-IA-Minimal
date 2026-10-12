@@ -1,0 +1,2374 @@
+{
+  "schemaVersion": "1.0.0",
+  "documentVersion": "2026-10-08.4",
+  "title": "RHS-IA customization and upgrade ledger",
+  "authority": {
+    "level": "authoritative",
+    "companion": "docs/upgrades/rhs-customizations.md",
+    "synchronizationRule": "The JSON and Markdown files are complementary views of the same ledger. A customization change is incomplete until both files agree.",
+    "scope": "Current RHS-IA product customizations, intentional exclusions, superseded experiments, generated artifacts, and upgrade verification obligations relative to the recorded Positron baseline."
+  },
+  "audit": {
+    "auditedAtUtc": "2026-09-11T00:44:16Z",
+    "repository": "RHS-IA",
+    "branch": "remove-certificates",
+    "head": "3d8c16bb3925966353472481ecb4cc828886ce1c",
+    "headSubject": "Implemented phases A, B, C and D of the documentation extension",
+    "baselineRef": "2026.07.1-5",
+    "baselineCommit": "d3cdd608df5afa3378c24c9a9c81b01fe1433a87",
+    "preMergeForkTip": "a2766036b4a95378842a450c4d7c4eb8951087d6",
+    "preMergeCommonAncestor": "d5f94f072b1083b8237930739cb6525c6e12e1da",
+    "preMergeCommonAncestorTag": "2026.06.0-211",
+    "forkOnlyCommitCount": 78,
+    "workingTreeAtAuditStart": [
+      {
+        "path": "AGENTS.md",
+        "status": "modified",
+        "ownership": "pre-existing coordinator change; preserved"
+      }
+    ],
+    "inputDiff": {
+      "command": "git diff --name-status 2026.07.1-5..HEAD",
+      "nameStatusSha256": "5c18b13a2ad638f9bea8a851027f61914c40c57e6e8103c93b5ebfc1cf51f8d3",
+      "changedFileRecords": 4497,
+      "insertions": 47805,
+      "deletions": 1332171,
+      "statusCounts": {
+        "added": 362,
+        "deleted": 4014,
+        "modified": 119,
+        "renamed90": 1,
+        "renamed100": 1
+      },
+      "limitations": [
+        "Git skipped exhaustive rename detection because the deletion set exceeded the default rename limit.",
+        "Rename records are evidence of path state only; they are not interpreted as semantic moves.",
+        "The two ledger files created by this audit are excluded from the audited product delta."
+      ]
+    }
+  },
+  "handoverCleanup": {
+    "startedAt": "2026-09-29",
+    "status": "in_progress",
+    "baselineCommit": "76184a7e1ec714587f2bc93326606836f6f292ea",
+    "firstCommit": "d217c119231e694c0f22d8736e41ec309559419c",
+    "changedAreas": [
+      "README source-build and handover guidance",
+      "repository and issue-reporting metadata",
+      "developer copyright/provenance and contributor/security guidance",
+      "restored application icon artwork under RHS-IA resource filenames and consuming build/runtime paths",
+      "default dark theme migration and regenerated colorization fixtures"
+    ],
+    "iconDecision": "On user request, restored pre-handover macOS, server, and Windows icon bytes while keeping RHS-IA filenames. The prior Windows artwork visibly retains the Positron mark. Removed the one-source generator because it would overwrite these distinct assets.",
+    "validation": "2026-09-29: pinned Node 24 core-ci and macOS arm64 package build passed for the first handover commit; core/build TypeScript, extension compilation, layer check, theme migration test, inventory, Spanish localization, and hygiene checks passed. Regenerated colorization snapshots pass 105 fixtures; 3 RHS-IA Light CSS/SCSS/JSON fixtures fail color-explanation assertions. Restored icons are byte-identical to their pre-handover counterparts. The macOS arm64 package rebuilt after restoration and contains the byte-identical macOS icon. Windows and server packaging, full branding reconciliation, packaged visual review, and fresh-profile acceptance remain pending. Historical validationResults below do not certify this cleanup.",
+    "branchCleanup": "RHS-IA-1.0 is the only local branch and has no upstream tracking. Eleven contained local branches were deleted. Divergent local tips were preserved as annotated tags rhs-ia-backup-asistente-rhs-rebrand-2026-10-01 and rhs-ia-backup-rhs-ia-rebrand-2026-10-01 before deleting their branch names. GitHub publication, default-branch change, and remote-branch deletion have not started; they require completed product-identity validation, verified remote state, and preservation of open pull requests. GitHub repository access through the current connector and local HTTPS credentials failed on 2026-10-01.",
+    "followUp20261001": {
+      "status": "in_progress",
+      "currentTextLines": 38969,
+      "currentTextFiles": 3538,
+      "currentMatchingPaths": 4649,
+      "changedAreas": [
+        "RHS-IA Light token selectors and regenerated colorization snapshots",
+        "visible application and extension copy and Spanish overlay values with stable localization keys",
+        "workflow display names and PR DMG application path",
+        "company, license label, release-notes, and download product metadata",
+        "Linux package maintainer guard and Windows installer labels",
+        "upstream newsletter action and disabled AppX manifest removal"
+      ],
+      "validation": "All 108 colorization fixtures, 80 focused Vitest tests with seven skips, 413 Spanish overlay keys, extension inventory, build/client TypeScript checks, extension compilation, Linux maintainer helper tests, and pinned Node 24 core-ci and macOS arm64 package builds passed. Fresh packaged product.json, Info.plist, and restored icon were inspected; full GUI acceptance remains pending.",
+      "releaseGate": "Open: thousands of inherited paths/symbols and source references, workflows with upstream infrastructure, third-party endpoints, Windows updater binary strings, user-approved Windows icon exception, supported-platform package review, and inaccessible GitHub remote prevent complete branding and branch cleanup."
+    }
+  },
+  "validationResults": [
+    {
+      "check": "ledger integrity",
+      "status": "passed",
+      "result": "20 unique customization IDs; 94 current/removed implementation path records checked; every evidence commit resolves; every Markdown ID and open-question ID is present."
+    },
+    {
+      "check": "baseline diff coverage",
+      "status": "passed",
+      "result": "36 top-level path groups account for all 4,497 audited file records; coverage sum and live Git grouping agree."
+    },
+    {
+      "check": "npm run validate-rhs-ia-extension-inventory",
+      "status": "passed",
+      "result": "RHS-IA extension inventory exclusions validated."
+    },
+    {
+      "check": "npm run validate-spanish-session-localization",
+      "status": "passed",
+      "result": "413 Spanish Session localization keys, 39 Python/R environment-health keys, and 2 extension bundles validated with placeholder parity."
+    },
+    {
+      "check": "npm run validate-bundled-extensions",
+      "status": "passed",
+      "result": "No bundled extensions apply to the audited darwin platform."
+    },
+    {
+      "check": "rhs-ia-documentation check-docs",
+      "status": "passed",
+      "result": "Manifest, translations, branding, exclusions, links, offline content, and English/Spanish search audits passed; 50/50 Spanish pages are current."
+    },
+    {
+      "check": "rhs-ia-documentation test-docs",
+      "status": "passed",
+      "result": "4 tests passed."
+    },
+    {
+      "check": "rhsIaActivityBarMigration.vitest.ts",
+      "status": "passed",
+      "result": "6 tests passed, including Documentation default pin/order and one-time persistence behavior."
+    },
+    {
+      "check": "rhsIaStartup.vitest.ts",
+      "status": "known_failure",
+      "result": "10 tests passed and 1 failed at line 131: the test expects darwinBundleIdentifier org.paho.rhsia, while current product.json intentionally records co.posit.positron for RHS-MAC-001."
+    },
+    {
+      "check": "existing packaged macOS arm64 artifact inspection",
+      "status": "passed_with_scope_limit",
+      "result": "Observed RHS-IA product identity, rhsIaUseMockKeychain true, builtInExtensionsEnabledWithAutoUpdates [], all 11 bootstrap VSIX files, and kcserver 0.1.66 Mach-O arm64. This is an inspection of an existing local artifact, not a fresh build."
+    }
+  ],
+  "integrationRuleDefinitions": {
+    "preserve": "Carry the RHS-IA behavior forward and resolve upstream conflicts in its favor unless an explicit product decision changes it.",
+    "intentionally_excluded": "Keep the component or behavior absent. Do not restore it merely because it exists upstream.",
+    "upstream_owned_with_rhs_adaptation": "Rebase on upstream implementation, then reapply the narrow RHS-IA identity, policy, or packaging adaptation and rerun its guards.",
+    "do_not_ship": "Keep as development evidence or historical context only; exclude it from release assembly.",
+    "investigate_before_change": "The present state is known but the intended long-term state or provenance is unresolved. Do not guess during conflict resolution."
+  },
+  "statusDefinitions": {
+    "active": "Present and required in the current product.",
+    "active_temporary": "Present and required for the current build, but explicitly temporary.",
+    "active_guard": "A regression check or invariant rather than a unique product feature.",
+    "intentionally_removed": "Absent by design and protected from upstream reintroduction.",
+    "historical_superseded": "Previously implemented, then removed or replaced; not part of the current product.",
+    "developer_only": "Useful in the source workspace but not a runtime product feature.",
+    "generated_or_temporary": "Generated data, merge residue, or working notes; not authoritative product source."
+  },
+  "customizations": [
+    {
+      "id": "RHS-ID-001",
+      "category": "identity",
+      "title": "RHS-IA product identity and storage namespaces",
+      "status": "active",
+      "integrationRule": "preserve",
+      "purpose": "Present the desktop, CLI, server, protocols, user-data folders, and installers as RHS-IA while retaining explicitly documented upstream-owned metadata that has not yet been migrated.",
+      "userVisibleBehavior": [
+        "The product and executable family are named RHS-IA/rhs-ia.",
+        "New local and remote state uses .rhs-ia, .rhs-ia-shared, and .rhs-ia-server namespaces.",
+        "The URL protocol is rhs-ia and Linux desktop identity is org.paho.rhsia.",
+        "The product's issue-reporting action targets the RHS-IA repository."
+      ],
+      "implementation": [
+        {
+          "path": "product.json",
+          "status": "current",
+          "symbols": [
+            "nameShort",
+            "nameLong",
+            "applicationName",
+            "dataFolderName",
+            "serverApplicationName",
+            "serverDataFolderName",
+            "urlProtocol",
+            "linuxIconName",
+            "win32AppId"
+          ]
+        },
+        {
+          "path": "src/vs/platform/product/common/product.ts",
+          "status": "current",
+          "symbols": [
+            "development product configuration"
+          ]
+        },
+        {
+          "path": "package.json",
+          "status": "current",
+          "symbols": [
+            "product-label",
+            "repository",
+            "bugs"
+          ]
+        },
+        {
+          "path": "README.md",
+          "status": "current",
+          "symbols": [
+            "PAHO IT source-build handover",
+            "upstream attribution and release limitations",
+            "PAHO-oriented application based on Positron",
+            "repository-relative RHS-IA interface screenshot with optional RHS-Agent caption"
+          ]
+        },
+        {
+          "path": "assets/interfaz_agent.png",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "status": "current",
+          "symbols": [
+            "project description based on Positron and Code OSS"
+          ]
+        },
+        {
+          "path": "docs/language/translation-plan.md",
+          "status": "current",
+          "symbols": [
+            "RHS-IA packaged-app provenance wording"
+          ]
+        },
+        {
+          "path": "docs/upgrades/rhs-ia-branding-audit.md",
+          "status": "current",
+          "symbols": [
+            "project provenance and product-identity cleanup wording"
+          ]
+        },
+        {
+          "path": "resources/server/manifest.json",
+          "status": "current",
+          "symbols": [
+            "name",
+            "productName"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "bd7aa74f73ff9dc7cff0a5e5244fe7b788ed335c",
+        "6ac104d1173c0f4ed1de408fc9315de8887fd496",
+        "4d20fd5689b12a5f99995cd5e8c4e819d56ceaa8"
+      ],
+      "dependenciesAndProvenance": [
+        "Windows installer GUIDs and PAHO.RHSIA AppUserModelId are RHS-owned identifiers.",
+        "2026-10-08 pending working-tree README screenshot addition: copy the user-supplied RHS-IA image into assets/interfaz_agent.png without altering its bytes; reference it with a repository-relative path. No new commit evidence is claimed.",
+        "2026-10-08 pending working-tree documentation update: describe RHS-IA as based on Positron; preserve exact historical backup-tag names, upstream component descriptions, copyright notices, and compatibility identifiers. No runtime behavior or new commit evidence is claimed.",
+        "As of 2026-10-01 companyName is RHS-IA, licenseName is Elastic License 2.0, and release-notes/download URLs target RHS-IA. License URLs, trusted domains, gallery endpoints, and remote distribution fields remain actual upstream dependencies pending replacement and ownership review."
+      ],
+      "verification": [
+        "For the documentation wording update, scan tracked text for project-level terminology, parse the JSON inventory, run targeted hygiene, and run git diff --check.",
+        "For the README screenshot addition, verify the image is not ignored, matches the user-supplied original byte for byte, and resolves from README.md without referencing an external workspace directory.",
+        "Inspect packaged product.json and platform metadata, not only source product.json.",
+        "Launch desktop and CLI with a disposable profile and confirm RHS-IA names and new storage roots.",
+        "Confirm an existing .positron profile follows RHS-ID-002 migration rules."
+      ],
+      "risks": [
+        "Partial renaming can split user data or produce mismatched installer/desktop identities.",
+        "Unresolved Posit-owned metadata may be legally or operationally significant."
+      ],
+      "openQuestions": [
+        "Which remaining Posit company, licensing, issue-reporting, trusted-domain, and gallery values should PAHO own or replace?"
+      ]
+    },
+    {
+      "id": "RHS-ID-002",
+      "category": "identity",
+      "title": "Early legacy profile migration",
+      "status": "active",
+      "integrationRule": "preserve",
+      "purpose": "Move only the supported legacy argv preference from .positron to .rhs-ia before normal argument, locale, and credential initialization.",
+      "userVisibleBehavior": [
+        "A first RHS-IA launch can retain an existing explicit locale preference.",
+        "Extensions, caches, global state, and credentials are deliberately not bulk-migrated."
+      ],
+      "implementation": [
+        {
+          "path": "src/main.ts",
+          "status": "current",
+          "symbols": [
+            "early RHS-IA startup initialization"
+          ]
+        },
+        {
+          "path": "src/vs/platform/languagePacks/node/rhsIaStartup.ts",
+          "status": "current",
+          "symbols": [
+            "migrateLegacyArgv",
+            "ensureDefaultLocale",
+            "registerBundledSpanishLanguagePack"
+          ]
+        },
+        {
+          "path": "src/vs/platform/languagePacks/test/node/rhsIaStartup.vitest.ts",
+          "status": "current",
+          "symbols": [
+            "startup migration tests"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "6de93ef71ca9236a0f76e0ef9fdcf91ecf45a840"
+      ],
+      "dependenciesAndProvenance": [
+        "Depends on RHS-ID-001 storage names and RHS-L10N-001 locale policy."
+      ],
+      "verification": [
+        "Test fresh, existing-RHS, and legacy-Positron profiles in disposable directories.",
+        "Confirm portable mode remains isolated and an explicit English preference is preserved.",
+        "Confirm only argv.json is migrated."
+      ],
+      "risks": [
+        "Changing startup order can run migration after locale or credential services have already selected the wrong profile."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-MAC-001",
+      "category": "macos_security",
+      "title": "Temporary Chromium mock-keychain mode",
+      "status": "active_temporary",
+      "integrationRule": "preserve",
+      "purpose": "Allow ad-hoc/internal macOS builds to restart without Electron Safe Storage failing after the executable hash changes.",
+      "userVisibleBehavior": [
+        "On macOS, RHS-IA starts Chromium with --use-mock-keychain before credential initialization when rhsIaUseMockKeychain is true."
+      ],
+      "implementation": [
+        {
+          "path": "product.json",
+          "status": "current",
+          "symbols": [
+            "rhsIaUseMockKeychain",
+            "darwinBundleIdentifier",
+            "darwinProfileUUID",
+            "darwinProfilePayloadUUID"
+          ]
+        },
+        {
+          "path": "src/main.ts",
+          "status": "current",
+          "symbols": [
+            "app.commandLine.appendSwitch('use-mock-keychain')"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "24eb0c2870ead44c2af6be636d9c28b571f2b7de"
+      ],
+      "dependenciesAndProvenance": [
+        "Current macOS bundle identifier is co.posit.positron and the current profile UUIDs are 0501C5DF-0DC9-4217-9C18-A5595A125743 and BEA2CCD2-3F74-4174-9C0E-606A6F13B050.",
+        "This is a Chromium mock Keychain workaround, not a restored Apple signing certificate."
+      ],
+      "verification": [
+        "Use a packaged macOS app, a disposable profile, and non-sensitive test credentials.",
+        "Save and read the test credential across full app restarts and an in-place upgrade.",
+        "Confirm the switch is set before any credential or safe-storage initialization."
+      ],
+      "risks": [
+        "Mock-keychain uses a known password/weak obfuscation and must not protect real secrets.",
+        "Changing bundle identifier or signing state can strand or invalidate encrypted data.",
+        "The September startup test now asserts co.posit.positron, rhsIaUseMockKeychain true, the neutralized defaultChatAgent contract, and the empty auto-update list; the earlier org.paho.rhsia failure is no longer current."
+      ],
+      "openQuestions": [
+        "When will PAHO provide its final bundle identifier, Developer ID signing, entitlements, and notarization plan so mock-keychain can be removed through an explicit credential migration?"
+      ]
+    },
+    {
+      "id": "RHS-L10N-001",
+      "category": "localization",
+      "title": "Spanish-first startup and bundled language pack",
+      "status": "active",
+      "integrationRule": "preserve",
+      "purpose": "Make Spanish the default for new users while preserving explicit locale choices and supporting offline startup.",
+      "userVisibleBehavior": [
+        "Fresh profiles default to es.",
+        "Explicit legacy/current English choices remain English.",
+        "The Spanish language pack is registered locally when Spanish is effective."
+      ],
+      "implementation": [
+        {
+          "path": "product.json",
+          "status": "current",
+          "symbols": [
+            "defaultLocale",
+            "builtInExtensions.ms-ceintl.vscode-language-pack-es"
+          ]
+        },
+        {
+          "path": "language-packs/vscode-language-pack-es-1.111.0.vsix",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "src/vs/platform/languagePacks/node/rhsIaStartup.ts",
+          "status": "current",
+          "symbols": [
+            "effective locale selection",
+            "languagepacks.json registration"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/services/localization/electron-browser/localeService.ts",
+          "status": "current",
+          "symbols": [
+            "clearLocalePreference"
+          ]
+        },
+        {
+          "path": "scripts/update-spanish-language-pack.mjs",
+          "status": "current",
+          "symbols": [
+            "PINNED_COMMIT",
+            "EXPECTED_VERSION"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "5c973cf1e8c7891597337de276cf4875627a3330",
+        "398daaaa3270829dfe21faa444fbcfc11a90f5d6",
+        "6de93ef71ca9236a0f76e0ef9fdcf91ecf45a840"
+      ],
+      "dependenciesAndProvenance": [
+        "Language pack ID ms-ceintl.vscode-language-pack-es, version 1.111.0, SHA-256 35b5256b7ee58bfb7cd64def2ab7b36ff90a01cc69ba5f0e4b53a0a6a0defbfc.",
+        "Pack source is microsoft/vscode-loc pinned to commit a18342021e6a1ac3329497351e50cfb33dbac367."
+      ],
+      "verification": [
+        "Run scripts/validate-spanish-session-localization.mjs and the RHS startup tests.",
+        "Test fresh Spanish, explicit English, regional Spanish, and portable profiles.",
+        "Verify the packaged VSIX checksum and languagepacks.json entry offline."
+      ],
+      "risks": [
+        "The September welcome module moved from positronWelcomePageStart to common/gettingStartedPositronWelcomeContent; the validator and overlay now cover 388 keys and two extension bundles."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-L10N-002",
+      "category": "localization",
+      "title": "RHS-IA Spanish NLS overlay and extension translations",
+      "status": "active",
+      "integrationRule": "upstream_owned_with_rhs_adaptation",
+      "purpose": "Overlay RHS-IA-specific Spanish strings on upstream NLS and localize session, Python, and R surfaces without forking the entire upstream language pack.",
+      "userVisibleBehavior": [
+        "RHS-IA branding, session UI, Python, and R messages appear in Spanish when the resolved locale is Spanish.",
+        "The React Welcome header, environment states and actions, Recent/Connect/startup controls, and Python/R health remediation copy have Spanish translations.",
+        "The interpreter and folder dropdowns have current Spanish module mappings, recent-folder cleanup translations, and localized conda installation actions, progress, and errors."
+      ],
+      "implementation": [
+        {
+          "path": "src/vs/base/node/nls.ts",
+          "status": "current",
+          "symbols": [
+            "Spanish RHS overlay loading"
+          ]
+        },
+        {
+          "path": "src/vs/base/node/sp.positron.nls.ts",
+          "status": "current",
+          "symbols": [
+            "RHS-IA Spanish strings",
+            "current topActionBarSessionPicker module and folder/interpreter dropdown translations"
+          ]
+        },
+        {
+          "path": "src/vs/base/node/sp.positron.session.nls.ts",
+          "status": "current",
+          "symbols": [
+            "session Spanish strings"
+          ]
+        },
+        {
+          "path": "extensions/positron-python/l10n/bundle.l10n.es.json",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "extensions/positron-r/l10n/bundle.l10n.es.json",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "src/vs/workbench/api/common/extHostLocalizationService.ts",
+          "status": "current",
+          "symbols": [
+            "built-in extension-local localization fallback"
+          ]
+        },
+        {
+          "path": "build/next/nls-plugin.ts",
+          "status": "current",
+          "symbols": [
+            "TSX NLS extraction"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/welcomeGettingStarted/common/gettingStartedPositronWelcomeContent.ts",
+          "status": "current",
+          "symbols": [
+            "September welcome module",
+            "Spanish welcome overlay"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/welcomeGettingStarted/browser/positronWelcomePage/",
+          "status": "current",
+          "symbols": [
+            "React Welcome Spanish overlay coverage"
+          ]
+        },
+        {
+          "path": "extensions/positron-python/src/client/positron/environmentHealth.ts",
+          "status": "current",
+          "symbols": [
+            "RHS-IA-branded environment health messages"
+          ]
+        },
+        {
+          "path": "extensions/positron-python/src/client/positron/condaPickerContribution.ts",
+          "status": "current",
+          "symbols": [
+            "vscode.l10n.t for conda installation picker messages"
+          ]
+        },
+        {
+          "path": "extensions/positron-r/src/environmentHealth.ts",
+          "status": "current",
+          "symbols": [
+            "RHS-IA-branded environment health messages"
+          ]
+        },
+        {
+          "path": "scripts/validate-spanish-session-localization.mjs",
+          "status": "current",
+          "symbols": [
+            "placeholder parity",
+            "React Welcome module validation",
+            "Python/R environment-health and interpreter-picker validation",
+            "top-bar, folder commands, and runtime action coverage with actual catalog precedence"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "07c46f170a7650c5944bd1ddda9f4a98cf13094f"
+      ],
+      "dependenciesAndProvenance": [
+        "The upstream language pack remains the base; RHS-specific overlays are fork-owned.",
+        "2026-10-08 pending working-tree repair: replace stale session-picker module lookup, complete dropdown translations, and localize hardcoded conda picker messages. No new commit evidence is claimed."
+      ],
+      "verification": [
+        "Run the Spanish localization validator and confirm all 504 core and 47 environment-health/interpreter-picker keys plus placeholder parity across two extension bundles.",
+        "2026-10-08 validation: core TypeScript, Python extension compilation, seven conda-picker unit tests, and focused Welcome/top-bar suites (24 passed, one expected failure) pass. Existing packages require rebuilding; packaged Spanish dropdown acceptance remains pending.",
+        "Run the ExtHostLocalizationService focused test and confirm a built-in extension missing from the language pack loads its extension-local Spanish bundle while language-pack entries retain precedence.",
+        "Open representative session, Python, and R errors in Spanish and English.",
+        "Review upstream NLS key churn during every rebase."
+      ],
+      "risks": [
+        "Upstream key additions, removals, or placeholder changes can silently leave mixed-language UI."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-UI-001",
+      "category": "branding",
+      "title": "PAHO/RHS-IA visual branding and welcome experience",
+      "status": "active",
+      "integrationRule": "preserve",
+      "purpose": "Replace user-facing Positron identity on the welcome and platform shell with PAHO/RHS-IA assets and copy.",
+      "userVisibleBehavior": [
+        "Welcome content, logos, icons, banners, installers, and server assets present RHS-IA/PAHO branding.",
+        "The Welcome header shows prominent OPS and theme-aware RHS-IA marks followed by the healthcare banner; WHO/OMS is cropped out in both React and legacy Welcome layouts. Learn is reversibly hidden without remaining in the accessibility tree."
+      ],
+      "implementation": [
+        {
+          "path": "src/vs/workbench/browser/media/logo-ops.png",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "src/vs/workbench/contrib/welcomeGettingStarted/browser/positronWelcomePage/components/welcomeHeader.css",
+          "status": "current",
+          "symbols": [
+            "OPS-only 1280-column display crop and responsive size constraints"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/welcomeGettingStarted/browser/media/positronGettingStarted.css",
+          "status": "current",
+          "symbols": [
+            "legacy OPS-only display crop, including width-constrained layout"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/welcomeGettingStarted/browser/",
+          "status": "current",
+          "symbols": [
+            "historical branded header composition",
+            "SHOW_RHS_IA_LEARN_SECTION reversible visibility switch",
+            "welcome page copy, layout, and command links"
+          ]
+        },
+        {
+          "path": "resources/",
+          "status": "current",
+          "symbols": [
+            "platform icons and artwork"
+          ]
+        },
+        {
+          "path": "rhs-ia-product-icons/",
+          "status": "current",
+          "symbols": [
+            "RHS-IA product icon definitions"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "bd7aa74f73ff9dc7cff0a5e5244fe7b788ed335c",
+        "6ac104d1173c0f4ed1de408fc9315de8887fd496",
+        "4d20fd5689b12a5f99995cd5e8c4e819d56ceaa8"
+      ],
+      "dependenciesAndProvenance": [
+        "PAHO/RHS-IA artwork is fork-owned; preserve source attribution and editable masters outside this repository if applicable.",
+        "2026-10-08 pending working-tree crop: show the first 1280 of 1956 source columns, ending in the transparent gap before WHO/OMS. Preserve the original bitmap and RHS-IA theme assets."
+      ],
+      "verification": [
+        "Run focused Welcome component tests and review the responsive header in light/dark and narrow layouts.",
+        "2026-10-08 browser-rendered component previews pass in desktop, narrow, short-window, and dark layouts. Targeted hygiene, core/catalog ESLint, stylelint, and diff checks pass; stylelint suggestions concern existing declarations. Packaged Welcome acceptance remains pending.",
+        "Review packaged icons on macOS, Windows, Linux, and server artifacts."
+      ],
+      "risks": [
+        "Upstream welcome DOM/CSS churn can retain functionality while dropping branding or making the banner inaccessible."
+      ],
+      "openQuestions": [
+        "Where are the authoritative editable masters and license/provenance records for every PAHO/RHS-IA image asset?"
+      ]
+    },
+    {
+      "id": "RHS-UI-002",
+      "category": "theme",
+      "title": "Default RHS-IA light and dark themes",
+      "status": "active",
+      "integrationRule": "preserve",
+      "purpose": "Provide RHS-IA names for the default light and dark palettes while migrating existing dark-theme settings.",
+      "userVisibleBehavior": [
+        "The default light theme is Default RHS-IA Light and the default dark theme is Default RHS-IA Dark.",
+        "A stored Default Positron Dark choice maps to Default RHS-IA Dark."
+      ],
+      "implementation": [
+        {
+          "path": "extensions/theme-defaults/themes/rhs_ia_light.json",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "extensions/theme-defaults/themes/rhs_ia_dark.json",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "extensions/theme-defaults/package.json",
+          "status": "current",
+          "symbols": [
+            "Default RHS-IA Light contribution",
+            "Default RHS-IA Dark contribution"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/services/themes/common/workbenchThemeService.ts",
+          "status": "current",
+          "symbols": [
+            "default dark theme",
+            "legacy theme settings ID migration"
+          ]
+        },
+        {
+          "path": "product.json",
+          "status": "current",
+          "symbols": [
+            "defaultColorTheme.light"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "6ac104d1173c0f4ed1de408fc9315de8887fd496"
+      ],
+      "dependenciesAndProvenance": [
+        "The palette is a fork-owned derivative of upstream theme defaults.",
+        "The 2026-10-01 RHS-IA Light selector repair passes all 108 colorization fixtures."
+      ],
+      "verification": [
+        "Open major workbench, editor, terminal, notebook, data explorer, and settings surfaces in the packaged app and check contrast."
+      ],
+      "risks": [
+        "The dark palette itself has not received a separate visual design review."
+      ],
+      "openQuestions": [
+        "Who will approve the existing dark palette after packaged-app visual review?"
+      ]
+    },
+    {
+      "id": "RHS-UI-003",
+      "category": "workbench_layout",
+      "title": "Simplified default workbench layout with one-time migrations",
+      "status": "active",
+      "integrationRule": "upstream_owned_with_rhs_adaptation",
+      "purpose": "Reduce first-run clutter while preserving later user choices and removing retired view identifiers.",
+      "userVisibleBehavior": [
+        "SCM, debug, remote, extensions, testing, Packages, Connections, Language Help, History, and Preview are hidden by default.",
+        "Fresh profiles pin only Explorer among the primary sidebar built-ins, for vertical and top/bottom activity bars; users can show other tabs through the context menu and retain their choices.",
+        "Default-hidden bundled containers registered later are unpinned; separately installed third-party containers retain their normal defaults.",
+        "Accounts, host status, and Chat status entries are hidden by default.",
+        "Bundled RHS-IA Documentation is pinned at preferred order 0 in the right auxiliary sidebar.",
+        "One-time RHS migration keys update old defaults without repeatedly overriding user choices."
+      ],
+      "implementation": [
+        {
+          "path": "src/vs/workbench/browser/parts/rhsIaWorkbenchLayout.ts",
+          "status": "current",
+          "symbols": [
+            "hidden view-container and status-entry defaults"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/browser/parts/paneCompositeBar.ts",
+          "status": "current",
+          "symbols": [
+            "onDidRegisterViewContainers applies new-container defaults with CompositeBar.unpin while preserving cached user choices"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/browser/parts/sidebar/sidebarPart.ts",
+          "status": "current",
+          "symbols": [
+            "getCompositeBarOptions supplies RHS-IA defaults for top/bottom activity bars"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/test/browser/parts/rhsIaActivityBarDefaults.vitest.ts",
+          "status": "current",
+          "symbols": [
+            "real pane/composite bar regression tests for fresh storage, both orientations, delayed registration, and restored user choices"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/browser/parts/activitybar/rhsIaActivityBarMigration.ts",
+          "status": "current",
+          "symbols": [
+            "activity and auxiliary bar migration keys",
+            "retired view removal",
+            "accounts default"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/browser/parts/activitybar/rhsIaActivityBarMigration.vitest.ts",
+          "status": "current",
+          "symbols": [
+            "activity and auxiliary bar migration tests"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/api/browser/viewsExtensionPoint.ts",
+          "status": "current",
+          "symbols": [
+            "optional contributed view-container order"
+          ]
+        },
+        {
+          "path": "extensions/rhs-ia-documentation/package.json",
+          "status": "current",
+          "symbols": [
+            "auxiliary-bar order 0"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/browser/parts/statusbar/statusbarModel.ts",
+          "status": "current",
+          "symbols": [
+            "status bar default migration key and application"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/services/positronLayout/browser/layouts/positronAssistantLayout.ts",
+          "status": "removed",
+          "symbols": []
+        }
+      ],
+      "evidenceCommits": [
+        "f661278ccc2c9e46dc81fa7655fd86f8fc86ea63",
+        "a2766036b4a95378842a450c4d7c4eb8951087d6"
+      ],
+      "dependenciesAndProvenance": [
+        "Migration keys: rhs-ia.workbench.activityBarDefaults.v2, rhs-ia.workbench.auxiliaryBarDefaults.v2, rhs-ia.workbench.statusBarDefaults.v1.",
+        "2026-10-08 pending working-tree repair: CompositeBar.addComposite creates new items pinned, so registration must explicitly unpin default-hidden containers instead of skipping pin. No new cache migration or commit evidence is claimed."
+      ],
+      "verification": [
+        "After npm run typecheck-client, run rhsIaActivityBarDefaults.vitest.ts alongside rhsIaActivityBarMigration.vitest.ts.",
+        "2026-10-08 working-tree validation: pinned Node 24 typecheck-client, focused test TypeScript, all 11 activity-bar tests, targeted hygiene, strict ESLint, and git diff --check passed. Repository-wide Vitest typecheck reports 378 errors with the new test excluded. Packaged visual acceptance remains pending and existing bundles require rebuilding.",
+        "Run activity-bar tests, including Documentation default pin/order and post-migration persistence.",
+        "Test fresh and upgraded disposable profiles, then customize visibility and restart to ensure user choices persist.",
+        "Verify workbench.view.extension.test is used for Testing."
+      ],
+      "risks": [
+        "Upstream view IDs and storage semantics can change, making a hidden-default list ineffective or destructive."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-DOC-001",
+      "category": "documentation",
+      "title": "Bundled offline bilingual RHS-IA documentation",
+      "status": "active",
+      "integrationRule": "preserve",
+      "purpose": "Ship English and Spanish task documentation with offline navigation and search, integrated into Help and Welcome.",
+      "userVisibleBehavior": [
+        "The paho.rhs-ia-documentation extension provides an auxiliary-bar documentation view, Home, Search, Help-menu entry, welcome link, and Cmd/Ctrl+Shift+H shortcut.",
+        "The Welcome header's Help/Ayuda button activates and focuses the bundled Documentation view in the right sidebar.",
+        "Documentation follows vscode.env.language: Spanish for es locales and English otherwise.",
+        "Search is accent-insensitive, all-terms, ranked, capped at 20 results, and uses stable anchors."
+      ],
+      "implementation": [
+        {
+          "path": "extensions/rhs-ia-documentation/",
+          "status": "current",
+          "symbols": [
+            "paho.rhs-ia-documentation",
+            "rhs-ia.documentation.view",
+            "rhs-ia.documentation.open",
+            "rhs-ia.documentation.home",
+            "rhs-ia.documentation.search"
+          ]
+        },
+        {
+          "path": "build/gulpfile.extensions.ts",
+          "status": "current",
+          "symbols": [
+            "rhs-ia-documentation source extension"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/browser/parts/titlebar/menubarControl.ts",
+          "status": "current",
+          "symbols": [
+            "workbench.action.openRhsIaDocumentation"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/welcomeGettingStarted/browser/positronWelcomePage/components/welcomeHeader.tsx",
+          "status": "current",
+          "symbols": [
+            "rhs-ia.documentation.open"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/browser/parts/activitybar/rhsIaActivityBarMigration.ts",
+          "status": "current",
+          "symbols": [
+            "one-time Documentation pin/order migration"
+          ]
+        },
+        {
+          "path": ".vscode-test.js",
+          "status": "current",
+          "symbols": [
+            "documentation extension test label"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "3d8c16bb3925966353472481ecb4cc828886ce1c"
+      ],
+      "dependenciesAndProvenance": [
+        "Extension version 0.0.5 and publisher paho.",
+        "Content derives from a Positron website snapshot under CC BY-SA 4.0.",
+        "Snapshot tree hash ba45702518f379a7f7d12c029c902caa234e454f231fc9f2a0e22273922a0731 covers 359 upstream files; exact upstream Git commit is unresolved."
+      ],
+      "verification": [
+        "Run the extension navigation generator, build-docs, strict audits, tests, and bundle checks.",
+        "Verify the source extension manifest, compiled runtime, English/Spanish offline HTML, default auxiliary-bar pin/order, and Welcome Help activation in a disposable profile.",
+        "Exercise Home, Search, history, anchors, language selection, HTTPS links, and allowlisted rhs-doc-action commands offline.",
+        "Complete manual visual acceptance in a packaged desktop app."
+      ],
+      "risks": [
+        "Manual visual acceptance remains pending in the extension README.",
+        "The exact upstream source commit is unknown, limiting reproducibility and future content merges.",
+        "Only allowlisted rhs-doc-action commands may execute; arbitrary command URIs must remain blocked."
+      ],
+      "openQuestions": [
+        "Can the imported Positron website snapshot be mapped to an exact upstream commit or release artifact?"
+      ]
+    },
+    {
+      "id": "RHS-AST-001",
+      "category": "assistant",
+      "title": "Provider-neutral assistant integration hooks",
+      "status": "active",
+      "integrationRule": "upstream_owned_with_rhs_adaptation",
+      "purpose": "Retain core assistant contracts and RHS-branded affordances for an externally supplied provider while keeping the native Chat surface disabled by default.",
+      "userVisibleBehavior": [
+        "Native Chat registration is gated off when nativeChatSetupEnabled is false.",
+        "Provider enablement uses assistant.provider.<name>.enabled with legacy-key compatibility.",
+        "Console Fix/Explain affordances appear only when AI, settings, posit.assistant installation, and chat-model context requirements are satisfied."
+      ],
+      "implementation": [
+        {
+          "path": "product.json",
+          "status": "current",
+          "symbols": [
+            "nativeChatSetupEnabled"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/chat/browser/chat.shared.contribution.ts",
+          "status": "current",
+          "symbols": [
+            "RHS-adapted AI disable semantics and configuration gate"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/chat/browser/widget/chatWidget.ts",
+          "status": "current",
+          "symbols": [
+            "posit.assistant detection",
+            "RHS-IA welcome/documentation hooks"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/positronAssistant/",
+          "status": "current",
+          "symbols": [
+            "provider registration and enablement"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/chat/browser/widget/media/rhs-ia-assistant-icon.svg",
+          "status": "current",
+          "symbols": [
+            "RHS assistant icon"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "cad3ccf370751070c47dafff779b6ce83d8f6b07",
+        "f4c7045c6392939ddec6d627349ba6e504b349b8"
+      ],
+      "dependenciesAndProvenance": [
+        "The current repository does not ship a posit.assistant implementation or RHS Agent VSIX.",
+        "Root @github/copilot packages support upstream core agent-host dependencies and are not evidence that the removed GitHub Copilot Chat extension ships."
+      ],
+      "verification": [
+        "Test a clean profile without any external assistant: no native Chat view and no unusable Fix/Explain actions.",
+        "Test with the approved external posit.assistant package and each supported local provider.",
+        "Compile before running targeted assistant tests when TypeScript changes."
+      ],
+      "risks": [
+        "Acquisition, version, checksum, license, and update source for the external assistant are not recorded.",
+        "Workspace-trust and console error copy use RHS-IA Assistant; other assistant labels still require audit.",
+        "Upstream Chat refactors can bypass nativeChatSetupEnabled."
+      ],
+      "openQuestions": [
+        "What exact signed extension supplies posit.assistant in production, and where are its version, checksum, license, provider policy, and update channel controlled?"
+      ]
+    },
+    {
+      "id": "RHS-EXT-001",
+      "category": "extensions",
+      "title": "Curated built-in and bootstrap extension inventory",
+      "status": "active",
+      "integrationRule": "preserve",
+      "purpose": "Keep a deterministic, minimal extension set and fail early when product catalogs, tag maps, source assembly, or bundled VSIX metadata diverge.",
+      "userVisibleBehavior": [
+        "RHS-IA includes the Spanish language pack and the approved runtime/tooling bootstrap extensions, with automatic built-in extension updates disabled."
+      ],
+      "implementation": [
+        {
+          "path": "product.json",
+          "status": "current",
+          "symbols": [
+            "builtInExtensions",
+            "bootstrapExtensions",
+            "builtInExtensionsEnabledWithAutoUpdates"
+          ]
+        },
+        {
+          "path": ".github/workflows/extensions-tag-map.json",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "build/lib/extensions.ts",
+          "status": "current",
+          "symbols": [
+            "source extension exclusions",
+            "Git retention assertions"
+          ]
+        },
+        {
+          "path": "build/lib/bundledExtensions.ts",
+          "status": "current",
+          "symbols": [
+            "VSIX validation and platform merge"
+          ]
+        },
+        {
+          "path": "scripts/validate-rhs-ia-extension-inventory.mjs",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "bundled-extensions/README.md",
+          "status": "current",
+          "symbols": []
+        }
+      ],
+      "evidenceCommits": [
+        "37f1f6aad6bda85a2762f09017296a88b6dd6063",
+        "b6fcf4337b72af49dc376dee07f137ae44a2f3a1",
+        "f4c7045c6392939ddec6d627349ba6e504b349b8"
+      ],
+      "dependenciesAndProvenance": [
+        "builtInExtensions: ms-vscode.js-debug-companion@1.1.3, ms-vscode.js-debug@1.117.0, ms-vscode.vscode-js-profile-table@1.0.10, ms-ceintl.vscode-language-pack-es@1.111.0, rstudio.rstudio-workbench@2026.9.5, posit.slc@0.6.0.",
+        "bootstrapExtensions: charliermarsh.ruff@2026.76.0, ms-toolsai.vscode-jupyter-cell-tags@0.1.9, ms-toolsai.jupyter-keymap@1.1.2, ms-toolsai.vscode-jupyter-slideshow@0.1.6, ms-toolsai.jupyter-renderers@1.3.0, ms-toolsai.jupyter@2025.9.1, meta.pyrefly@1.2.0, ms-python.debugpy@2026.6.0, quarto.quarto@1.136.0, posit.air-vscode@0.28.0, posit.shiny@1.4.2.",
+        "builtInExtensionsEnabledWithAutoUpdates must remain an array and is currently [].",
+        "bundled-extensions currently contains no product VSIX; only README.md and windows/.gitkeep are tracked."
+      ],
+      "verification": [
+        "Run scripts/validate-rhs-ia-extension-inventory.mjs.",
+        "Run bundled-extension validation on every target platform.",
+        "Inspect packaged app/extensions/bootstrap and verify exact IDs, versions, target platforms, and checksums."
+      ],
+      "risks": [
+        "Omitting builtInExtensionsEnabledWithAutoUpdates crashes packaged CLI startup because upstream expects an iterable.",
+        "Git LFS pointer stubs or wrong-platform binaries can pass superficial path checks but produce broken packages."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-EXT-002",
+      "category": "extensions",
+      "title": "Intentional exclusion of upstream and retired assistant/publishing extensions",
+      "status": "intentionally_removed",
+      "integrationRule": "intentionally_excluded",
+      "purpose": "Prevent removed AI chat, publishing, pull-request, and retired assistant implementations from returning through upstream merges or assembly defaults.",
+      "userVisibleBehavior": [
+        "Git remains available, but GitHub Copilot Chat, GitHub Pull Requests, Posit Publisher, the source positron-assistant extension, and the deleted Copilot source extension are not shipped."
+      ],
+      "implementation": [
+        {
+          "path": "extensions/copilot/",
+          "status": "removed",
+          "symbols": []
+        },
+        {
+          "path": "extensions/positron-assistant/",
+          "status": "removed",
+          "symbols": []
+        },
+        {
+          "path": "product.json",
+          "status": "current",
+          "symbols": [
+            "extension catalogs",
+            "extensionEnabledApiProposals",
+            "defaultChatAgent neutralized with empty IDs and URLs"
+          ]
+        },
+        {
+          "path": "build/lib/extensions.ts",
+          "status": "current",
+          "symbols": [
+            "copilot, github, and github-authentication exclusions"
+          ]
+        },
+        {
+          "path": "scripts/validate-rhs-ia-extension-inventory.mjs",
+          "status": "current",
+          "symbols": [
+            "forbidden extension IDs"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/services/positronLayout/browser/layouts/positronAssistantLayout.ts",
+          "status": "removed",
+          "symbols": []
+        }
+      ],
+      "evidenceCommits": [
+        "6f43feeb890ac1a0761eeecb928657f544da1637",
+        "18ee46354e6b59ef9997190066e57c61da11e8ce",
+        "4ec77eca506391d5a92e0ba3e616f4d18c39c5c1",
+        "69f0d4b026d8648a1ac5619938352da03a8190d6",
+        "1841d18a75c49459791fe5c87092de33ac5764b0"
+      ],
+      "dependenciesAndProvenance": [
+        "Forbidden product IDs: posit.publisher, github.vscode-pull-request-github, posit.assistant, github.copilot-chat. Git and git-base source extensions must remain present."
+      ],
+      "verification": [
+        "Run the extension inventory validator.",
+        "Inspect the packaged extensions directory and product catalogs for forbidden IDs.",
+        "Search upstream conflicts for deleted extension paths, proposal entries, menus, layouts, and default-agent wiring."
+      ],
+      "risks": [
+        "A future upstream merge can restore a component through a new ID or assembly route that the current denylist does not recognize."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-UPD-001",
+      "category": "updates",
+      "title": "Application self-update disabled",
+      "status": "active",
+      "integrationRule": "preserve",
+      "purpose": "Prevent RHS-IA desktop builds from contacting or applying the upstream Positron update channel.",
+      "userVisibleBehavior": [
+        "Update mode defaults to none; startup checks, feeds, actions, badges, titlebar contributions, post-update UI, and native macOS update items are disabled or unregistered."
+      ],
+      "implementation": [
+        {
+          "path": "src/vs/platform/update/common/update.config.contribution.ts",
+          "status": "current",
+          "symbols": [
+            "update.mode default"
+          ]
+        },
+        {
+          "path": "src/vs/platform/update/electron-main/abstractUpdateService.ts",
+          "status": "current",
+          "symbols": [
+            "ManuallyDisabled startup state"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/services/update/browser/updateService.ts",
+          "status": "current",
+          "symbols": [
+            "startup check suppression"
+          ]
+        },
+        {
+          "path": "src/vs/workbench/contrib/update/",
+          "status": "current",
+          "symbols": [
+            "unregistered update UI"
+          ]
+        },
+        {
+          "path": "src/vs/platform/menubar/electron-main/menubar.ts",
+          "status": "current",
+          "symbols": [
+            "empty macOS update menu"
+          ]
+        },
+        {
+          "path": "docs/AnularUpdate.md",
+          "status": "current",
+          "symbols": [
+            "historical implementation note"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "8feec4c5bb08ef4be3ee0eea1d892390caa73589"
+      ],
+      "dependenciesAndProvenance": [
+        "Update classes remain for upstream dependency injection and developer routes; their presence does not mean updates are enabled."
+      ],
+      "verification": [
+        "Launch a packaged app online and offline and inspect logs/network for update scheduling or feed requests.",
+        "Confirm Help/application menus, command palette, badges, titlebar, and post-update paths expose no update action.",
+        "Treat docs/AnularUpdate.md as historical evidence, not current test proof."
+      ],
+      "risks": [
+        "Upstream can add a new update entry point outside the currently disabled registrations."
+      ],
+      "openQuestions": [
+        "What controlled PAHO distribution/update mechanism will eventually replace disabled upstream self-update?"
+      ]
+    },
+    {
+      "id": "RHS-PKG-001",
+      "category": "packaging",
+      "title": "Cross-platform RHS-IA packaging and assembly labels",
+      "status": "active",
+      "integrationRule": "upstream_owned_with_rhs_adaptation",
+      "purpose": "Produce desktop, CLI, server, and REH artifacts with RHS-IA names, paths, icons, and manifests on supported platforms.",
+      "userVisibleBehavior": [
+        "Packaged application names, launchers, remote components, and resources use RHS-IA identity."
+      ],
+      "implementation": [
+        {
+          "path": "build/",
+          "status": "current",
+          "symbols": [
+            "RHS-IA packaging labels and resources"
+          ]
+        },
+        {
+          "path": "resources/",
+          "status": "current",
+          "symbols": [
+            "platform packaging assets"
+          ]
+        },
+        {
+          "path": "remote/",
+          "status": "current",
+          "symbols": [
+            "REH package identity"
+          ]
+        },
+        {
+          "path": "package.json",
+          "status": "current",
+          "symbols": [
+            "RHS build scripts and labels"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "6ac104d1173c0f4ed1de408fc9315de8887fd496"
+      ],
+      "dependenciesAndProvenance": [
+        "Most packaging logic is upstream-owned; RHS-specific labels, product fields, and resources are fork-owned adaptations."
+      ],
+      "verification": [
+        "Build each target artifact when packaging code changes.",
+        "Inspect archive/app contents, executable names, manifests, icons, platform architecture, and product.json.",
+        "Smoke-test desktop CLI and remote launch with disposable profiles."
+      ],
+      "risks": [
+        "Source product.json can be correct while a stale or cached packaged artifact contains old names, extensions, or binaries."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-PKG-002",
+      "category": "packaging",
+      "title": "Pinned Quarto preparation and package cache",
+      "status": "active",
+      "integrationRule": "upstream_owned_with_rhs_adaptation",
+      "purpose": "Download or reuse a verified Quarto runtime deterministically before packaging and include only target-appropriate binaries.",
+      "userVisibleBehavior": [
+        "Packaged RHS-IA includes Quarto 1.10.18 without depending on an unverified developer-machine cache."
+      ],
+      "implementation": [
+        {
+          "path": "build/lib/quarto.ts",
+          "status": "current",
+          "symbols": [
+            "prepareQuarto",
+            "getQuartoBinaries",
+            "QUARTO_ARCHIVE",
+            "QUARTO_CACHE_DIR"
+          ]
+        },
+        {
+          "path": "build/gulpfile.vscode.ts",
+          "status": "current",
+          "symbols": [
+            "Quarto preparation dependency"
+          ]
+        },
+        {
+          "path": "build/gulpfile.reh.ts",
+          "status": "current",
+          "symbols": [
+            "Quarto preparation dependency"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "452e3b5aa923e82df0438b2d30bf83b64c397a1e"
+      ],
+      "dependenciesAndProvenance": [
+        "Quarto version 1.10.18 with the four official platform-specific expected SHA-256 checksums from the Quarto download manifest; cache root .build/quarto-cache/<version>."
+      ],
+      "verification": [
+        "Test cold cache, warm cache, invalid checksum, QUARTO_ARCHIVE, and QUARTO_CACHE_DIR flows.",
+        "Inspect packaged binaries and exclude the opposite macOS architecture tools.",
+        "Verify version and checksum from the packaged runtime."
+      ],
+      "risks": [
+        "A valid marker beside stale contents can make builds non-reproducible unless the runtime itself is inspected."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-PKG-003",
+      "category": "packaging",
+      "title": "Kallichore/Supervisor version and architecture invariant",
+      "status": "active_guard",
+      "integrationRule": "upstream_owned_with_rhs_adaptation",
+      "purpose": "Prevent packaging a stale or wrong-architecture kcserver binary when the Supervisor manifest version changes.",
+      "userVisibleBehavior": [
+        "Sessions start with a kcserver binary matching the shipped positron-supervisor extension and target architecture."
+      ],
+      "implementation": [
+        {
+          "path": "extensions/positron-supervisor/package.json",
+          "status": "current",
+          "symbols": [
+            "kallichore September target 0.1.68"
+          ]
+        },
+        {
+          "path": "extensions/positron-supervisor/resources/kallichore/VERSION",
+          "status": "current",
+          "symbols": []
+        },
+        {
+          "path": "extensions/positron-supervisor/resources/kallichore/kcserver",
+          "status": "current",
+          "symbols": []
+        }
+      ],
+      "evidenceCommits": [
+        "3d8c16bb3925966353472481ecb4cc828886ce1c"
+      ],
+      "dependenciesAndProvenance": [
+        "The September target is 0.1.68; generated Supervisor caches and final packages are not yet refreshed and must be independently verified."
+      ],
+      "verification": [
+        "Compare extension manifest version, VERSION file, kcserver --version, and file/architecture output in source and final package.",
+        "Do not accept a cache marker or filename as proof of binary content."
+      ],
+      "risks": [
+        "A prior package contained kcserver 0.1.64 while the manifest required 0.1.66; stale generated caches remain a risk while the 0.1.68 refresh is blocked."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-REMOTE-001",
+      "category": "remote",
+      "title": "RHS-IA remote server identity and install paths",
+      "status": "active",
+      "integrationRule": "upstream_owned_with_rhs_adaptation",
+      "purpose": "Install and launch remote/dev-container components under RHS-IA names and data paths.",
+      "userVisibleBehavior": [
+        "Remote SSH and dev-container flows use rhs-ia-server, .rhs-ia-server, RHS markers, logs, sockets, and executable naming."
+      ],
+      "implementation": [
+        {
+          "path": "extensions/open-remote-ssh/package.json",
+          "status": "current",
+          "symbols": [
+            "serverApplicationName",
+            "serverDataFolderName"
+          ]
+        },
+        {
+          "path": "extensions/positron-dev-containers/",
+          "status": "current",
+          "symbols": [
+            "remote install and launch scripts"
+          ]
+        },
+        {
+          "path": "remote/",
+          "status": "current",
+          "symbols": [
+            "REH package names"
+          ]
+        },
+        {
+          "path": "product.json",
+          "status": "current",
+          "symbols": [
+            "serverApplicationName",
+            "serverDataFolderName",
+            "serverDownloadUrlTemplate"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "6ac104d1173c0f4ed1de408fc9315de8887fd496"
+      ],
+      "dependenciesAndProvenance": [
+        "serverDownloadUrlTemplate still points at the Posit CDN and positron-reh artifact naming."
+      ],
+      "verification": [
+        "Exercise clean and upgraded Remote SSH/dev-container installs on each supported architecture.",
+        "Inspect the actual downloaded archive identity, checksum, executable name, data path, logs, and reconnect behavior."
+      ],
+      "risks": [
+        "RHS-named installation logic currently downloads a Posit-named/upstream-hosted artifact, which can break naming assumptions or supply-chain ownership."
+      ],
+      "openQuestions": [
+        "Will PAHO host and sign an RHS-IA remote server artifact, or is continued use of the Posit CDN and positron-reh artifact intentional?"
+      ]
+    },
+    {
+      "id": "RHS-HIST-001",
+      "category": "historical_assistant",
+      "title": "Superseded Continue, OPS harness, RHS Agent, PdfStruct, and bundled RAG work",
+      "status": "historical_superseded",
+      "integrationRule": "do_not_ship",
+      "purpose": "Record removed assistant experiments so future maintainers do not mistake their commits or leftover development data for current product requirements.",
+      "userVisibleBehavior": [
+        "None in the current product; the VSIX assets and old assistant implementations were removed."
+      ],
+      "implementation": [
+        {
+          "path": "bundled-extensions/mac/pdfstruct.vsix",
+          "status": "removed",
+          "symbols": []
+        },
+        {
+          "path": "bundled-extensions/mac/rhs-rag.vsix",
+          "status": "removed",
+          "symbols": []
+        },
+        {
+          "path": "bundled-extensions/rhs-agent.vsix",
+          "status": "removed",
+          "symbols": []
+        },
+        {
+          "path": ".rhs-rag/",
+          "status": "current",
+          "symbols": [
+            "generated LanceDB manifests only"
+          ]
+        },
+        {
+          "path": "extensions/positron-assistant/",
+          "status": "removed",
+          "symbols": [
+            "historical local-provider auto-detection"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "3d776cf87a92d9865d33ff5a6e5b33bd1495f7db",
+        "26c0ad811080adb31052dd73e69ad981727325a2",
+        "b79d981b6c4a8e5bfa871791251c9455946318f8",
+        "96dfe594fd8ea97390a18c5f4dea8da278a9756c",
+        "37f1f6aad6bda85a2762f09017296a88b6dd6063",
+        "6f43feeb890ac1a0761eeecb928657f544da1637",
+        "2806ce2c485106a8aff25a727fe6d09550551ef4",
+        "4ec77eca506391d5a92e0ba3e616f4d18c39c5c1"
+      ],
+      "dependenciesAndProvenance": [
+        "The historical macOS RHS Agent package contained Git LFS pointer stubs in embedded binaries.",
+        "No current source, product catalog, or tracked bundled VSIX proves these components ship."
+      ],
+      "verification": [
+        "Confirm retired VSIX names and old extension IDs are absent from source, product catalogs, assembly inputs, and final packages.",
+        "Treat .rhs-rag data as generated development residue, not as a distributable extension or source of truth."
+      ],
+      "risks": [
+        "Commit history and leftover generated manifests can lead an upgrader to resurrect insecure, incomplete, or unproven artifacts."
+      ],
+      "openQuestions": [
+        "Should .rhs-rag generated data be retained in version control, and where are the source, license, checksum, and security-review records for any future RAG/PdfStruct replacement?"
+      ]
+    },
+    {
+      "id": "RHS-DEV-001",
+      "category": "development",
+      "title": "Developer guidance, skills, tests, and repository hygiene",
+      "status": "developer_only",
+      "integrationRule": "do_not_ship",
+      "purpose": "Preserve maintainership instructions, workflow aids, focused validators, and ignore rules without treating them as runtime product features.",
+      "userVisibleBehavior": [
+        "None in release builds."
+      ],
+      "implementation": [
+        {
+          "path": "AGENTS.md",
+          "status": "current",
+          "symbols": [
+            "RHS-IA customization ledger policy",
+            "copyright and provenance preservation rule"
+          ]
+        },
+        {
+          "path": ".github/copilot-instructions.md",
+          "status": "current",
+          "symbols": [
+            "RHS-IA architecture and attribution guidance"
+          ]
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "status": "current",
+          "symbols": [
+            "RHS-IA contribution workflow"
+          ]
+        },
+        {
+          "path": "SECURITY.md",
+          "status": "current",
+          "symbols": [
+            "security reporting limits and upstream routing"
+          ]
+        },
+        {
+          "path": ".agents/",
+          "status": "current",
+          "symbols": [
+            "developer skills and agent instructions"
+          ]
+        },
+        {
+          "path": ".github/",
+          "status": "current",
+          "symbols": [
+            "workflow metadata and contributor instructions"
+          ]
+        },
+        {
+          "path": "test/",
+          "status": "current",
+          "symbols": [
+            "fork-specific tests"
+          ]
+        },
+        {
+          "path": ".gitignore",
+          "status": "current",
+          "symbols": [
+            "generated Snowflake log exclusion"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "230795e38b043be2c41ade33ec1df82c25c270ff"
+      ],
+      "dependenciesAndProvenance": [
+        "AGENTS.md had a pre-existing uncommitted coordinator change when this audit began and is not owned by the ledger edit."
+      ],
+      "verification": [
+        "Keep contributor instructions internally consistent and links valid.",
+        "Run the smallest relevant validators/tests for a customization change; compile first when TypeScript changes.",
+        "Confirm developer-only directories are not accidentally included in release assembly."
+      ],
+      "risks": [
+        "Developer instructions can drift from executable validators or become mistaken for package inputs."
+      ],
+      "openQuestions": []
+    },
+    {
+      "id": "RHS-GEN-001",
+      "category": "repository_artifacts",
+      "title": "Generated data, working notes, merge helpers, and historical version markers",
+      "status": "generated_or_temporary",
+      "integrationRule": "investigate_before_change",
+      "purpose": "Classify changed paths that are not authoritative runtime customizations so upgrade coverage is complete without granting them product status.",
+      "userVisibleBehavior": [
+        "None intended."
+      ],
+      "implementation": [
+        {
+          "path": ".rhs-rag/",
+          "status": "current",
+          "symbols": [
+            "generated database manifests"
+          ]
+        },
+        {
+          "path": "TempAcuerdos/",
+          "status": "current",
+          "symbols": [
+            "working notes"
+          ]
+        },
+        {
+          "path": "patch.txt",
+          "status": "current",
+          "symbols": [
+            "merge residue"
+          ]
+        },
+        {
+          "path": "resolve_chatWidget.sh",
+          "status": "current",
+          "symbols": [
+            "merge helper"
+          ]
+        },
+        {
+          "path": "resolve_chatWidget_2.sh",
+          "status": "current",
+          "symbols": [
+            "merge helper"
+          ]
+        },
+        {
+          "path": "resolve_chatWidget_3.sh",
+          "status": "current",
+          "symbols": [
+            "merge helper"
+          ]
+        },
+        {
+          "path": "resolve_menubar.sh",
+          "status": "current",
+          "symbols": [
+            "merge helper"
+          ]
+        },
+        {
+          "path": "resolve_menubarControl.sh",
+          "status": "current",
+          "symbols": [
+            "merge helper"
+          ]
+        },
+        {
+          "path": "resolve_update_contribution.sh",
+          "status": "current",
+          "symbols": [
+            "merge helper"
+          ]
+        },
+        {
+          "path": "versions/2026.05.1.commit",
+          "status": "current",
+          "symbols": [
+            "historical rebase marker"
+          ]
+        }
+      ],
+      "evidenceCommits": [
+        "3d776cf87a92d9865d33ff5a6e5b33bd1495f7db"
+      ],
+      "dependenciesAndProvenance": [
+        "These paths require an explicit retention/cleanup decision; their mere presence is not a preservation requirement."
+      ],
+      "verification": [
+        "Confirm none of these paths is included in release artifacts or used as the sole source of a production dependency."
+      ],
+      "risks": [
+        "Generated databases and ad-hoc merge scripts can contain stale assumptions, large blobs, or sensitive material."
+      ],
+      "openQuestions": [
+        "Which generated/temporary paths should be removed from version control in a separately authorized cleanup?"
+      ]
+    }
+  ],
+  "upgrade": {
+    "status": "complete_with_manual_followup",
+    "updatedAtUtc": "2026-09-11T20:05:14Z",
+    "branch": "update-positron-2026.09.1-2",
+    "preMergeHead": "39856b15272f7db1bbf8d8b2ec3c389e59a49cb6",
+    "preMergeSafetyTag": "rhs-ia-before-2026.09.1-2",
+    "targetRef": "2026.09.1-2",
+    "targetCommit": "467ff390dd8b4ffc8972ebb84d9e05a1fd5a4fe2",
+    "mergeBase": "7b3fe7ddfd1f8f70134592f6df93d0bf6f6241ec",
+    "mergeState": "The September merge and Quarto single-architecture follow-up are committed; sequential core and macOS arm64 package builds and automated artifact acceptance passed.",
+    "runtimeTargets": {
+      "node": "24.18.0",
+      "electron": "42.6.0",
+      "supervisor": "0.1.68",
+      "quarto": "1.10.18"
+    },
+    "completedWork": [
+      "Preserved RHS identity, Spanish startup, temporary mock-keychain values, curated catalogs, empty auto-update list, and intentional assistant/Copilot exclusions.",
+      "Took the September product and dependency schema while neutralizing defaultChatAgent with empty IDs and URLs.",
+      "Updated Quarto to 1.10.18 using official filename-specific SHA-256 checksums and added deterministic prepare-before-package tasks for desktop and remote builds.",
+      "Updated the startup test to assert co.posit.positron, rhsIaUseMockKeychain true, the neutral chat-agent contract, and the empty auto-update list.",
+      "Strengthened the extension inventory validator to require approved catalog membership and an exactly empty auto-update array.",
+      "Moved the Spanish welcome overlay to common/gettingStartedPositronWelcomeContent and added translations for the September strings.",
+      "Restored the exact September Ark gitlink and clean checkout at 5564f488e539cfdd344f583a7aeb40250f7d20d3.",
+      "Initialized ai-lib at a05f21e952887e91bdad60966ab74a230336587f and installed the official arm64 Node 24.18.0 runtime with its published checksum verified.",
+      "Rebased the core, extension, remote, hygiene, Copilot-runtime, and Quarto build files on the September gulp facade/task APIs while keeping source Copilot and positron-assistant excluded.",
+      "Reapplied the permanent RHS-IA update-service disablement to the September state machine and verified the update workbench contributions remain unregistered.",
+      "Adapted the redesigned September React welcome page to retain PAHO/RHS-IA marks and RHS-IA-specific copy.",
+      "Updated layer-checker inputs for Positron TSX and API declarations, and declared parse5 directly for the offline documentation build.",
+      "Refreshed Supervisor/Kallichore to 0.1.68 and built Ark 0.1.252-301-5564f48 from the pinned September source.",
+      "Moved ignored residual build outputs for the excluded copilot and positron-assistant source extensions outside the repository so they cannot contaminate packaging.",
+      "Versioned the transformed Quarto extraction cache, normalized archive paths for single-architecture filtering, and made the standalone helper replace rather than overlay its output."
+    ],
+    "interimValidation": [
+      {
+        "check": "npm ci",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64 / npm 11.16.0",
+        "result": "All root, build, extension, ai-lib, Ark, Supervisor, and native dependencies installed successfully."
+      },
+      {
+        "check": "npm run compile-check-ts-native",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "Core TypeScript completed with zero errors after September API reconciliation."
+      },
+      {
+        "check": "npm run gulp compile-extensions",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "All selected local extensions, including rhs-ia-documentation and September data-driver additions, compiled with zero errors."
+      },
+      {
+        "check": "npm --prefix build run typecheck",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "Build tooling TypeScript completed with zero errors."
+      },
+      {
+        "check": "npm run validate-rhs-ia-extension-inventory",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "Intentional exclusions, approved catalog membership, and the empty auto-update array validated."
+      },
+      {
+        "check": "npm run validate-spanish-session-localization",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "388 Spanish Session localization keys and 2 extension bundles validated."
+      },
+      {
+        "check": "npm run validate-bundled-extensions",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "No bundled extensions apply to platform darwin."
+      },
+      {
+        "check": "rhsIaStartup and rhsIaActivityBarMigration Vitest suites",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "2 files and 16 tests passed; the former co.posit.positron known failure is resolved."
+      },
+      {
+        "check": "focused assistant, provider, update, and welcome Vitest suites",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "8 files and 86 tests passed after correcting the stale RHS-AI test expectation."
+      },
+      {
+        "check": "npm run valid-layers-check",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64 with 8192 MB V8 heap",
+        "result": "Layer checker plus browser, worker, node, electron-browser, electron-main, and electron-utility TypeScript projects passed."
+      },
+      {
+        "check": "rhs-ia-documentation generate/build/check/test/bundle",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "50 bilingual pages generated; all manifest, translation, branding, exclusion, link, offline, search, and 4 unit-test checks passed."
+      },
+      {
+        "check": "Quarto 1.10.18 cold and warm cache paths",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "Official 247503295-byte macOS archive downloaded, SHA-256 ddd6a71a9e0448ab15fb655bc589e11cb6589a248ec35ccd7f7f44137531688e verified, extracted, reused from cache, and quarto --version reported 1.10.18."
+      },
+      {
+        "check": "merge-aware precommit hygiene",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "The normal precommit hook passed against the 84-file AUTO_MERGE resolution delta; it retains warnings for reviewed upstream/RHS code but reports zero errors."
+      },
+      {
+        "check": "Quarto override, corrupt-cache, and single-architecture paths",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "An invalid QUARTO_ARCHIVE failed closed; an isolated corrupt archive was deleted, redownloaded, checksum-verified, and extracted; cold and warm outputs contain aarch64 tools and no x86_64 tool directory."
+      },
+      {
+        "check": "sequential core-ci and vscode-darwin-arm64-min-ci builds",
+        "status": "passed",
+        "runtime": "Node 24.18.0 arm64",
+        "result": "Both required tasks passed sequentially after the merge and again after the Quarto packaging correction; the final package contains 27,640 build-audited paths and satisfies the 195-character path budget."
+      },
+      {
+        "check": "packaged macOS arm64 artifact audit",
+        "status": "passed",
+        "runtime": "RHS-IA.app",
+        "result": "Verified RHS-IA product and plist identity, temporary co.posit.positron bundle identity, Electron 42.6.0 arm64, kcserver 0.1.68 at source/build/package layers, Quarto 1.10.18 with only aarch64 tools, Ark 5564f488 arm64, empty auto-update array, approved catalog membership, required Git/Git Base/documentation extensions, and intentional assistant/Copilot/Publisher/GitHub-PR exclusions."
+      },
+      {
+        "check": "packaged CLI and disposable UI smoke",
+        "status": "passed",
+        "runtime": "isolated temporary user-data and extension directories",
+        "result": "The CLI reported the packaged revision and arm64 architecture and listed extensions without crashing. A disposable launch showed Spanish startup, PAHO/RHS-IA welcome branding and tagline, no update menu action, and the fully offline Spanish RHS-IA documentation view."
+      },
+      {
+        "check": "macOS signing state",
+        "status": "expected_unsigned_presentation_build",
+        "runtime": "RHS-IA.app",
+        "result": "The main executable is ad-hoc/linker-signed with no Team ID; strict deep bundle verification reports the expected missing-resource signature failure. No signing identity, entitlement, or certificate setting was changed."
+      }
+    ],
+    "blockers": [],
+    "hygiene": [
+      "The two .claude merge-upstream developer-skill files are byte-identical to the pinned upstream blobs; their conflict-marker-looking lines are documented examples, not unresolved merge markers.",
+      "The reviewed working tree is fully staged with no unmerged or untracked repository files.",
+      "git diff --check against the September target still reports pre-existing historical/generated whitespace and conflict-marker examples classified by RHS-DEV-001 and RHS-GEN-001; current integration edits are whitespace-clean."
+    ],
+    "pendingAcceptance": [
+      "Manual release follow-up: exercise a disposable secret save/read across full application restarts and an in-place upgrade on macOS. The mock-Keychain product flag, early startup ordering, and isolated packaged launch are verified, but the end-to-end credential migration was not automated in this upgrade."
+    ],
+    "currentDeltaCoverage": {
+      "method": "Every path in the final September-target-to-HEAD name-status diff is assigned by top-level group, with extensions split by extension name. Counts exclude no paths and retain the July audit under the top-level coverage field.",
+      "baselineRef": "2026.09.1-2",
+      "baselineCommit": "467ff390dd8b4ffc8972ebb84d9e05a1fd5a4fe2",
+      "command": "git diff --name-status 467ff390dd8b4ffc8972ebb84d9e05a1fd5a4fe2 HEAD",
+      "nameStatusSha256": "c93c0ccdd3a3e64eaacce88f13246d7645a172831b4538096e89b7149b9c651d",
+      "totalChangedFileRecords": 4596,
+      "statusCounts": {
+        "added": 367,
+        "modified": 133,
+        "deleted": 4095,
+        "renamed100": 1
+      },
+      "renameDetectionLimitation": "Git skipped exhaustive rename detection because the deletion set exceeded the default rename limit.",
+      "pathGroups": [
+        {
+          "path": "extensions/copilot/",
+          "count": 4085,
+          "entryIds": [
+            "RHS-EXT-002"
+          ]
+        },
+        {
+          "path": "extensions/rhs-ia-documentation/",
+          "count": 265,
+          "entryIds": [
+            "RHS-DOC-001"
+          ]
+        },
+        {
+          "path": "src/",
+          "count": 68,
+          "entryIds": [
+            "RHS-ID-001",
+            "RHS-ID-002",
+            "RHS-MAC-001",
+            "RHS-L10N-001",
+            "RHS-L10N-002",
+            "RHS-UI-001",
+            "RHS-UI-003",
+            "RHS-DOC-001",
+            "RHS-AST-001",
+            "RHS-EXT-002",
+            "RHS-UPD-001"
+          ]
+        },
+        {
+          "path": ".agents/",
+          "count": 54,
+          "entryIds": [
+            "RHS-DEV-001"
+          ]
+        },
+        {
+          "path": "build/",
+          "count": 43,
+          "entryIds": [
+            "RHS-DOC-001",
+            "RHS-EXT-001",
+            "RHS-PKG-001",
+            "RHS-PKG-002",
+            "RHS-PKG-003"
+          ]
+        },
+        {
+          "path": "resources/",
+          "count": 11,
+          "entryIds": [
+            "RHS-UI-001",
+            "RHS-PKG-001",
+            "RHS-REMOTE-001"
+          ]
+        },
+        {
+          "path": "docs/",
+          "count": 10,
+          "entryIds": [
+            "RHS-DOC-001",
+            "RHS-UPD-001",
+            "RHS-DEV-001"
+          ]
+        },
+        {
+          "path": "test/",
+          "count": 7,
+          "entryIds": [
+            "RHS-DEV-001",
+            "RHS-PKG-001"
+          ]
+        },
+        {
+          "path": ".rhs-rag/",
+          "count": 6,
+          "entryIds": [
+            "RHS-HIST-001",
+            "RHS-GEN-001"
+          ]
+        },
+        {
+          "path": "scripts/",
+          "count": 6,
+          "entryIds": [
+            "RHS-L10N-001",
+            "RHS-L10N-002",
+            "RHS-EXT-001"
+          ]
+        },
+        {
+          "path": "extensions/positron-dev-containers/",
+          "count": 4,
+          "entryIds": [
+            "RHS-REMOTE-001"
+          ]
+        },
+        {
+          "path": "extensions/positron-python/",
+          "count": 3,
+          "entryIds": [
+            "RHS-L10N-002"
+          ]
+        },
+        {
+          "path": "extensions/positron-r/",
+          "count": 3,
+          "entryIds": [
+            "RHS-L10N-002"
+          ]
+        },
+        {
+          "path": ".github/",
+          "count": 2,
+          "entryIds": [
+            "RHS-EXT-001",
+            "RHS-DEV-001"
+          ]
+        },
+        {
+          "path": "TempAcuerdos/",
+          "count": 2,
+          "entryIds": [
+            "RHS-GEN-001"
+          ]
+        },
+        {
+          "path": "bundled-extensions/",
+          "count": 2,
+          "entryIds": [
+            "RHS-EXT-001",
+            "RHS-HIST-001"
+          ]
+        },
+        {
+          "path": "extensions/theme-defaults/",
+          "count": 2,
+          "entryIds": [
+            "RHS-UI-002"
+          ]
+        },
+        {
+          "path": "remote/",
+          "count": 2,
+          "entryIds": [
+            "RHS-PKG-001",
+            "RHS-REMOTE-001"
+          ]
+        },
+        {
+          "path": "versions/",
+          "count": 2,
+          "entryIds": [
+            "RHS-GEN-001"
+          ]
+        },
+        {
+          "path": "extensions/open-remote-ssh/",
+          "count": 1,
+          "entryIds": [
+            "RHS-REMOTE-001"
+          ]
+        },
+        {
+          "path": "language-packs/",
+          "count": 1,
+          "entryIds": [
+            "RHS-L10N-001"
+          ]
+        },
+        {
+          "path": "package-lock.json",
+          "count": 1,
+          "entryIds": [
+            "RHS-DOC-001",
+            "RHS-DEV-001"
+          ]
+        },
+        {
+          "path": "package.json",
+          "count": 1,
+          "entryIds": [
+            "RHS-ID-001",
+            "RHS-DOC-001",
+            "RHS-PKG-001"
+          ]
+        },
+        {
+          "path": "product.json",
+          "count": 1,
+          "entryIds": [
+            "RHS-ID-001",
+            "RHS-MAC-001",
+            "RHS-L10N-001",
+            "RHS-UI-002",
+            "RHS-AST-001",
+            "RHS-EXT-001",
+            "RHS-EXT-002",
+            "RHS-REMOTE-001"
+          ]
+        },
+        {
+          "path": "other root files",
+          "count": 14,
+          "entryIds": [
+            "RHS-EXT-001",
+            "RHS-UI-001",
+            "RHS-DEV-001",
+            "RHS-GEN-001"
+          ]
+        }
+      ],
+      "unassignedRecords": 0
+    }
+  },
+  "coverage": {
+    "method": "Every top-level path group in the audited baseline-to-HEAD name-status diff is assigned to one or more ledger entries. Counts are Git file records with default rename detection; two rename records are not treated as semantic moves.",
+    "totalChangedFileRecords": 4497,
+    "pathGroups": [
+      {
+        "path": ".agents/",
+        "count": 54,
+        "entryIds": [
+          "RHS-DEV-001"
+        ]
+      },
+      {
+        "path": ".gitattributes",
+        "count": 1,
+        "entryIds": [
+          "RHS-EXT-001"
+        ]
+      },
+      {
+        "path": ".github/",
+        "count": 2,
+        "entryIds": [
+          "RHS-EXT-001",
+          "RHS-DEV-001"
+        ]
+      },
+      {
+        "path": ".gitignore",
+        "count": 1,
+        "entryIds": [
+          "RHS-DEV-001"
+        ]
+      },
+      {
+        "path": ".rhs-rag/",
+        "count": 6,
+        "entryIds": [
+          "RHS-HIST-001",
+          "RHS-GEN-001"
+        ]
+      },
+      {
+        "path": ".vscode-test.js",
+        "count": 1,
+        "entryIds": [
+          "RHS-DOC-001"
+        ]
+      },
+      {
+        "path": "AGENTS.md",
+        "count": 1,
+        "entryIds": [
+          "RHS-DEV-001"
+        ]
+      },
+      {
+        "path": "TempAcuerdos/",
+        "count": 2,
+        "entryIds": [
+          "RHS-GEN-001"
+        ]
+      },
+      {
+        "path": "build/",
+        "count": 35,
+        "entryIds": [
+          "RHS-DOC-001",
+          "RHS-EXT-001",
+          "RHS-PKG-001",
+          "RHS-PKG-002"
+        ]
+      },
+      {
+        "path": "bundled-extensions/",
+        "count": 2,
+        "entryIds": [
+          "RHS-EXT-001",
+          "RHS-HIST-001"
+        ]
+      },
+      {
+        "path": "docs/",
+        "count": 7,
+        "entryIds": [
+          "RHS-DOC-001",
+          "RHS-UPD-001",
+          "RHS-DEV-001"
+        ]
+      },
+      {
+        "path": "extensions/copilot/",
+        "count": 3957,
+        "entryIds": [
+          "RHS-EXT-002"
+        ]
+      },
+      {
+        "path": "extensions/open-remote-ssh/",
+        "count": 1,
+        "entryIds": [
+          "RHS-REMOTE-001"
+        ]
+      },
+      {
+        "path": "extensions/positron-assistant/",
+        "count": 47,
+        "entryIds": [
+          "RHS-AST-001",
+          "RHS-EXT-002",
+          "RHS-HIST-001"
+        ]
+      },
+      {
+        "path": "extensions/positron-dev-containers/",
+        "count": 4,
+        "entryIds": [
+          "RHS-REMOTE-001"
+        ]
+      },
+      {
+        "path": "extensions/positron-python/",
+        "count": 3,
+        "entryIds": [
+          "RHS-L10N-002"
+        ]
+      },
+      {
+        "path": "extensions/positron-r/",
+        "count": 3,
+        "entryIds": [
+          "RHS-L10N-002"
+        ]
+      },
+      {
+        "path": "extensions/rhs-ia-documentation/",
+        "count": 265,
+        "entryIds": [
+          "RHS-DOC-001"
+        ]
+      },
+      {
+        "path": "extensions/theme-defaults/",
+        "count": 2,
+        "entryIds": [
+          "RHS-UI-002"
+        ]
+      },
+      {
+        "path": "language-packs/",
+        "count": 1,
+        "entryIds": [
+          "RHS-L10N-001"
+        ]
+      },
+      {
+        "path": "package.json",
+        "count": 1,
+        "entryIds": [
+          "RHS-ID-001",
+          "RHS-PKG-001"
+        ]
+      },
+      {
+        "path": "patch.txt",
+        "count": 1,
+        "entryIds": [
+          "RHS-GEN-001"
+        ]
+      },
+      {
+        "path": "positron-product-icons/",
+        "count": 1,
+        "entryIds": [
+          "RHS-UI-001"
+        ]
+      },
+      {
+        "path": "product.json",
+        "count": 1,
+        "entryIds": [
+          "RHS-ID-001",
+          "RHS-MAC-001",
+          "RHS-L10N-001",
+          "RHS-UI-002",
+          "RHS-AST-001",
+          "RHS-EXT-001",
+          "RHS-EXT-002",
+          "RHS-REMOTE-001"
+        ]
+      },
+      {
+        "path": "remote/",
+        "count": 2,
+        "entryIds": [
+          "RHS-PKG-001",
+          "RHS-REMOTE-001"
+        ]
+      },
+      {
+        "path": "resolve_chatWidget.sh",
+        "count": 1,
+        "entryIds": [
+          "RHS-GEN-001"
+        ]
+      },
+      {
+        "path": "resolve_chatWidget_2.sh",
+        "count": 1,
+        "entryIds": [
+          "RHS-GEN-001"
+        ]
+      },
+      {
+        "path": "resolve_chatWidget_3.sh",
+        "count": 1,
+        "entryIds": [
+          "RHS-GEN-001"
+        ]
+      },
+      {
+        "path": "resolve_menubar.sh",
+        "count": 1,
+        "entryIds": [
+          "RHS-GEN-001"
+        ]
+      },
+      {
+        "path": "resolve_menubarControl.sh",
+        "count": 1,
+        "entryIds": [
+          "RHS-GEN-001"
+        ]
+      },
+      {
+        "path": "resolve_update_contribution.sh",
+        "count": 1,
+        "entryIds": [
+          "RHS-GEN-001"
+        ]
+      },
+      {
+        "path": "resources/",
+        "count": 11,
+        "entryIds": [
+          "RHS-UI-001",
+          "RHS-PKG-001",
+          "RHS-REMOTE-001"
+        ]
+      },
+      {
+        "path": "scripts/",
+        "count": 6,
+        "entryIds": [
+          "RHS-L10N-001",
+          "RHS-L10N-002",
+          "RHS-EXT-001"
+        ]
+      },
+      {
+        "path": "src/",
+        "count": 66,
+        "entryIds": [
+          "RHS-ID-001",
+          "RHS-ID-002",
+          "RHS-MAC-001",
+          "RHS-L10N-001",
+          "RHS-L10N-002",
+          "RHS-UI-001",
+          "RHS-UI-003",
+          "RHS-DOC-001",
+          "RHS-AST-001",
+          "RHS-EXT-002",
+          "RHS-UPD-001"
+        ]
+      },
+      {
+        "path": "test/",
+        "count": 6,
+        "entryIds": [
+          "RHS-DEV-001",
+          "RHS-PKG-001"
+        ]
+      },
+      {
+        "path": "versions/",
+        "count": 1,
+        "entryIds": [
+          "RHS-GEN-001"
+        ]
+      }
+    ],
+    "unassignedTopLevelRecords": 0
+  },
+  "globalOpenQuestions": [
+    {
+      "id": "Q-001",
+      "owner": "product/security",
+      "question": "What is the approved PAHO macOS signing, notarization, bundle-ID, entitlement, and credential-migration plan?",
+      "relatedEntryIds": [
+        "RHS-MAC-001",
+        "RHS-ID-001"
+      ]
+    },
+    {
+      "id": "Q-002",
+      "owner": "product/AI",
+      "question": "What exact externally acquired assistant package and provider policy are approved for production?",
+      "relatedEntryIds": [
+        "RHS-AST-001",
+        "RHS-HIST-001"
+      ]
+    },
+    {
+      "id": "Q-003",
+      "owner": "release engineering",
+      "question": "Will PAHO own the remote-server hosting/signing channel and the remaining product/legal endpoints?",
+      "relatedEntryIds": [
+        "RHS-ID-001",
+        "RHS-REMOTE-001",
+        "RHS-UPD-001"
+      ]
+    },
+    {
+      "id": "Q-004",
+      "owner": "documentation",
+      "question": "Can the documentation snapshot be tied to an exact upstream commit and can packaged-app visual acceptance be completed?",
+      "relatedEntryIds": [
+        "RHS-DOC-001"
+      ]
+    },
+    {
+      "id": "Q-005",
+      "owner": "design",
+      "question": "Who will approve the renamed dark palette after packaged-app visual review, and how should remaining RHS-AI/Positron labels be normalized?",
+      "relatedEntryIds": [
+        "RHS-UI-002",
+        "RHS-AST-001"
+      ]
+    },
+    {
+      "id": "Q-006",
+      "owner": "repository maintainers",
+      "question": "Which generated databases, working notes, merge helpers, and historical markers should remain tracked?",
+      "relatedEntryIds": [
+        "RHS-GEN-001"
+      ]
+    }
+  ]
+}

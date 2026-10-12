@@ -1,0 +1,111 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+// CSS.
+import './NotebookCellActionBar.css';
+
+// React.
+import { useRef, useState } from 'react';
+
+// Other dependencies.
+import { localize } from '../../../../../nls.js';
+import { IPositronNotebookCell } from '../PositronNotebookCells/IPositronNotebookCell.js';
+import { NotebookCellMoreActionsMenu } from './actionBar/NotebookCellMoreActionsMenu.js';
+import { CellActionButton } from './actionBar/CellActionButton.js';
+import { useObservedValue } from '../useObservedValue.js';
+import { useMenu } from '../useMenu.js';
+import { MenuId } from '../../../../../platform/actions/common/actions.js';
+import { useMenuActions } from '../useMenuActions.js';
+import { useNotebookInstance } from '../NotebookInstanceProvider.js';
+import { PositronNotebookCellActionBarLeftGroup } from '../../common/positronNotebookCommon.js';
+import { useToggleOnSticky } from './useToggleOnSticky.js';
+
+const moreCellActions = localize('moreCellActions', 'More Cell Actions');
+
+/** Class toggled while the sticky action bar is pinned to the notebook scrollport. */
+const ACTION_BAR_STUCK_CLASS = 'positron-notebooks-cell-action-bar--stuck';
+
+interface NotebookCellActionBarProps {
+	cell: IPositronNotebookCell;
+}
+
+export function NotebookCellActionBar({ cell }: NotebookCellActionBarProps) {
+	// Context
+	const instance = useNotebookInstance();
+	const contextKeyService = cell.scopedContextKeyService;
+
+	// State
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const isActiveCell = useObservedValue(cell.isActive);
+	const leftMenu = useMenu(MenuId.PositronNotebookCellActionBarLeft, contextKeyService);
+	const submenu = useMenu(MenuId.PositronNotebookCellActionBarSubmenu, contextKeyService);
+	const rightMenu = useMenu(MenuId.PositronNotebookCellActionBarRight, contextKeyService);
+	const leftActions = useMenuActions(leftMenu);
+	const submenuActions = useMenuActions(submenu);
+	const rightActions = useMenuActions(rightMenu);
+
+	const hasSubmenuActions = submenuActions.length > 0;
+
+	// Process actions and identify which ones are primary actions based on group ID
+	const actionsWithMetadata = leftActions
+		.flatMap(([groupId, actions]) =>
+			actions.map(action => ({
+				action,
+				isPrimary: groupId === PositronNotebookCellActionBarLeftGroup.Primary
+			}))
+		);
+
+	// Find the index of the last primary action so we know where to place
+	// the separator between primary actions and all other actions
+	const lastPrimaryIndex = actionsWithMetadata.findLastIndex(item => item.isPrimary);
+
+	const actionBarRef = useRef<HTMLDivElement>(null);
+	useToggleOnSticky(actionBarRef, ACTION_BAR_STUCK_CLASS);
+
+	return <div
+		ref={actionBarRef}
+		aria-hidden={!isActiveCell}
+		aria-label={localize('cellActions', 'Cell actions')}
+		className={`positron-notebooks-cell-action-bar ${isActiveCell || isMenuOpen ? 'visible' : ''}`}
+		role='toolbar'
+	>
+		{/* Render contributed main actions - will auto-update when registry changes */}
+		{actionsWithMetadata.map((item, index) => (
+			<CellActionButton
+				key={item.action.id}
+				action={item.action}
+				cell={cell}
+				hoverManager={instance.hoverManager}
+				showSeparator={index === lastPrimaryIndex}
+			/>
+		))}
+
+		{/* Dropdown menu for additional actions - only render if there are menu actions */}
+		{hasSubmenuActions ? (
+			<NotebookCellMoreActionsMenu
+				ariaLabel={moreCellActions}
+				cell={cell}
+				hoverManager={instance.hoverManager}
+				instance={instance}
+				isMenuOpen={isMenuOpen}
+				menuActions={submenuActions}
+				setIsMenuOpen={setIsMenuOpen}
+			/>
+		) : null}
+
+		{/* Render contributed mainRight actions - will auto-update when registry changes */}
+		{rightActions
+			.flatMap(([_group, actions]) => actions)
+			.map(action => (
+				<CellActionButton
+					key={action.id}
+					action={action}
+					cell={cell}
+					hoverManager={instance.hoverManager}
+				/>
+			))}
+	</div>;
+}
+

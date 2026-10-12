@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "R"
+---
+
+Abre un archivo `.R` y selecciona una instalación de R. Ejecuta una línea o una selección desde el editor para iniciar una sesión de R y enviar código a **Consola**.
+
+RHS-IA integra completado, diagnósticos, formato, depuración, ayuda de lenguaje, variables, gráficos, administración de paquetes y compatibilidad con **Data Explorer**. Los documentos de Quarto pueden ejecutar celdas de R con el tiempo de ejecución seleccionado.
+
+Usa una biblioteca del proyecto cuando la reproducibilidad sea importante. Después de cambiar archivos de inicio, rutas de bibliotecas o variables de entorno, reinicia R para que la sesión reciba la nueva configuración. Consulta [Instalaciones de R](../interpreters/r.qmd).

@@ -1,0 +1,44 @@
+# Catálogo de datasets integrados en CoreOKF
+
+Estos 40 datasets adicionales fueron incorporados al Core desde `CoreOKF/Data`. Los archivos originales se preservan en `sources/data/`; estos documentos son sus perfiles estructurales para consulta y trazabilidad. Para saber cómo relacionarlos con NHWA, consulte el [mapa semántico del ecosistema](../mapa_semantico_nhwa.md).
+
+- [miembrosOPS_population](miembrosops_population_csv.md) — `data/miembros_ops/miembrosOPS_population.csv`
+- [AIA_admin1](subnacionales_aia_admin1_csv.md) — `data/subnacionales/AIA_admin1.csv`
+- [ARG_admin1](subnacionales_arg_admin1_csv.md) — `data/subnacionales/ARG_admin1.csv`
+- [ATG_admin1](subnacionales_atg_admin1_csv.md) — `data/subnacionales/ATG_admin1.csv`
+- [BHS_admin1](subnacionales_bhs_admin1_csv.md) — `data/subnacionales/BHS_admin1.csv`
+- [BLZ_admin1](subnacionales_blz_admin1_csv.md) — `data/subnacionales/BLZ_admin1.csv`
+- [BMU_admin1](subnacionales_bmu_admin1_csv.md) — `data/subnacionales/BMU_admin1.csv`
+- [BOL_admin1](subnacionales_bol_admin1_csv.md) — `data/subnacionales/BOL_admin1.csv`
+- [BRA_admin1](subnacionales_bra_admin1_csv.md) — `data/subnacionales/BRA_admin1.csv`
+- [BRB_admin1](subnacionales_brb_admin1_csv.md) — `data/subnacionales/BRB_admin1.csv`
+- [CAN_admin1](subnacionales_can_admin1_csv.md) — `data/subnacionales/CAN_admin1.csv`
+- [CHL_admin1](subnacionales_chl_admin1_csv.md) — `data/subnacionales/CHL_admin1.csv`
+- [COL_admin1](subnacionales_col_admin1_csv.md) — `data/subnacionales/COL_admin1.csv`
+- [CRI_admin1](subnacionales_cri_admin1_csv.md) — `data/subnacionales/CRI_admin1.csv`
+- [CUB_admin1](subnacionales_cub_admin1_csv.md) — `data/subnacionales/CUB_admin1.csv`
+- [CYM_admin1](subnacionales_cym_admin1_csv.md) — `data/subnacionales/CYM_admin1.csv`
+- [DMA_admin1](subnacionales_dma_admin1_csv.md) — `data/subnacionales/DMA_admin1.csv`
+- [DOM_admin1](subnacionales_dom_admin1_csv.md) — `data/subnacionales/DOM_admin1.csv`
+- [ECU_admin1](subnacionales_ecu_admin1_csv.md) — `data/subnacionales/ECU_admin1.csv`
+- [GRD_admin1](subnacionales_grd_admin1_csv.md) — `data/subnacionales/GRD_admin1.csv`
+- [GTM_admin1](subnacionales_gtm_admin1_csv.md) — `data/subnacionales/GTM_admin1.csv`
+- [GUY_admin1](subnacionales_guy_admin1_csv.md) — `data/subnacionales/GUY_admin1.csv`
+- [HND_admin1](subnacionales_hnd_admin1_csv.md) — `data/subnacionales/HND_admin1.csv`
+- [HTI_admin1](subnacionales_hti_admin1_csv.md) — `data/subnacionales/HTI_admin1.csv`
+- [JAM_admin1](subnacionales_jam_admin1_csv.md) — `data/subnacionales/JAM_admin1.csv`
+- [KNA_admin1](subnacionales_kna_admin1_csv.md) — `data/subnacionales/KNA_admin1.csv`
+- [LCA_admin1](subnacionales_lca_admin1_csv.md) — `data/subnacionales/LCA_admin1.csv`
+- [MEX_admin1](subnacionales_mex_admin1_csv.md) — `data/subnacionales/MEX_admin1.csv`
+- [MiembrosOPS_tipo_DivPol](subnacionales_miembrosops_tipo_divpol_csv.md) — `data/miembros_ops/MiembrosOPS_tipo_DivPol.csv`
+- [MSR_admin1](subnacionales_msr_admin1_csv.md) — `data/subnacionales/MSR_admin1.csv`
+- [PAN_admin1](subnacionales_pan_admin1_csv.md) — `data/subnacionales/PAN_admin1.csv`
+- [PER_admin1](subnacionales_per_admin1_csv.md) — `data/subnacionales/PER_admin1.csv`
+- [PRY_admin1](subnacionales_pry_admin1_csv.md) — `data/subnacionales/PRY_admin1.csv`
+- [SLV_admin1](subnacionales_slv_admin1_csv.md) — `data/subnacionales/SLV_admin1.csv`
+- [TTO_admin1](subnacionales_tto_admin1_csv.md) — `data/subnacionales/TTO_admin1.csv`
+- [URY_admin1](subnacionales_ury_admin1_csv.md) — `data/subnacionales/URY_admin1.csv`
+- [USA_admin1](subnacionales_usa_admin1_csv.md) — `data/subnacionales/USA_admin1.csv`
+- [VCT_admin1](subnacionales_vct_admin1_csv.md) — `data/subnacionales/VCT_admin1.csv`
+- [VEN_admin1](subnacionales_ven_admin1_csv.md) — `data/subnacionales/VEN_admin1.csv`
+- [VGB_admin1](subnacionales_vgb_admin1_csv.md) — `data/subnacionales/VGB_admin1.csv`

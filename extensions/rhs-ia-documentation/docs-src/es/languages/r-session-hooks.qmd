@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Enlaces de sesión de R"
+---
+
+Los archivos de inicio y de entorno de R pueden personalizar una sesión de R. Entre los archivos habituales están `.Rprofile` y `.Renviron` del proyecto o del usuario. R determina su precedencia y los lee durante el inicio.
+
+Mantén el código de inicio rápido, no interactivo y seguro para ejecutarlo en todas las sesiones. Evita guardar secretos en archivos confirmados en el control de código fuente. Reinicia R después de cambiar un archivo de inicio.
+
+Si el código de inicio impide que se inicie una sesión, cambia temporalmente el nombre del archivo de inicio del proyecto e inspecciona el registro del tiempo de ejecución de R antes de restaurar los cambios.

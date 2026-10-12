@@ -1,0 +1,656 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { Disposable, DisposableStore } from '../../../../../../base/common/lifecycle.js';
+import { CONTEXT_FIND_INPUT_FOCUSED, CONTEXT_FIND_WIDGET_VISIBLE, CONTEXT_REPLACE_INPUT_FOCUSED } from '../../../../../../editor/contrib/find/browser/findModel.js';
+import { localize } from '../../../../../../nls.js';
+import { IPositronNotebookInstance } from '../../IPositronNotebookInstance.js';
+import { IPositronNotebookContribution } from '../../positronNotebookExtensions.js';
+import { autorun, IObservable, observableSignal, observableValue, transaction } from '../../../../../../base/common/observable.js';
+import { IConfigurationService } from '../../../../../../platform/configuration/common/configuration.js';
+import { defaultInputBoxStyles, defaultToggleStyles } from '../../../../../../platform/theme/browser/defaultStyles.js';
+import { IPositronNotebookCell } from '../../PositronNotebookCells/IPositronNotebookCell.js';
+import { PositronFindInstance } from './PositronFindInstance.js';
+import { PositronNotebookFindDecorations } from './decorations.js';
+import { CellEditorRange } from '../../../common/editor/range.js';
+import { NotebookCellsChangeType } from '../../../../notebook/common/notebookCommon.js';
+import { NotebookTextModel } from '../../../../notebook/common/model/notebookTextModel.js';
+import { RunOnceScheduler } from '../../../../../../base/common/async.js';
+import { Constants } from '../../../../../../base/common/uint.js';
+import { ILogService } from '../../../../../../platform/log/common/log.js';
+import { getActiveCell } from '../../selectionMachine.js';
+import { IContextViewService } from '../../../../../../platform/contextview/browser/contextView.js';
+import { CellEditorPosition } from '../../../common/editor/position.js';
+import { showHistoryKeybindingHint } from '../../../../../../platform/history/browser/historyWidgetKeybindingHint.js';
+import { IKeybindingService } from '../../../../../../platform/keybinding/common/keybinding.js';
+import { IStorageService } from '../../../../../../platform/storage/common/storage.js';
+import { FindWidgetSearchHistory } from '../../../../../../editor/contrib/find/browser/findWidgetSearchHistory.js';
+import { ReplaceWidgetHistory } from '../../../../../../editor/contrib/find/browser/replaceWidgetHistory.js';
+import { IInstantiationService } from '../../../../../../platform/instantiation/common/instantiation.js';
+import { IBulkEditService, ResourceTextEdit } from '../../../../../../editor/browser/services/bulkEditService.js';
+import { ReplacePattern, parseReplaceString } from '../../../../../../editor/contrib/find/browser/replacePattern.js';
+
+export class PositronCellFindMatch {
+	constructor(
+		public readonly cell: IPositronNotebookCell,
+		public readonly cellRange: CellEditorRange,
+		public readonly matches: string[] | null,
+	) { }
+}
+
+export class CurrentPositronCellMatch {
+	constructor(
+		public readonly cellMatch: PositronCellFindMatch,
+		public readonly matchIndex: number,
+	) { }
+}
+
+/** Maximum matches returned by research() for decorations. */
+const MATCHES_LIMIT = 999;
+
+/** Command IDs for the notebook find actions registered in actions.ts. */
+export const POSITRON_NOTEBOOK_FIND_COMMAND_IDS = {
+	start: 'positronNotebook.find.start',
+	hide: 'positronNotebook.find.hide',
+	next: 'positronNotebook.find.next',
+	previous: 'positronNotebook.find.previous',
+	replaceStart: 'positronNotebook.find.replaceStart',
+	replace: 'positronNotebook.find.replace',
+	replaceAll: 'positronNotebook.find.replaceAll',
+} as const;
+
+export class PositronNotebookFindController extends Disposable implements IPositronNotebookContribution {
+	public static readonly ID = 'positron.notebook.contrib.findController';
+
+	private _findInstance: PositronFindInstance | undefined;
+
+	/**
+	 * Tracks whether the find widget was visible before the view was detached.
+	 * Used to restore visibility when the view is reattached.
+	 */
+	private _wasVisibleBeforeDetach = false;
+
+	private readonly _matches = observableValue<PositronCellFindMatch[]>('positronNotebookFindControllerMatches', []);
+	/**
+	 * Ordered list of all matches across all notebook cells.
+	 */
+	public readonly matches: IObservable<PositronCellFindMatch[]> = this._matches;
+
+	private readonly _currentMatch = observableValue<CurrentPositronCellMatch | undefined>('positronNotebookFindControllerCurrentMatchIndex', undefined);
+	/**
+	 * The current match and its index in the matches array.
+	 */
+	public readonly currentMatch: IObservable<CurrentPositronCellMatch | undefined> = this._currentMatch;
+
+	private readonly _debouncedNotebookContentChanged = observableSignal('positronNotebookContentChanged');
+	private readonly _notebookContentChangedScheduler = this._register(new RunOnceScheduler(() => {
+		this._debouncedNotebookContentChanged.trigger(undefined, undefined);
+	}, 20));
+
+	private readonly _notebookModelDisposables = this._register(new DisposableStore());
+
+	constructor(
+		private readonly _notebook: IPositronNotebookInstance,
+		@IBulkEditService private readonly _bulkEditService: IBulkEditService,
+		@IConfigurationService private readonly _configurationService: IConfigurationService,
+		@IContextViewService private readonly _contextViewService: IContextViewService,
+		@IKeybindingService private readonly _keybindingService: IKeybindingService,
+		@IInstantiationService private readonly _instantiationService: IInstantiationService,
+		@ILogService private readonly _logService: ILogService,
+		@IStorageService private readonly _storageService: IStorageService,
+	) {
+		super();
+
+		this._register(this._instantiationService.createInstance(PositronNotebookFindDecorations, this._notebook, this._matches, this._currentMatch));
+
+		this._register(this._notebook.onDidChangeModel((notebookModel) => {
+			this.attachNotebookModel(notebookModel);
+		}));
+		if (this._notebook.textModel) {
+			this.attachNotebookModel(this._notebook.textModel);
+		}
+
+		// Hide find widget when view is detached, restore when reattached
+		this._register(autorun(reader => {
+			const container = this._notebook.container.read(reader);
+			this._logService.trace(`[FindController] Container autorun: container=${container ? 'attached' : 'detached'}`);
+
+			if (container === undefined) {
+				// Detached - save visibility state and hide
+				this._wasVisibleBeforeDetach = this._findInstance?.isVisible.read(undefined) ?? false;
+				this._logService.trace(`[FindController] Detaching, wasVisible=${this._wasVisibleBeforeDetach}`);
+				this._findInstance?.hide();
+			} else {
+				// Attached - restore visibility if it was visible before
+				this._logService.trace(`[FindController] Attaching, wasVisible=${this._wasVisibleBeforeDetach}`);
+				if (this._wasVisibleBeforeDetach && this._findInstance) {
+					this._findInstance.show();
+				}
+			}
+		}));
+	}
+
+	public static get(notebook: IPositronNotebookInstance): PositronNotebookFindController | undefined {
+		return notebook.getContribution<PositronNotebookFindController>(PositronNotebookFindController.ID);
+	}
+
+	/**
+	 * The find instance, if it has been created.
+	 * Lazily created on the first call to `start()`.
+	 */
+	public get findInstance(): PositronFindInstance | undefined {
+		return this._findInstance;
+	}
+
+	/**
+	 * Returns a parenthesized keybinding hint for a command, e.g. " (F3)",
+	 * or an empty string when the command has no keybinding.
+	 */
+	private keybindingLabelFor(commandId: string): string {
+		const label = this._keybindingService.lookupKeybinding(commandId)?.getLabel();
+		return label ? ` (${label})` : '';
+	}
+
+	/**
+	 * Gets the find instance, creating it if necessary.
+	 */
+	private getOrCreateFindInstance(): PositronFindInstance {
+		if (!this._findInstance) {
+			if (!this._notebook.overlayContainer) {
+				throw new Error('Notebook overlay container not available for Find Widget rendering');
+			}
+
+			// Bind context keys
+			const findWidgetVisible = CONTEXT_FIND_WIDGET_VISIBLE.bindTo(this._notebook.scopedContextKeyService);
+			const findInputFocused = CONTEXT_FIND_INPUT_FOCUSED.bindTo(this._notebook.scopedContextKeyService);
+			const replaceInputFocused = CONTEXT_REPLACE_INPUT_FOCUSED.bindTo(this._notebook.scopedContextKeyService);
+
+			// Create the find instance
+			const findWidgetSearchHistory = FindWidgetSearchHistory.getOrCreate(this._storageService);
+			const replaceWidgetHistory = ReplaceWidgetHistory.getOrCreate(this._storageService);
+			const findInstance = this._register(new PositronFindInstance({
+				container: this._notebook.overlayContainer,
+				findInputOptions: {
+					label: localize('positronNotebook.find.label', "Find"),
+					placeholder: localize('positronNotebook.find.placeholder', "Find"),
+					showCommonFindToggles: true,
+					inputBoxStyles: defaultInputBoxStyles,
+					toggleStyles: defaultToggleStyles,
+					showHistoryHint: () => showHistoryKeybindingHint(this._keybindingService),
+					history: findWidgetSearchHistory,
+				},
+				replaceInputOptions: {
+					label: localize('positronNotebook.replace.label', "Replace"),
+					placeholder: localize('positronNotebook.replace.placeholder', "Replace"),
+					inputBoxStyles: defaultInputBoxStyles,
+					toggleStyles: defaultToggleStyles,
+					showHistoryHint: () => showHistoryKeybindingHint(this._keybindingService),
+					history: replaceWidgetHistory,
+				},
+				contextKeyService: this._notebook.scopedContextKeyService,
+				contextViewService: this._contextViewService,
+				hoverManager: this._notebook.hoverManager,
+				keybindingHints: {
+					previousMatch: this.keybindingLabelFor(POSITRON_NOTEBOOK_FIND_COMMAND_IDS.previous),
+					nextMatch: this.keybindingLabelFor(POSITRON_NOTEBOOK_FIND_COMMAND_IDS.next),
+					close: this.keybindingLabelFor(POSITRON_NOTEBOOK_FIND_COMMAND_IDS.hide),
+					toggleReplace: this.keybindingLabelFor(POSITRON_NOTEBOOK_FIND_COMMAND_IDS.replaceStart),
+					replace: this.keybindingLabelFor(POSITRON_NOTEBOOK_FIND_COMMAND_IDS.replace),
+					replaceAll: this.keybindingLabelFor(POSITRON_NOTEBOOK_FIND_COMMAND_IDS.replaceAll),
+				},
+			}));
+			this._findInstance = findInstance;
+
+			// Subscribe to user action events
+			this._register(findInstance.onDidRequestFindNext(() => this.findNext()));
+			this._register(findInstance.onDidRequestFindPrevious(() => this.findPrevious()));
+			this._register(findInstance.onDidRequestReplace(() => this.replace()));
+			this._register(findInstance.onDidRequestReplaceAll(() => this.replaceAll()));
+
+			// Subscribe to visibility changes
+			this._register(autorun((reader) => {
+				const visible = findInstance.isVisible.read(reader);
+				if (visible) {
+					findWidgetVisible.set(true);
+				} else {
+					// Reset context keys
+					findWidgetVisible.reset();
+					findInputFocused.reset();
+					replaceInputFocused.reset();
+
+					// Clear state
+					transaction((tx) => {
+						this._matches.set([], tx);
+						this._currentMatch.set(undefined, tx);
+					});
+
+					// Restore focus to notebook
+					this._notebook.grabFocus();
+				}
+			}));
+
+			// Subscribe to focus changes
+			this._register(autorun((reader) => {
+				const focused = findInstance.inputFocused.read(reader);
+				if (focused) {
+					findInputFocused.set(true);
+				} else {
+					findInputFocused.reset();
+				}
+			}));
+
+			this._register(autorun((reader) => {
+				const focused = findInstance.replaceInputFocused.read(reader);
+				if (focused) {
+					replaceInputFocused.set(true);
+				} else {
+					replaceInputFocused.reset();
+				}
+			}));
+
+			// Research when search params or content changes
+			this._register(autorun(reader => {
+				this._debouncedNotebookContentChanged.read(reader);
+				const searchString = findInstance.searchString.read(reader);
+				const isRegex = findInstance.isRegex.read(reader);
+				const matchCase = findInstance.matchCase.read(reader);
+				const wholeWord = findInstance.wholeWord.read(reader);
+				const isVisible = findInstance.isVisible.read(reader);
+
+				if (!isVisible) {
+					// Not visible, do not search
+					return;
+				}
+
+				// Perform search
+				this.research(searchString, isRegex, matchCase, wholeWord);
+			}));
+		}
+
+		return this._findInstance;
+	}
+
+	/**
+	 * Shows the find widget and starts the find operation.
+	 * @param options.replace If true, expands the replace section.
+	 */
+	public start(options?: { replace?: boolean }): void {
+		const findInstance = this.getOrCreateFindInstance();
+		findInstance.show(options);
+	}
+
+	/**
+	 * Hides the find widget.
+	 */
+	public hide(): void {
+		this._findInstance?.hide();
+	}
+
+	private attachNotebookModel(notebookModel: NotebookTextModel | undefined) {
+		this._notebookModelDisposables.clear();
+
+		if (!notebookModel) {
+			return;
+		}
+
+		// Schedule the debounced content changed event to trigger researches
+		this._notebookModelDisposables.add(notebookModel.onDidChangeContent(e => {
+			if (e.rawEvents.some(
+				event => event.kind === NotebookCellsChangeType.ChangeCellContent ||
+					event.kind === NotebookCellsChangeType.ModelChange)) {
+				this._notebookContentChangedScheduler.schedule();
+			}
+		}));
+	}
+
+	/**
+	 * Finds matches across all notebook cells.
+	 */
+	private _findMatchesInCells(
+		searchString: string,
+		isRegex: boolean,
+		matchCase: boolean,
+		wholeWord: boolean,
+		captureMatches: boolean,
+		limitResultCount?: number,
+	): PositronCellFindMatch[] {
+		const wordSeparators = wholeWord
+			? this._configurationService.inspect<string>('editor.wordSeparators').value || null
+			: null;
+		const cellMatches: PositronCellFindMatch[] = [];
+		for (const [cellIndex, cell] of this._notebook.cells.get().entries()) {
+			if (cell.model.textModel) {
+				const matches = cell.model.textModel.findMatches(
+					searchString,
+					null,
+					isRegex,
+					matchCase,
+					wordSeparators,
+					captureMatches,
+					limitResultCount,
+				);
+				for (const match of matches) {
+					const cellRange = new CellEditorRange(cellIndex, match.range);
+					const cellMatch = new PositronCellFindMatch(cell, cellRange, match.matches);
+					cellMatches.push(cellMatch);
+				}
+			}
+		}
+		return cellMatches;
+	}
+
+	/**
+	 * Performs a search across all notebook cells and updates state.
+	 */
+	private research(searchString: string, isRegex: boolean, matchCase: boolean, wholeWord: boolean, moveCursor = false): PositronCellFindMatch[] {
+		const cellMatches = this._findMatchesInCells(searchString, isRegex, matchCase, wholeWord, false, MATCHES_LIMIT);
+
+		// Set the match index to the first match after the cursor
+		let matchIndex: number | undefined = undefined;
+		if (cellMatches.length > 0) {
+			const activeCell = getActiveCell(this._notebook.selectionStateMachine.state.get());
+			if (activeCell?.currentEditor) {
+				// We have an editor with a cursor position
+				const position = activeCell.currentEditor.getPosition();
+				if (position) {
+					const cursorPosition = new CellEditorPosition(activeCell.index, position);
+					const foundIndex = cellMatches.findLastIndex(({ cellRange }) =>
+						cellRange.containsPosition(cursorPosition) ||
+						cellRange.getEndPosition().isBefore(cursorPosition)
+					);
+					matchIndex = foundIndex !== -1 ? foundIndex : undefined;
+				}
+			} else if (activeCell) {
+				// No editor (e.g., rendered markdown cell), use cell index
+				const foundIndex = cellMatches.findLastIndex(({ cellRange }) =>
+					cellRange.cellIndex <= activeCell.index
+				);
+				matchIndex = foundIndex !== -1 ? foundIndex : undefined;
+			}
+		}
+
+		// Invalidate currentMatch if its range no longer exists in the new matches
+		const currentMatch = this._currentMatch.get();
+		const isCurrentMatchStale = currentMatch !== undefined && !cellMatches.some(
+			({ cellRange }) => cellRange.equalsRange(currentMatch.cellMatch.cellRange)
+		);
+
+		// Update state
+		transaction((tx) => {
+			this._matches.set(cellMatches, tx);
+			this._findInstance?.matchCount.set(cellMatches.length, tx);
+			this._findInstance?.matchIndex.set(matchIndex, tx);
+			if (isCurrentMatchStale) {
+				this._currentMatch.set(undefined, tx);
+			}
+		});
+
+		if (moveCursor && cellMatches.length > 0) {
+			const nextIndex = matchIndex !== undefined
+				? (matchIndex + 1) % cellMatches.length
+				: 0;
+			this.navigateToMatch(nextIndex);
+		}
+
+		return cellMatches;
+	}
+
+	public findNext(): void {
+		// Find the next match from the current cursor position
+		const nextMatchIndex = this.findNextMatchFromCursor();
+		if (nextMatchIndex !== -1) {
+			this.navigateToMatch(nextMatchIndex);
+		}
+	}
+
+	public findPrevious(): void {
+		// Find the previous match from the current cursor position
+		const prevMatchIndex = this.findPreviousMatchFromCursor();
+		if (prevMatchIndex !== -1) {
+			this.navigateToMatch(prevMatchIndex);
+		}
+	}
+
+	private findNextMatchFromCursor(): number {
+		const cellMatches = this._matches.get();
+
+		if (cellMatches.length === 0) {
+			// No matches
+			return -1;
+		}
+
+		const currentMatch = this._currentMatch.get();
+
+		if (currentMatch !== undefined) {
+			// Current match known. Go to the next match, wrapping if needed
+			const nextIndex = currentMatch.matchIndex + 1;
+			return nextIndex < cellMatches.length ? nextIndex : 0;
+		}
+
+		// If we don't have a current match yet, find first match after cursor
+		const activeCell = getActiveCell(this._notebook.selectionStateMachine.state.get());
+		if (!activeCell) {
+			// No active cell at all
+			return -1;
+		}
+
+		if (activeCell.currentEditor) {
+			// We have an editor with a cursor position
+			const position = activeCell.currentEditor.getPosition();
+			if (position) {
+				const cursorPosition = new CellEditorPosition(activeCell.index, position);
+				const nextMatchIndex = cellMatches.findIndex(({ cellRange }) =>
+					cellRange.containsPosition(cursorPosition) ||
+					cursorPosition.isBefore(cellRange.getStartPosition())
+				);
+				// Wrap to first match when cursor is past all matches
+				return nextMatchIndex !== -1 ? nextMatchIndex : 0;
+			}
+		}
+
+		// No editor (e.g., rendered markdown cell), use cell index
+		const nextMatchIndex = cellMatches.findIndex(({ cellRange }) =>
+			cellRange.cellIndex >= activeCell.index
+		);
+		return nextMatchIndex;
+	}
+
+	private findPreviousMatchFromCursor(): number {
+		const cellMatches = this._matches.get();
+
+		if (cellMatches.length === 0) {
+			// No matches
+			return -1;
+		}
+
+		const currentMatch = this._currentMatch.get();
+
+		if (currentMatch !== undefined) {
+			// Current match known. Go to the previous match, wrapping if needed
+			const prevIndex = currentMatch.matchIndex - 1;
+			return prevIndex >= 0 ? prevIndex : cellMatches.length - 1;
+		}
+
+		// If we don't have a current match yet, find last match before cursor
+		const activeCell = getActiveCell(this._notebook.selectionStateMachine.state.get());
+		if (!activeCell) {
+			// No active cell at all
+			return -1;
+		}
+
+		if (activeCell.currentEditor) {
+			// We have an editor with a cursor position
+			const position = activeCell.currentEditor.getPosition();
+			if (position) {
+				const cursorPosition = new CellEditorPosition(activeCell.index, position);
+				const prevMatchIndex = cellMatches.findLastIndex(({ cellRange }) =>
+					cellRange.containsPosition(cursorPosition) ||
+					cellRange.getEndPosition().isBefore(cursorPosition)
+				);
+				return prevMatchIndex;
+			}
+		}
+
+		// No editor (e.g., rendered markdown cell), use cell index
+		const prevMatchIndex = cellMatches.findLastIndex(({ cellRange }) =>
+			cellRange.cellIndex <= activeCell.index
+		);
+		return prevMatchIndex;
+	}
+
+	private navigateToMatch(matchIndex: number): void {
+		const cellMatches = this._matches.get();
+
+		if (matchIndex < 0 || matchIndex >= cellMatches.length) {
+			// Invalid match index
+			return;
+		}
+
+		const cellMatch = cellMatches[matchIndex];
+		const { cell, cellRange } = cellMatch;
+
+		// Select the cell and reveal it
+		this._notebook.selectionStateMachine.selectCell(cell);
+		this._notebook.revealInCenterIfOutsideViewport(cell).catch((error) => {
+			this._logService.error('Error revealing cell for find match:', error);
+		});
+
+		// Select the match in the editor
+		if (cell.currentEditor) {
+			// Set the selection to the match range
+			cell.currentEditor.setSelection(cellRange.range);
+			// Reveal the range in the editor
+			cell.currentEditor.revealRangeInCenter(cellRange.range);
+		}
+
+		transaction((tx) => {
+			// Update the match index
+			this._findInstance?.matchIndex.set(matchIndex, tx);
+
+			// Update current match tracking
+			this._currentMatch.set({ cellMatch, matchIndex: matchIndex }, tx);
+		});
+	}
+
+	/**
+	 * Builds a ReplacePattern from the current replace text and regex state.
+	 * When regex is on, interprets $1, \n, etc. as special sequences.
+	 * When regex is off, treats the string literally.
+	 */
+	private _getReplacePattern(): ReplacePattern {
+		const replaceString = this._findInstance?.replaceText.get() ?? '';
+		if (this._findInstance?.isRegex.get()) {
+			return parseReplaceString(replaceString);
+		}
+		return ReplacePattern.fromStaticValue(replaceString);
+	}
+
+	/**
+	 * Replaces the current match. Two-step behavior:
+	 * 1. If no current match, navigates to the first match (does not replace).
+	 * 2. If a current match exists, replaces it and advances to the next match.
+	 */
+	public async replace(): Promise<void> {
+		const matches = this._matches.get();
+		if (matches.length === 0) {
+			return;
+		}
+
+		const currentMatch = this._currentMatch.get();
+		if (currentMatch === undefined) {
+			// First call: navigate to first match without replacing
+			this.findNext();
+			return;
+		}
+
+		const findInstance = this._findInstance;
+		if (!findInstance) {
+			return;
+		}
+
+		const { cell, cellRange } = currentMatch.cellMatch;
+		const replacePattern = this._getReplacePattern();
+		const preserveCase = findInstance.preserveCase.get();
+
+		// Get captures only when the replacement pattern needs them
+		let capturedMatches: string[] | null = null;
+		if (replacePattern.hasReplacementPatterns || preserveCase) {
+			const textModel = cell.model.textModel;
+			if (textModel) {
+				const wordSeparators = findInstance.wholeWord.get()
+					? this._configurationService.inspect<string>('editor.wordSeparators').value || null
+					: null;
+				const cellMatches = textModel.findMatches(
+					findInstance.searchString.get(),
+					cellRange.range,
+					findInstance.isRegex.get(),
+					findInstance.matchCase.get(),
+					wordSeparators,
+					true, // captureMatches
+					1,    // limitResultCount
+				);
+				capturedMatches = cellMatches[0]?.matches ?? null;
+			}
+		}
+
+		const replacementText = replacePattern.buildReplaceString(capturedMatches, preserveCase);
+
+		// Apply the edit
+		await this._bulkEditService.apply(
+			[new ResourceTextEdit(cell.uri, { range: cellRange.range, text: replacementText })],
+			{ quotableLabel: localize('positronNotebook.replace', "Notebook Replace") },
+		);
+
+		// Immediate research with fresh positions, then navigate to next match
+		this.research(
+			findInstance.searchString.get(),
+			findInstance.isRegex.get(),
+			findInstance.matchCase.get(),
+			findInstance.wholeWord.get(),
+			true, // moveCursor
+		);
+	}
+
+	/**
+	 * Replaces all matches in a single bulk edit operation (one undo step).
+	 */
+	public async replaceAll(): Promise<void> {
+		const findInstance = this._findInstance;
+		if (!findInstance) {
+			return;
+		}
+
+		const replacePattern = this._getReplacePattern();
+		const preserveCase = findInstance.preserveCase.get();
+		const needsCaptures = replacePattern.hasReplacementPatterns || preserveCase;
+
+		// Fresh uncapped search to ensure all matches are found
+		const allMatches = this._findMatchesInCells(
+			findInstance.searchString.get(),
+			findInstance.isRegex.get(),
+			findInstance.matchCase.get(),
+			findInstance.wholeWord.get(),
+			needsCaptures,
+			Constants.MAX_SAFE_SMALL_INTEGER,
+		);
+
+		if (allMatches.length === 0) {
+			return;
+		}
+
+		// Build edits for all matches
+		const edits: ResourceTextEdit[] = [];
+		for (const match of allMatches) {
+			const replacementText = replacePattern.buildReplaceString(match.matches, preserveCase);
+			edits.push(new ResourceTextEdit(match.cell.uri, { range: match.cellRange.range, text: replacementText }));
+		}
+
+		// Apply all edits in a single operation
+		await this._bulkEditService.apply(
+			edits,
+			{ quotableLabel: localize('positronNotebook.replaceAll', "Notebook Replace All") },
+		);
+	}
+}

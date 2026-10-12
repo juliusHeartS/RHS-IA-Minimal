@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Package Management"
+---
+
+The Packages view displays packages for the active Python or R runtime and exposes supported install, update, remove, and load actions. Package operations run against the environment owned by that session.
+
+Confirm the active interpreter before changing packages. For reproducible projects, use a project environment and the language's dependency lock or requirements file instead of relying only on the global library.
+
+Restart the runtime if an installed package is not immediately importable, especially after changes to compiled dependencies or library paths.

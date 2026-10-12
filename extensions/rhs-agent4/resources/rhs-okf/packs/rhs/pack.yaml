@@ -1,0 +1,97 @@
+# Pack de dominio RHS — declaración consumible por el motor rhs-okf.
+# Define tipos de concepto, carpeta, y la regla de document_id. El motor lo lee
+# para clasificar (LLM), scaffoldar y resolver identidad. v1 — 2026-07-29.
+
+pack:
+  id: rhs
+  name: "Recursos Humanos para la Salud (OPS)"
+  lang: [es, en]
+  okf_version: "0.2"
+
+defaults:
+  document_type: DocumentoFuente
+  legal_document_type: Norma
+  dataset_type: Dataset
+  source_type: FuenteOriginal
+  hub_type: HubConocimiento
+
+# Frontmatter base v0.2 (común a todos). El motor lo aplica siempre.
+base_frontmatter:
+  required: [type]
+  required_on_ingest: [type, document_id, lang, generated]
+  optional: [title, description, tags, status, verified, stale_after, sources,
+             supersedes, superseded_by, revisions, withdrawn, extractor_version]
+  status_enum: [draft, stable, deprecated]
+  trust:
+    verified_key: verified       # {by, at}[]; human:* => human-reviewed
+    generated_key: generated
+
+types:
+  - type: DocumentoFuente
+    folder: fuentes
+    document_id: "slug(title) | codigo_ops(isbn|doc)"
+    extra: [year, organization, document_type, topic, priority, source_file, original_path, pages]
+  - type: PerfilPais
+    folder: perfiles_pais
+    document_id: "<ISO3>-<year>"
+    extra: [country, country_name, year, region, source_documents]
+  - type: Hallazgo
+    folder: hallazgos
+    document_id: "<tema>_<fuente>_<n>"
+    extra: [topic, year, source_documents]
+  - type: IndicadorRRHH
+    folder: indicadores
+    document_id: "<indicador>_<ISO3>_<year>"
+    extra: [indicator, country, year, unit, value, source_documents, computation]
+  - type: RecomendacionPolitica
+    folder: recomendaciones
+    document_id: "<slug>"
+    extra: [topic, evidence_strength, source_documents]
+  - type: Norma
+    folder: normas
+    document_id: "<jurisdiccion>_<legal_type>_<year>_<slug>"
+    extra: [jurisdiction, year, issuing_body, legal_type, vigencia, source_file, original_path]
+  - type: GuiaMetodologica
+    folder: guias_metodologicas
+    document_id: "<slug>"
+    extra: [year, organization, methodology_area]
+  - type: BuenaPractica
+    folder: buenas_practicas
+    document_id: "<ISO3>_<tema>_<slug>"
+    extra: [country, year, topic, source_documents]
+  - type: CooperacionTecnica
+    folder: cooperacion_tecnica
+    document_id: "<slug>"
+    extra: [country, year, activity_type]
+  - type: ConceptoClave
+    folder: conceptos_clave
+    document_id: "<slug>"
+    extra: [domain]
+  - type: Dataset
+    folder: datasets
+    document_id: "<file_stem>[_<ISO3>][_<vintage>]"
+    extra: [file_format, size_bytes, file_sha256, resource, vintage, profiling, schema]
+  - type: FuenteOriginal
+    folder: sources
+    document_id: "source_<document_id>"
+    extra: [resource, source_fingerprint, source_kind, original_concept]
+  - type: HubConocimiento
+    folder: hubs
+    document_id: "hub_<slug>"
+    extra: [derived, hub_kind, member_count, members]
+  - type: Attested Computation
+    folder: computaciones
+    document_id: "<slug>"
+    extra: [runtime, parameters, computation, executor, attester, stale_after]
+  - type: DocumentacionTecnica
+    folder: documentacion
+    document_id: "<slug>"
+    extra: []
+
+reserved_files: [index.md, log.md]
+
+# Reglas de identidad (ciclo de vida §13)
+identity:
+  exact_dup_key: file_sha256           # mismo hash => ignorar (duplicado exacto)
+  logical_key: document_id             # igual document_id + hash distinto => nueva versión
+  ledger_fields: [document_id, file_sha256, original_path, concept_path, ingest_at, status, verified_by]

@@ -1,0 +1,29 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+.positron-cell-editor-monaco-widget {
+	/* No borders - parent container (.positron-notebook-editor-section) handles them */
+	border: none;
+	border-radius: 0;
+	padding: 0;
+	overflow: visible;
+}
+
+/* Set cell editor background */
+.positron-cell-editor-monaco-widget .monaco-editor-background,
+.positron-cell-editor-monaco-widget .margin-view-overlays {
+	background: var(--vscode-notebook-cellEditorBackground, var(--vscode-editor-background));
+}
+
+/* Show focus outline with default VS Code focus color */
+.positron-cell-editor-monaco-widget:focus,
+.positron-cell-editor-monaco-widget:focus-within {
+	outline: 1px solid var(--vscode-focusBorder);
+	outline-offset: -1px;
+}
+
+/* Ensure the editor container has minimum height for empty cells */
+.positron-monaco-editor-container {
+	min-height: 1rem;
+}

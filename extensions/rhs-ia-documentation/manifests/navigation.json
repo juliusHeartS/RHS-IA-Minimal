@@ -1,0 +1,190 @@
+{
+	"schemaVersion": 1,
+	"scope": "RHS-IA software only",
+	"locales": ["en", "es"],
+	"sections": [
+		{
+			"id": "getting-started",
+			"title": "Getting Started",
+			"pages": [{ "id": "getting-started/overview", "source": "welcome.qmd" }]
+		},
+		{
+			"id": "configuration",
+			"title": "Configuration",
+			"pages": [
+				{
+					"id": "configuration/keyboard-shortcuts",
+					"source": "keyboard-shortcuts.qmd"
+				},
+				{ "id": "configuration/add-to-path", "source": "add-to-path.qmd" },
+				{ "id": "configuration/git", "source": "git.qmd" },
+				{ "id": "configuration/extensions", "source": "extensions.qmd" }
+			]
+		},
+		{
+			"id": "user-interface",
+			"title": "User Interface",
+			"pages": [
+				{ "id": "user-interface/layout", "source": "layout.qmd" },
+				{
+					"id": "user-interface/command-palette",
+					"source": "command-palette.qmd"
+				},
+				{ "id": "user-interface/action-bars", "source": "action-bars.qmd" },
+				{ "id": "user-interface/help", "source": "help-pane.qmd" }
+			]
+		},
+		{
+			"id": "languages",
+			"title": "Language Guides",
+			"pages": [
+				{ "id": "languages/overview", "source": "language-guides.qmd" },
+				{ "id": "languages/python", "source": "guide-python.qmd" },
+				{ "id": "languages/r", "source": "guide-r.qmd" },
+				{ "id": "languages/r-debugging", "source": "guide-r-debugging.qmd" },
+				{
+					"id": "languages/r-session-hooks",
+					"source": "guide-r-session-hooks.qmd"
+				},
+				{ "id": "languages/r-air", "source": "guide-r-air.qmd" }
+			]
+		},
+		{
+			"id": "data-analysis",
+			"title": "Data Analysis",
+			"pages": [
+				{ "id": "data-analysis/data-explorer", "source": "data-explorer.qmd" },
+				{
+					"id": "data-analysis/data-grid",
+					"source": "data-explorer-data-grid.qmd"
+				},
+				{
+					"id": "data-analysis/filter-bar",
+					"source": "data-explorer-filter-bar.qmd"
+				},
+				{
+					"id": "data-analysis/summary-panel",
+					"source": "data-explorer-summary-panel.qmd"
+				},
+				{ "id": "data-analysis/variables", "source": "variables-pane.qmd" },
+				{ "id": "data-analysis/plots", "source": "plots-pane.qmd" }
+			]
+		},
+		{
+			"id": "database-connections",
+			"title": "Database Connections",
+			"pages": [
+				{
+					"id": "database-connections/overview",
+					"source": "connections-pane.qmd"
+				},
+				{
+					"id": "database-connections/extensions",
+					"source": "extending-connections.qmd"
+				},
+				{
+					"id": "database-connections/catalog",
+					"source": "catalog-explorer.qmd"
+				}
+			]
+		},
+		{
+			"id": "dynamic-documents",
+			"title": "Quarto and Notebooks",
+			"pages": [
+				{ "id": "quarto/overview", "source": "quarto.qmd" },
+				{ "id": "quarto/inline-output", "source": "quarto-inline-output.qmd" },
+				{ "id": "notebooks/overview", "source": "jupyter-notebooks.qmd" },
+				{ "id": "notebooks/editor", "source": "positron-notebook-editor.qmd" },
+				{
+					"id": "notebooks/legacy-editor",
+					"source": "legacy-notebook-editor.qmd"
+				},
+				{ "id": "notebooks/code-cells", "source": "code-cells.qmd" },
+				{ "id": "applications/development", "source": "develop-data-apps.qmd" }
+			]
+		},
+		{
+			"id": "workspaces",
+			"title": "Workspaces",
+			"pages": [
+				{
+					"id": "workspaces/folder-templates",
+					"source": "folder-templates.qmd"
+				},
+				{ "id": "workspaces/remote-ssh", "source": "remote-ssh.qmd" },
+				{ "id": "workspaces/dev-containers", "source": "dev-containers.qmd" }
+			]
+		},
+		{
+			"id": "interpreters",
+			"title": "Interpreters and Packages",
+			"pages": [
+				{
+					"id": "interpreters/managing",
+					"source": "managing-interpreters.qmd"
+				},
+				{ "id": "interpreters/startup", "source": "interpreter-startup.qmd" },
+				{ "id": "interpreters/packages", "source": "packages-pane.qmd" },
+				{ "id": "interpreters/python", "source": "python-installations.qmd" },
+				{ "id": "interpreters/r", "source": "r-installations.qmd" },
+				{ "id": "interpreters/reticulate", "source": "reticulate.qmd" },
+				{
+					"id": "interpreters/environment-modules",
+					"source": "environment-modules.qmd"
+				}
+			]
+		},
+		{
+			"id": "extensions",
+			"title": "Extensions",
+			"pages": [
+				{
+					"id": "extensions/development",
+					"source": "extension-development.qmd"
+				}
+			]
+		},
+		{
+			"id": "tutorials",
+			"title": "Tutorials",
+			"pages": [
+				{ "id": "tutorials/overview", "source": "tutorials.qmd" },
+				{
+					"id": "tutorials/jupyter-notebook",
+					"source": "tutorial-get-started-ipynb.qmd"
+				},
+				{
+					"id": "tutorials/quarto",
+					"source": "tutorial-get-started-quarto.qmd"
+				}
+			]
+		},
+		{
+			"id": "support",
+			"title": "Troubleshooting and Reference",
+			"pages": [
+				{ "id": "support/troubleshooting", "source": "troubleshooting.qmd" },
+				{ "id": "support/faq", "source": "faqs.qmd" }
+			]
+		},
+		{
+			"id": "about",
+			"title": "About RHS-IA",
+			"pages": [
+				{ "id": "about/overview", "source": "about.qmd" },
+				{ "id": "about/documentation-license", "source": "LICENSE.md" }
+			]
+		}
+	],
+	"excludedSections": [
+		"RHS-IA Agent",
+		"Posit Assistant",
+		"Positron Assistant",
+		"Databot",
+		"Updating Positron",
+		"Publish your work",
+		"Posit Publisher",
+		"Migration Guides"
+	]
+}

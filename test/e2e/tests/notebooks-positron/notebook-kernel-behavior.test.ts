@@ -1,0 +1,252 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import path from 'path';
+import { expect, tags } from '../_test.setup';
+import { test } from './_test.setup.js';
+
+test.use({
+	suiteId: __filename
+});
+
+test.describe('Positron Notebooks: Kernel Behavior', {
+	tag: [tags.WIN, tags.WEB, tags.POSITRON_NOTEBOOKS, tags.SOFT_FAIL, tags.SESSIONS] // soft fail due to https://github.com/posit-dev/positron/issues/10546
+}, () => {
+
+	test('ensure notebook session states update correctly during start, restart, and shutdown', async function ({ app }) {
+		const { notebooksPositron } = app.workbench;
+
+		// create new notebook
+		await notebooksPositron.newNotebook();
+
+		// ensure when no kernel is selected, restart toolbar button and shutdown menu item are disabled
+		await expect(notebooksPositron.kernel.restartButton).toBeDisabled();
+		await notebooksPositron.kernel.expectMenuToContain([
+			{ label: 'Change Kernel...', enabled: true },
+			{ label: 'Shutdown Kernel', enabled: false },
+		]);
+
+		// select kernel and ensure while starting, restart toolbar button is enabled & shutdown menu item is disabled
+		await notebooksPositron.kernel.select('Python', { waitForReady: false });
+		await expect(notebooksPositron.kernel.restartButton).toBeEnabled();
+		await notebooksPositron.kernel.expectMenuToContain([
+			{ label: 'Shutdown Kernel', enabled: false },
+		]);
+
+		// ensure once started and ready, shutdown is enabled
+		await notebooksPositron.kernel.expectKernelToBeReady({ kernelGroup: 'Python' });
+		await notebooksPositron.kernel.expectMenuToContain([
+			{ label: 'Shutdown Kernel', enabled: true },
+		]);
+
+		// restart kernel and ensure state changes
+		await notebooksPositron.kernel.restart({ waitForRestart: false });
+		await notebooksPositron.kernel.expectKernelToBe({
+			kernelGroup: 'Python',
+			status: 'active'
+		});
+		await notebooksPositron.kernel.expectKernelToBeReady({ kernelGroup: 'Python' });
+
+		// shut down kernel and ensure restart toolbar button stays enabled, shutdown menu item is disabled
+		await notebooksPositron.kernel.shutdown();
+		await notebooksPositron.kernel.expectKernelToBe({
+			kernelGroup: 'Python',
+			status: 'disconnected'
+		});
+		await expect(notebooksPositron.kernel.restartButton).toBeEnabled();
+		await notebooksPositron.kernel.expectMenuToContain([
+			{ label: 'Shutdown Kernel', enabled: false },
+			{ label: 'Change Kernel...', enabled: true },
+		]);
+
+		// re-start kernel from shutdown state and ensure state changes
+		await notebooksPositron.kernel.restart();
+		await notebooksPositron.kernel.expectKernelToBeReady({ kernelGroup: 'Python' });
+	});
+
+	test('ensure variable and output persistence after kernel restart', async function ({ app }) {
+		const { notebooksPositron, variables, inlineDataExplorer } = app.workbench;
+
+		// create new notebook
+		await notebooksPositron.newNotebook();
+		await notebooksPositron.kernel.select('R');
+
+		// cell 0: create variable x and ensure it exists
+		await notebooksPositron.addCodeToCell(0, 'x = 10', { run: true });
+		await variables.expectVariableToBe('x', '10');
+
+		// cell 1: create variable y and ensure it exists
+		await notebooksPositron.addCodeToCell(1, 'y = 3', { run: true });
+		await variables.expectVariableToBe('y', '3');
+
+		// cell 2: render data frame as inline data explorer
+		await notebooksPositron.addCodeToCell(2, rDataFrame, { run: true });
+		await inlineDataExplorer.expectToBeVisible();
+		await inlineDataExplorer.expectGridToBeReady();
+		await inlineDataExplorer.expectShapeToContain(4, 4);
+
+		// verify execution orders
+		await notebooksPositron.expectExecutionOrder([
+			{ index: 0, order: 1 },
+			{ index: 1, order: 2 },
+			{ index: 2, order: 3 },
+		]);
+
+		// restart kernel
+		await notebooksPositron.kernel.restart({ waitForRestart: true });
+
+		// verify variables are cleared
+		await variables.expectVariableToNotExist('x');
+		await variables.expectVariableToNotExist('y');
+
+		// verify execution orders persist
+		await notebooksPositron.expectExecutionOrder([
+			{ index: 0, order: 1 },
+			{ index: 1, order: 2 },
+		]);
+
+		// verify data explorer cell output persists (may show fallback/disconnected state after restart)
+		await notebooksPositron.cellOutput(2).scrollIntoViewIfNeeded();
+		await expect(notebooksPositron.cellOutput(2)).toBeVisible();
+
+		// run cell 0 again and ensure execution order restarts at 1
+		await notebooksPositron.runCodeAtIndex(1);
+		await notebooksPositron.expectExecutionOrder([
+			{ index: 0, order: 1 }, // from previous session (pre-reload)
+			{ index: 1, order: 1 }, // from current session (post-reload)
+			{ index: 2, order: 3 }, // from previous session (pre-reload)
+
+		]);
+	});
+
+	test('ensure new notebooks use foreground session kernel', async function ({ app, sessions }) {
+		const { notebooksPositron } = app.workbench;
+
+		// start multiple sessions and select R
+		const [, rSession] = await sessions.start(['python', 'r']);
+		await sessions.select(rSession.id);
+
+		// create new notebook and ensure R kernel is auto-selected (from foreground) and started
+		await notebooksPositron.newNotebook();
+		await notebooksPositron.kernel.expectKernelToBeReady({ kernelGroup: 'R' });
+	});
+
+	test('ensure existing notebooks use their correct interpreter kernel',
+		async function ({ app, sessions }) {
+			const { notebooksPositron } = app.workbench;
+			const pythonNotebook = path.join('workspaces', 'data-explorer-update-datasets', 'pandas-update-dataframe.ipynb');
+			const rRnotebook = path.join('workspaces', 'r_notebooks', 'Introduction+to+R.ipynb');
+
+			// start multiple sessions and select R
+			const [, rSession] = await sessions.start(['python', 'r']);
+			await sessions.select(rSession.id);
+
+			// open existing python notebook and ensure python kernel is auto-selected (from background) and started
+			await notebooksPositron.openNotebook(pythonNotebook);
+			await notebooksPositron.kernel.expectKernelToBeReady({ kernelGroup: 'Python' });
+
+			// open exiting R notebook and ensure R kernel is auto-selected (from foreground) and started
+			await notebooksPositron.openNotebook(rRnotebook);
+			await notebooksPositron.kernel.expectKernelToBeReady({ kernelGroup: 'R' });
+		});
+
+	test('ensure notebook console attaches and terminates with active kernel', async function ({ app, sessions }) {
+		const { notebooksPositron, console } = app.workbench;
+
+		const [, rSession] = await sessions.start(['python', 'r']);
+		await sessions.select(rSession.id);
+		const sessionCountBefore = await sessions.getSessionCount();
+
+		// create new notebook
+		await notebooksPositron.newNotebook();
+		await notebooksPositron.kernel.expectKernelToBeReady({ kernelGroup: 'R' });
+
+		// open notebook console and ensure appears in session list
+		await notebooksPositron.kernel.openNotebookConsole();
+		await sessions.expectSessionCountToBe(sessionCountBefore + 1, 'all');
+		await sessions.expectStatusToBe('Untitled-1.ipynb', 'idle');
+
+		// terminate notebook session
+		await sessions.select('Untitled-1.ipynb');
+		await console.pasteCodeToConsole('q()', true);
+
+		// verify session is terminated in both kernel and sessions list
+		await sessions.expectStatusToBe('Untitled-1.ipynb', 'disconnected');
+		await notebooksPositron.kernel.expectKernelToBe({
+			kernelGroup: 'R',
+			status: 'disconnected'
+		});
+	});
+
+	test('ensure closing a notebook removes its console session', { tag: [tags.CONSOLE, tags.EDITOR] }, async function ({ app, sessions, runCommand }) {
+		const { notebooksPositron } = app.workbench;
+
+		// clear any sessions left by prior tests (e.g. a terminated notebook
+		// console) so the Untitled-1.ipynb tab lookup is unambiguous
+		await sessions.deleteAll();
+
+		// start standalone sessions that should survive the notebook closing
+		const [, rSession] = await sessions.start(['python', 'r']);
+		await sessions.select(rSession.id);
+		const sessionCountBefore = await sessions.getSessionCount();
+
+		// create a notebook and open its console (adds a notebook session)
+		await notebooksPositron.newNotebook();
+		await notebooksPositron.kernel.expectKernelToBeReady({ kernelGroup: 'R' });
+		await notebooksPositron.kernel.openNotebookConsole();
+		await sessions.expectSessionCountToBe(sessionCountBefore + 1, 'all');
+		await sessions.expectStatusToBe('Untitled-1.ipynb', 'idle');
+
+		// closing the notebook removes its console session while the standalone sessions remain (#12940)
+		await app.workbench.editors.clickTab('Untitled-1.ipynb');
+		await runCommand('workbench.action.revertAndCloseActiveEditor');
+		await sessions.expectSessionCountToBe(sessionCountBefore);
+	});
+
+	test('Python - console accepts input after notebook cell execution', { tag: [tags.CONSOLE] }, async function ({ app, sessions }) {
+		const { notebooksPositron, console } = app.workbench;
+		await sessions.start(['python']);
+		await notebooksPositron.newNotebook();
+		await notebooksPositron.kernel.select('Python');
+		await notebooksPositron.addCodeToCell(0, 'import time; time.sleep(10); print("done")', { run: false });
+		await notebooksPositron.runCellButtonAtIndex(0).click();
+
+		// verify the console accepts typed input
+		await console.focus();
+		await console.waitForReady('>>>');
+		await console.typeToConsole('x = 42', true);
+		await console.waitForReady('>>>');
+		await console.typeToConsole('print(f"value_is_{x}")', true);
+		await console.waitForConsoleContents('value_is_42');
+
+		// the notebook cell should still be running; if "done" appeared the test FAILS
+		// idea here is to guarantee that user will always get console ready INSTANTLY, not eventually...
+		await expect(notebooksPositron.cellOutput(0)).not.toContainText('done');
+	});
+
+	test('opening .qmd alongside notebook does not produce duplicate kernel selectors', async function ({ app, openFile, sessions }) {
+		const { notebooksPositron } = app.workbench;
+
+		await sessions.deleteDisconnectedSessions();
+		await sessions.start(['r']);
+
+		// open .qmd and open notebook
+		await openFile(path.join('workspaces', 'quarto_basic', 'quarto_basic.qmd'));
+		await notebooksPositron.newNotebook();
+
+		// ensure only 1 kernel selector dropdown exists for the notebook editor
+		const kernelButtons = app.code.driver.currentPage
+			.locator('.editor-group-container.active')
+			.getByRole('button', { name: 'Kernel Actions' });
+		await expect(kernelButtons).toHaveCount(1);
+	});
+
+});
+
+const rDataFrame = `data.frame(
+name = c("Alice", "Bob", "Charlie", "Diana"),
+age = c(25, 30, 35, 40),
+city = c("Austin", "Denver", "Chicago", "Seattle"),
+score = c(88, 92, 85, 95)`;

@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Debugging R"
+---
+
+Set a breakpoint by selecting the gutter beside an executable R line, then start debugging with the R debug action or an applicable Run and Debug configuration. Execution pauses at breakpoints so you can inspect variables, the call stack, and expressions.
+
+Use Step Over to run the current line, Step Into to enter a called function, Step Out to finish the current function, and Continue to reach the next breakpoint. Stop ends the debug session.
+
+Code evaluated dynamically may not map cleanly to source breakpoints. Save the file and verify that the active R session is using the expected project and function definition.

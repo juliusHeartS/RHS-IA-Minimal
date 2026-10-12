@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Python Installations"
+---
+
+RHS-IA discovers system Python installations and common virtual and environment-manager environments. The selected executable determines the runtime and package set for Python files.
+
+Create environments with your preferred Python tool, then use the interpreter selector to choose the resulting executable. On macOS and Linux this is commonly under `bin/python`; on Windows it is commonly under `Scripts` or the environment root.
+
+Avoid modifying the operating system's managed Python. A project-local environment reduces dependency conflicts and makes the selected interpreter easier to identify.

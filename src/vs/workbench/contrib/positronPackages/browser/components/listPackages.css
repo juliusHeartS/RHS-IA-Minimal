@@ -1,0 +1,363 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+#packages-progress > .monaco-progress-container {
+	top: 0px;
+}
+
+.positron-packages-list {
+	height: 100%;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.packages-filter-container {
+	flex: 0 0 auto;
+	padding: 4px 8px;
+}
+
+.packages-list-container {
+	flex: 1 1 auto;
+	min-height: 0;
+	position: relative;
+	left: 0.5px;
+}
+
+.packages-list-header {
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid var(--vscode-positronPackages-border);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.positron-packages-list .action-bar-button.disabled {
+	cursor: not-allowed;
+}
+
+.positron-packages-list .action-bar-button.disabled .action-bar-button-label {
+	color: var(--vscode-positronActionBar-disabledForeground);
+}
+
+.packages-list-item {
+	height: 100%;
+	padding-left: 12px;
+	padding-right: 12px;
+	box-sizing: border-box;
+	display: flex;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.packages-list-item.item-size-row {
+	align-items: center;
+}
+
+.packages-list-item.item-size-card {
+	align-items: flex-start;
+	/* Align with the search input's outer-left edge (filter-container 8px + input border 1px), plus the 0.5px nudge from .packages-list-container. */
+	padding-left: 10px;
+	padding-right: 11px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.packages-list-item-content {
+	flex: 1 1 auto;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.packages-list-item.item-size-row .packages-list-item-content {
+	flex-direction: row;
+	align-items: baseline;
+	overflow: hidden;
+}
+
+.packages-list-item-header {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+	overflow: hidden;
+	min-width: 0;
+}
+
+.packages-list-item.item-size-row .packages-list-item-header {
+	flex: 1 1 auto;
+}
+
+/*
+ * In card mode, drop the dot ~4px below the top edge so it reads as belonging
+ * to the whole card (title + description), not the title alone.
+ */
+.packages-list-item.item-size-card .packages-list-item-attached {
+	margin-top: 4px;
+}
+
+/*
+ * 7x7 status dot inside a 16x16 box so the visual aligns with surrounding
+ * controls. Detached is a 1px ring; attached fills with green. The
+ * indicator is a non-interactive read-only status (no hover, no pointer).
+ */
+.packages-list-item-attached {
+	flex: 0 0 auto;
+	width: 16px;
+	height: 16px;
+	margin-right: 2px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.packages-list-item-attached::before {
+	content: '';
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	box-sizing: border-box;
+	border: 1px solid var(--vscode-descriptionForeground);
+	background: transparent;
+}
+
+.packages-list-item-attached.attached::before {
+	background: var(--vscode-charts-green);
+	border-color: var(--vscode-charts-green);
+}
+
+.packages-list-item-name {
+	flex: 0 1 auto;
+	min-width: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.packages-list-item.item-size-card .packages-list-item-name {
+	font-weight: bold;
+}
+
+/*
+ * The version never shrinks: a truncated version number ("1.0...") is misinformation, while a
+ * truncated name is still identifiable, so the name absorbs all of the ellipsis. Without this the
+ * two shrink at equal priority and a long package name truncates the version even in a wide pane.
+ */
+.packages-list-item-version {
+	flex: 0 0 auto;
+	opacity: 0.7;
+	white-space: nowrap;
+	font-size: 0.9em;
+	margin-left: 0.5em;
+}
+
+.packages-list-item-update {
+	flex: 0 0 auto;
+	margin-left: 0.5em;
+	color: var(--vscode-notificationsInfoIcon-foreground);
+	font-size: 0.9em;
+}
+
+/*
+ * The badge is a flex item in the baseline-aligned header, so its own baseline
+ * decides where the score lands relative to the name and version. Centering
+ * inside the badge leaves no baseline-sharing group, and the badge then reports
+ * the shield's box bottom instead -- which sits below the score's baseline, so
+ * the whole badge rides a couple of pixels high. Aligning the shield and the
+ * score to each other hands the header a real text baseline and the score lines
+ * up with the version beside it.
+ */
+.packages-list-item-vulnerable {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: baseline;
+	gap: 2px;
+	margin-left: 0.5em;
+	font-size: 0.9em;
+}
+
+/*
+ * Same specificity problem as the action-button rule below: the workbench-global
+ * `.monaco-workbench .codicon[class*='codicon-']` forces codicons to 16px at
+ * (0,3,0), so the two extra ancestors here are what let this rule set a size
+ * without !important.
+ *
+ * Codicon glyphs have no descent, so on the shared baseline the shield's ink runs
+ * from the baseline up to 0.907em and reads high beside the shorter digits. The
+ * 1.5px drop centers it on them, which also lines it up with the action-button
+ * icons to the right. `position: relative` moves paint only, so the score keeps
+ * owning the badge's baseline.
+ */
+.monaco-workbench .packages-list-item .packages-list-item-vulnerable .codicon-shield {
+	position: relative;
+	top: 1.5px;
+	font-size: 12px;
+}
+
+.packages-list-item-vulnerable-score {
+	font-variant-numeric: tabular-nums;
+}
+
+/* NVD severity bands, on the shared palette in packageVulnerabilities.css.
+ * Critical and High share the error color; the shield icon plus the numeric
+ * score carries the distinction. Unscored advisories (common for CRAN) still
+ * warrant attention, so they use the warning color. */
+.packages-list-item-vulnerable.severity-critical,
+.packages-list-item-vulnerable.severity-high {
+	color: var(--_positron-package-severity-error);
+}
+
+.packages-list-item-vulnerable.severity-medium,
+.packages-list-item-vulnerable.severity-unscored {
+	color: var(--_positron-package-severity-warning);
+}
+
+.packages-list-item-vulnerable.severity-low {
+	color: var(--_positron-package-severity-muted);
+}
+
+.packages-list-item-description-row {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	min-width: 0;
+	overflow: hidden;
+	gap: 0.5em;
+}
+
+.packages-list-item-description {
+	flex: 1 1 auto;
+	color: var(--vscode-descriptionForeground);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	min-width: 0;
+}
+
+.packages-list-item-update-button.positron-button {
+	flex: 0 0 auto;
+	padding: 1px 8px;
+	font-size: 90%;
+	line-height: 1.4;
+	border: 1px solid var(--vscode-button-border, transparent);
+	border-radius: 3px;
+	background-color: var(--vscode-button-background);
+	color: var(--vscode-button-foreground);
+}
+
+.packages-list-item-update-button.positron-button:hover:not(.disabled) {
+	background-color: var(--vscode-button-hoverBackground);
+}
+
+/*
+ * The help and external-link buttons are the same icon button. They share
+ * .packages-list-item-action-button for the box, icon size, and hover so they
+ * stay identical; only their margins (which way the group right-aligns) differ.
+ */
+.packages-list-item .packages-list-item-action-button {
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 27px;
+	height: 17px;
+	padding: 0;
+	background: transparent;
+	border: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
+	border-radius: 3px;
+	color: inherit;
+	opacity: 0.7;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/*
+ * The workbench-global `.monaco-workbench .codicon[class*='codicon-']` forces
+ * codicons to 16px at the same specificity (0,3,0) as a plain three-class rule,
+ * so it would win on source order. Prefix with .monaco-workbench to outrank it
+ * and render both icons at the button's intended size.
+ */
+.monaco-workbench .packages-list-item .packages-list-item-action-button .codicon {
+	font-size: 13px;
+}
+
+/*
+ * The link-external glyph reads heavier than the help book at the same size, so
+ * nudge it down for optical balance. Matching both classes on the element keeps
+ * this more specific (0,5,0) than the shared rule above, so it wins regardless
+ * of order.
+ */
+.monaco-workbench .packages-list-item .packages-list-item-action-button.packages-list-item-url .codicon {
+	font-size: 11px;
+}
+
+/*
+ * In card mode the buttons live inside the header row, which baseline-aligns the
+ * name/version text. Center the icon-only button on the text line instead of
+ * letting its baseline (its bottom edge) sit on the text baseline.
+ */
+.packages-list-item.item-size-card .packages-list-item-header .packages-list-item-action-button {
+	align-self: center;
+}
+
+.packages-list-item:hover .packages-list-item-action-button {
+	opacity: 0.85;
+}
+
+.packages-list-item .packages-list-item-action-button:hover {
+	background: var(--vscode-toolbar-hoverBackground);
+	opacity: 1;
+}
+
+/*
+ * Right-align the action group. The external-link button sits just before the
+ * help button and owns the margin-left:auto that pushes the group to the right
+ * edge; the help button then only needs a small gap. When no URL is present the
+ * help button keeps its own margin-left:auto and right-aligns on its own.
+ */
+.packages-list-item .packages-list-item-help,
+.packages-list-item .packages-list-item-url {
+	margin-left: auto;
+}
+
+.packages-list-item .packages-list-item-url + .packages-list-item-help {
+	margin-left: 4px;
+}
+
+
+/*
+ * Transient flash applied to packages just installed or updated. The row fades
+ * from a highlight tint back to transparent so the eye lands on the change; the
+ * class is removed by a timer once the animation has run. prefers-reduced-motion
+ * holds a steady tint for the same duration instead of animating.
+ */
+.packages-list-item.recently-changed {
+	animation: packages-recently-changed 2s ease-out;
+}
+
+@keyframes packages-recently-changed {
+	from {
+		background-color: var(--vscode-positronPackages-recentlyChangedBackground);
+	}
+	to {
+		background-color: transparent;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.packages-list-item.recently-changed {
+		animation: none;
+		background-color: var(--vscode-positronPackages-recentlyChangedBackground);
+	}
+}
+
+.positron-packages-list .positron-list-empty {
+	padding: 5px 8px;
+	cursor: default;
+	justify-content: flex-start;
+	align-items: flex-start;
+}

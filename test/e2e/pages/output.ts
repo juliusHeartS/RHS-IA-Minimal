@@ -1,0 +1,145 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+
+import * as os from 'os';
+import { expect } from '@playwright/test';
+import { Code } from '../infra/code';
+import { QuickAccess } from './quickaccess';
+import { QuickInput } from './quickInput';
+
+const OUTPUT_LINE = '.view-line';
+const OUTPUT_PANE = 'div[id="workbench.panel.output"]';
+
+/*
+ *  Reuseable Positron output functionality for tests to leverage.
+ */
+export class Output {
+
+	constructor(private code: Code, private quickaccess: QuickAccess, private quickinput: QuickInput) { }
+
+	async openOutputPane(outputPaneNameContains: string) {
+		await this.quickaccess.runCommand('workbench.action.showOutputChannels', { keepOpen: true });
+
+		await this.quickinput.waitForQuickInputOpened();
+		await this.quickinput.type(outputPaneNameContains);
+
+		await this.quickinput.selectQuickInputElementContaining(outputPaneNameContains);
+		await this.quickinput.waitForQuickInputClosed();
+	}
+
+	async clickOutputTab() {
+		await this.code.driver.currentPage.getByRole('tab', { name: 'Output' }).locator('a').click();
+	}
+
+	async waitForOutContaining(fragment: string) {
+		const outputPane = this.code.driver.currentPage.locator(OUTPUT_PANE);
+		const outputLine = outputPane.locator(OUTPUT_LINE);
+		await outputLine.getByText(fragment).first().isVisible();
+	}
+
+	/**
+	 * Verify the output pane renders a line containing the given text. Unlike
+	 * `waitForOutContaining`, this retries until the text appears (or the timeout elapses), so it
+	 * is safe to call on output that is still streaming in.
+	 */
+	async expectOutputToContain(fragment: string, timeout = 15000): Promise<void> {
+		const outputLine = this.code.driver.currentPage.locator(OUTPUT_PANE).locator(OUTPUT_LINE);
+		await expect(outputLine.getByText(fragment).first()).toBeVisible({ timeout });
+	}
+
+	/**
+	 * Scroll to the top of the output pane
+	 */
+	async scrollToTop(): Promise<void> {
+		// First, ensure the output pane is focused
+		await this.quickaccess.runCommand('workbench.panel.output.focus');
+
+		// Use platform-specific keyboard shortcuts to scroll to top
+		const platform = os.platform();
+		if (platform === 'darwin') {
+			// On macOS, use Cmd+ArrowUp
+			await this.code.driver.currentPage.keyboard.press('Meta+ArrowUp');
+		} else {
+			// On Windows/Linux, use Ctrl+Home
+			await this.code.driver.currentPage.keyboard.press('Control+Home');
+		}
+	}
+
+	/**
+	 * Copy selected text from the output pane and return it
+	 */
+	async copySelectedText(): Promise<string> {
+		const isMac = os.platform() === 'darwin';
+		const modifier = isMac ? 'Meta' : 'Control';
+
+		await this.code.driver.currentPage.keyboard.press(`${modifier}+C`);
+
+		// Wait a bit for the copy operation to complete
+		await this.code.driver.currentPage.waitForTimeout(100);
+
+		// Grant permissions to read from clipboard
+		await this.code.driver.browserContext.grantPermissions(['clipboard-read']);
+
+		// Read the clipboard content
+		const clipboardText = await this.code.driver.currentPage.evaluate(async () => {
+			try {
+				return await navigator.clipboard.readText();
+			} catch (error) {
+				console.error('Failed to read clipboard text:', error);
+				return '';
+			}
+		});
+
+		return clipboardText;
+	}
+
+	/**
+	 * Select the first N lines of output text
+	 */
+	async selectFirstNLines(lineCount: number): Promise<void> {
+		const outputPane = this.code.driver.currentPage.locator(OUTPUT_PANE);
+		const outputLines = outputPane.locator('.view-line');
+		const totalLines = await outputLines.count();
+
+		if (totalLines === 0) {
+			throw new Error('No output lines found in the output pane');
+		}
+
+		// Calculate how many lines to select (or all lines if less than N)
+		const linesToSelect = Math.min(lineCount, totalLines);
+		const endLineIndex = linesToSelect - 1;
+
+		// Click on the first line and then shift+click on the last line of selection
+		const startLine = outputLines.nth(0);
+		const endLine = outputLines.nth(endLineIndex);
+
+		await startLine.click();
+		await endLine.click({ modifiers: ['Shift'] });
+	}
+
+	/**
+	 * Returns the names of the output channels whose label contains the given text, by opening the
+	 * channel picker, typing the filter, and reading the visible rows. Closes the picker before
+	 * returning so the workbench is left as it was found.
+	 *
+	 * Reads only the row's label (`.monaco-icon-label .label-name`), not the whole row's text: the
+	 * output channel picker can render a description or a "recently used" separator alongside a row,
+	 * and `allTextContents()` on the whole row would fold that extra text into the label, breaking
+	 * an exact-match comparison against the channel name.
+	 */
+	async getChannelNamesContaining(filter: string): Promise<string[]> {
+		await this.quickaccess.runCommand('workbench.action.showOutputChannels', { keepOpen: true });
+		await this.quickinput.waitForQuickInputOpened();
+		await this.quickinput.type(filter);
+
+		const labels = this.code.driver.currentPage.locator(QuickInput.QUICK_INPUT_ENTRY_LABEL);
+		await labels.first().waitFor({ state: 'attached', timeout: 2000 }).catch(() => { /* no matches is a valid result */ });
+		const names = await labels.allTextContents();
+
+		await this.quickinput.closeQuickInput();
+		return names.filter(name => name.includes(filter));
+	}
+}

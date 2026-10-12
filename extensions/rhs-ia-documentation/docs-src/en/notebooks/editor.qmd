@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Notebook Editor"
+---
+
+The RHS-IA notebook editor integrates notebook cells with language runtimes, Variables, Plots, and Data Explorer. Use cell toolbars to run, stop, move, add, or delete cells and the notebook toolbar for document-wide actions.
+
+Choose the kernel before execution. Code-cell status shows whether a cell is queued, running, completed, or failed. Interrupt stops current execution; restart clears kernel state.
+
+Use Markdown cells for explanation and keep code cells focused so the notebook remains understandable when run from top to bottom.

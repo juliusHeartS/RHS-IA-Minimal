@@ -1,0 +1,209 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { join } from 'path';
+import * as fs from 'fs';
+import { test, tags, expect } from './_test.setup';
+
+test.use({
+	suiteId: __filename
+});
+
+test.describe('Quarto - Inline Output: Popout', {
+	tag: [tags.WEB, tags.WIN, tags.QUARTO]
+}, () => {
+
+	// Saved under a timestamped name, so teardown cannot know it up front.
+	const createdFiles: string[] = [];
+
+	test.afterEach(async function ({ hotKeys }) {
+		await hotKeys.closeAllEditors();
+	});
+
+	test.afterAll(async function ({ cleanup }) {
+		await cleanup.restoreFiles([
+			join('workspaces', 'quarto_inline_output', 'simple_plot.qmd'),
+			join('workspaces', 'quarto_inline_output', 'text_output.qmd'),
+		]);
+		await cleanup.removeTestFiles(createdFiles);
+	});
+
+	test('Python - Verify save button saves plot to file', async function ({ python, app, openFile, page }) {
+		const { editors, inlineQuarto, quickInput, toasts } = app.workbench;
+
+		// Set up a unique file name for the saved plot to avoid conflicts
+		const savedPlotName = `test-plot-${Date.now()}.png`;
+		createdFiles.push(savedPlotName);
+		const savedPlotPath = join(app.workspacePathOrFolder, savedPlotName);
+
+		// Open a Quarto file and wait for the kernel to be ready
+		await openFile(join('workspaces', 'quarto_inline_output', 'simple_plot.qmd'));
+		await editors.waitForActiveTab('simple_plot.qmd');
+		await inlineQuarto.expectKernelStatusVisible();
+
+		// Run the cell and wait for output
+		await editors.clickTab('simple_plot.qmd');
+		await inlineQuarto.runCellAndWaitForOutput({ cellLine: 12, outputLine: 20 });
+
+		// Save the plot — hover directly on the (CSS-hidden) save button with
+		// force:true so the mouse lands at the button's position, triggering the
+		// :hover that reveals it; the subsequent click fires from the same spot.
+		await inlineQuarto.gotoLine(19);
+		await inlineQuarto.saveButton.hover({ force: true });
+		await inlineQuarto.saveButton.click();
+		await quickInput.waitForQuickInputOpened();
+		await quickInput.type(savedPlotPath);
+		await quickInput.clickOkButton();
+		await toasts.expectToastWithTitle('.png saved');
+
+		// Verify file was created
+		expect(fs.existsSync(savedPlotPath)).toBe(true);
+		const stats = fs.statSync(savedPlotPath);
+		expect(stats.size).toBeGreaterThan(100);
+
+		// Verify PNG magic bytes
+		const fileBuffer = fs.readFileSync(savedPlotPath);
+		expect(fileBuffer[0]).toBe(137);
+		expect(fileBuffer[1]).toBe(80);
+	});
+
+	test('Python - Verify popout button appears for plot output and opens image in new tab', async function ({ python, app, openFile }) {
+		const { editors, inlineQuarto } = app.workbench;
+
+		// Open a Quarto file and wait for the kernel to be ready
+		await openFile(join('workspaces', 'quarto_inline_output', 'simple_plot.qmd'));
+		await editors.waitForActiveTab('simple_plot.qmd');
+		await inlineQuarto.expectKernelStatusVisible();
+
+		// Run the cell and wait for output
+		await editors.clickTab('simple_plot.qmd');
+		await inlineQuarto.runCellAndWaitForOutput({ cellLine: 12, outputLine: 20 });
+		await inlineQuarto.expectOutputVisible();
+
+		// Verify new tab opens with image when popout button is clicked
+		await inlineQuarto.gotoLine(19);
+		await inlineQuarto.popoutOutput();
+		await editors.verifyTab('simple_plot.qmd', { isVisible: true, isSelected: false });
+		// A plot editor tab backed by the image data, not a temp file on disk. The
+		// label is the 1-based cell name shared with the notebook editor.
+		await editors.verifyTab('simple_plot_cell1', { isVisible: true, isSelected: true });
+	});
+
+	test('Python - Verify popout command opens text output in new editor', async function ({ python, app, openFile }) {
+		const { editors, inlineQuarto } = app.workbench;
+		const tab1 = 'text_output.qmd';
+		const tab2 = 'Hello World from Quarto inline output te';
+
+		// Open a Quarto file and wait for the kernel to be ready
+		await openFile(join('workspaces', 'quarto_inline_output', 'text_output.qmd'));
+		await editors.waitForActiveTab(tab1);
+		await inlineQuarto.expectKernelStatusVisible();
+
+		// Run the cell and wait for output
+		await editors.clickTab(tab1);
+		await inlineQuarto.runCellAndWaitForOutput({ cellLine: 13, outputLine: 15 });
+
+		// Verify new tab opens with text output when popout command is run
+		await inlineQuarto.gotoLine(13);
+		await inlineQuarto.runPopoutCommand();
+		await editors.verifyTab(tab1, { isVisible: true, isSelected: false });
+		await editors.verifyTab(tab2, { isVisible: true, isSelected: true });
+	});
+
+	test('Python - Verify popout button is hidden for error-only output', async function ({ app, openFile }) {
+		const { editors, inlineQuarto } = app.workbench;
+
+		// Open a Quarto file and wait for the kernel to be ready
+		await openFile(join('workspaces', 'quarto_inline_output', 'r_errors.qmd'));
+		await editors.waitForActiveTab('r_errors.qmd');
+		await inlineQuarto.expectKernelStatusVisible();
+
+		// Run the cell and wait for output
+		await editors.clickTab('r_errors.qmd');
+		await inlineQuarto.runCellAndWaitForOutput({ cellLine: 8, outputLine: 10 });
+
+		// Verify error is visible and popout button is hidden
+		await inlineQuarto.expectErrorCount(1);
+		await expect(inlineQuarto.popoutButton).not.toBeVisible({ timeout: 5000 });
+	});
+
+	test('Python - Verify popout button opens interactive HTML in viewer panel',
+		{
+			annotation: [{ type: 'issue', description: 'https://github.com/posit-dev/positron/issues/12373' }]
+		}, async function ({ python, app, openFile }) {
+			const { editors, inlineQuarto, viewer, toasts } = app.workbench;
+
+			// Open a Quarto file and wait for the kernel to be ready
+			await openFile(join('workspaces', 'quarto_inline_output', 'interactive_plot.qmd'));
+			await editors.waitForActiveTab('interactive_plot.qmd');
+			await inlineQuarto.expectKernelStatusVisible();
+
+			// Run the cell and wait for output
+			await editors.clickTab('interactive_plot.qmd');
+			await inlineQuarto.runCellAndWaitForOutput({ cellLine: 8, outputLine: 10 });
+			await inlineQuarto.expectOutputVisible();
+
+			// Run the popout command and verify viewer panel opens with interactive HTML
+			await inlineQuarto.gotoLine(8);
+			await inlineQuarto.runPopoutCommand();
+			await viewer.expectViewerPanelVisible();
+			await toasts.expectToastWithTitleNotToAppear('Failed to open');
+		});
+
+	test('Python - Verify Open Output in New Tab command works', async function ({ python, app, openFile }) {
+		const { editors, inlineQuarto } = app.workbench;
+
+		// Open a Quarto file and wait for the kernel to be ready
+		await openFile(join('workspaces', 'quarto_inline_output', 'simple_plot.qmd'));
+		await editors.waitForActiveTab('simple_plot.qmd');
+		await inlineQuarto.expectKernelStatusVisible();
+
+		// Run the cell and wait for output
+		await editors.clickTab('simple_plot.qmd');
+		await inlineQuarto.runCellAndWaitForOutput({ cellLine: 12, outputLine: 20 });
+		await inlineQuarto.expectOutputVisible();
+
+		// Run the popout command and verify new tab opens with image
+		await inlineQuarto.gotoLine(19);
+		await inlineQuarto.runPopoutCommand();
+		await editors.verifyTab('simple_plot.qmd', { isVisible: true, isSelected: false });
+		// A plot editor tab backed by the image data, not a temp file on disk. The
+		// label is the 1-based cell name shared with the notebook editor.
+		await editors.verifyTab('simple_plot_cell1', { isVisible: true, isSelected: true });
+	});
+
+	test('Python - Verify HTML popout displays DataFrame in viewer without errors', async function ({ python, app, openFile }) {
+		const { editors, inlineQuarto, viewer, toasts } = app.workbench;
+
+		// Open a Quarto file and wait for the kernel to be ready
+		await openFile(join('workspaces', 'quarto_inline_output', 'py_data_frame.qmd'));
+		await editors.waitForActiveTab('py_data_frame.qmd');
+		await inlineQuarto.expectKernelStatusVisible();
+
+		// Run the cell and wait for output
+		await editors.clickTab('py_data_frame.qmd');
+		await inlineQuarto.runCellAndWaitForOutput({ cellLine: 8, outputLine: 11 });
+		await inlineQuarto.expectOutputVisible();
+
+		// Run the popout command and verify viewer panel opens with DataFrame HTML
+		await inlineQuarto.popoutOutput();
+		await viewer.expectViewerPanelVisible();
+
+		// Verify DataFrame content in viewer
+		const previewIframe = viewer.getViewerFrame().frameLocator('#preview-iframe');
+		await expect(async () => {
+			const body = previewIframe.locator('body');
+			await expect(body).toBeAttached({ timeout: 2000 });
+			const text = await body.textContent({ timeout: 2000 });
+			expect(text).toContain('Alice');
+		}).toPass({ timeout: 30000 });
+
+		const body = previewIframe.locator('body');
+		const bodyText = await body.textContent();
+		expect(bodyText).not.toContain('Cannot GET');
+
+		await toasts.expectToastWithTitleNotToAppear('Failed to open');
+	});
+});

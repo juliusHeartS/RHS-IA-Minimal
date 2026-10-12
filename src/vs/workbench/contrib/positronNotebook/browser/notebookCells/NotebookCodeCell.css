@@ -1,0 +1,120 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-notebook-code-cell-contents {
+	--_output-container-offset: 0.5rem;
+
+	.positron-notebook-editor-section {
+		position: relative;
+	}
+
+	/* Wrapper for outputs section - provides positioning context for the left action menu */
+	.positron-notebook-outputs-section {
+		position: relative;
+
+		/* Show scrollbar when hovering anywhere in the output section (including the
+		 * action bar), not just the scrollable container itself. */
+		&:hover .positron-notebook-scrollable-fade {
+			--_positron-notebook-scrollbar-thumb-bg: var(--vscode-scrollbarSlider-background);
+			transition: --_positron-notebook-scrollbar-thumb-bg 100ms linear;
+		}
+
+		&.no-outputs {
+			/* Dont show empty outputs at all */
+			display: none;
+		}
+
+		&.single-data-explorer .positron-notebook-code-cell-outputs-inner:has(.inline-data-explorer-container) {
+			padding: 8px 0 0 0;
+			overflow: hidden; /* Data explorer handles its own scrolling */
+		}
+
+		&.single-data-explorer .inline-data-explorer-container {
+			margin: 0 -1px -1px -1px; /* Overlap parent borders on sides/bottom */
+			border: 1px solid var(--vscode-panel-border);
+			border-top-left-radius: var(--vscode-positronNotebook-cell-radius);
+			border-top-right-radius: var(--vscode-positronNotebook-cell-radius);
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+	}
+
+	.positron-notebook-cell-outputs {
+		overflow: hidden;
+		position: relative;
+
+		&:focus {
+			outline: none;
+			box-shadow: inset 0 0 0 1px var(--vscode-focusBorder);
+		}
+	}
+
+	.positron-notebook-code-cell-outputs-inner {
+		font-family: var(--vscode-positronNotebook-text-output-font-family, var(--monaco-monospace-font));
+		padding-inline: 0.5rem;
+		padding-block: 0.5rem;
+
+		&.output-scrolling {
+			max-height: var(--vscode-positronNotebook-output-max-height);
+			overflow-y: auto;
+		}
+
+		/*
+		When user has manually resized, the inline style controls height.
+		border-box ensures offsetHeight (used to seed the drag) and
+		style.height (written during drag) are in the same coordinate space,
+		preventing a visual jump at the start of a resize.
+		*/
+		&.height-override {
+			box-sizing: border-box;
+			overflow-y: auto;
+		}
+		overflow-x: auto;
+
+		& .notebook-error,
+		& .notebook-stderr {
+			color: var(--vscode-positronNotebook-errorForeground);
+		}
+
+		/*
+		Provide style hints for dataframes rendered as tables,
+		similar to styling in the console
+		*/
+		.dataframe {
+			font-size: 12px;
+			border: 1px solid var(--vscode-tab-border);
+			border-collapse: collapse;
+
+			td, th {
+				border: 1px solid var(--vscode-tab-border);
+				padding-top: 3px;
+				padding-bottom: 3px;
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+		}
+
+		/* Muted label shown when output is collapsed, clickable to expand. */
+		.collapsed-output-label {
+			font-family: system-ui, sans-serif !important;
+			font-size: 12px;
+			font-style: italic;
+			opacity: 0.75;
+			padding: 0;
+
+			&:hover {
+				opacity: 1;
+				color: var(--vscode-textLink-foreground);
+			}
+		}
+
+		/* Scale plot images to fit the output viewport without exceeding
+		 * their natural size or changing their aspect ratio. */
+		& > img {
+			max-width: 100%;
+			height: auto;
+		}
+	}
+}

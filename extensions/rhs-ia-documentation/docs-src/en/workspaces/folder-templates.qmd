@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Folder Templates"
+---
+
+Use **File > New Folder** to create a workspace from an available template. Templates can prepare a basic project, Python or R workspace, notebook, or other supported structure.
+
+Choose a template, destination, and folder name, then review the files and initialization actions before creation. Some templates can initialize source control or create language-specific files.
+
+Open the generated folder as a workspace and select its interpreter. A template is a starting point; inspect generated configuration before adding credentials or production data.

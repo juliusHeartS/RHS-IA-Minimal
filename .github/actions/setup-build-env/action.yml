@@ -1,0 +1,137 @@
+name: "Setup Build Environment"
+description: "Restores caches, installs dependencies, compiles Positron, and sets up testing environment"
+
+inputs:
+  distro:
+    description: "Distribution identifier (ubuntu, rocky, suse, windows)"
+    required: false
+    default: 'ubuntu'
+  skip-cache:
+    description: "Skip restoring caches (use when testing a specific commit)"
+    required: false
+    default: 'false'
+  install-playwright:
+    description: "Whether to install Playwright browsers (default: true)"
+    required: false
+    default: 'true'
+  github-token:
+    description: "GitHub token for private package access"
+    required: true
+
+outputs:
+  cache-npm-core-hit:
+    description: "Whether npm core cache was restored"
+    value: ${{ steps.restore-caches.outputs.cache-npm-core-hit }}
+  cache-npm-extensions-volatile-hit:
+    description: "Whether npm volatile extensions cache (python, assistant, r) was restored"
+    value: ${{ steps.restore-caches.outputs.cache-npm-extensions-volatile-hit }}
+  cache-npm-extensions-stable-hit:
+    description: "Whether npm stable extensions cache (all except python, assistant, r) was restored"
+    value: ${{ steps.restore-caches.outputs.cache-npm-extensions-stable-hit }}
+  cache-builtins-hit:
+    description: "Whether builtins cache was restored"
+    value: ${{ steps.restore-caches.outputs.cache-builtins-hit }}
+  cache-playwright-hit:
+    description: "Whether Playwright browsers cache was restored"
+    value: ${{ steps.restore-caches.outputs.cache-playwright-hit }}
+  extensions-volatile-hash:
+    description: "Generated hash for volatile extensions (python, assistant, r)"
+    value: ${{ steps.restore-caches.outputs.extensions-volatile-hash }}
+  extensions-stable-hash:
+    description: "Generated hash for stable extensions (all except python, assistant, r)"
+    value: ${{ steps.restore-caches.outputs.extensions-stable-hash }}
+  package-locks-hash:
+    description: "Computed hash of all package-lock.json files"
+    value: ${{ steps.restore-caches.outputs.package-locks-hash }}
+  node-version:
+    description: "Detected Node.js version"
+    value: ${{ steps.restore-caches.outputs.node-version }}
+  playwright-version:
+    description: "Detected Playwright version from package.json"
+    value: ${{ steps.restore-caches.outputs.playwright-version }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: 📦 Restore caches
+      if: ${{ inputs.skip-cache != 'true' }}
+      id: restore-caches
+      uses: ./.github/actions/restore-build-caches
+      with:
+        distro: ${{ inputs.distro }}
+
+    - name: Install node dependencies
+      if: steps.restore-caches.outputs.cache-npm-core-hit != 'true' ||
+          steps.restore-caches.outputs.cache-npm-extensions-volatile-hit != 'true' ||
+          steps.restore-caches.outputs.cache-npm-extensions-stable-hit != 'true'
+      uses: nick-fields/retry@v4
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+        ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+        POSITRON_GITHUB_RO_PAT: ${{ inputs.github-token }}
+        POSITRON_PARALLEL_INSTALL: '0'
+        POSITRON_NPM_CONCURRENCY: '10'
+        NPM_CONFIG_AUDIT: 'false'
+        NPM_CONFIG_FUND: 'false'
+        NPM_CONFIG_UPDATE_NOTIFIER: 'false'
+        DOCKER_CONFIG: /tmp/.docker
+        # Extension filter logic:
+        #   volatile=hit, stable=miss  → filter=stable (install stable only)
+        #   volatile=miss, stable=hit  → filter=volatile (install volatile only)
+        #   both hit OR both miss      → filter='' (install all or skip via parent condition)
+        POSITRON_EXTENSIONS_FILTER: ${{ (steps.restore-caches.outputs.cache-npm-extensions-volatile-hit == 'true' && steps.restore-caches.outputs.cache-npm-extensions-stable-hit != 'true' && 'stable') || (steps.restore-caches.outputs.cache-npm-extensions-volatile-hit != 'true' && steps.restore-caches.outputs.cache-npm-extensions-stable-hit == 'true' && 'volatile') || '' }}
+      with:
+        timeout_minutes: 30
+        max_attempts: 3
+        retry_wait_seconds: 10
+        retry_on: error
+        shell: bash
+        command: |
+          set -e
+          echo "::group::📦 Install node dependencies"
+          if [ -n "$POSITRON_EXTENSIONS_FILTER" ]; then
+            echo "📦 Installing with filter: $POSITRON_EXTENSIONS_FILTER"
+          else
+            echo "📦 Installing all dependencies"
+          fi
+          bash scripts/install-npm-parallel.sh
+          echo "::endgroup::"
+
+    - name: Install E2E test dependencies
+      shell: bash
+      run: |
+        echo "::group::🎭 Install E2E test dependencies"
+        npm --prefix test/e2e ci --prefer-offline --no-audit --no-fund
+        echo "::endgroup::"
+
+    - name: Compile Positron and Download Electron
+      shell: bash
+      run: |
+        echo "::group::⚡ Compile Positron and Download Electron"
+        npm exec -- npm-run-all --max-old-space-size=8192 -p compile "electron x64"
+        echo "::endgroup::"
+
+    - name: Download binaries (Ark, Kallichore)
+      uses: ./.github/actions/download-binaries
+      with:
+        # Download binaries if either volatile cache hit (since ark/kallichore are in positron-r/positron-supervisor)
+        # We need to download binaries if ANY extension cache was hit and we didn't do fresh install
+        cache-hit: ${{ steps.restore-caches.outputs.cache-npm-extensions-volatile-hit == 'true' ||
+                       steps.restore-caches.outputs.cache-npm-extensions-stable-hit == 'true' }}
+
+    - name: Install Playwright browsers
+      if: ${{ inputs.install-playwright == 'true' }}
+      shell: bash
+      run: |
+        echo "::group::🎭 Install Playwright browsers"
+        # Don't use --with-deps (uses apt-get which doesn't exist on RHEL/SUSE)
+        # System dependencies should be pre-installed in the Docker container
+        npx playwright install
+        echo "::endgroup::"
+
+    - name: Prelaunch
+      shell: bash
+      run: |
+        echo "::group::🚀 Download built-in extensions"
+        npm run prelaunch
+        echo "::endgroup::"

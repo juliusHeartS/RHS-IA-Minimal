@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "**/__pycache__/**": true,
+        "**/**/*.pyc": true
+    },
+    // --- Start Positron ---
+    // We use Ruff, which is already configured in the positron-python workspace.
+    // "python.formatting.provider": "black"
+    // --- End Positron ---
+}

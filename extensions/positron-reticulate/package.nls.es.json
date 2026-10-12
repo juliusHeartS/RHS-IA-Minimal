@@ -1,0 +1,9 @@
+{
+	"alwaysDescription": "Habilitar siempre las sesiones de consola de Reticulate",
+	"autoDescription": "Habilitar cuando el paquete de R Reticulate esté cargado en el espacio de trabajo actual",
+	"configurationTitle": "Reticula",
+	"description": "Proporciona compatibilidad con Reticulate en RHS-IA",
+	"displayName": "Reticulate para RHS-IA",
+	"enabledDescription": "Activa reticula las sesiones de consola",
+	"neverDescription": "Nunca utilice sesiones de consola reticuladas"
+}

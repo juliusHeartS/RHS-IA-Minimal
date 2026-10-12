@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Git"
+---
+
+RHS-IA incluye integración con Git para el control de código fuente. Instala Git en el equipo, abre una carpeta de repositorio y selecciona **Control de código fuente** en la barra de actividad.
+
+Los archivos modificados aparecen agrupados por repositorio. Selecciona un archivo para revisar su diferencia, prepara los cambios seleccionados con la acción del signo más, escribe un mensaje de confirmación y elige **Commit**. Las acciones para obtener, extraer, enviar, crear ramas, clonar e inicializar repositorios están disponibles en el menú de **Control de código fuente** y en la **Paleta de comandos**.
+
+RHS-IA usa la identidad y las credenciales de Git configuradas en tu sistema. Confirma la rama activa y los archivos preparados antes de crear la confirmación.

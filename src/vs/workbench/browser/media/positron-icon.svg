@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 175 175" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-1653,-4)">
+        <g id="positron-icon" transform="matrix(1,0,0,1,0,4)">
+            <rect x="1653" y="0" width="175" height="175" style="fill:none;"/>
+            <g transform="matrix(2.734375,0,0,2.734375,1653,0)">
+                <path d="M64,20L64,44C64,55.038 55.038,64 44,64L20,64C8.962,64 0,55.038 0,44L0,20C0,8.962 8.962,0 20,0L44,0C55.038,0 64,8.962 64,20Z" style="fill:url(#_Linear1);"/>
+            </g>
+            <g transform="matrix(10.851163,0,0,11.928933,-13453.208803,-14799.101954)">
+                <g transform="matrix(12,0,0,12,1406.434904,1252.090696)">
+                </g>
+                <text x="1394.435px" y="1252.091px" style="font-family:'Helvetica-Bold', 'Helvetica';font-weight:700;font-size:12px;fill:white;">IA</text>
+            </g>
+        </g>
+    </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0,64,-64,0,32,0)"><stop offset="0" style="stop-color:rgb(195,237,236);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(44,56,105);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>

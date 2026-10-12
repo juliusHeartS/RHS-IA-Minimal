@@ -1,0 +1,79 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.data-connection-entry-row {
+	height: 100%;
+	width: 100%;
+	min-width: 0;
+	display: flex;
+	padding-right: 2px;
+	align-items: center;
+}
+
+/* Same column as the node rows' icons, so a connection's label and the labels beneath it align. */
+.data-connection-entry-icon {
+	flex: 0 0 auto;
+	width: 16px;
+	margin-left: 3px;
+	color: var(--vscode-icon-foreground);
+}
+
+/* Gap before the label sits on the label, matching the node rows -- see dataConnectionNodeRow.css. */
+.data-connection-entry-text {
+	flex: 1;
+	min-width: 0;
+	padding-left: 4px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	/* Optical nudge: glyph mass sits below the line-box center, so flex centering reads as too low. */
+	transform: translateY(-0.5px);
+}
+
+.data-connection-entry-connected {
+	flex: 0 0 auto;
+	width: 6px;
+	height: 6px;
+	margin: 0 5px;
+	border-radius: 50%;
+	background-color: var(--vscode-charts-green);
+}
+
+/*
+ * Badge on a connection detected from the machine's ODBC configuration rather than saved by the
+ * user. Quiet by design: it labels the row's provenance and must not compete with the connection
+ * name beside it, so it takes the badge tier's muted surface rather than an accent.
+ */
+.data-connection-entry-discovered {
+	flex: 0 0 auto;
+	margin: 0 5px;
+	padding: 0 5px;
+	border-radius: 3px;
+	font-size: 9px;
+	line-height: 14px;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+	white-space: nowrap;
+	color: var(--vscode-badge-foreground);
+	background-color: var(--vscode-badge-background);
+	opacity: 0.8;
+}
+
+.data-connection-entry-actions {
+	display: flex;
+	width: 20px;
+	height: 20px;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	color: inherit;
+	border-radius: 4px;
+}
+
+.data-connection-entry-actions:hover {
+	background-color: var(--vscode-toolbar-hoverBackground);
+}

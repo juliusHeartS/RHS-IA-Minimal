@@ -1,0 +1,504 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { VSBuffer } from '../../../../../base/common/buffer.js';
+import { Disposable } from '../../../../../base/common/lifecycle.js';
+import { IObservable, IObservableSignal, ISettableObservable } from '../../../../../base/common/observable.js';
+import { URI } from '../../../../../base/common/uri.js';
+import { ICodeEditor } from '../../../../../editor/browser/editorBrowser.js';
+import { IScopedContextKeyService } from '../../../../../platform/contextkey/common/contextkey.js';
+import { INotebookEditorOptions } from '../../../notebook/browser/notebookBrowser.js';
+import { NotebookPreloadOutputResults } from '../../../../services/positronWebviewPreloads/browser/positronWebviewPreloadService.js';
+import { CellSelectionType } from '../selectionMachine.js';
+import { IOutputItemDto } from '../../../notebook/common/notebookCommon.js';
+import { IPositronCellViewModel } from '../IPositronNotebookEditor.js';
+import { IPositronNotebookInstance } from '../IPositronNotebookInstance.js';
+import { ICellRevealOptions } from './PositronNotebookCell.js';
+
+export type ExecutionStatus = 'running' | 'pending' | 'idle';
+
+/**
+ * The outcome of a tag write. `'ok'` means the desired state holds, whether the
+ * write happened or was a no-op (blank input, removing an absent tag).
+ * `'duplicate'` means the tag already existed, and `'failed'` means the write
+ * could not be applied (no text model, or the cell left the notebook).
+ */
+export type TagWriteResult = 'ok' | 'duplicate' | 'failed';
+
+export enum CellSelectionStatus {
+	Unselected = 'unselected',
+	Selected = 'selected',
+	Editing = 'editing'
+}
+
+/**
+ * Wrapper class for notebook cell that exposes the properties that the UI needs to render the cell.
+ * This interface is extended to provide the specific properties for code and markdown cells.
+ */
+export interface IPositronNotebookCell extends Disposable, IPositronCellViewModel {
+
+	/**
+	 * The kind of cell
+	 */
+	readonly kind: CellKind;
+
+	/**
+	 * The current zero-based index of the cell in the notebook
+	 */
+	get index(): number;
+
+	/**
+	 * Cell specific uri for the cell within the notebook
+	 */
+	get uri(): URI;
+
+	/**
+	 * URI for the notebook that contains this cell
+	 */
+	get notebookUri(): URI;
+
+	/**
+	 * The notebook instance that owns this cell.
+	 */
+	readonly instance: IPositronNotebookInstance;
+
+	/**
+	 * Current execution status for this cell
+	 */
+	readonly executionStatus: IObservable<ExecutionStatus>;
+
+	/**
+	 * Current selection status for this cell
+	 */
+	readonly selectionStatus: ISettableObservable<CellSelectionStatus>;
+
+	/**
+	 * Whether this cell is the active cell.
+	 * The active cell is the single cell where keyboard actions take effect and where
+	 * UI elements like the run button and action bar are displayed.
+	 * A cell can be active while also being selected or editing.
+	 */
+	readonly isActive: ISettableObservable<boolean>;
+
+	/**
+	 * The content of the cell. This is the raw text of the cell.
+	 */
+	getContent(): string;
+
+	getLineCount(): number;
+
+	/**
+	 * The cell's current code editor widget.
+	 */
+	readonly currentEditor: ICodeEditor | undefined;
+
+	/**
+	 * The cell's code editor as an observable.
+	 */
+	readonly editor: IObservable<ICodeEditor | undefined>;
+
+	/**
+	 * Current cell outputs as an observable.
+	 * Returns undefined for markdown cells (which have no outputs).
+	 * Code cells override this to return their outputs observable.
+	 */
+	readonly outputs: IObservable<NotebookCellOutputs[]> | undefined;
+
+	/**
+	 * The cell's tags, normalized to a unique string list. Persisted to the
+	 * notebook document so they round-trip across save/reload.
+	 */
+	readonly tags: IObservable<string[]>;
+
+	/**
+	 * Append a trimmed tag. Blank or duplicate input is ignored. Returns the write
+	 * {@link TagWriteResult}.
+	 */
+	addTag(tag: string): TagWriteResult;
+
+	/**
+	 * Remove a tag (an absent tag is a no-op success). Returns the write
+	 * {@link TagWriteResult}.
+	 */
+	removeTag(tag: string): TagWriteResult;
+
+	/**
+	 * Rename a tag to a trimmed value. A missing or duplicate target is rejected
+	 * without writing; a blank value is a no-op. Returns the write
+	 * {@link TagWriteResult}.
+	 */
+	renameTag(oldTag: string, newTag: string): TagWriteResult;
+
+	/**
+	 * Whether an inline tag-add input should be shown for this cell. Lives on the
+	 * cell rather than the bar's React state so the "Add Tag" command can open the
+	 * input from outside React, and the code cell footer can stay expanded while it
+	 * is open.
+	 */
+	readonly isAddingTag: IObservable<boolean>;
+
+	/** Show the inline tag-add input (the "Add Tag" command entry point). */
+	beginAddTag(): void;
+
+	/** Hide the inline tag-add input (after the input commits or is cancelled). */
+	endAddTag(): void;
+
+	/**
+	 * Whether the cell's tag UI (tag pills or the inline add input) should
+	 * currently render: false when the owning notebook hides tags (a transient,
+	 * per-notebook toggle) or when there is neither a tag nor an in-progress
+	 * tag-add. Owned by the cell so the tag bar and the code cell footer share
+	 * one visibility predicate instead of each re-deriving it.
+	 */
+	readonly tagUIVisible: IObservable<boolean>;
+
+	/**
+	 * Delete this cell
+	 */
+	delete(): void;
+
+	/**
+	 * Run this cell
+	 */
+	run(): void;
+
+	/**
+	 * Insert a new code cell above this cell
+	 */
+	insertCodeCellAbove(): void;
+
+	/**
+	 * Insert a new code cell below this cell
+	 */
+	insertCodeCellBelow(): void;
+
+	/**
+	 * Insert a new markdown cell above this cell
+	 */
+	insertMarkdownCellAbove(): void;
+
+	/**
+	 * Insert a new markdown cell below this cell
+	 */
+	insertMarkdownCellBelow(): void;
+
+	/**
+	 * Insert a new raw cell above this cell
+	 */
+	insertRawCellAbove(): void;
+
+	/**
+	 * Insert a new raw cell below this cell
+	 */
+	insertRawCellBelow(): void;
+
+	/**
+	 * Type guard for checking if cell is a markdown cell
+	 */
+	isMarkdownCell(): this is IPositronNotebookMarkdownCell;
+
+	/**
+	 * Type guard for checking if cell is a code cell.
+	 * Note: Returns false for raw cells. Use isRawCell() to check for raw cells.
+	 */
+	isCodeCell(): this is IPositronNotebookCodeCell;
+
+	/**
+	 * Type guard for checking if cell is a raw cell.
+	 * Raw cells are stored as code cells with language='raw' in the underlying VS Code model,
+	 * but we expose them as a distinct type in our API.
+	 */
+	isRawCell(): this is IPositronNotebookRawCell;
+
+	/**
+	 * Check if this cell is the last cell in the notebook
+	 */
+	isLastCell(): boolean;
+
+	/**
+	 * Check if this cell is the only cell in the notebook
+	 */
+	isOnlyCell(): boolean;
+
+	/**
+	 * Signal that fires when the editor should receive focus.
+	 * This is a stateless signal that notifies observers without maintaining state.
+	 */
+	readonly editorFocusRequested: IObservableSignal<void>;
+
+	/**
+	 * Request that the editor receive focus.
+	 * Triggers the editorFocusRequested signal to notify React components.
+	 */
+	requestEditorFocus(): void;
+
+	/**
+	 * Show the cell's editor.
+	 * @returns Promise that resolves to the editor when it is available, or undefined if the editor could not be shown.
+	 */
+	showEditor(): Promise<ICodeEditor | undefined>;
+
+
+	/**
+	 * Select this cell
+	 * @param type Selection type.
+	 */
+	select(type: CellSelectionType): void;
+
+	/**
+	 * Reveal the cell in the viewport
+	 * @param options Reveal options controlling scroll behavior based on reason (keyboard navigation vs programmatic).
+	 * @returns Promise that resolves to true if the cell was successfully revealed, false otherwise.
+	 */
+	reveal(options: ICellRevealOptions): Promise<boolean>;
+
+	/**
+	 * Temporarily highlight the cell with a flash animation to draw attention.
+	 * The highlight animation is controlled by CSS and automatically completes.
+	 * Calling this method multiple times in quick succession will restart the animation.
+	 * @param operationType Optional type of operation for specific styling ('add', 'delete', or 'modify')
+	 * @param maxWaitMs Maximum time to wait for container in milliseconds. Defaults to 100ms for modify, 500ms for add.
+	 * @returns Promise that resolves to true if the highlight was successfully added, false otherwise.
+	 */
+	highlightTemporarily(operationType?: 'add' | 'delete' | 'modify', maxWaitMs?: number): Promise<boolean>;
+
+	/**
+	 * Apply notebook editor options to this cell. Used by the IDE to select and/or reveal the cell.
+	 * @param options Notebook editor options to apply.
+	 */
+	setOptions(options: INotebookEditorOptions | undefined): Promise<void>;
+
+	/**
+	 * Deselect this cell
+	 */
+	deselect(): void;
+
+	/**
+	 * Attach the cell to a container. Used for things like focus management
+	 */
+	attachContainer(container: HTMLElement): void;
+
+	/**
+	 * The cell's scoped context key service.
+	 * Created when the cell's container is attached; undefined before that.
+	 */
+	readonly scopedContextKeyService: IScopedContextKeyService | undefined;
+
+	/**
+	 * Get the container that the cell is attached to
+	 */
+	get container(): HTMLElement | undefined;
+
+	/**
+	 * Check if this cell is currently visible in the viewport.
+	 * A cell is considered visible if at least {@link MIN_CELL_VISIBILITY_RATIO} of it is within the viewport.
+	 * @returns true if the cell is visible, false otherwise
+	 */
+	isInViewport(): boolean;
+
+	/**
+	 *
+	 * @param editor Code editor widget associated with cell.
+	 */
+	attachEditor(editor: ICodeEditor): void;
+
+	/**
+	 * Detach the editor from the cell
+	 */
+	detachEditor(): void;
+}
+
+
+/**
+ * Cell that contains code that can be executed
+ */
+export interface IPositronNotebookCodeCell extends IPositronNotebookCell {
+	readonly kind: CellKind.Code;
+
+
+	/**
+	 * Current cell outputs as an observable
+	 */
+	readonly outputs: IObservable<NotebookCellOutputs[]>;
+
+	/**
+	 * Whether the cell outputs are collapsed
+	 */
+	readonly outputIsCollapsed: IObservable<boolean>;
+
+	/**
+	 * Per-cell output scrolling override.
+	 * When undefined, the global notebook.outputScrolling setting is used.
+	 * When true, output is scrollable (full). When false, output is truncated.
+	 */
+	readonly outputScrolling: IObservable<boolean | undefined>;
+
+	/**
+	 * Duration of the last execution in milliseconds
+	 */
+	readonly lastExecutionDuration: IObservable<number | undefined>;
+
+	/**
+	 * Execution order number for the last execution
+	 */
+	readonly lastExecutionOrder: IObservable<number | undefined>;
+
+	/**
+	 * Whether the last execution was successful
+	 */
+	readonly lastRunSuccess: IObservable<boolean | undefined>;
+
+	/**
+	 * Timestamp when the last execution ended
+	 */
+	readonly lastRunEndTime: IObservable<number | undefined>;
+
+	/**
+	 * Collapse the cell outputs
+	 */
+	collapseOutput(): void;
+
+	/**
+	 * Expand the cell outputs
+	 */
+	expandOutput(): void;
+
+	/**
+	 * Toggle the collapse state of cell outputs
+	 */
+	toggleOutputCollapse(): void;
+
+	/**
+	 * Truncate the cell output.
+	 */
+	truncateOutput(): void;
+
+	/**
+	 * Show full cell output.
+	 */
+	showFullOutput(): void;
+
+	/**
+	 * Toggle output scrolling, resolving the effective state from the per-cell
+	 * override or the global setting.
+	 */
+	toggleOutputScroll(): void;
+
+	/**
+	 * Reset per-cell output truncation to follow the global setting.
+	 */
+	resetOutputScrolling(): void;
+}
+
+
+/**
+ * Interface for raw cells. Raw cells are stored as code cells with language='raw'
+ * in the underlying VS Code model, but we expose them as a distinct type in our API.
+ */
+export interface IPositronNotebookRawCell extends IPositronNotebookCell {
+	readonly kind: CellKind.Code;
+}
+
+
+/**
+ * Cell that contains markdown content
+ */
+export interface IPositronNotebookMarkdownCell extends IPositronNotebookCell {
+	readonly kind: CellKind.Markup;
+
+	/**
+	 * Observable content of cell. Equivalent to the cell's content, but as an observable
+	 */
+	readonly markdownString: IObservable<string | undefined>;
+
+	/**
+	 * Observable that indicates whether the editor is currently shown
+	 */
+	readonly editorShown: IObservable<boolean>;
+
+	/**
+	 * Toggle the editor for this cell
+	 */
+	toggleEditor(): void;
+}
+
+
+// Lightweight copies of vscode interfaces for the purpose of not breaking the import rules
+
+export enum CellKind {
+	Markup = 1,
+	Code = 2
+}
+
+export type NotebookCellOutputItem = Readonly<{
+	mime: string;
+	data: VSBuffer;
+}>;
+
+/**
+ * Text output types that can be parsed for display. These come across differently than other output
+ * types (need to be parsed as json), hence the distinction.
+ */
+export type ParsedTextOutput = {
+	type: 'stdout' | 'text' | 'stderr' | 'error';
+	content: string;
+};
+
+/**
+ * Parsed output for inline data explorer
+ */
+export interface ParsedDataExplorerOutput {
+	type: 'dataExplorer';
+	commId: string;
+	shape: { rows: number; columns: number };
+	title: string;
+	version: number;
+	source?: 'pandas' | 'polars' | 'unknown';
+	variablePath?: string[];
+}
+
+/**
+ * Contents from cell outputs parsed for React components to display
+ */
+export type ParsedOutput = ParsedTextOutput |
+{
+	type: 'image';
+	dataUrl: string;
+	width?: number;
+	height?: number;
+} |
+{
+	type: 'interrupt';
+	trace: string;
+} |
+{
+	type: 'html';
+	content: string;
+} |
+{
+	type: 'markdown';
+	content: string;
+} |
+{
+	type: 'latex';
+	content: string;
+} |
+{
+	type: 'json';
+	data: unknown;
+} |
+{
+	type: 'unknown';
+	content: string;
+} |
+	ParsedDataExplorerOutput;
+
+
+export interface NotebookCellOutputs {
+	readonly outputId: string;
+	readonly outputs: IOutputItemDto[];
+	readonly parsed: ParsedOutput;
+	preloadMessageResult?: NotebookPreloadOutputResults | undefined;
+}

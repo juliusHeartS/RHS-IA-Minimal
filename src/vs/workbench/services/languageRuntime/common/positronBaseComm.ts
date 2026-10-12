@@ -1,0 +1,360 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2024 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { IRuntimeClientInstance, RuntimeClientState, RuntimeClientStatus } from './languageRuntimeClientInstance.js';
+import { Event, Emitter } from '../../../../base/common/event.js';
+import { Disposable } from '../../../../base/common/lifecycle.js';
+import { ISettableObservable } from '../../../../base/common/observableInternal/base.js';
+import { generateUuid } from '../../../../base/common/uuid.js';
+
+/**
+ * An enum representing the set of JSON-RPC error codes.
+ */
+export enum JsonRpcErrorCode {
+	ParseError = -32700,
+	InvalidRequest = -32600,
+	MethodNotFound = -32601,
+	InvalidParams = -32602,
+	InternalError = -32603,
+	ServerErrorStart = -32000,
+	ServerErrorEnd = -32099
+}
+
+/**
+ * An error returned by a runtime method call.
+ */
+export interface PositronCommError {
+	/** An error code */
+	code: JsonRpcErrorCode;
+
+	/** A human-readable error message */
+	message: string;
+
+	/**
+	 * A name for the error, for compatibility with the Error object.
+	 * Usually `RPC Error ${code}`.
+	 */
+	name: string;
+
+	/** Additional error information (optional) */
+	data: any | undefined;
+}
+
+/**
+ * A {@link PositronBaseComm}'s {@link PositronBaseComm.options options}.
+ */
+export type PositronCommOptions<T extends string> = {
+	/** RPC options keyed by RPC name. */
+	[key in T]?: PositronCommRpcOptions;
+};
+
+/**
+ * Options for a specific RPC of a {@link PositronBaseComm}.
+ */
+export interface PositronCommRpcOptions {
+	/**
+	 * Timeout in milliseconds after which to error if the server does not respond.
+	 * Defaults to 5 seconds. Undefined means no timeout.
+	 */
+	timeout: number | undefined;
+}
+
+/**
+ * An event emitter that can be used to fire events from the backend to the
+ * frontend.
+ */
+class PositronCommEmitter<T> extends Emitter<T> {
+	/**
+	 * Create a new event emitter.
+	 *
+	 * @param name The name of the event, as a JSON-RPC method name.
+	 * @param properties The names of the properties in the event payload; used
+	 *   to convert positional parameters to named parameters.
+	 */
+	constructor(readonly name: string, readonly properties: string[]) {
+		super();
+	}
+}
+
+/**
+ * A base class for Positron comm instances. This class handles communication
+ * with the backend, and provides methods for creating event emitters and
+ * performing RPCs.
+ *
+ * Used by generated comm classes.
+ */
+export class PositronBaseComm extends Disposable {
+	/**
+	 * A map of event names to emitters. This is used to create event emitters
+	 * from the backend to the frontend.
+	 */
+	private _emitters = new Map<string, PositronCommEmitter<any>>();
+
+	/**
+	 * An emitter for the close event.
+	 */
+	private _closeEmitter = new Emitter<void>();
+
+	/**
+	 * The current state of the client instance
+	 */
+	public readonly clientState: ISettableObservable<RuntimeClientState>;
+
+	/**
+	 * The current status of the client instance. Ie, are there pending RPC's?
+	 */
+	public readonly clientStatus: ISettableObservable<RuntimeClientStatus>;
+
+	/**
+	 * Create a new Positron com
+	 *
+	 * @param clientInstance The client instance to use for communication with the backend.
+	 *  This instance must be connected to the backend before it is passed to this class.
+	 */
+	constructor(
+		private readonly clientInstance: IRuntimeClientInstance<any, any>,
+		private readonly options?: PositronCommOptions<any>) {
+		super();
+		this._register(clientInstance);
+		this._register(clientInstance.onDidReceiveData((event) => {
+			const data = event.data;
+			const emitter = this._emitters.get(data.method);
+			if (emitter) {
+				const payload = data.params;
+				// JSON-RPC parameters can be specified either as an array or as
+				// key/value pairs. If the payload is an array, convert it to
+				// the object form.
+				if (Array.isArray(payload)) {
+					// Create the object from the array, converting positional
+					// parameters to named parameters.
+					const obj: any = {};
+					for (let i = 0; i < payload.length; i++) {
+						obj[emitter.properties[i]] = payload[i];
+					}
+					emitter.fire(obj);
+				} else if (typeof payload === 'object') {
+					// If the payload is already an object, just fire the event
+					emitter.fire(payload);
+				} else if (typeof payload === 'undefined') {
+					// If the payload is undefined, fire the event with an empty
+					// object.
+					emitter.fire({});
+				} else {
+					// If the payload is some other kind of object, log a
+					// warning; we can't fire an event with it.
+					console.warn(`Invalid payload type ${typeof payload} ` +
+						`for event '${data.method}' ` +
+						`on comm ${this.clientInstance.getClientId()}: ` +
+						`${JSON.stringify(payload)} ` +
+						`(Expected an object or an array)`);
+				}
+			} else if (data.method) {
+				// If there are no emitters but an event type was defined with
+				// the 'method' field, this event will get dropped on the floor.
+				// Log a warning.
+				console.warn(`Dropping event '${data.method}' ` +
+					`on comm ${this.clientInstance.getClientId()}: ` +
+					`${JSON.stringify(data.params)} ` +
+					`(No listeners for event '${data.method}'`);
+			} else {
+				console.warn(`Dropping unexpected message ` +
+					`on comm ${this.clientInstance.getClientId()}: ` +
+					`${JSON.stringify(data)}`);
+			}
+		}));
+
+		/**
+		 * If the client is closed, emit the close event.
+		 */
+		const stateChangeEvent = Event.fromObservable(clientInstance.clientState);
+		this._register(stateChangeEvent(state => {
+			// If the client is closed, emit the close event.
+			if (state === RuntimeClientState.Closed) {
+				this._closeEmitter.fire();
+			}
+		}));
+
+		this.onDidClose = this._closeEmitter.event;
+
+		// Forward the client state from the client instance
+		this.clientState = clientInstance.clientState;
+
+		// Forward the client status from the client instance
+		this.clientStatus = clientInstance.clientStatus;
+	}
+
+	/**
+	 * Fires when the client is closed.
+	 */
+	public onDidClose: Event<void>;
+
+	/**
+	 * Provides access to the ID of the client instance.
+	 */
+	get clientId(): string {
+		return this.clientInstance.getClientId();
+	}
+
+	/**
+	 * Create a new event emitter.
+	 * @param name The name of the event, as a JSON-RPC method name.
+	 * @param properties The names of the properties in the event payload; used
+	 *  to convert positional parameters to named parameters.
+	 * @returns
+	 */
+	protected createEventEmitter<T>(name: string, properties: string[]): Event<T> {
+		const emitter = new PositronCommEmitter<T>(name, properties);
+		this._emitters.set(name, emitter);
+		this._register(emitter);
+		return emitter.event;
+	}
+
+	/**
+	 * Perform an RPC and wait for the result.
+	 *
+	 * @param rpcName The name of the RPC to perform.
+	 * @param paramNames The parameter names
+	 * @param paramValues The parameter values
+	 * @returns A promise that resolves to the result of the RPC, or rejects
+	 *  with a PositronCommError.
+	 */
+	protected async performRpc<T>(
+		rpcName: string,
+		paramNames: Array<string>,
+		paramValues: Array<unknown>
+	): Promise<T> {
+
+		const rpcArgs = this.zipParams(paramNames, paramValues);
+
+		// Generate a unique ID for this message.
+		const id = generateUuid();
+
+		// Form the JSON-RPC message nested in our Jupyter `comm_msg`. Note that the
+		// `id` field is not used for matching requests at the Jupyter transport
+		// level. It only expresses that this is a request, not a notification, as
+		// required by the JSON-RPC spec. This allows comms at the other end to
+		// determine whether they should respond to the message.
+		const request: Record<string, unknown> = {
+			jsonrpc: '2.0',
+			method: rpcName,
+			id
+		};
+
+		// Amend params if we have any (methods which take no parameters
+		// should not have a params field)
+		if (paramNames.length > 0) {
+			request.params = rpcArgs;
+		}
+
+		// Perform the RPC
+		let response: Record<string, unknown> = {};
+		try {
+			// Check for explicitly set timeout in options, otherwise use the default.
+			const defaultTimeout = 5000; // 5 seconds
+			const timeout = (this.options?.[rpcName] && 'timeout' in this.options[rpcName])
+				? this.options[rpcName].timeout
+				: defaultTimeout;
+			// Wait for a response to this message that includes a 'result' or
+			// 'error' field.
+			response = await this.clientInstance.performRpc(request, timeout, ['result', 'error']);
+		} catch (err) {
+			// Convert the error to a runtime method error. This handles errors
+			// that occur while performing the RPC; if the RPC is successfully
+			// sent and a response received, errors named in the response are
+			// handled below.
+			const error: PositronCommError = {
+				code: JsonRpcErrorCode.InternalError,
+				message: err.message,
+				name: err.name,
+				data: err, // Wrap the underlying error in a data object
+			};
+			throw error;
+		}
+
+		// If the response is an error, throw it
+		if (Object.keys(response).includes('error')) {
+			const error = response.error as PositronCommError;
+
+			// Populate the error object with the name of the error code
+			// for conformity with code that expects an Error object.
+			error.name = `RPC Error ${error.code}`;
+
+			throw error;
+		}
+
+		// JSON-RPC specifies that the return value must have either a 'result'
+		// or an 'error'; make sure we got a result before we pass it back.
+		if (!Object.keys(response).includes('result')) {
+			const error: PositronCommError = {
+				code: JsonRpcErrorCode.InternalError,
+				message: `Invalid response from ${this.clientInstance.getClientId()}: ` +
+					`no 'result' field. ` +
+					`(response = ${JSON.stringify(response)})`,
+				name: `InvalidResponseError`,
+				data: {},
+			};
+
+			throw error;
+		}
+
+		// Otherwise, return the result
+		return response.result as T;
+	}
+
+	/**
+	 * Send a fire-and-forget JSON-RPC notification (or event) to the backend.
+	 *
+	 * Unlike `performRpc`, this does not include an `id` field and does
+	 * not wait for a response. Per the JSON-RPC spec, the absence of
+	 * `id` signals that no response is expected.
+	 *
+	 * @param rpcName The name of the event method.
+	 * @param paramNames The parameter names.
+	 * @param paramValues The parameter values.
+	 */
+	protected notify(
+		methodName: string,
+		paramNames: Array<string>,
+		paramValues: Array<unknown>
+	): void {
+
+		const params = this.zipParams(paramNames, paramValues);
+
+		const notification: Record<string, unknown> = {
+			jsonrpc: '2.0',
+			method: methodName,
+		};
+
+		if (paramNames.length > 0) {
+			notification.params = params;
+		}
+
+		this.clientInstance.sendMessage(notification);
+	}
+
+	/**
+	 * Zip parallel arrays of parameter names and values into a
+	 * JSON-RPC params object.
+	 *
+	 * @param paramNames The parameter names.
+	 * @param paramValues The parameter values (must be same length as paramNames).
+	 */
+	private zipParams(
+		paramNames: Array<string>,
+		paramValues: Array<unknown>
+	): Record<string, unknown> {
+		if (paramNames.length !== paramValues.length) {
+			throw new Error(
+				`paramNames length (${paramNames.length}) !== ` +
+				`paramValues length (${paramValues.length})`
+			);
+		}
+		const params: Record<string, unknown> = {};
+		for (let i = 0; i < paramNames.length; i++) {
+			params[paramNames[i]] = paramValues[i];
+		}
+		return params;
+	}
+}

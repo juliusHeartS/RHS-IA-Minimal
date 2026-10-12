@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "1.0.0",
+  "audit": {
+    "auditedAt": "2026-09-13T03:51:36.169Z",
+    "repository": "RHS-IA",
+    "workingTreePath": "/Users/josu/Documents/PAHO/RHS-IA/RHS-IA",
+    "branch": "update-positron-2026.09.1-2",
+    "head": "b4533a71a3c664d1bb34c06a92e42861e7bbb744",
+    "previousWorkingTreeStatus": "clean before audit artifacts were created (verified with git status --short)",
+    "applicationSourceModifiedByAudit": false,
+    "baselineFindings": 1607,
+    "baselineConfirmedGaps": 1588,
+    "baselineHardcodedCandidates": 19
+  },
+  "method": {
+    "coverage": "Static audit of source-built Positron extensions, Positron/core NLS call sites, extension manifests, shipped Spanish overlays, and targeted hardcoded UI scans. Runtime findings are separated when opening the flow is still required.",
+    "commands": [
+      "rtk read /Users/josu/.codex/RTK.md",
+      "rtk git status --short",
+      "rtk read AGENTS.md",
+      "rtk read docs/upgrades/rhs-customizations.md",
+      "rtk read docs/upgrades/rhs-customizations.json",
+      "rtk read docs/language/translation-plan.md",
+      "rtk proxy unzip -Z1 language-packs/vscode-language-pack-es-1.111.0.vsix",
+      "rtk proxy node scripts/validate-spanish-session-localization.mjs",
+      "rtk proxy rg -n \"vscode.l10n.t|localize(|aria-label|title=|>...<\" src extensions"
+    ],
+    "exclusions": [
+      "English source defaults with an effective bundled-pack or RHS overlay translation",
+      "comments, logs, tests/fixtures, generated duplicates, user-authored notebook/output content, proper names, and code identifiers",
+      "intentionally excluded/non-shipping extensions from build/lib/extensions.ts and the RHS customization ledger",
+      "the hidden Learn section, except as a coverage boundary because it is intentionally inactive"
+    ]
+  },
+  "translationPipeline": {
+    "languagePack": "language-packs/vscode-language-pack-es-1.111.0.vsix",
+    "languagePackExtensionBundlesInspected": "extension/translations/extensions/vscode.*.i18n.json; no positron.* bundle present",
+    "coreOrder": [
+      "RHS overlay",
+      "pinned Microsoft Spanish main.i18n.json",
+      "English default"
+    ],
+    "extensionOrder": [
+      "package.nls.es.json or pinned vscode.<extension>.i18n.json for manifest strings",
+      "extension l10n/bundle.l10n.es.json",
+      "English default"
+    ],
+    "validatorScope": "The focused validator covers the curated core/session/welcome and environment-health scope; this audit also verifies every statically resolvable shipped extension runtime call, manifest reference, audited core call, hardcoded candidate, and placeholder."
+  },
+  "counts": {
+    "findings": 0,
+    "confirmedGaps": 0,
+    "candidatesNeedingRuntimeVerification": 0,
+    "staticExtensionRuntimeCalls": 681,
+    "dynamicExtensionLocalizationCallsNotInventoried": 0,
+    "bySurface": {},
+    "byPriority": {},
+    "byStatus": {}
+  },
+  "shippedSourceExtensions": [
+    "positron-catalog-explorer",
+    "positron-code-cells",
+    "positron-connections",
+    "positron-data-driver-databricks",
+    "positron-data-driver-duckdb",
+    "positron-data-driver-odbc",
+    "positron-data-driver-pins",
+    "positron-data-driver-postgresql",
+    "positron-data-driver-redshift",
+    "positron-data-driver-snowflake",
+    "positron-data-driver-sqlite",
+    "positron-dev-containers",
+    "positron-duckdb",
+    "positron-environment",
+    "positron-environment-modules",
+    "positron-file-transfer",
+    "positron-ipywidgets",
+    "positron-notebook-export",
+    "positron-notebooks",
+    "positron-pdf-server",
+    "positron-proxy",
+    "positron-python",
+    "positron-r",
+    "positron-reticulate",
+    "positron-run-app",
+    "positron-runtime-debugger",
+    "positron-skills",
+    "positron-supervisor",
+    "positron-viewer"
+  ],
+  "findings": [],
+  "candidates": [],
+  "dynamicLocalizationCallSites": [],
+  "limitations": [
+    "No fresh packaged-app GUI session was run by this audit; rendered locale behavior still requires packaged-app smoke testing.",
+    "The pinned language pack was inspected from its VSIX contents; upstream translations are treated as effective only when the exact module/key or extension package key was found.",
+    "This is not an exhaustive audit of every upstream extension contribution or every HTML/string assembled at runtime. The report focuses on RHS-IA-owned/source-built surfaces and shipped customizations."
+  ],
+  "remediationBacklog": []
+}

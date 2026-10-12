@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Language Guides"
+---
+
+RHS-IA provides integrated runtimes for [Python](python.qmd) and [R](r.qmd). A runtime powers code execution, completion, diagnostics, variables, plots, data exploration, and language help.
+
+Select an interpreter before running code. The active runtime is shown in the workbench and can be changed with the interpreter-selection commands. Projects may use more than one language, but each console session belongs to a specific runtime.
+
+Keep project dependencies in a dedicated environment and record them with the tools customary for that language.

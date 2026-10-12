@@ -1,0 +1,9 @@
+<article class="quarto-article" lang="en"><header id="title-block-header">
+<h1 class="title">Connection Extensions</h1>
+
+</header>
+
+
+<p>Database and data-source extensions can contribute connection providers to RHS-IA. A provider defines how a connection is registered, browsed, refreshed, and closed.</p>
+<p>Install a provider only from a trusted publisher and follow its driver and credential setup. Provider behavior may depend on an active Python or R runtime.</p>
+<p>Extension authors should expose metadata lazily, avoid logging secrets, and dispose connections when a session ends. General development guidance is in <a href="../extensions/development.qmd">Extension Development</a>.</p></article>

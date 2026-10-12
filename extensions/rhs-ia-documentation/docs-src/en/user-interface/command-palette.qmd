@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Command Palette"
+---
+
+The Command Palette provides searchable access to RHS-IA actions. Open it with **View > Command Palette** or **Cmd/Ctrl+Shift+P**, type part of an action name, and press Enter.
+
+Results change with context: the active editor, selected runtime, and focused view can expose different commands. The gear icon beside a result opens its keyboard-shortcut entry.
+
+Quick Open uses the same control for other searches. Remove the leading `>` to find workspace files, or use the displayed prefixes to search symbols and other targets.
+
+[Open Settings](rhs-doc-action:settings).

@@ -1,0 +1,374 @@
+#!/bin/bash
+# Script to parse tags from a GitHub Pull Request body
+# Usage: bash parse-pr-tags.sh
+
+set -e
+
+# Pure tag-derivation helpers (unit-tested in scripts/test/pr-tags-lib-test.sh).
+source "$(dirname "$0")/lib/pr-tags-lib.sh"
+
+# Fetch GitHub repository and PR number from the environment
+REPO="${GITHUB_REPOSITORY}"  # Automatically set by GitHub Actions
+PR_NUMBER="${GITHUB_PR_NUMBER:-${GITHUB_EVENT_PULL_REQUEST_NUMBER}}"  # Use the correct PR number env variable
+GITHUB_TOKEN="${GITHUB_TOKEN}"  # GitHub token for authentication
+
+# Validate required environment variables
+if [[ -z "$REPO" || -z "$PR_NUMBER" || -z "$GITHUB_TOKEN" ]]; then
+	echo "Error: Missing required environment variables."
+	echo "Ensure the following are set: GITHUB_REPOSITORY, GITHUB_PR_NUMBER or GITHUB_EVENT_PULL_REQUEST_NUMBER, GITHUB_TOKEN."
+	exit 1
+fi
+
+# Fetch the PR body using the GitHub CLI
+echo "Fetching PR body for ${REPO} #${PR_NUMBER}..."
+PULL_REQUEST_BODY=$(gh api repos/${REPO}/pulls/${PR_NUMBER} --header "Authorization: token $GITHUB_TOKEN" --jq '.body')
+
+# Handle empty PR body
+if [[ -z "$PULL_REQUEST_BODY" ]]; then
+	echo "Error: PR body is empty or could not be fetched."
+	exit 1
+fi
+
+# Sanitize the PR BODY by stripping carriage returns (GitHub returns CRLF line
+# endings), collapsing newlines to spaces, and escaping double quotes. Stripping
+# CR first ensures a tag at end-of-line isn't immediately followed by a stray
+# '\r', which would defeat the boundary checks below.
+PR_BODY=$(echo "$PULL_REQUEST_BODY" | tr -d '\r' | tr '\n' ' ' | sed 's/"/\\"/g')
+
+echo "Parsing tags from PR body..."
+
+if echo "$PR_BODY" | grep -q "@:win"; then
+	echo "Found win tag in PR body. Setting to run windows tests."
+	echo "win_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:web"; then
+	echo "Found web tag in PR body. Setting to run web tests."
+	echo "web_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:rocky-electron"; then
+	echo "Found Rocky electron tag in PR body. Setting to run Rocky electron tests."
+	echo "rocky_electron_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:rocky-web"; then
+	echo "Found Rocky web tag in PR body. Setting to run Rocky web tests."
+	echo "rocky_web_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:suse-electron"; then
+	echo "Found SUSE electron tag in PR body. Setting to run SUSE electron tests."
+	echo "suse_electron_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:suse-web"; then
+	echo "Found SUSE web tag in PR body. Setting to run SUSE web tests."
+	echo "suse_web_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:sles-electron"; then
+	echo "Found SLES electron tag in PR body. Setting to run SLES electron tests."
+	echo "sles_electron_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:sles-web"; then
+	echo "Found SLES web tag in PR body. Setting to run SLES web tests."
+	echo "sles_web_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:debian-electron"; then
+	echo "Found Debian electron tag in PR body. Setting to run Debian electron tests."
+	echo "debian_electron_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:debian-web"; then
+	echo "Found Debian web tag in PR body. Setting to run Debian web tests."
+	echo "debian_web_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:pyrefly"; then
+	echo "Found pyrefly tag in PR body. Setting to run pyrefly tests."
+	echo "pyrefly_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+# Match a bare '@:workbench' tag but not longer variants like '@:workbench-stable'
+# or '@:workbench-snowflake'. The tag must be followed by a non-tag character
+# (anything outside [a-zA-Z0-9_-]) or the end of the string.
+if echo "$PR_BODY" | grep -qE "@:workbench([^a-zA-Z0-9_-]|\$)"; then
+	echo "Found workbench tag in PR body. Setting to run workbench tests."
+	echo "workbench_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:publisher"; then
+	echo "Found publisher tag in PR body. Enabling workbench tests so publisher tests can run."
+	echo "workbench_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:workbench-stable"; then
+	echo "Found workbench-stable tag in PR body. Setting to run workbench tests against the last stable Workbench."
+	echo "workbench_stable_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:workbench-rocky"; then
+	echo "Found workbench-rocky tag in PR body. Setting to run workbench tests on Rocky Linux."
+	echo "workbench_rocky_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:jupyter"; then
+	echo "Found jupyter tag in PR body. Setting to run jupyter tests."
+	echo "jupyter_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+if echo "$PR_BODY" | grep -q "@:remote-ssh"; then
+	echo "Found remote-ssh tag in PR body. Setting to run remote-ssh tests."
+	echo "remote_ssh_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+# Match a bare '@:connect' tag but not '@:connections' (which shares the prefix).
+# The tag must be followed by a non-tag character (anything outside
+# [a-zA-Z0-9_-]) or the end of the string.
+if echo "$PR_BODY" | grep -qE "@:connect([^a-zA-Z0-9_-]|\$)"; then
+	echo "Found connect tag in PR body. Setting to run connect (electron) tests."
+	echo "connect_tag_found=true" >> "$GITHUB_OUTPUT"
+fi
+
+# Provenance inputs for build_tag_reasons, defaulted so the @:all branch (which
+# skips the else block that sets them) and any skipped derivation still resolve.
+AUTHOR_TAGS=""
+MAP_TAGS=""
+ARK_INJECTED="false"
+ADDED_WIN="false"
+ADDED_WEB="false"
+
+# Check if @:all is present in the PR body
+if echo "$PR_BODY" | grep -q "@:all"; then
+	echo "Found @:all tag in PR body. Setting tags to run all tests."
+	TAGS="" # Set to an empty string to indicate all tests should run
+else
+	# Parse tags starting with '@:'
+	TAGS=$(echo "$PR_BODY" | grep -o "@:[a-zA-Z0-9_-]*" | tr '\n' ',' | sed 's/,$//')
+
+	# @:no-auto-tags is an opt-out signal (detected separately below), not a real
+	# tag -- strip it so it never pollutes the grep string or the log line.
+	TAGS=$(printf '%s' "$TAGS" | tr ',' '\n' | grep -v '^@:no-auto-tags$' | paste -sd, -)
+
+	# Validate author-typed tags against the real TestTags enum. A typo (e.g.
+	# @:consle) would otherwise silently become a dead --grep alternative that
+	# matches nothing and gives no feedback -- and could even mask the no-match
+	# warning below (TAGS != "@:critical" even though nothing extra actually
+	# ran). Drop invalid tags and surface them so the PR comment can warn.
+	ENUM_FILE="$(dirname "$0")/../test/e2e/infra/test-runner/test-tags.ts"
+	INVALID_TAGS=""
+	if [[ -n "$TAGS" && -f "$ENUM_FILE" ]]; then
+		IFS='|' read -r TAGS INVALID_TAGS <<< "$(split_valid_invalid_tags "$TAGS" "$ENUM_FILE")"
+		if [[ -n "$INVALID_TAGS" ]]; then
+			echo "Warning: unrecognized tag(s) in PR description, ignoring: $INVALID_TAGS"
+		fi
+	fi
+	echo "invalid_tags=$INVALID_TAGS" >> "$GITHUB_OUTPUT"
+
+	# Snapshot the author-typed valid tags (post-validation, pre-injection) so
+	# build_tag_reasons can label them "PR description".
+	AUTHOR_TAGS="$TAGS"
+
+	# Always add @:critical if not already included
+	if [[ ! "$TAGS" =~ "@:critical" ]]; then
+		if [[ -n "$TAGS" ]]; then
+			TAGS="@:critical,$TAGS"
+		else
+			TAGS="@:critical"
+		fi
+	fi
+
+	# Auto-inject @:ark when the ark submodule is bumped.
+	# extensions/positron-r/ark is a gitlink (submodule pointer); it appears
+	# as a single filename entry in the PR files API when the pointer changes.
+	CHANGED_FILES=$(gh api repos/${REPO}/pulls/${PR_NUMBER}/files --paginate \
+		--header "Authorization: token $GITHUB_TOKEN" \
+		--jq '.[].filename' || true)
+	if [[ -z "$CHANGED_FILES" ]]; then
+		echo "Warning: could not fetch changed files; skipping @:ark injection."
+	elif echo "$CHANGED_FILES" | grep -qxF "extensions/positron-r/ark"; then
+		# @:ark is also derivable from the path map (extensions/positron-r/),
+		# but @:win/@:web can't be: the map only feeds the --grep string, while
+		# the win/web CI jobs launch off the *_tag_found outputs, not the tags.
+		# An ark bump can regress R behavior on any platform, so run those lanes
+		# too -- which means setting the outputs here, imperatively.
+		echo "Ark submodule changed. Injecting @:ark, @:win, and @:web tags."
+		ARK_INJECTED="true"
+		TAGS="$(union_csv_tags "$TAGS" "@:ark,@:win,@:web")"
+		echo "win_tag_found=true" >> "$GITHUB_OUTPUT"
+		echo "web_tag_found=true" >> "$GITHUB_OUTPUT"
+	fi
+
+	# Resolve the path to the map (this script lives in scripts/).
+	SCRIPT_DIR="$(dirname "$0")"
+	MAP_FILE="$SCRIPT_DIR/../.github/workflows/test-tag-paths-map.json"
+
+	# Auto-inject feature tags derived from the PR's changed files, unless the
+	# author opted out with @:no-auto-tags -- which now suppresses every
+	# derivation source uniformly (including the WIN/WEB scan below, which used
+	# to run unconditionally): authors need one total escape hatch to override
+	# auto-tagging at any time, not one exception carved out of it. Additive
+	# only -- never removes tags the author specified.
+	TEST_CHANGE_TAGS=""
+	if echo "$PR_BODY" | grep -q "@:no-auto-tags"; then
+		echo "Found @:no-auto-tags. Skipping derived tagging."
+	else
+		# Source/extension PATH changes -> feature tags. Scoped to the
+		# source/extension PATH map: it targets the population that
+		# under-tags (devs fixing code who may not know which e2e suite
+		# covers it).
+		if [[ -n "$CHANGED_FILES" && -f "$MAP_FILE" ]]; then
+			MAP_TAGS="$(derive_map_tags "$CHANGED_FILES" "$MAP_FILE")"
+			if [[ -n "$MAP_TAGS" ]]; then
+				echo "Derived tags from changed source files: $MAP_TAGS"
+				TAGS="$(union_csv_tags "$TAGS" "$MAP_TAGS")"
+			fi
+		fi
+
+		# Touched/added e2e TEST files -> the minimal tag(s) needed to
+		# guarantee they actually run, without over-selecting sibling
+		# suites. See derive-test-change-tags.mjs and the design doc.
+		DERIVE_TEST_CHANGE_SCRIPT="$SCRIPT_DIR/derive-test-change-tags.mjs"
+		if [[ -n "$CHANGED_FILES" && -f "$DERIVE_TEST_CHANGE_SCRIPT" ]]; then
+			# Drop touched e2e test files whose change doesn't alter what the
+			# test does, so they don't need a derived feature tag:
+			#   - comments/whitespace only (#14798: a reworded comment that spun
+			#     up the test-explorer lane for nothing), or
+			#   - tag metadata only (#14731 consolidating @:posit-assistant,
+			#     #14681 backfilling missing tags): recategorizing a test doesn't
+			#     change what it does. tags.WIN/WEB adds still enable their lanes
+			#     via the separate scan below.
+			# Fetch filename+patch together so each patch maps back to its file;
+			# @json keeps embedded newlines from merging files when read line by line.
+			SKIPPED_TEST_FILES=""
+			while IFS=$'\t' read -r TEST_FILE ENCODED_PATCH || [[ -n "$TEST_FILE" ]]; do
+				[[ -z "$TEST_FILE" ]] && continue
+				FILE_PATCH="$(jq -r '.' <<< "$ENCODED_PATCH")"
+				if [[ "$(patch_is_comment_or_whitespace_only "$FILE_PATCH")" == "true" ]]; then
+					SKIPPED_TEST_FILES+="$TEST_FILE"$'\n'
+					echo "Skipping test-change derivation for $TEST_FILE (comments/whitespace only)."
+				elif [[ "$(patch_is_tag_change_only "$FILE_PATCH")" == "true" ]]; then
+					SKIPPED_TEST_FILES+="$TEST_FILE"$'\n'
+					echo "Skipping test-change derivation for $TEST_FILE (tag recategorization only)."
+				fi
+			done < <(gh api repos/${REPO}/pulls/${PR_NUMBER}/files --paginate \
+				--header "Authorization: token $GITHUB_TOKEN" \
+				--jq '.[] | select(.filename | test("^test/e2e/tests/.*\\.test\\.ts$")) | "\(.filename)\t\((.patch // "") | @json)"' || true)
+
+			# Drop the skipped files from the changed-files list fed to the
+			# deriver. exclude_paths handles the all-skipped case (empty output,
+			# exit 0) so this stays safe under set -e.
+			CHANGED_FILES_FILE="$(mktemp)"
+			exclude_paths "$CHANGED_FILES" "$SKIPPED_TEST_FILES" > "$CHANGED_FILES_FILE"
+			# Assignment is the `if` condition (not piped through `paste`) so a
+			# non-zero node exit is visible here -- under `set -e` with no
+			# `pipefail`, `x="$(node ... | paste ...)"` would silently succeed
+			# because `paste`'s exit status (always 0) masks node's failure.
+			# Only feature tags are eligible to be auto-selected as a cover;
+			# platform/special tags trigger their own CI lanes and are
+			# author-controlled (see test-tags.ts). Pass the FeatureTags
+			# allowlist so derivation can't pick a lane-triggering tag.
+			FEATURE_TAGS_CSV="$(feature_enum_tags "$ENUM_FILE" | paste -sd, -)"
+			# Only pass --feature-tags when we actually found some. An empty
+			# "--feature-tags ''" is NOT the same as omitting it: the script reads
+			# an empty string as an empty (but truthy) allowlist, which makes every
+			# tag ineligible and silently kills all derivation. Omit the flag so it
+			# falls back to "no allowlist" if feature_enum_tags found nothing.
+			FEATURE_TAGS_ARG=()
+			if [[ -n "$FEATURE_TAGS_CSV" ]]; then
+				FEATURE_TAGS_ARG=(--feature-tags "$FEATURE_TAGS_CSV")
+			else
+				echo "Warning: feature_enum_tags returned nothing (missing/renamed FeatureTags enum?); deriving without a feature-tag allowlist."
+			fi
+			if TEST_CHANGE_TAGS_RAW="$(node "$DERIVE_TEST_CHANGE_SCRIPT" \
+				--changed-files "$CHANGED_FILES_FILE" \
+				--selected-tags "$TAGS" \
+				"${FEATURE_TAGS_ARG[@]}")"; then
+				TEST_CHANGE_TAGS="$(printf '%s' "$TEST_CHANGE_TAGS_RAW" | paste -sd, -)"
+			else
+				TEST_CHANGE_STATUS=$?
+				echo "Warning: derive-test-change-tags.mjs failed (exit $TEST_CHANGE_STATUS); skipping test-change tag derivation."
+				TEST_CHANGE_TAGS=""
+			fi
+			rm -f "$CHANGED_FILES_FILE"
+			if [[ -n "$TEST_CHANGE_TAGS" ]]; then
+				echo "Derived tags from changed e2e test files: $TEST_CHANGE_TAGS"
+				TAGS="$(union_csv_tags "$TAGS" "$TEST_CHANGE_TAGS")"
+			fi
+		fi
+
+		# Enable Windows/web jobs when a test genuinely adds tags.WIN/tags.WEB.
+		# Also add @:win/@:web to TAGS so the PR comment explains why those
+		# jobs ran.
+		# @json-encode each file's patch so embedded newlines don't merge
+		# files together when read line by line -- see
+		# scan_added_platform_tags_across_files.
+		declare -a TEST_FILE_PATCHES=()
+		while IFS= read -r ENCODED_PATCH || [[ -n "$ENCODED_PATCH" ]]; do
+			[[ -z "$ENCODED_PATCH" ]] && continue
+			TEST_FILE_PATCHES+=("$(jq -r '.' <<< "$ENCODED_PATCH")")
+		done < <(gh api repos/${REPO}/pulls/${PR_NUMBER}/files --paginate \
+			--header "Authorization: token $GITHUB_TOKEN" \
+			--jq '.[] | select(.filename | startswith("test/e2e/tests/")) | (.patch // "") | @json' || true)
+		read -r ADDED_WIN ADDED_WEB <<< "$(scan_added_platform_tags_across_files "${TEST_FILE_PATCHES[@]}")"
+		if [[ "$ADDED_WIN" == "true" ]]; then
+			echo "Newly added e2e test carries tags.WIN. Enabling Windows tests."
+			echo "win_tag_found=true" >> "$GITHUB_OUTPUT"
+			TAGS="$(union_csv_tags "$TAGS" "@:win")"
+		fi
+		if [[ "$ADDED_WEB" == "true" ]]; then
+			echo "Newly added e2e test carries tags.WEB. Enabling web tests."
+			echo "web_tag_found=true" >> "$GITHUB_OUTPUT"
+			TAGS="$(union_csv_tags "$TAGS" "@:web")"
+		fi
+	fi
+
+	# Output the tags
+	echo "Extracted Tags: $TAGS"
+
+	# Signal the workflow when nothing but the @:critical floor resolved, so it
+	# can warn the author that no feature suites were auto-selected.
+	if [[ "$TAGS" == "@:critical" ]]; then
+		echo "no_matches=true" >> "$GITHUB_OUTPUT"
+	else
+		echo "no_matches=false" >> "$GITHUB_OUTPUT"
+	fi
+fi
+
+# PR-time guardrail: warn (via the advisory comment + log) when this PR touches
+# a Positron source dir/extension with no map entry. Runs for BOTH @:all and
+# the normal path -- it is map-maintenance feedback, independent of tag
+# selection. Reuse CHANGED_FILES/MAP_FILE from the else branch above if they
+# were already computed there, so we don't double-fetch.
+# Reuse SCRIPT_DIR/CHANGED_FILES if the else branch already set them; the @:all
+# branch skips that branch, so fall back to computing them here.
+SCRIPT_DIR="${SCRIPT_DIR:-$(dirname "$0")}"
+MAP_FILE="${MAP_FILE:-$SCRIPT_DIR/../.github/workflows/test-tag-paths-map.json}"
+if [[ -z "${CHANGED_FILES+x}" ]]; then
+	CHANGED_FILES=$(gh api repos/${REPO}/pulls/${PR_NUMBER}/files --paginate \
+		--header "Authorization: token $GITHUB_TOKEN" \
+		--jq '.[].filename' || true)
+fi
+
+UNMAPPED_DIRS=""
+if [[ -n "$CHANGED_FILES" && -f "$MAP_FILE" ]]; then
+	UNMAPPED_DIRS="$(find_unmapped_positron_dirs "$CHANGED_FILES" "$MAP_FILE")"
+	if [[ -n "$UNMAPPED_DIRS" ]]; then
+		echo "Unmapped Positron dirs touched by this PR (add to test-tag-paths-map.json):"
+		while IFS= read -r d; do [[ -n "$d" ]] && printf '  - %s\n' "$d"; done <<< "$UNMAPPED_DIRS"
+		# An upstream dir surfaces here when it holds a Posit-owned file (see
+		# find_unmapped_positron_dirs' owner-root fallback). Tagging the whole dir
+		# would fire suites on every upstream merge touching it, hence the pairing.
+		echo "  Note: if any dir above is upstream and only Posit-owned files live in it, map it to [] and add a tagged entry per Posit-owned file (longest matching key wins)."
+	fi
+fi
+echo "unmapped_dirs=$(printf '%s' "$UNMAPPED_DIRS" | paste -sd, -)" >> "$GITHUB_OUTPUT"
+
+# De-duplicate the final tag list (order-stable). Author tags, the @:critical
+# floor, the @:ark submodule injection, and derived map tags can overlap (e.g. a
+# PR that both bumps the ark submodule and is authored with @:ark); union with an
+# empty list collapses any repeats so neither the --grep nor the PR comment shows
+# a tag twice.
+TAGS="$(union_csv_tags "$TAGS" "")"
+
+# Per-tag provenance for the PR comment's "Why these tags?" collapse. An empty
+# TAGS means the author wrote @:all (run everything) -- label it as a body tag.
+if [[ -z "$TAGS" ]]; then
+	TAG_REASONS="@:all|body"
+else
+	TAG_REASONS="$(build_tag_reasons "$TAGS" "$AUTHOR_TAGS" "$MAP_TAGS" "$ARK_INJECTED" "$ADDED_WIN" "$ADDED_WEB" "$TEST_CHANGE_TAGS")"
+fi
+echo "tag_reasons=$TAG_REASONS" >> "$GITHUB_OUTPUT"
+
+# Save tags to GITHUB_OUTPUT for use in GitHub Actions
+if [[ -n "$GITHUB_OUTPUT" ]]; then
+	echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
+else
+	echo "Warning: GITHUB_OUTPUT is not set. Tags will not be available to the workflow."
+fi

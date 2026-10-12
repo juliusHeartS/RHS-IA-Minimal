@@ -1,0 +1,571 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import test, { expect, Locator } from '@playwright/test';
+import { Code } from '../infra/code';
+import { QuickAccess } from './quickaccess';
+import { HotKeys } from './hotKeys.js';
+
+// --- Selectors ---
+
+const KERNEL_STATUS_WIDGET = '[data-testid="quarto-kernel-status"]';
+const INLINE_OUTPUT = '.quarto-inline-output';
+const OUTPUT_CONTENT = '.quarto-output-content';
+const OUTPUT_ITEM = '.quarto-output-item';
+const CELL_TOOLBAR = '.quarto-cell-toolbar';
+// Set by the cell toolbar on every execution state change and retained after the
+// execution ends, unlike the queued/running run button.
+const EXECUTION_ID_ATTR = 'data-execution-id';
+const EXECUTED_CELL_TOOLBAR = `${CELL_TOOLBAR}[${EXECUTION_ID_ATTR}]`;
+const TOOLBAR_RUN = '.quarto-toolbar-run';
+const TOOLBAR_MORE = '.quarto-toolbar-more';
+const OUTPUT_CLOSE = '.quarto-output-close';
+const OUTPUT_COPY = '.quarto-output-copy';
+const OUTPUT_SAVE = '.quarto-output-save';
+const OUTPUT_POPOUT = '.quarto-output-popout';
+const OUTPUT_COLLAPSE_CHEVRON = '.quarto-output-collapse-chevron';
+const OUTPUT_COLLAPSED_CLASS = /quarto-output-collapsed/;
+const OUTPUT_STDOUT = '.quarto-output-stdout';
+const OUTPUT_HTML = '.quarto-output-html';
+const OUTPUT_IMAGE = '.quarto-output-image';
+const OUTPUT_ERROR = '.quarto-output-error';
+const OUTPUT_WEBVIEW = '.quarto-output-webview-container';
+const OUTPUT_DATA_EXPLORER = '.quarto-output-data-explorer';
+const IMAGE_PREVIEW_WRAPPER = '.quarto-image-preview-wrapper';
+const IMAGE_PREVIEW = '.quarto-image-preview';
+const IMAGE_PREVIEW_ERROR = '.quarto-image-preview-error';
+const TRUNCATION_HEADER = '.quarto-output-truncation-header';
+const OPEN_IN_EDITOR = '.quarto-output-open-in-editor';
+
+/**
+ * Page Object Model for Quarto Inline Output feature.
+ */
+export class InlineQuarto {
+	private code: Code;
+	private quickaccess: QuickAccess;
+	private hotKeys: HotKeys;
+
+	// --- Locators ---
+
+	readonly kernelStatusWidget: Locator;
+	readonly inlineOutput: Locator;
+	readonly outputContent: Locator;
+	readonly outputItem: Locator;
+	readonly cellToolbar: Locator;
+	readonly visibleCellToolbar: Locator;
+	// Backs the run gate only; keeping it private keeps the `data-execution-id`
+	// contract an implementation detail that can be swapped without touching tests.
+	private readonly executedCellToolbar: Locator;
+	readonly toolbarRunButton: Locator;
+	readonly toolbarCancelButton: Locator;
+	readonly closeButton: Locator;
+	readonly copyButton: Locator;
+	readonly saveButton: Locator;
+	readonly popoutButton: Locator;
+	readonly collapseChevron: Locator;
+	readonly stdoutOutput: Locator;
+	readonly htmlOutput: Locator;
+	readonly imageOutput: Locator;
+	readonly errorOutput: Locator;
+	readonly webviewContainer: Locator;
+	readonly webviewOrHtmlOutput: Locator;
+	readonly imagePreviewWrapper: Locator;
+	readonly imagePreview: Locator;
+	readonly imagePreviewError: Locator;
+	readonly truncationHeader: Locator;
+	readonly openInEditorLink: Locator;
+
+	constructor(code: Code, quickaccess: QuickAccess, hotKeys: HotKeys) {
+		this.code = code;
+		this.quickaccess = quickaccess;
+		this.hotKeys = hotKeys;
+		const page = code.driver.currentPage;
+
+		this.kernelStatusWidget = page.locator(KERNEL_STATUS_WIDGET);
+		this.inlineOutput = page.locator(INLINE_OUTPUT);
+		this.outputContent = page.locator(`${INLINE_OUTPUT} ${OUTPUT_CONTENT}`);
+		this.outputItem = page.locator(`${INLINE_OUTPUT} ${OUTPUT_ITEM}`);
+		this.cellToolbar = page.locator(CELL_TOOLBAR);
+		this.visibleCellToolbar = page.locator(`${CELL_TOOLBAR}.visible`);
+		this.executedCellToolbar = page.locator(EXECUTED_CELL_TOOLBAR);
+		this.toolbarRunButton = page.locator(`${CELL_TOOLBAR} ${TOOLBAR_RUN}`);
+		this.toolbarCancelButton = page.getByRole('button', { name: 'Cancel pending execution' });
+		this.closeButton = page.locator(`${INLINE_OUTPUT} ${OUTPUT_CLOSE}`);
+		this.copyButton = page.locator(`${INLINE_OUTPUT} ${OUTPUT_COPY}`);
+		this.saveButton = page.locator(`${INLINE_OUTPUT} ${OUTPUT_SAVE}`);
+		this.popoutButton = page.locator(`${INLINE_OUTPUT} ${OUTPUT_POPOUT}`);
+		// Chevron is portaled into the editor's overflow-guard, so it's not a
+		// descendant of `.quarto-inline-output` and must be located on the page.
+		this.collapseChevron = page.locator(OUTPUT_COLLAPSE_CHEVRON);
+		this.stdoutOutput = page.locator(`${INLINE_OUTPUT} ${OUTPUT_STDOUT}`);
+		this.htmlOutput = page.locator(`${INLINE_OUTPUT} ${OUTPUT_HTML}`);
+		this.imageOutput = page.locator(`${INLINE_OUTPUT} ${OUTPUT_IMAGE}`);
+		this.errorOutput = page.locator(`${INLINE_OUTPUT} ${OUTPUT_ERROR}`);
+		this.webviewContainer = page.locator(`${INLINE_OUTPUT} ${OUTPUT_WEBVIEW}`);
+		this.webviewOrHtmlOutput = page.locator(`${INLINE_OUTPUT}`).locator(`${OUTPUT_WEBVIEW}, ${OUTPUT_HTML}, ${OUTPUT_DATA_EXPLORER}`);
+		this.imagePreviewWrapper = page.locator(IMAGE_PREVIEW_WRAPPER);
+		this.imagePreview = page.locator(IMAGE_PREVIEW);
+		this.imagePreviewError = page.locator(IMAGE_PREVIEW_ERROR);
+		this.truncationHeader = page.locator(`${INLINE_OUTPUT} ${TRUNCATION_HEADER}`);
+		this.openInEditorLink = page.locator(`${INLINE_OUTPUT} ${OPEN_IN_EDITOR}`);
+	}
+
+	// --- Getters ---
+
+	getInlineOutputAt(index: number): Locator {
+		return this.inlineOutput.nth(index);
+	}
+
+	getOutputContentAt(index: number): Locator {
+		return this.inlineOutput.nth(index).locator(OUTPUT_CONTENT);
+	}
+
+	/**
+	 * Inline output content scoped to a single editor group. The same Quarto
+	 * document can be open in more than one editor at once (a split view); each
+	 * group renders its own copy of the view zones, so scope by group to tell
+	 * the panes apart.
+	 */
+	getOutputContentInGroup(group: Locator): Locator {
+		return group.locator(`${INLINE_OUTPUT} ${OUTPUT_CONTENT}`);
+	}
+
+	getOutputItemAt(index: number): Locator {
+		return this.inlineOutput.nth(index).locator(OUTPUT_ITEM).first();
+	}
+
+	async getKernelText(): Promise<string> {
+		const kernelText = await this.kernelStatusWidget.locator('.kernel-label').textContent();
+		if (kernelText === null) {
+			throw new Error('Kernel text is null');
+		}
+		return kernelText;
+	}
+
+	// --- Actions ---
+
+	async gotoLine(lineNumber: number): Promise<void> {
+		await test.step(`Go to line ${lineNumber}`, async () => {
+			await this.quickaccess.runCommand('workbench.action.gotoLine', { keepOpen: true });
+			await this.code.driver.currentPage.keyboard.type(String(lineNumber));
+			await this.code.driver.currentPage.keyboard.press('Enter');
+		});
+	}
+
+	async runCurrentCell({ via = 'hotkey' }: { via?: 'command' | 'hotkey' } = {}): Promise<void> {
+		await test.step(`Run current Quarto cell via ${via}`, async () => {
+			via === 'hotkey'
+				? await this.hotKeys.runCurrentQuartoCell()
+				: await this.quickaccess.runCommand('quarto.runCurrentCell');
+		});
+	}
+
+	async runCurrentCode({ via = 'hotkey' }: { via?: 'command' | 'hotkey' } = {}): Promise<void> {
+		await test.step(`Run current Quarto code via ${via}`, async () => {
+			via === 'hotkey'
+				? await this.hotKeys.runCurrentQuartoCode()
+				: await this.quickaccess.runCommand('quarto.runCurrent');
+		});
+	}
+
+	async runAllCells(): Promise<void> {
+		await test.step('Run all Quarto cells', async () => {
+			await this.quickaccess.runCommand('quarto.runAllCells');
+		});
+	}
+
+	async clearAllOutputs(): Promise<void> {
+		await test.step('Clear all Quarto inline outputs', async () => {
+			await this.quickaccess.runCommand('positronQuarto.clearAllOutputs');
+		});
+	}
+
+	/**
+	 * Execution ids recorded across all cell toolbars. Document-scoped, not
+	 * cell-scoped: the toolbar DOM carries no cell identity, so a new id proves
+	 * *some* cell ran, not which one.
+	 */
+	private async _recordedExecutionIds(): Promise<string[]> {
+		return this.executedCellToolbar.evaluateAll(
+			(toolbars, attr) => toolbars.map(toolbar => toolbar.getAttribute(attr)!),
+			EXECUTION_ID_ATTR
+		);
+	}
+
+	/**
+	 * Fire a run action at `cellLine` and confirm the cell actually started
+	 * executing before returning. The Quarto run command is extension-contributed,
+	 * so a transient extension-host stall (e.g. right after a window reload) can
+	 * swallow the run hotkey and leave the cell idle -- which would otherwise burn
+	 * the full output timeout waiting on a run that never took. Re-fire (moving the
+	 * cursor back onto the cell each attempt) until a new execution is recorded.
+	 *
+	 * Gates on a newly recorded execution id rather than the toolbar's
+	 * queued/running button: a short cell can finish in a couple hundred
+	 * milliseconds, and that button is only visible while the cursor is in its cell
+	 * and it is on screen, so it comes and goes between polls under CI load.
+	 */
+	private async _runCellUntilStarted(cellLine: number, run: () => Promise<void>): Promise<void> {
+		const before = new Set(await this._recordedExecutionIds());
+		await expect(async () => {
+			await this.gotoLine(cellLine);
+			await run();
+			await expect
+				.poll(async () => (await this._recordedExecutionIds()).some(id => !before.has(id)), { timeout: 10000, intervals: [250] })
+				.toBe(true);
+		}).toPass({ timeout: 30000, intervals: [1000] });
+	}
+
+	/**
+	 * Navigate to `outputLine` and confirm the inline output rendered, re-driving
+	 * the navigation until it does. Monaco sets a view zone to `display: none`
+	 * whenever it falls outside the rendered range, so an output that resizes
+	 * itself after the reveal (a plotly webview settling to its final height
+	 * shrinks the document, which makes Monaco clamp scrollTop back to the
+	 * bottom) can end up stranded off-screen with nothing left to scroll it into
+	 * view. Repeating the reveal recovers; a single long wait never can.
+	 *
+	 * Pass `outputLine` a line at or above the output -- usually the cell's
+	 * closing fence. A line past the end of the document clamps to the last line
+	 * and reveals it at maximum scroll, which is where the strand happens.
+	 *
+	 * `target` overrides what is waited for (e.g. `inlineOutput.last()` for a
+	 * document with several cells); it defaults to any inline output.
+	 */
+	async revealOutput(outputLine: number, { target, timeout = 30000 }: { target?: Locator; timeout?: number } = {}): Promise<void> {
+		await test.step(`Reveal inline output at line ${outputLine}`, async () => {
+			const output = target ?? this.inlineOutput;
+			await expect(async () => {
+				await this.gotoLine(outputLine);
+				await expect(output).toBeVisible({ timeout: 5000 });
+			}).toPass({ timeout, intervals: [1000] });
+		});
+	}
+
+	async runCellAndWaitForOutput({ cellLine, outputLine, timeout = 60000 }: { cellLine: number; outputLine: number; timeout?: number }): Promise<void> {
+		await test.step(`Run cell at line ${cellLine} and wait for output at line ${outputLine}`, async () => {
+			await this._runCellUntilStarted(cellLine, () => this.runCurrentCell());
+			await this.revealOutput(outputLine, { timeout });
+		});
+	}
+
+	async runCodeAndWaitForOutput({ cellLine, outputLine, timeout = 60000 }: { cellLine: number; outputLine: number; timeout?: number }): Promise<void> {
+		await test.step(`Run code at line ${cellLine} and wait for output at line ${outputLine}`, async () => {
+			await this._runCellUntilStarted(cellLine, () => this.runCurrentCode());
+			await this.revealOutput(outputLine, { timeout });
+		});
+	}
+
+	/**
+	 * Run the cell at `cellLine` and wait for auto-scroll to bring its inline
+	 * output into the viewport. Deliberately does NOT navigate to the output
+	 * (which would scroll on its own and mask the behavior under test), so the
+	 * cell should be taller than the viewport for its output to start below the
+	 * fold.
+	 */
+	async runCellAndExpectOutputInViewport({ cellLine, timeout = 120000 }: { cellLine: number; timeout?: number }): Promise<void> {
+		await test.step(`Run cell at line ${cellLine} and expect its output scrolled into view`, async () => {
+			// Don't gate on the executing toolbar button (as `_runCellUntilStarted`
+			// does): auto-scroll reveals the output by scrolling the cell's top --
+			// and its floating toolbar, which hides itself once off-screen -- out of
+			// view the instant the cell starts running, so the button can vanish
+			// before Playwright observes it (a race that only loses under CI load).
+			// Re-fire the run instead (re-homing the cursor each attempt, to survive
+			// a swallowed run hotkey) until the output itself is scrolled into view,
+			// which is the behavior under test.
+			await expect(async () => {
+				await this.gotoLine(cellLine);
+				await this.runCurrentCell();
+				await expect(this.outputContent.first()).toBeInViewport({ timeout: 20000 });
+			}).toPass({ timeout, intervals: [2000] });
+		});
+	}
+
+	/**
+	 * Run the cell at `cellLine` and confirm its inline output is NOT scrolled
+	 * into the viewport (used to verify auto-scroll stays off). Waits for the
+	 * kernel to go idle first so the output has actually been produced and just
+	 * remains below the fold.
+	 */
+	async runCellAndExpectOutputNotInViewport({ cellLine }: { cellLine: number }): Promise<void> {
+		await test.step(`Run cell at line ${cellLine} and expect its output to stay below the fold`, async () => {
+			await this._runCellUntilStarted(cellLine, () => this.runCurrentCell());
+			await this.expectKernelIdle();
+			await expect(this.outputContent.first()).not.toBeInViewport();
+		});
+	}
+
+	async clickToolbarRunButton(index = 0): Promise<void> {
+		await test.step(`Click run button on cell toolbar ${index}`, async () => {
+			const runButton = this.cellToolbar.nth(index).locator(TOOLBAR_RUN);
+			await expect(runButton).toBeVisible({ timeout: 10000 });
+			await runButton.click();
+		});
+	}
+
+	async clickToolbarCancelButton(): Promise<void> {
+		await test.step(`Click cancel button on cell toolbar`, async () => {
+			await this.toolbarCancelButton.click();
+		});
+	}
+
+	async openMoreActionsMenu(): Promise<void> {
+		await test.step('Open the "more cell actions" menu', async () => {
+			const moreButton = this.visibleCellToolbar.locator(TOOLBAR_MORE);
+			await expect(moreButton).toBeVisible({ timeout: 10000 });
+			await moreButton.click();
+		});
+	}
+
+	moreActionItem(label: string): Locator {
+		// Items in the Positron custom context menu render their text in a
+		// `.title` element inside a `.custom-context-menu-item` button.
+		return this.code.driver.currentPage
+			.locator('.custom-context-menu-items .custom-context-menu-item', { hasText: label });
+	}
+
+	async clickMoreAction(label: string): Promise<void> {
+		await test.step(`Click "${label}" in the more cell actions menu`, async () => {
+			await this.moreActionItem(label).click();
+		});
+	}
+
+	async closeOutput(): Promise<void> {
+		await test.step('Close inline output', async () => {
+			await this.closeButton.click();
+			await expect(this.inlineOutput).not.toBeVisible({ timeout: 5000 });
+		});
+	}
+
+	async copyOutput(): Promise<void> {
+		await test.step('Copy inline output', async () => {
+			await this.copyButton.click();
+			await expect(this.copyButton).toHaveClass(/copy-success/);
+		});
+	}
+
+	async runCopyCommand(): Promise<void> {
+		await test.step('Run copy output command', async () => {
+			await this.quickaccess.runCommand('positronQuarto.copyOutput');
+		});
+	}
+
+	async popoutOutput(): Promise<void> {
+		await test.step('Popout inline output', async () => {
+			await this.popoutButton.click();
+		});
+	}
+
+	async clickCollapseChevron(index = 0): Promise<void> {
+		await test.step(`Click collapse chevron on output ${index}`, async () => {
+			// Hover the wrapper to reveal the portaled chevron.
+			await this.getInlineOutputAt(index).hover();
+			await expect(this.collapseChevron.nth(index)).toBeVisible({ timeout: 5000 });
+			await this.collapseChevron.nth(index).click();
+		});
+	}
+
+	async runPopoutCommand(): Promise<void> {
+		await test.step('Run popout output command', async () => {
+			await this.quickaccess.runCommand('positronQuarto.popoutOutput');
+		});
+	}
+
+	async selectStdoutTextViaDrag(): Promise<void> {
+		await test.step('Select stdout text via click-and-drag', async () => {
+			const page = this.code.driver.currentPage;
+			const boundingBox = await this.stdoutOutput.first().boundingBox();
+			expect(boundingBox).not.toBeNull();
+
+			await page.evaluate(() => window.getSelection()?.removeAllRanges());
+
+			const startX = boundingBox!.x + 10;
+			const startY = boundingBox!.y + boundingBox!.height / 2;
+			const endX = boundingBox!.x + Math.min(boundingBox!.width - 10, 200);
+			const endY = startY;
+
+			await page.mouse.move(startX, startY);
+			await page.mouse.down();
+			await page.mouse.move(endX, endY, { steps: 10 });
+			await page.mouse.up();
+			await page.waitForTimeout(200);
+		});
+	}
+
+	// --- Verifications ---
+
+	async expectKernelToHaveText(name: string | RegExp, timeout = 30000): Promise<void> {
+		await test.step(`Expect kernel text to be "${name}"`, async () => {
+			const kernelLabel = this.kernelStatusWidget.locator('.kernel-label');
+			await expect(kernelLabel).toBeVisible({ timeout });
+			await expect(kernelLabel).toHaveText(name, { timeout });
+		});
+	}
+
+	async expectKernelStatusVisible(timeout = 30000): Promise<void> {
+		await test.step('Expect kernel status widget visible', async () => {
+			await expect(this.kernelStatusWidget.first()).toBeVisible({ timeout });
+		});
+	}
+
+	async expectOutputsExist(count: number, timeout = 30000): Promise<void> {
+		await test.step(`Expect ${count} output(s) exist in DOM`, async () => {
+			await expect(this.inlineOutput).toHaveCount(count, { timeout });
+		});
+	}
+
+	async expectOutputVisible({ index = 0, timeout = 30000 }: { index?: number; timeout?: number } = {}): Promise<void> {
+		await test.step(`Expect output at index ${index} visible on screen`, async () => {
+			await expect(this.getOutputContentAt(index)).toBeVisible({ timeout });
+		});
+	}
+
+	async expectOutputCollapsed({ index = 0, timeout = 5000 }: { index?: number; timeout?: number } = {}): Promise<void> {
+		await test.step(`Expect output at index ${index} collapsed`, async () => {
+			await expect(this.getInlineOutputAt(index)).toHaveClass(OUTPUT_COLLAPSED_CLASS, { timeout });
+		});
+	}
+
+	async expectOutputExpanded({ index = 0, timeout = 5000 }: { index?: number; timeout?: number } = {}): Promise<void> {
+		await test.step(`Expect output at index ${index} expanded`, async () => {
+			await expect(this.getInlineOutputAt(index)).not.toHaveClass(OUTPUT_COLLAPSED_CLASS, { timeout });
+		});
+	}
+
+	async expectOutputContentCount(count: number): Promise<void> {
+		await test.step(`Verify output content area has ${count} items`, async () => {
+			const contentCount = await this.outputContent.count();
+			expect(contentCount).toBe(count);
+		});
+	}
+
+	async expectOutputItemCount(count: number): Promise<void> {
+		await test.step(`Verify output item count is ${count}`, async () => {
+			const itemCount = await this.outputItem.count();
+			expect(itemCount).toBe(count);
+		});
+	}
+
+	async expectErrorCount(count: number): Promise<void> {
+		await test.step(`Expect ${count} error output(s)`, async () => {
+			const errorCount = await this.errorOutput.count();
+			expect(errorCount).toBe(count);
+		});
+	}
+
+	/**
+	 * Verify that the error output at the given index has at most the
+	 * expected number of rendered lines (div elements inside the pre).
+	 * Catches regressions where error text is duplicated.
+	 */
+	async expectErrorMaxLines(maxLines: number, { index = 0, timeout = 10000 }: { index?: number; timeout?: number } = {}): Promise<void> {
+		await test.step(`Expect error output has at most ${maxLines} lines`, async () => {
+			const errorEl = this.errorOutput.nth(index);
+			await expect(errorEl).toBeVisible({ timeout });
+			// Each ANSI output line is rendered as a <div> inside a <pre>
+			const lineCount = await errorEl.locator('pre > div').count();
+			expect(lineCount, `Expected at most ${maxLines} lines in error, but found ${lineCount}`).toBeLessThanOrEqual(maxLines);
+		});
+	}
+
+	async expectHtmlOutputVisible(): Promise<void> {
+		await test.step('Verify HTML output present', async () => {
+			const htmlCount = await this.htmlOutput.count();
+			expect(htmlCount).toBeGreaterThan(0);
+		});
+	}
+
+	async expectWebviewOrHtmlVisible(timeout = 30000): Promise<void> {
+		await test.step('Verify webview or HTML output visible', async () => {
+			await expect(this.webviewOrHtmlOutput.first()).toBeVisible({ timeout });
+		});
+	}
+
+	async expectStdoutContains(expectedText: string, timeout = 5000): Promise<void> {
+		await test.step(`Verify stdout contains "${expectedText}"`, async () => {
+			await expect(this.stdoutOutput.first()).toBeVisible({ timeout });
+			await expect(this.stdoutOutput.first()).toContainText(expectedText);
+		});
+	}
+
+	async expectOutputContainsText(text: string | RegExp, { index = 0, timeout = 10000 }: { index?: number; timeout?: number } = {}): Promise<void> {
+		await test.step(`Expect output at index ${index} contains "${text}"`, async () => {
+			await expect(this.getOutputContentAt(index)).toContainText(text, { timeout });
+		});
+	}
+
+	async expectOutputNotContainsText(text: string, { index = 0, timeout = 10000 }: { index?: number; timeout?: number } = {}): Promise<void> {
+		await test.step(`Expect output at index ${index} does not contain "${text}"`, async () => {
+			await expect(this.getOutputContentAt(index)).not.toContainText(text, { timeout });
+		});
+	}
+
+	async expectTextSelectedAndContains(expectedStrings: string[]): Promise<void> {
+		await test.step(`Verify text is selected and contains one of: ${expectedStrings.join(', ')}`, async () => {
+			const selectedText = await this.code.driver.currentPage.evaluate(() => {
+				const selection = window.getSelection();
+				return selection ? selection.toString().trim() : '';
+			});
+			expect(selectedText.length).toBeGreaterThan(0);
+			const containsExpected = expectedStrings.some(str => selectedText.includes(str));
+			expect(containsExpected).toBe(true);
+		});
+	}
+
+	async expectStdoutNotContains(forbiddenStrings: string[]): Promise<void> {
+		await test.step(`Expect stdout does not contain: ${forbiddenStrings.join(', ')}`, async () => {
+			const stdoutCount = await this.stdoutOutput.count();
+			if (stdoutCount > 0) {
+				const stdoutText = await this.stdoutOutput.first().textContent();
+				for (const forbidden of forbiddenStrings) {
+					expect(stdoutText).not.toContain(forbidden);
+				}
+			}
+		});
+	}
+
+	async expectNoDataExplorerMetadata(): Promise<void> {
+		await test.step('Expect no data explorer metadata in output', async () => {
+			const allOutputText = await this.inlineOutput.textContent();
+			expect(allOutputText).not.toContain('comm_id');
+			expect(allOutputText).not.toContain('vnd.positron.dataExplorer');
+		});
+	}
+
+	async expectCopySuccess(timeout = 2000): Promise<void> {
+		await test.step('Verify copy success feedback', async () => {
+			await expect(this.copyButton).toHaveClass(/copy-success/, { timeout });
+		});
+	}
+
+	async expectCopySuccessReverted(timeout = 2000): Promise<void> {
+		await test.step('Verify copy success feedback reverted', async () => {
+			await expect(this.copyButton).not.toHaveClass(/copy-success/, { timeout });
+		});
+	}
+
+	async expectKernelIdle(timeout = 30000): Promise<string> {
+		let kernelText: string | null = null;
+		await test.step('Verify kernel is idle', async () => {
+			const kernelLabel = this.kernelStatusWidget.locator('.kernel-label');
+			await expect(kernelLabel).toBeVisible({ timeout });
+			await expect(kernelLabel).not.toHaveText(/No Kernel|Starting\.\.\./, { timeout });
+			await expect(this.kernelStatusWidget.locator('.codicon-positron-runtime-status-idle')).toBeVisible();
+		});
+		return kernelText!;
+	}
+
+	async expectSingleVisibleToolbar(timeout = 15000): Promise<void> {
+		await test.step('Expect exactly one visible cell toolbar', async () => {
+			await expect(this.visibleCellToolbar).toHaveCount(1, { timeout });
+		});
+	}
+
+	async expectPendingExecution({ timeout }: { timeout?: number } = { timeout: 5000 }): Promise<void> {
+		await test.step(`Expect cell is pending execution`, async () => {
+			await expect(this.toolbarCancelButton).toBeVisible({ timeout });
+		});
+	}
+}

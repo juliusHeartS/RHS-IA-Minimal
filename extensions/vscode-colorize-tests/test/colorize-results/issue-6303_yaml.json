@@ -1,0 +1,398 @@
+[
+	{
+		"c": "swagger",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.key.yaml string.unquoted.plain.yaml entity.name.tag.yaml",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml punctuation.separator.map.value.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "'",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml punctuation.definition.string.begin.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "2.0",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.single.yaml: #0000FF",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "'",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml punctuation.definition.string.end.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "info",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.key.yaml string.unquoted.plain.yaml entity.name.tag.yaml",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml punctuation.separator.map.value.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml punctuation.whitespace.indentation.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "description",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.key.yaml string.unquoted.plain.yaml entity.name.tag.yaml",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml punctuation.separator.map.value.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "'",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml punctuation.definition.string.begin.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.begin: #C2AD00",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "The API Management Service API defines an updated and refined version",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.single.yaml: #0000FF",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml punctuation.whitespace.indentation.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.single.yaml: #0000FF",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "of the concepts currently known as Developer, APP, and API Product in Edge. Of",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.single.yaml: #0000FF",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml punctuation.whitespace.indentation.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.single.yaml: #0000FF",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "note is the introduction of the API concept, missing previously from Edge",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.single.yaml: #0000FF",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml punctuation.whitespace.indentation.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.quoted.single.yaml: #0000FF",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "'",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.quoted.single.yaml punctuation.definition.string.end.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.quoted.single.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "punctuation.definition.string.end: #C2AD00",
+			"hc_light": "string.quoted.single.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml punctuation.whitespace.indentation.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "title",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.key.yaml string.unquoted.plain.yaml entity.name.tag.yaml",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml punctuation.separator.map.value.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "API Management Service API",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.unquoted.plain.out.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.unquoted.plain.out.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.unquoted.plain.out.yaml: #0000FF",
+			"hc_light": "string.unquoted.plain.out.yaml: #0F4A85"
+		}
+	},
+	{
+		"c": "  ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml punctuation.whitespace.indentation.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "version",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.key.yaml string.unquoted.plain.yaml entity.name.tag.yaml",
+		"r": {
+			"hc_black": "entity.name.tag: #569CD6",
+			"2026-light": "entity.name.tag: #116329",
+			"2026-dark": "entity.name.tag: #7EE787",
+			"rhs_ia_dark": "entity.name.tag: #569CD6",
+			"rhs_ia_light": "entity.name.tag: #67898E",
+			"hc_light": "entity.name.tag: #0F4A85"
+		}
+	},
+	{
+		"c": ":",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml punctuation.separator.map.value.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": " ",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml punctuation.whitespace.separator.yaml",
+		"r": {
+			"hc_black": "default: #FFFFFF",
+			"2026-light": "default: #202020",
+			"2026-dark": "default: #BBBEBF",
+			"rhs_ia_dark": "default: #CCCCCC",
+			"rhs_ia_light": "default: #3D3D3D",
+			"hc_light": "default: #292929"
+		}
+	},
+	{
+		"c": "initial",
+		"t": "source.yaml meta.stream.yaml meta.document.yaml meta.mapping.yaml meta.map.value.yaml meta.mapping.yaml meta.map.value.yaml string.unquoted.plain.out.yaml",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.unquoted.plain.out.yaml: #0000FF",
+			"2026-dark": "string: #A5D6FF",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.unquoted.plain.out.yaml: #0000FF",
+			"hc_light": "string.unquoted.plain.out.yaml: #0F4A85"
+		}
+	}
+]

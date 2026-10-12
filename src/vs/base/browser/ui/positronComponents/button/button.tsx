@@ -1,0 +1,234 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+// CSS.
+import './button.css';
+
+// React.
+import React, { CSSProperties, KeyboardEvent, MouseEvent, PropsWithChildren, useImperativeHandle, useRef, useState } from 'react';
+
+// Other dependencies.
+import { positronClassNames } from '../../../../common/positronUtilities.js';
+import { IHoverManager } from '../../../../../platform/hover/browser/hoverManager.js';
+
+/**
+ * MouseTrigger enumeration.
+ */
+export enum MouseTrigger {
+	Click,
+	MouseDown
+}
+
+/**
+ * KeyboardModifiers interface.
+ */
+export interface KeyboardModifiers {
+	altKey: boolean;
+	ctrlKey: boolean;
+	metaKey: boolean;
+	shiftKey: boolean;
+}
+
+/**
+ * ButtonProps interface.
+ */
+export interface ButtonProps {
+	readonly id?: string;
+	readonly ariaControls?: string;
+	/**
+	 * Marks the button unavailable while leaving it in the tab order.
+	 *
+	 * Unlike `disabled`, which sets the native attribute, this keeps the button
+	 * focusable: a keyboard user who presses it keeps their place instead of being
+	 * dropped to the top of the page, and a screen reader can still reach it and be
+	 * told it is unavailable. Presses do nothing, and the `disabled` class is
+	 * applied either way so both read the same.
+	 */
+	readonly ariaDisabled?: boolean;
+	readonly ariaExpanded?: boolean;
+	readonly ariaHaspopup?: React.AriaAttributes['aria-haspopup'];
+	readonly ariaLabel?: string;
+	readonly ariaSelected?: boolean;
+	readonly autoFocus?: boolean;
+	readonly role?: string;
+	readonly className?: string;
+	readonly disabled?: boolean;
+	readonly hoverManager?: IHoverManager;
+	readonly mouseTrigger?: MouseTrigger;
+	readonly style?: CSSProperties | undefined;
+	readonly tabIndex?: number;
+	readonly tooltip?: string | (() => string | undefined);
+	// Native <button> type. Defaults to 'button' (see the rendered button below for the rationale);
+	// pass 'submit' when the button must serve as the implicit form submit target inside a <form>.
+	readonly type?: 'button' | 'submit';
+	readonly onBlur?: () => void;
+	readonly onFocus?: () => void;
+	readonly onKeyDown?: (e: KeyboardEvent<HTMLButtonElement>) => void;
+	readonly onMouseEnter?: () => void;
+	readonly onMouseLeave?: () => void;
+	readonly onPressed?: (e: KeyboardModifiers) => void;
+	ref?: React.Ref<HTMLButtonElement>;
+}
+
+/**
+ * Button component.
+ * @param props A PropsWithChildren<ButtonProps> that contains the component properties.
+ * @returns The rendered component.
+ */
+export const Button = (props: PropsWithChildren<ButtonProps>) => {
+	// Reference hooks.
+	const buttonRef = useRef<HTMLButtonElement>(undefined!);
+
+	// Customize the ref handle that is exposed.
+	useImperativeHandle(props.ref, () => buttonRef.current, []);
+
+	// State hooks.
+	const [mouseInside, setMouseInside] = useState(false);
+
+	// Hover useEffect.
+	React.useEffect(() => {
+		// If the mouse is inside, show the hover. This has the effect of showing the hover when
+		// mouseInside is set to true and updating the hover when the tooltip changes.
+		if (mouseInside) {
+			props.hoverManager?.showHover(buttonRef.current, props.tooltip);
+		}
+	}, [mouseInside, props.hoverManager, props.tooltip]);
+
+	/**
+	 * Sends the onPressed event.
+	 * @param e The event that triggered the onPressed event.
+	 */
+	const sendOnPressed = (e: MouseEvent<HTMLButtonElement> | KeyboardEvent<HTMLButtonElement>) => {
+		// Consume the event.
+		e.preventDefault();
+		e.stopPropagation();
+
+		// Hide the hover.
+		props.hoverManager?.hideHover();
+
+		// Raise the onPressed event if the button isn't disabled.
+		if (!props.disabled && !props.ariaDisabled && props.onPressed) {
+			props.onPressed(e);
+		}
+	};
+
+	/**
+	 * onKeyDown event handler.
+	 * @param e A KeyboardEvent<HTMLButtonElement> that describes a user interaction with the keyboard.
+	 */
+	const keyDownHandler = (e: KeyboardEvent<HTMLButtonElement>) => {
+		// Call the external onKeyDown handler first if provided.
+		props.onKeyDown?.(e);
+
+		// If the event was handled (preventDefault called), don't process further.
+		if (e.defaultPrevented) {
+			return;
+		}
+
+		// Process the key down event for Enter/Space.
+		switch (e.code) {
+			case 'Enter':
+			case 'Space':
+				sendOnPressed(e);
+				break;
+		}
+	};
+
+	/**
+	 * onClick event handler.
+	 * @param e A MouseEvent<HTMLDivElement> that describes a user interaction with the mouse.
+	 */
+	const clickHandler = (e: MouseEvent<HTMLButtonElement>) => {
+		// If the mouse trigger is click, handle the event.
+		if (props.mouseTrigger === undefined || props.mouseTrigger === MouseTrigger.Click) {
+			sendOnPressed(e);
+		}
+	};
+
+	/**
+	 * onMouseEnter event handler.
+	 * @param e A MouseEvent<HTMLDivElement> that describes a user interaction with the mouse.
+	 */
+	const mouseEnterHandler = (e: MouseEvent<HTMLButtonElement>) => {
+		// Set the mouse inside state.
+		setMouseInside(true);
+
+		// Call the onMouseEnter callback.
+		props.onMouseEnter?.();
+	};
+
+	/**
+	 * onMouseLeave event handler.
+	 * @param e A MouseEvent<HTMLDivElement> that describes a user interaction with the mouse.
+	 */
+	const mouseLeaveHandler = (e: MouseEvent<HTMLButtonElement>) => {
+		// Clear the mouse inside state.
+		setMouseInside(false);
+
+		// Hide the hover.
+		props.hoverManager?.hideHover();
+
+		// Call the onMouseLeave callback.
+		props.onMouseLeave?.();
+	};
+
+	/**
+	 * onMouseDown event handler.
+	 * @param e A MouseEvent<HTMLDivElement> that describes a user interaction with the mouse.
+	 */
+	const mouseDownHandler = (e: MouseEvent<HTMLButtonElement>) => {
+		// Consume the event. This addresses https://github.com/posit-dev/positron/issues/5737 and
+		// was borrowed from ActionViewItem.
+		e.preventDefault();
+		e.stopPropagation();
+
+		// If the mouse trigger is mouse down, handle the event.
+		if (props.mouseTrigger === MouseTrigger.MouseDown) {
+			sendOnPressed(e);
+		}
+	};
+
+	// Render.
+	return (
+		<button
+			ref={buttonRef}
+			aria-controls={props.ariaControls}
+			aria-disabled={props.disabled || props.ariaDisabled ? 'true' : undefined}
+			aria-expanded={props.ariaExpanded}
+			aria-haspopup={props.ariaHaspopup}
+			aria-label={props.ariaLabel}
+			aria-selected={props.ariaSelected}
+			autoFocus={props.autoFocus}
+			className={positronClassNames(
+				'positron-button',
+				props.className,
+				{ 'disabled': props.disabled || props.ariaDisabled }
+			)}
+			disabled={props.disabled}
+			id={props.id}
+			role={props.role ?? 'button'}
+			style={props.style}
+			tabIndex={props.tabIndex ?? 0}
+			// Default to 'button'. The HTML default of 'submit' is a footgun for buttons inside
+			// <form> elements because it makes every Button a candidate for Enter-key implicit
+			// submission. Click and keyboard activation go through onPressed regardless of type;
+			// the type prop only affects which button the browser picks as the form's implicit
+			// submit target.
+			type={props.type ?? 'button'}
+			onBlur={props.onBlur}
+			onClick={clickHandler}
+			onFocus={props.onFocus}
+			onKeyDown={keyDownHandler}
+			onMouseDown={mouseDownHandler}
+			onMouseEnter={mouseEnterHandler}
+			onMouseLeave={mouseLeaveHandler}
+		>
+			{props.children}
+		</button>
+	);
+};
+
+// Set the display name.
+Button.displayName = 'Button';

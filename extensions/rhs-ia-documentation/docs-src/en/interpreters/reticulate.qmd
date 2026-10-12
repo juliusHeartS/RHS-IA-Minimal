@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Reticulate"
+---
+
+Reticulate lets an R session call Python. The Python environment selected by reticulate is separate from the Python runtime that RHS-IA may use for standalone Python files.
+
+Configure the reticulate Python environment before importing Python modules in R. Once Python has initialized inside the R process, changing environments generally requires restarting R.
+
+When troubleshooting, compare the executable reported by reticulate with the environment you intended to use and confirm that required Python packages are installed there.

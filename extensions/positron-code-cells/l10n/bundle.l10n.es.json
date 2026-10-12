@@ -1,0 +1,5 @@
+{
+	"$(run) Run Cell": "$(run) Ejecutar celda",
+	"Run Above": "Ejecutar arriba",
+	"Run Next": "Ejecutar siguiente"
+}

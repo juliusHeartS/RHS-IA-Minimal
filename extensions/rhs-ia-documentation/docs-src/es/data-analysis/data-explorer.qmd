@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Data Explorer"
+---
+
+Data Explorer abre objetos tabulares en un visor interactivo. Usa la acción **Open in Data Explorer** de un objeto desde **Variables**, un resultado de cuaderno u otra superficie compatible.
+
+El visor combina una [cuadrícula de datos](data-grid.qmd), una [barra de filtros](filter-bar.qmd) y un [panel de resumen](summary-panel.qmd). Ordenar y filtrar cambia la vista de los datos; no reescribe silenciosamente el objeto del tiempo de ejecución.
+
+Los datos grandes o remotos pueden cargarse por páginas. Las operaciones disponibles y los resúmenes de tipos dependen del tiempo de ejecución del lenguaje y de su proveedor de Data Explorer.

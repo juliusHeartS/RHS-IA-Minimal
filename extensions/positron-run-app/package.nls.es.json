@@ -1,0 +1,16 @@
+{
+	"configuration.appLauncher.showEnableShellIntegrationMessage": "Mostrar un prompt cuando la integración del shell está desactivada.",
+	"configuration.appLauncher.showShellIntegrationNotSupportedMessage": "Mostrar una advertencia cuando la integración del shell no es compatible con el terminal activo.",
+	"configuration.appLauncher.terminalAppUrlOpenLocation": "Dónde abrir URL de aplicaciones cuando se hace clic en el terminal.",
+	"configuration.appLauncher.terminalAppUrlOpenLocation.ask": "Prepárese para elegir dónde abrir URL de aplicaciones cuando haga clic.",
+	"configuration.appLauncher.terminalAppUrlOpenLocation.browser": "Abrir URL de aplicaciones en el navegador predeterminado.",
+	"configuration.appLauncher.terminalAppUrlOpenLocation.viewer": "Abrir URL de aplicaciones en el visor.",
+	"configuration.runApp.previewMode": "Dónde previsualizar aplicaciones por defecto.",
+	"configuration.runApp.previewMode.editor": "Abrir en una pestaña del editor.",
+	"configuration.runApp.previewMode.external": "Abrir en un navegador externo.",
+	"configuration.runApp.previewMode.none": "No abra una vista previa automáticamente.",
+	"configuration.runApp.previewMode.viewer": "Abrir en el panel RHS-IA del visor.",
+	"configuration.runApp.urlDetectionTimeout": "Tiempo máximo en segundos para esperar a que aparezca una URL de la aplicación en la salida.",
+	"description": "Marco genérico «Ejecutar aplicación» de RHS-IA",
+	"displayName": "RHS-IA Ejecutar aplicación"
+}

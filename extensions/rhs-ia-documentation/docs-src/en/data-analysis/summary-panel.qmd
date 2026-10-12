@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Data Explorer Summary Panel"
+---
+
+The summary panel describes the selected column. Depending on its type, the panel can show counts, missing values, ranges, distributions, frequencies, or other statistics supplied by the runtime.
+
+Select another column to update the summary. Results can be approximate or limited when the provider avoids transferring an entire large data set.
+
+Use the panel to spot quality issues and unusual distributions, then calculate and record definitive statistics in project code.

@@ -1,0 +1,11 @@
+{
+  "platform": "darwin-arm64",
+  "rhsRag": {"providerDefault": "ollama", "onnxFallback": true, "llmAnswerModelDefault": null, "agentUsesChunksOnly": true},
+  "files": {
+    "obscura": "54d6b2a6712dad07c18dbb6797e5b59a0eadbcfd6721a0b6c22a98153895e2ce",
+    "obscura-worker": "d60e07fea86716344c526c568ab645c072c441fb4649ad81e1e6d93732cba213",
+    "pdfstruct": "e0cdc119a5a0c557d2095d197e32d693fe124ca9a381a33b058f95caf529dfcf",
+    "rhs-rag": "54dd97c8d8679d16c8b7d213696679ce13253171cbb4f6cec820be8c645aafdb",
+    "yolov8_doclaynet.onnx": "1b035f7ff4a444c38d28fd28d4fce498f60a8ce12168d55341bafaaa309705c0"
+  }
+}

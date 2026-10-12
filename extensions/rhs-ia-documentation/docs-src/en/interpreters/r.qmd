@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "R Installations"
+---
+
+RHS-IA discovers supported R installations available on the computer. Select an installation for the workspace before starting an R session.
+
+The chosen R executable, startup files, library paths, and environment determine the packages visible to the session. Use a project library or dependency manager when the project must be reproducible.
+
+After installing a different R version, refresh interpreter discovery or reload the window. If startup fails, run the executable in a terminal and inspect the R output channel for missing libraries or startup-file errors.

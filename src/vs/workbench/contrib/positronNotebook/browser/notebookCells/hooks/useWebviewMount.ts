@@ -1,0 +1,315 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as React from 'react';
+import { getWindow, addDisposableListener } from '../../../../../../base/browser/dom.js';
+import { INotebookOutputWebview } from '../../../../positronOutputWebview/browser/notebookOutputWebviewService.js';
+import { isDoubleClickMessage, isHTMLOutputWebviewMessage, isWheelForwardMessage, normalizeWheelDeltaY } from '../../../../positronWebviewPreloads/browser/notebookOutputUtils.js';
+import { useNotebookInstance } from '../../NotebookInstanceProvider.js';
+import { IOverlayWebview } from '../../../../webview/browser/webview.js';
+import { DisposableStore, toDisposable } from '../../../../../../base/common/lifecycle.js';
+import { useNotebookVisibility } from '../../NotebookVisibilityContext.js';
+import { Event } from '../../../../../../base/common/event.js';
+import { usePositronReactServicesContext } from '../../../../../../base/browser/positronReactRendererContext.js';
+import { autorun } from '../../../../../../base/common/observable.js';
+
+// Constants
+const MAX_OUTPUT_HEIGHT = 1000;
+const EMPTY_OUTPUT_HEIGHT = 150;
+
+/**
+ * Computes the webview container height from the body scroll height reported by
+ * the webview. When output scrolling is enabled the height is capped at
+ * {@link MAX_OUTPUT_HEIGHT} (taller content scrolls inside the webview rather
+ * than overflowing the cell); when disabled it grows to fit the content. The
+ * default 150px "empty output" height is collapsed to 0.
+ */
+export function computeBoundedHeight(bodyScrollHeight: number, outputScrolling: boolean): number {
+	const cap = outputScrolling ? MAX_OUTPUT_HEIGHT : Infinity;
+	const boundedHeight = Math.min(bodyScrollHeight, cap);
+	return boundedHeight === EMPTY_OUTPUT_HEIGHT ? 0 : boundedHeight;
+}
+
+/**
+ * Custom error class for webview-specific errors
+ */
+export class WebviewMountError extends Error {
+	constructor(message: string, public override readonly cause?: Error) {
+		super(message);
+		this.name = 'WebviewMountError';
+	}
+}
+
+interface WebviewMountOptions {
+	readonly onDoubleClick?: () => void;
+	readonly onFocus?: () => void;
+	readonly outputScrolling?: boolean;
+}
+
+/**
+ * A custom React hook that mounts and manages a notebook output webview. It:
+ *  1. Claims and releases the webview on visibility changes
+ *  2. Sets up layout, scroll, and blur listeners to position the webview
+ *  3. Cleans up listeners and disposables on unmount
+ *
+ * @param webview A promise resolving to an INotebookOutputWebview
+ * @param options Mounting options for webview interactions.
+ * @returns An object with a containerRef for rendering, a loading state, and an error
+ *
+ * @example
+ * const { containerRef, isLoading, error } = useWebviewMount(myWebview);
+ *
+ * @throws {WebviewMountError} When the webview fails to mount or during layout operations
+ */
+export function useWebviewMount(webview: Promise<INotebookOutputWebview>, options?: WebviewMountOptions) {
+	// State tracking: loading or error
+	const [isLoading, setIsLoading] = React.useState<boolean>(true);
+	const [error, setError] = React.useState<WebviewMountError | null>(null);
+
+	// References to the container DOM element
+	const containerRef = React.useRef<HTMLDivElement>(null);
+	const updateWebviewLayoutRef = React.useRef<((immediate?: boolean) => void) | undefined>(undefined);
+
+	// Retrieve relevant context
+	const notebookInstance = useNotebookInstance();
+	const visibilityObservable = useNotebookVisibility();
+	const services = usePositronReactServicesContext();
+	const onDoubleClick = options?.onDoubleClick;
+	const onFocus = options?.onFocus;
+	const outputScrolling = options?.outputScrolling ?? true;
+
+	// Memoize the webview message handler
+	const handleWebviewMessage = React.useCallback(({ message }: { message: unknown }) => {
+		if (isHTMLOutputWebviewMessage(message) && containerRef.current) {
+			const boundedHeight = computeBoundedHeight(message.bodyScrollHeight, outputScrolling);
+			containerRef.current.style.height = `${boundedHeight}px`;
+			updateWebviewLayoutRef.current?.(true);
+			return;
+		}
+
+		// Scroll the notebook when no scrollable element inside the
+		// output can consume more scroll in the wheel direction. That
+		// covers outputs with nothing scrollable (plotly, static images)
+		// and outputs whose inner scroller has exhausted its range. The
+		// preload already ran that check, so any message we see here
+		// should move the cells container.
+		if (isWheelForwardMessage(message)) {
+			const container = notebookInstance.cellsContainer;
+			if (container) {
+				container.scrollTop += normalizeWheelDeltaY(message.deltaMode, message.deltaY, container.clientHeight);
+			}
+		}
+
+		if (isDoubleClickMessage(message)) {
+			onDoubleClick?.();
+		}
+	}, [notebookInstance, onDoubleClick, outputScrolling]);
+
+	React.useEffect(() => {
+		// Abort controller for canceling ongoing tasks if needed
+		const controller = new AbortController();
+
+		// Webview references
+		let webviewElement: IOverlayWebview | undefined;
+
+		// Create a disposable store to manage all disposables
+		const disposables = new DisposableStore();
+		let resizeObserver: ResizeObserver | undefined;
+
+		/**
+		 * Manages layout calls for the webview using requestAnimationFrame for better performance
+		 *
+		 * @param immediate If true, layout occurs in the current frame
+		 */
+		let layoutFrame: number | undefined;
+		function updateWebviewLayout(immediate = false): void {
+			if (!webviewElement || !containerRef.current) {
+				return;
+			}
+			const targetWindow = getWindow(containerRef.current);
+
+			// Clear any pending layout update
+			if (layoutFrame !== undefined) {
+				targetWindow.cancelAnimationFrame(layoutFrame);
+				layoutFrame = undefined;
+			}
+
+			const doLayout = () => {
+				try {
+					if (!containerRef.current || !notebookInstance.cellsContainer) {
+						return;
+					}
+					webviewElement?.setAnchorElement(
+						containerRef.current,
+						notebookInstance.cellsContainer
+					);
+				} catch (err) {
+					setError(new WebviewMountError('Failed to layout webview', err instanceof Error ? err : undefined));
+				}
+			};
+
+			if (immediate) {
+				doLayout();
+			} else {
+				layoutFrame = targetWindow.requestAnimationFrame(doLayout);
+				disposables.add(toDisposable(() => {
+					if (layoutFrame !== undefined) {
+						targetWindow.cancelAnimationFrame(layoutFrame);
+						layoutFrame = undefined;
+					}
+				}));
+			}
+		}
+		updateWebviewLayoutRef.current = updateWebviewLayout;
+
+		/**
+		 * Claims the webview, instructing it to position itself over our container.
+		 */
+		function claimWebview(): void {
+			if (!webviewElement || !containerRef.current) {
+				return;
+			}
+			try {
+				// We're using the base ref here because it's a constant reference and thus
+				// will avoid unnecessary mismatches for claiming and releasing the webview
+				// across multiple renders.
+				webviewElement.claim(containerRef, getWindow(containerRef.current), undefined);
+			} catch (err) {
+				setError(new WebviewMountError('Failed to claim webview', err instanceof Error ? err : undefined));
+			}
+		}
+
+		/**
+		 * Releases the webview, e.g., on hidden state or unmount.
+		 */
+		function releaseWebview(): void {
+			try {
+				webviewElement?.release(containerRef);
+			} catch (err) {
+				setError(new WebviewMountError('Failed to release webview', err instanceof Error ? err : undefined));
+			}
+		}
+
+		/**
+		 * Asynchronously mounts the webview if visible.
+		 * Sets up listeners for resizing, scrolling, focus changes, etc.
+		 */
+		async function mountWebview() {
+			const emptyDisposable = toDisposable(() => { /* no-op */ });
+
+			try {
+				// If not visible, don't mount the webview
+				if (!visibilityObservable.get()) {
+					return emptyDisposable;
+				}
+
+				// Wait for the INotebookOutputWebview instance
+				const resolvedWebview = await webview;
+				if (controller.signal.aborted || !containerRef.current) {
+					return emptyDisposable;
+				}
+
+				setIsLoading(false);
+				webviewElement = resolvedWebview.webview;
+				disposables.add(webviewElement.onDidFocus(() => {
+					onFocus?.();
+				}));
+
+				// Position it initially
+				claimWebview();
+				updateWebviewLayout();
+
+				// Scroll listener: reposition the webview if the notebook container scrolls
+				disposables.add(notebookInstance.onDidScrollCellsContainer(() =>
+					updateWebviewLayout(true)
+				));
+
+				// When focus leaves the notebook container, update layout to ensure correct size
+				if (notebookInstance.cellsContainer) {
+					disposables.add(addDisposableListener(
+						notebookInstance.cellsContainer,
+						'focusout',
+						(e) => {
+							if (
+								notebookInstance.cellsContainer &&
+								!notebookInstance.cellsContainer.contains(e.relatedTarget as Node)
+							) {
+								updateWebviewLayout(true);
+							}
+						}
+					));
+				}
+
+				// Listen for messages from the webview; adjust container height if needed
+				disposables.add(webviewElement.onMessage(handleWebviewMessage));
+
+				// React to editor or layout changes
+				const handleLayoutChange = () => updateWebviewLayout(false);
+				disposables.add(Event.any(
+					services.editorService.onDidActiveEditorChange,
+					services.editorService.onDidVisibleEditorsChange,
+					services.workbenchLayoutService.onDidLayoutMainContainer,
+					services.workbenchLayoutService.onDidLayoutContainer,
+					services.workbenchLayoutService.onDidLayoutActiveContainer,
+					services.workbenchLayoutService.onDidChangePartVisibility,
+					services.workbenchLayoutService.onDidChangeWindowMaximized,
+					services.workbenchLayoutService.onDidChangePanelAlignment,
+					services.workbenchLayoutService.onDidChangePanelPosition,
+					services.workbenchLayoutService.onDidChangeMainEditorCenteredLayout
+				)(handleLayoutChange));
+
+				// Watch for container resize
+				resizeObserver = new ResizeObserver(() => {
+					updateWebviewLayout(true);
+				});
+				if (notebookInstance.cellsContainer) {
+					resizeObserver.observe(notebookInstance.cellsContainer);
+					disposables.add(toDisposable(() => resizeObserver?.disconnect()));
+				}
+
+				return emptyDisposable;
+			} catch (err) {
+				const mountError = new WebviewMountError(
+					'Failed to mount webview',
+					err instanceof Error ? err : undefined
+				);
+				setError(mountError);
+				setIsLoading(false);
+				return emptyDisposable;
+			}
+		}
+
+		// Listen for changes in visibility, claiming or releasing the webview
+		disposables.add(
+			autorun(reader => {
+				const isVisible = visibilityObservable.read(reader);
+				if (isVisible) {
+					claimWebview();
+				} else {
+					releaseWebview();
+				}
+			})
+		);
+
+		// Actually start the mounting process
+		// Track the returned disposable to prevent leaks
+		mountWebview().then(disposable => disposables.add(disposable));
+
+		// Cleanup callback: abort tasks, release the webview, and dispose of all listeners
+		return () => {
+			controller.abort();
+			releaseWebview();
+			updateWebviewLayoutRef.current = undefined;
+			disposables.dispose();
+		};
+	}, [webview, notebookInstance, visibilityObservable, handleWebviewMessage, onFocus]);
+
+	// Return the container reference plus loading/error states
+	return {
+		containerRef,
+		isLoading,
+		error
+	};
+}

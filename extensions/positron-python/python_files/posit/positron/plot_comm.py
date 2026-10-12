@@ -1,0 +1,339 @@
+#
+# Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+#
+
+#
+# AUTO-GENERATED from plot.json; do not edit.
+#
+
+# flake8: noqa
+
+# For forward declarations
+from __future__ import annotations
+
+import enum
+from typing import Any, List, Literal, Optional, Union
+
+from ._vendor.pydantic import BaseModel, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+
+
+@enum.unique
+class PlotUnit(str, enum.Enum):
+    """
+    Possible values for PlotUnit
+    """
+
+    Pixels = "pixels"
+
+    Inches = "inches"
+
+
+@enum.unique
+class PlotRenderFormat(str, enum.Enum):
+    """
+    Possible values for PlotRenderFormat
+    """
+
+    Png = "png"
+
+    Jpeg = "jpeg"
+
+    Svg = "svg"
+
+    Pdf = "pdf"
+
+    Tiff = "tiff"
+
+
+class IntrinsicSize(BaseModel):
+    """
+    The intrinsic size of a plot, if known
+    """
+
+    width: Union[StrictInt, StrictFloat] = Field(
+        description="The width of the plot",
+    )
+
+    height: Union[StrictInt, StrictFloat] = Field(
+        description="The height of the plot",
+    )
+
+    unit: PlotUnit = Field(
+        description="The unit of measurement of the plot's dimensions",
+    )
+
+    source: StrictStr = Field(
+        description="The source of the intrinsic size e.g. 'Matplotlib'",
+    )
+
+
+class PlotMetadata(BaseModel):
+    """
+    The plot's metadata
+    """
+
+    name: StrictStr = Field(
+        description="A unique, human-readable name for the plot",
+    )
+
+    kind: StrictStr = Field(
+        description="The kind of plot e.g. 'Matplotlib', 'ggplot2', etc.",
+    )
+
+    execution_id: StrictStr = Field(
+        description="The ID of the code fragment that produced the plot",
+    )
+
+    code: StrictStr = Field(
+        description="The code fragment that produced the plot",
+    )
+
+    origin: Optional[PlotOrigin] = Field(
+        default=None,
+        description="The origin of the plot, if known",
+    )
+
+
+class PlotResult(BaseModel):
+    """
+    A rendered plot
+    """
+
+    data: StrictStr = Field(
+        description="The plot data, as a base64-encoded string",
+    )
+
+    mime_type: StrictStr = Field(
+        description="The MIME type of the plot data",
+    )
+
+    settings: Optional[PlotRenderSettings] = Field(
+        default=None,
+        description="The settings used to render the plot",
+    )
+
+
+class PlotSize(BaseModel):
+    """
+    The size of a plot
+    """
+
+    height: StrictInt = Field(
+        description="The plot's height, in pixels",
+    )
+
+    width: StrictInt = Field(
+        description="The plot's width, in pixels",
+    )
+
+
+class PlotOrigin(BaseModel):
+    """
+    The origin (source) of a plot
+    """
+
+    uri: StrictStr = Field(
+        description="The URI of the document containing the code that produced the plot, if available",
+    )
+
+    range: Optional[PlotRange] = Field(
+        default=None,
+        description="The range within the document at uri that produced the plot, if available",
+    )
+
+
+class PlotRange(BaseModel):
+    """
+    The range of a plot within a document
+    """
+
+    start_line: StrictInt = Field(
+        description="The line number on which the plot starts (0-indexed)",
+    )
+
+    start_character: StrictInt = Field(
+        description="The character number on which the plot starts (0-indexed)",
+    )
+
+    end_line: StrictInt = Field(
+        description="The line number on which the plot ends (0-indexed)",
+    )
+
+    end_character: StrictInt = Field(
+        description="The character number on which the plot ends (0-indexed)",
+    )
+
+
+class PlotRenderSettings(BaseModel):
+    """
+    The settings used to render the plot
+    """
+
+    size: PlotSize = Field(
+        description="Plot size to render the plot to",
+    )
+
+    pixel_ratio: Union[StrictInt, StrictFloat] = Field(
+        description="The pixel ratio of the display device",
+    )
+
+    format: PlotRenderFormat = Field(
+        description="Format in which to render the plot",
+    )
+
+
+@enum.unique
+class PlotBackendRequest(str, enum.Enum):
+    """
+    An enumeration of all the possible requests that can be sent to the backend plot comm.
+    """
+
+    # Get the intrinsic size of a plot, if known.
+    GetIntrinsicSize = "get_intrinsic_size"
+
+    # Get metadata for the plot
+    GetMetadata = "get_metadata"
+
+    # Render a plot
+    Render = "render"
+
+
+class GetIntrinsicSizeRequest(BaseModel):
+    """
+    The intrinsic size of a plot is the size at which a plot would be if
+    no size constraints were applied by Positron.
+    """
+
+    method: Literal[PlotBackendRequest.GetIntrinsicSize] = Field(
+        description="The JSON-RPC method name (get_intrinsic_size)",
+    )
+
+    jsonrpc: str = Field(
+        default="2.0",
+        description="The JSON-RPC version specifier",
+    )
+
+
+class GetMetadataRequest(BaseModel):
+    """
+    Get metadata for the plot
+    """
+
+    method: Literal[PlotBackendRequest.GetMetadata] = Field(
+        description="The JSON-RPC method name (get_metadata)",
+    )
+
+    jsonrpc: str = Field(
+        default="2.0",
+        description="The JSON-RPC version specifier",
+    )
+
+
+class RenderParams(BaseModel):
+    """
+    Requests a plot to be rendered. The plot data is returned in a
+    base64-encoded string.
+    """
+
+    size: Optional[PlotSize] = Field(
+        default=None,
+        description="The requested size of the plot. If not provided, the plot will be rendered at its intrinsic size.",
+    )
+
+    pixel_ratio: Union[StrictInt, StrictFloat] = Field(
+        description="The pixel ratio of the display device",
+    )
+
+    format: PlotRenderFormat = Field(
+        description="The requested plot format",
+    )
+
+
+class RenderRequest(BaseModel):
+    """
+    Requests a plot to be rendered. The plot data is returned in a
+    base64-encoded string.
+    """
+
+    params: RenderParams = Field(
+        description="Parameters to the Render method",
+    )
+
+    method: Literal[PlotBackendRequest.Render] = Field(
+        description="The JSON-RPC method name (render)",
+    )
+
+    jsonrpc: str = Field(
+        default="2.0",
+        description="The JSON-RPC version specifier",
+    )
+
+
+class PlotBackendMessageContent(BaseModel):
+    comm_id: str
+    data: Union[
+        GetIntrinsicSizeRequest,
+        GetMetadataRequest,
+        RenderRequest,
+    ] = Field(..., discriminator="method")
+
+
+@enum.unique
+class PlotFrontendEvent(str, enum.Enum):
+    """
+    An enumeration of all the possible events that can be sent to the frontend plot comm.
+    """
+
+    # Notification that a plot has been updated on the backend.
+    Update = "update"
+
+    # Show a plot.
+    Show = "show"
+
+
+class UpdateParams(BaseModel):
+    """
+    Notification that a plot has been updated on the backend.
+    """
+
+    pre_render: Optional[PlotResult] = Field(
+        description="Optional pre-rendering data for immediate display",
+    )
+
+
+class ShowParams(BaseModel):
+    """
+    Show a plot.
+    """
+
+    pre_render: Optional[PlotResult] = Field(
+        description="Optional pre-rendering data for immediate display",
+    )
+
+
+IntrinsicSize.update_forward_refs()
+
+PlotMetadata.update_forward_refs()
+
+PlotResult.update_forward_refs()
+
+PlotSize.update_forward_refs()
+
+PlotOrigin.update_forward_refs()
+
+PlotRange.update_forward_refs()
+
+PlotRenderSettings.update_forward_refs()
+
+GetIntrinsicSizeRequest.update_forward_refs()
+
+GetMetadataRequest.update_forward_refs()
+
+RenderParams.update_forward_refs()
+
+RenderRequest.update_forward_refs()
+
+UpdateParams.update_forward_refs()
+
+ShowParams.update_forward_refs()

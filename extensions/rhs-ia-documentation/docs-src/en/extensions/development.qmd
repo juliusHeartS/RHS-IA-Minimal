@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Extension Development"
+---
+
+RHS-IA supports extensions built for its compatible extension API. Start with an extension project, declare contributions and activation behavior in `package.json`, and implement the extension host entry point.
+
+Press F5 from an extension workspace to launch an Extension Development Host. Use the extension host log, developer tools, and automated tests to diagnose activation and contribution problems.
+
+Use only APIs present in the RHS-IA build you target. Package the extension as a VSIX for local installation, and test it in a clean profile before distribution.

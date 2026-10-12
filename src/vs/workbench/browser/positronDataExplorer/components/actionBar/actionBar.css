@@ -1,0 +1,10 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-data-explorer .action-bar {
+	height: var(--vscode-positronActionBar-height);
+	grid-row: action-bar / data-explorer-panel;
+	--vscode-positronActionBar-background: var(--vscode-positronDataExplorer-contrastBackground);
+}

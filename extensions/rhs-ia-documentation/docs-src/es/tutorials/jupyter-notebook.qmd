@@ -1,0 +1,17 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Tutorial de Jupyter Notebook"
+---
+
+1. Crea una carpeta y ábrela en RHS-IA.
+2. Crea un cuaderno `.ipynb` y elige un kernel de Python o R.
+3. Añade una celda Markdown que describa el análisis.
+4. Añade una celda de código que cree una tabla pequeña y ejecútala.
+5. Abre la tabla en **Data Explorer** y crea un gráfico en otra celda.
+6. Reinicia el kernel y ejecuta todas las celdas.
+
+Guarda el cuaderno después de la ejecución limpia. Si una celda falla, verifica el kernel seleccionado e instala el paquete que falta en el entorno de ese kernel.

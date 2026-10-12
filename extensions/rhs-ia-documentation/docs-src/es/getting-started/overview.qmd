@@ -1,0 +1,20 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Primeros pasos"
+---
+
+RHS-IA combina un editor, un terminal, el control de código fuente, intérpretes de lenguajes y herramientas de ciencia de datos en un mismo espacio de trabajo. Abre una carpeta para un proyecto existente o usa **Archivo > Nueva carpeta** para empezar desde una plantilla.
+
+## Primera sesión {#first-session}
+
+Instala o selecciona un [intérprete de Python o R](../interpreters/managing.qmd), abre un archivo de código fuente y ejecuta código con la acción Run del editor. La salida aparece en **Consola**; los objetos, gráficos y datos se abren en sus vistas específicas.
+
+Usa **Ver > Paleta de comandos** cuando conozcas una acción pero no su ubicación. Abre esta guía desde el icono de **Documentación** en **Auxiliary Bar** o con **Cmd/Ctrl+Shift+H**.
+
+## Siguientes pasos {#next-steps}
+
+Consulta la [distribución del espacio de trabajo](../user-interface/layout.qmd), configura los [métodos abreviados de teclado](../configuration/keyboard-shortcuts.qmd) o sigue un [tutorial](../tutorials/overview.qmd).

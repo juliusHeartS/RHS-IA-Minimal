@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Code Cells"
+---
+
+Code cells contain executable source associated with a notebook kernel or Quarto runtime. Run the active cell from its toolbar or keyboard shortcut; use run-above and run-below actions when execution order is important.
+
+A cell can produce text, structured data, plots, errors, or interactive output. Trust notebook output only from known sources, and clear sensitive results before sharing a file.
+
+After changing dependencies or global state, restart the kernel and run all cells to confirm that the document is reproducible.

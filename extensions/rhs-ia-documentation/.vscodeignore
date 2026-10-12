@@ -1,0 +1,14 @@
+.build/**
+*.tsbuildinfo
+docs-src/**
+dist/*.map
+manifests/**
+out/**
+policies/**
+scripts/**
+src/**
+upstream/**
+esbuild.mts
+tsconfig.json
+README.md
+localization/**

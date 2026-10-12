@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Action Bars"
+---
+
+Action bars place the most relevant controls near the content they affect. Editor actions appear near the editor title, while view actions appear in the view header. Additional actions are grouped under the ellipsis menu.
+
+Hover over an icon to read its label and keyboard shortcut. Available actions depend on the file type, language runtime, selection, and view state.
+
+If space is limited, RHS-IA moves actions into an overflow menu. The same operation is usually searchable in the [Command Palette](command-palette.qmd).

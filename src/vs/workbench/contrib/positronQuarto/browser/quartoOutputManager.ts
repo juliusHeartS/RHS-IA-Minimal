@@ -1,0 +1,2060 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { Emitter, Event } from '../../../../base/common/event.js';
+import { Disposable, DisposableStore } from '../../../../base/common/lifecycle.js';
+import { URI } from '../../../../base/common/uri.js';
+import { ICodeEditor } from '../../../../editor/browser/editorBrowser.js';
+import { IEditorContribution, ScrollType } from '../../../../editor/common/editorCommon.js';
+import { EditorOption } from '../../../../editor/common/config/editorOptions.js';
+import { Range } from '../../../../editor/common/core/range.js';
+import { IContextKeyService } from '../../../../platform/contextkey/common/contextkey.js';
+import { ILogService } from '../../../../platform/log/common/log.js';
+import { createDecorator } from '../../../../platform/instantiation/common/instantiation.js';
+import { QuartoOutputViewZone, CopyOutputRequest, SavePlotRequest, PopoutRequest } from './quartoOutputViewZone.js';
+import { IClipboardService } from '../../../../platform/clipboard/common/clipboardService.js';
+import { INotificationService } from '../../../../platform/notification/common/notification.js';
+import { localize } from '../../../../nls.js';
+import { IFileDialogService } from '../../../../platform/dialogs/common/dialogs.js';
+import { IFileService } from '../../../../platform/files/common/files.js';
+import { basename } from '../../../../base/common/resources.js';
+import { IEditorService } from '../../../services/editor/common/editorService.js';
+import { IPositronPlotsService } from '../../../services/positronPlots/common/positronPlots.js';
+import { getImageDataUrl } from '../../../services/positronPlots/common/imageDataUrl.js';
+import { getImageOutputName, openImageOutputInNewTab, saveImageOutput } from '../../positronNotebook/common/imageOutputUtils.js';
+import { IPositronPreviewService } from '../../positronPreview/browser/positronPreviewSevice.js';
+import { IQuartoDocumentModelService } from './quartoDocumentModelService.js';
+import { IQuartoExecutionManager, ICellOutput, ICellOutputItem, CellExecutionState, IQuartoOutputCacheService, QuartoCellErrorContext } from '../common/quartoExecutionTypes.js';
+import { QUARTO_INLINE_OUTPUT_ENABLED, POSITRON_QUARTO_INLINE_OUTPUT_MAX_LINES_KEY, QUARTO_INLINE_OUTPUT_MAX_LINES_KEY, QUARTO_INLINE_OUTPUT_AUTO_SCROLL_KEY, affectsQuartoConfig, getQuartoConfigValue, isQuartoDocument, usingQuartoInlineOutputAutoScroll } from '../common/positronQuartoConfig.js';
+import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
+import { IPositronNotebookOutputWebviewService } from '../../positronOutputWebview/browser/notebookOutputWebviewService.js';
+import { IQuartoKernelManager } from './quartoKernelManager.js';
+import { ILanguageRuntimeMessageWebOutput, LanguageRuntimeMessageType, RuntimeOutputKind, PositronOutputLocation } from '../../../services/languageRuntime/common/languageRuntimeService.js';
+import { IResourceUsageHistoryService } from '../../../services/positronConsole/browser/resourceUsageHistoryService.js';
+import { IHoverService } from '../../../../platform/hover/browser/hover.js';
+import { IStorageService, StorageScope, StorageTarget } from '../../../../platform/storage/common/storage.js';
+import { ILabelService } from '../../../../platform/label/common/label.js';
+
+// Workspace storage key for collapsed inline outputs. Value is JSON:
+// `{ [documentUri]: string[] }` - each entry is the list of cell IDs whose
+// output view zones were collapsed when the user last interacted with them.
+const STORAGE_KEY_COLLAPSED_CELLS = 'positron.quarto.collapsedCells';
+
+/**
+ * Read and validate the collapsed-cell map from workspace storage. Returns an
+ * empty map on first run, on parse failure, or if the stored value is
+ * malformed. Drops any entries whose values are not arrays of strings, so
+ * callers can iterate without re-validating.
+ */
+function readCollapsedCellsMap(
+	storageService: IStorageService,
+	logService: ILogService,
+	tag: string,
+): Record<string, string[]> {
+	const raw = storageService.get(STORAGE_KEY_COLLAPSED_CELLS, StorageScope.WORKSPACE, '{}');
+	const result: Record<string, string[]> = {};
+	try {
+		const parsed = JSON.parse(raw);
+		if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+			return result;
+		}
+		for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
+			if (Array.isArray(v) && v.every(id => typeof id === 'string')) {
+				result[k] = v as string[];
+			}
+		}
+	} catch (e) {
+		logService.warn(`${tag} Failed to parse collapsed-cell state: `, e);
+	}
+	return result;
+}
+
+/**
+ * Write the collapsed-cell map to workspace storage, or remove the key
+ * entirely when the map is empty so we don't leave behind a stale `{}`.
+ */
+function writeCollapsedCellsMap(
+	storageService: IStorageService,
+	map: Record<string, string[]>,
+): void {
+	if (Object.keys(map).length === 0) {
+		storageService.remove(STORAGE_KEY_COLLAPSED_CELLS, StorageScope.WORKSPACE);
+	} else {
+		storageService.store(
+			STORAGE_KEY_COLLAPSED_CELLS,
+			JSON.stringify(map),
+			StorageScope.WORKSPACE,
+			StorageTarget.MACHINE,
+		);
+	}
+}
+
+export const IQuartoOutputManager = createDecorator<IQuartoOutputManager>('quartoOutputManager');
+
+/**
+ * Event emitted when outputs change for a cell.
+ */
+export interface OutputChangeEvent {
+	/** The cell ID */
+	readonly cellId: string;
+	/** The document URI */
+	readonly documentUri: URI;
+	/** Current outputs */
+	readonly outputs: readonly ICellOutput[];
+}
+
+/**
+ * Interface for the Quarto output manager service.
+ * Manages inline output display for Quarto documents.
+ */
+export interface IQuartoOutputManager {
+	readonly _serviceBrand: undefined;
+
+	/**
+	 * Event fired when outputs change.
+	 */
+	readonly onDidChangeOutputs: Event<OutputChangeEvent>;
+
+	/**
+	 * Event fired when all outputs for a specific document should be cleared.
+	 * Ensures per-editor contributions clear view zones for cached outputs
+	 * that the service may not be tracking.
+	 */
+	readonly onDidRequestClearDocument: Event<URI>;
+
+	/**
+	 * Event fired when all outputs should be cleared globally.
+	 * Used when clearing the entire output cache.
+	 */
+	readonly onDidRequestClearAll: Event<void>;
+
+	/**
+	 * Get outputs for a cell.
+	 */
+	getOutputsForCell(cellId: string): readonly ICellOutput[];
+
+	/**
+	 * Clear outputs for a cell.
+	 */
+	clearOutputsForCell(documentUri: URI, cellId: string): void;
+
+	/**
+	 * Clear all outputs for a document.
+	 */
+	clearAllOutputs(documentUri: URI): void;
+
+	/**
+	 * Clear all outputs for all documents.
+	 * Used when clearing the entire output cache.
+	 */
+	clearAllOutputsGlobally(): void;
+}
+
+/**
+ * Vertical geometry needed to decide how far to scroll to reveal an output
+ * view zone. All values are in the editor's scroll-content coordinate space.
+ */
+export interface QuartoAutoScrollLayout {
+	/** Top of the output view zone (offset of its first pixel). */
+	readonly zoneTop: number;
+	/** Bottom of the output view zone (offset just past its last pixel). */
+	readonly zoneBottom: number;
+	/** The editor's current scrollTop. */
+	readonly scrollTop: number;
+	/** The height of the visible editor viewport. */
+	readonly viewportHeight: number;
+	/** The total scrollable height of the editor content. */
+	readonly scrollHeight: number;
+}
+
+/**
+ * Compute the scrollTop the editor should move to in order to reveal an output
+ * view zone, or `undefined` when no scroll is necessary.
+ *
+ * Output is emitted at the bottom of the zone, so we keep the bottom of the
+ * zone at the bottom of the viewport: freshly produced output stays in view
+ * even for a zone taller than the editor (which then tails, like a console).
+ * Scrolls the minimum amount needed -- while the bottom of the zone is already
+ * on screen the scroll position is left alone.
+ */
+export function computeAutoScrollTop(layout: QuartoAutoScrollLayout): number | undefined {
+	const { zoneTop, zoneBottom, scrollTop, viewportHeight, scrollHeight } = layout;
+
+	// Bail if the zone hasn't been laid out yet or there is no viewport.
+	if (zoneBottom <= zoneTop || viewportHeight <= 0) {
+		return undefined;
+	}
+
+	const scrollBottom = scrollTop + viewportHeight;
+
+	// Nothing to do while the bottom of the zone is already on screen -- the
+	// newest output is visible. This also covers a tall zone that is already
+	// tailing (bottom at the viewport bottom, top scrolled off above).
+	if (zoneBottom > scrollTop && zoneBottom <= scrollBottom) {
+		return undefined;
+	}
+
+	// Pin the bottom of the zone to the bottom of the viewport, whether it is
+	// currently below (grew past the bottom) or above (a cell that ran further
+	// up the document) the visible area.
+	let target = zoneBottom - viewportHeight;
+
+	// Clamp to the valid scroll range.
+	const maxScrollTop = Math.max(0, scrollHeight - viewportHeight);
+	target = Math.max(0, Math.min(target, maxScrollTop));
+
+	// Ignore sub-pixel adjustments (and no-ops after clamping).
+	if (Math.abs(target - scrollTop) < 1) {
+		return undefined;
+	}
+
+	return target;
+}
+
+/**
+ * Editor contribution that manages output view zones for a single editor.
+ * One instance per editor that displays a Quarto document.
+ */
+export class QuartoOutputContribution extends Disposable implements IEditorContribution {
+	static readonly ID = 'editor.contrib.quartoOutput';
+
+	private readonly _viewZones = new Map<string, QuartoOutputViewZone>();
+	private readonly _outputsByCell = new Map<string, ICellOutput[]>();
+	// Track content hashes for each cell ID so we can find cells that moved
+	// (cell IDs include the index, which changes when cells are inserted/deleted)
+	private readonly _contentHashByCellId = new Map<string, string>();
+	// Track last-known execution info per cell so the status bar can survive tab switches
+	private readonly _executionInfoByCell = new Map<string, { state: CellExecutionState; startTime?: number; endTime?: number }>();
+	private _documentUri: URI | undefined;
+	private _featureEnabled: boolean;
+	private _outputHandlingInitialized = false;
+	private _maxLines: number;
+
+	// Whether the editor should scroll to follow inline output (the setting).
+	private _autoScrollEnabled: boolean;
+	// Whether auto-scroll is currently active. Armed by a fresh execution
+	// gesture and disarmed when the user moves the viewport themselves.
+	private _autoScrollArmed = false;
+	// The cell whose output view zone we are currently following.
+	private _autoScrollTrackedCellId: string | undefined;
+	// True while applying a programmatic scroll, so its scroll event isn't
+	// mistaken for the user scrolling away.
+	private _autoScrollProgrammatic = false;
+
+	// Track subscriptions from _initializeOutputHandling() separately so they can be
+	// disposed when the model changes, preventing duplicate event handlers
+	private readonly _outputHandlingDisposables = this._register(new DisposableStore());
+
+	// Track whether we've attempted to load cached outputs for this document.
+	// This prevents infinite loops when listening for model changes.
+	private _cachedOutputsLoaded = false;
+
+	// Cells whose re-execution has started but not yet produced a replacement
+	// output. The previously cached output is kept until the first new output
+	// arrives (mirroring the view zone's "recomputing" behavior), so an
+	// execution that is interrupted before producing output -- e.g. cancelled by
+	// a window reload -- does not destroy the still-valid persisted cache.
+	private readonly _cellsAwaitingRecomputeOutput = new Set<string>();
+
+	// Stash outputs per document URI across model changes (tab switches).
+	// Unlike the disk cache, stashed outputs preserve data explorer MIME items
+	// so the inline data explorer can reconnect to a live comm when switching back.
+	private readonly _stashedOutputsByUri = new Map<string, {
+		outputsByCell: Map<string, ICellOutput[]>;
+		contentHashByCellId: Map<string, string>;
+		executionInfoByCell: Map<string, { state: CellExecutionState; startTime?: number; endTime?: number }>;
+	}>();
+
+	private readonly _onDidChangeOutputs = this._register(new Emitter<OutputChangeEvent>());
+	readonly onDidChangeOutputs = this._onDidChangeOutputs.event;
+
+	// In-memory mirror of the persisted collapsed-cell map. Keyed by document
+	// URI string; each value is the set of cell IDs whose view zones are
+	// collapsed for that document. Populated from storage in the constructor
+	// and kept in sync with storage via `_persistCollapsedCells()`.
+	private readonly _collapsedCellsByUri: Map<string, Set<string>>;
+
+	// Shared tick emitter for refreshing relative timestamps across all view zones.
+	// A single 30-second interval drives all cells instead of one timer per cell.
+	private readonly _timestampTickEmitter = this._register(new Emitter<void>());
+	private _timestampTickInterval: ReturnType<typeof setInterval> | undefined;
+
+	constructor(
+		private readonly _editor: ICodeEditor,
+		@IQuartoExecutionManager private readonly _executionManager: IQuartoExecutionManager,
+		@IQuartoDocumentModelService private readonly _documentModelService: IQuartoDocumentModelService,
+		@IQuartoKernelManager private readonly _kernelManager: IQuartoKernelManager,
+		@IQuartoOutputCacheService private readonly _cacheService: IQuartoOutputCacheService,
+		@IPositronNotebookOutputWebviewService private readonly _webviewService: IPositronNotebookOutputWebviewService,
+		@IContextKeyService private readonly _contextKeyService: IContextKeyService,
+		@ILogService private readonly _logService: ILogService,
+		@IQuartoOutputManager private readonly _outputManager: IQuartoOutputManager,
+		@IClipboardService private readonly _clipboardService: IClipboardService,
+		@INotificationService private readonly _notificationService: INotificationService,
+		@IFileDialogService private readonly _fileDialogService: IFileDialogService,
+		@IFileService private readonly _fileService: IFileService,
+		@IEditorService private readonly _editorService: IEditorService,
+		@IPositronPreviewService private readonly _previewService: IPositronPreviewService,
+		@IPositronPlotsService private readonly _plotsService: IPositronPlotsService,
+		@IConfigurationService private readonly _configurationService: IConfigurationService,
+		@IResourceUsageHistoryService private readonly _resourceUsageHistoryService: IResourceUsageHistoryService,
+		@IHoverService private readonly _hoverService: IHoverService,
+		@IStorageService private readonly _storageService: IStorageService,
+		@ILabelService private readonly _labelService: ILabelService,
+	) {
+		super();
+
+		// Restore the persisted collapsed-cell map from workspace storage.
+		this._collapsedCellsByUri = this._loadCollapsedCells();
+
+		// Start a shared 30-second timer for refreshing relative timestamps
+		this._timestampTickInterval = setInterval(() => {
+			this._timestampTickEmitter.fire();
+		}, 30_000);
+
+		// Get document URI from editor model
+		const model = this._editor.getModel();
+		this._documentUri = model?.uri;
+
+		// Get max lines configuration
+		this._maxLines = getQuartoConfigValue(this._configurationService, QUARTO_INLINE_OUTPUT_MAX_LINES_KEY, POSITRON_QUARTO_INLINE_OUTPUT_MAX_LINES_KEY, 40);
+
+		// Get auto-scroll configuration (defaults to on)
+		this._autoScrollEnabled = usingQuartoInlineOutputAutoScroll(this._configurationService);
+
+		// Check if feature is enabled (context key checks both setting and extension installation)
+		this._featureEnabled = this._contextKeyService.getContextKeyValue<boolean>(QUARTO_INLINE_OUTPUT_ENABLED.key) ?? false;
+
+		// Always listen for context key changes so we can initialize when feature is enabled
+		this._register(this._contextKeyService.onDidChangeContext(e => {
+			if (e.affectsSome(new Set([QUARTO_INLINE_OUTPUT_ENABLED.key]))) {
+				this._handleFeatureToggle();
+			}
+		}));
+
+		// Listen for max lines and auto-scroll configuration changes
+		this._register(this._configurationService.onDidChangeConfiguration(e => {
+			if (affectsQuartoConfig(e, QUARTO_INLINE_OUTPUT_MAX_LINES_KEY, POSITRON_QUARTO_INLINE_OUTPUT_MAX_LINES_KEY)) {
+				this._maxLines = getQuartoConfigValue(this._configurationService, QUARTO_INLINE_OUTPUT_MAX_LINES_KEY, POSITRON_QUARTO_INLINE_OUTPUT_MAX_LINES_KEY, 40);
+				// Update all existing view zones
+				for (const viewZone of this._viewZones.values()) {
+					viewZone.maxLines = this._maxLines;
+				}
+			}
+			if (e.affectsConfiguration(QUARTO_INLINE_OUTPUT_AUTO_SCROLL_KEY)) {
+				this._autoScrollEnabled = usingQuartoInlineOutputAutoScroll(this._configurationService);
+				if (!this._autoScrollEnabled) {
+					this._autoScrollArmed = false;
+				}
+			}
+		}));
+
+		// Handle editor model changes (e.g., file closed and reopened, or untitled saved to file)
+		this._register(this._editor.onDidChangeModel(() => {
+			// Capture the previous URI before updating
+			const previousUri = this._documentUri;
+
+			// Stash outputs and execution info for the previous document so they
+			// can be restored when switching back. This preserves data explorer
+			// MIME items that the disk cache intentionally strips, and also
+			// preserves the status bar state (duration, timestamp).
+			if (previousUri && (this._outputsByCell.size > 0 || this._executionInfoByCell.size > 0)) {
+				this._stashedOutputsByUri.set(previousUri.toString(), {
+					outputsByCell: new Map(this._outputsByCell),
+					contentHashByCellId: new Map(this._contentHashByCellId),
+					executionInfoByCell: new Map(this._executionInfoByCell),
+				});
+			}
+
+			this._disposeAllViewZones();
+			this._outputsByCell.clear();
+			this._contentHashByCellId.clear();
+			this._executionInfoByCell.clear();
+			this._cellsAwaitingRecomputeOutput.clear();
+
+			// Clear previous output handling subscriptions to prevent duplicates
+			this._outputHandlingDisposables.clear();
+
+			// Update document URI for the new model
+			const newModel = this._editor.getModel();
+			this._documentUri = newModel?.uri;
+
+			// Handle untitled->saved transition: transfer cache from old URI to new URI.
+			// Any non-untitled scheme counts as saved; a remote or web window saves
+			// to `vscode-remote`, not `file`.
+			if (previousUri && this._documentUri &&
+				previousUri.scheme === 'untitled' &&
+				this._documentUri.scheme !== 'untitled' &&
+				this._isQuartoDocument()) {
+				this._transferCacheFromUntitled(previousUri, this._documentUri);
+			}
+
+			// Reset initialization flags so we can re-initialize for the new document
+			this._outputHandlingInitialized = false;
+			this._cachedOutputsLoaded = false;
+
+			// Re-check if this is a Quarto document and initialize if so
+			if (this._featureEnabled && this._isQuartoDocument() && !this._isInDiffEditor()) {
+				this._initializeOutputHandling();
+			}
+		}));
+
+		// Only initialize fully if feature is enabled, this is a Quarto
+		// document, and we're not inside a diff editor. Inline outputs in a
+		// diff view are misleading because they aren't part of the file's
+		// content and won't appear in any commit.
+		if (!this._featureEnabled || !this._isQuartoDocument() || this._isInDiffEditor()) {
+			return;
+		}
+
+		this._initializeOutputHandling();
+	}
+
+	/**
+	 * Initialize output handling listeners and load cached outputs.
+	 * Called when feature is enabled and this is a Quarto document.
+	 */
+	private _initializeOutputHandling(): void {
+		if (this._outputHandlingInitialized) {
+			return;
+		}
+		this._outputHandlingInitialized = true;
+		this._logService.debug('[QuartoOutputContribution] Initializing for', this._documentUri?.toString());
+
+		// Load cached outputs
+		this._loadCachedOutputs();
+
+		// Listen for kernel state changes to update session on view zones
+		// Use _outputHandlingDisposables so subscriptions are cleared on model change
+		this._outputHandlingDisposables.add(this._kernelManager.onDidChangeKernelState(event => {
+			if (this._documentUri && event.documentUri.toString() === this._documentUri.toString()) {
+				this._updateViewZoneSessions();
+			}
+		}));
+
+		// Listen for execution outputs
+		this._outputHandlingDisposables.add(this._executionManager.onDidReceiveOutput(event => {
+			if (this._featureEnabled && this._documentUri && event.documentUri.toString() === this._documentUri.toString()) {
+				this._handleOutput(event.cellId, event.output);
+			}
+		}));
+
+		// Arm auto-scroll on a fresh execution gesture (Run Cell, Run All, ...)
+		// so the editor follows the output it produces. The same Quarto document
+		// can be open in more than one editor at once (a split view); each has
+		// its own contribution and they all see this URI-keyed event. Only the
+		// editor the gesture came from -- the active one -- should follow it, so
+		// re-evaluate arming on every gesture: the active editor arms and any
+		// other pane showing the same document disarms. Without this a run in one
+		// pane would hijack the scroll position of the other.
+		this._outputHandlingDisposables.add(this._executionManager.onWillExecute(event => {
+			if (this._autoScrollEnabled && this._documentUri &&
+				event.documentUri.toString() === this._documentUri.toString()) {
+				this._autoScrollArmed = this._isActiveEditor();
+			}
+		}));
+
+		// Disarm auto-scroll once the user moves the viewport themselves. Only a
+		// vertical scroll we didn't initiate counts; a view zone growing changes
+		// the scroll height but not scrollTop, so it won't disarm.
+		this._outputHandlingDisposables.add(this._editor.onDidScrollChange(e => {
+			if (!e.scrollTopChanged) {
+				return;
+			}
+			if (this._autoScrollProgrammatic) {
+				this._autoScrollProgrammatic = false;
+				return;
+			}
+			this._autoScrollArmed = false;
+		}));
+
+		// Listen for execution state changes to manage recomputing state and update view zone button
+		this._outputHandlingDisposables.add(this._executionManager.onDidChangeExecutionState(event => {
+			if (this._featureEnabled &&
+				this._documentUri &&
+				event.execution.documentUri.toString() === this._documentUri.toString()) {
+
+				const cellId = event.execution.cellId;
+				const currentState = event.execution.state;
+				const isRunning = currentState === CellExecutionState.Running;
+
+				// Update view zone button state and execution info
+				let viewZone = this._viewZones.get(cellId);
+
+				// When execution starts and there is no view zone yet,
+				// create one to show the status bar (Running...)
+				if (isRunning && !viewZone) {
+					viewZone = this._createViewZone(cellId);
+					if (viewZone) {
+						this._viewZones.set(cellId, viewZone);
+					}
+				}
+
+				if (viewZone) {
+					viewZone.setExecuting(isRunning);
+					viewZone.setExecutionInfo(
+						currentState,
+						event.execution.startTime,
+						event.execution.endTime,
+					);
+				}
+
+				// Follow this cell while it runs so its status/output stays in
+				// view (no-op unless auto-scroll is armed). Tracking the running
+				// cell is what makes Run All scroll through the document.
+				if (isRunning) {
+					this._autoScrollTrackedCellId = cellId;
+					this._revealTrackedCell();
+				}
+
+				// Track execution info so it survives tab switches
+				this._executionInfoByCell.set(cellId, {
+					state: currentState,
+					startTime: event.execution.startTime,
+					endTime: event.execution.endTime,
+				});
+
+				// When execution starts, put existing output into recomputing state
+				// instead of clearing it immediately
+				if (isRunning && event.previousState !== CellExecutionState.Running) {
+					if (viewZone && viewZone.outputs.length > 0) {
+						// Put the view zone into recomputing state - old output stays visible
+						// but faded and with dotted border until new output arrives
+						viewZone.setRecomputing(true);
+					}
+					// Clear our internal output tracking since new outputs will replace
+					this._outputsByCell.delete(cellId);
+					this._contentHashByCellId.delete(cellId);
+					// Defer clearing the persisted cache until the first new output
+					// actually arrives (see _handleOutput). Clearing it here would
+					// destroy the still-valid cached output if the execution is
+					// interrupted before producing anything -- for example when a
+					// window reload cancels an in-flight execution during shutdown,
+					// which otherwise leaves an empty entry that the shutdown flush
+					// writes out as a deletion.
+					this._cellsAwaitingRecomputeOutput.add(cellId);
+				}
+
+				// When execution finishes (Idle, Completed, or Error), if still in
+				// recomputing state (no new output arrived), clear the old outputs
+				// but keep the view zone visible for the status bar
+				const executionFinished = currentState === CellExecutionState.Completed ||
+					currentState === CellExecutionState.Error;
+
+				if (executionFinished && viewZone?.isRecomputing) {
+					// No new output was produced - clear old output but keep
+					// view zone for status display
+					viewZone.clearOutputs();
+					this._onDidChangeOutputs.fire({
+						cellId,
+						documentUri: this._documentUri!,
+						outputs: [],
+					});
+				}
+
+				// A re-execution finished without producing a replacement output.
+				// Only drop the previously cached output if the run completed
+				// cleanly (the cell genuinely produces nothing now). If it ended in
+				// error -- which includes cancellation, e.g. by a window reload --
+				// keep the cache so the last good output survives the reload.
+				if (executionFinished && this._cellsAwaitingRecomputeOutput.delete(cellId)) {
+					if (currentState === CellExecutionState.Completed && this._documentUri) {
+						this._cacheService.clearCellOutputs(this._documentUri, cellId);
+					}
+				}
+
+				// When execution finishes and there is no view zone yet,
+				// create one to show the status bar
+				if (executionFinished && !viewZone) {
+					viewZone = this._createViewZone(cellId);
+					if (viewZone) {
+						this._viewZones.set(cellId, viewZone);
+						viewZone.setExecutionInfo(
+							currentState,
+							event.execution.startTime,
+							event.execution.endTime,
+						);
+					}
+				}
+
+				// When state goes to Idle (e.g. after cancellation), hide
+				// status-only view zones since there's nothing meaningful to show.
+				// The execution was interrupted rather than completed, so leave the
+				// persisted cache alone.
+				if (currentState === CellExecutionState.Idle) {
+					this._cellsAwaitingRecomputeOutput.delete(cellId);
+					if (viewZone?.isRecomputing) {
+						viewZone.clearOutputs();
+						this._viewZones.delete(cellId);
+						this._executionInfoByCell.delete(cellId);
+						this._onDidChangeOutputs.fire({
+							cellId,
+							documentUri: this._documentUri!,
+							outputs: [],
+						});
+					}
+				}
+			}
+		}));
+
+		// Listen for document model re-parsing to update view zone positions.
+		// We listen to onDidParse instead of onDidChangeModelContent because onDidParse
+		// fires after the document model has re-parsed, ensuring we always have fresh
+		// cell line numbers. This fixes the bug where view zone positions would not
+		// update correctly when lines were deleted above a cell.
+		const model = this._editor.getModel();
+		if (model) {
+			const quartoModel = this._documentModelService.getModel(model);
+			this._outputHandlingDisposables.add(quartoModel.onDidParse(() => {
+				if (this._featureEnabled) {
+					// No debounce needed - the document model is already parsed
+					this._updateViewZonePositionsImmediate();
+				}
+			}));
+		}
+
+		// Listen to output manager service for split editor synchronization
+		// When another editor clears outputs, we should also clear
+		this._outputHandlingDisposables.add(this._outputManager.onDidChangeOutputs(event => {
+			if (this._featureEnabled && this._documentUri && event.documentUri.toString() === this._documentUri.toString()) {
+				this._syncOutputsFromService(event);
+			}
+		}));
+
+		// Listen for document-level clear request (e.g., Clear All Outputs command).
+		// This ensures we clear view zones for cached outputs that the service
+		// may not be tracking in its own _outputsByCell map.
+		this._outputHandlingDisposables.add(this._outputManager.onDidRequestClearDocument(documentUri => {
+			if (this._featureEnabled && this._documentUri &&
+				documentUri.toString() === this._documentUri.toString()) {
+				this.clearAllOutputs();
+				this._clearCollapsedStateForDocument(documentUri);
+			}
+		}));
+
+		// Listen for global clear all request (e.g., when clearing the entire cache)
+		this._outputHandlingDisposables.add(this._outputManager.onDidRequestClearAll(() => {
+			if (this._featureEnabled) {
+				this.clearAllOutputs();
+				this._clearAllCollapsedState();
+			}
+		}));
+	}
+
+	/**
+	 * Synchronize outputs from the output manager service.
+	 * Used for split editor scenarios where another editor may have cleared outputs.
+	 */
+	private _syncOutputsFromService(event: OutputChangeEvent): void {
+		// If outputs are empty and we have a view zone, another editor cleared it
+		if (event.outputs.length === 0) {
+			const viewZone = this._viewZones.get(event.cellId);
+			if (viewZone) {
+				// Don't fire our own clear event, just clean up the view zone
+				viewZone.clearOutputs();
+				viewZone.dispose();
+				this._viewZones.delete(event.cellId);
+				this._outputsByCell.delete(event.cellId);
+			}
+		}
+	}
+
+	/**
+	 * Get outputs for a cell.
+	 */
+	getOutputsForCell(cellId: string): readonly ICellOutput[] {
+		return this._outputsByCell.get(cellId) ?? [];
+	}
+
+	/**
+	 * Clear outputs for a specific cell.
+	 */
+	clearOutputsForCell(cellId: string): void {
+		this._clearCellOutputs(cellId);
+	}
+
+	/**
+	 * Clear all outputs for the document.
+	 */
+	clearAllOutputs(): void {
+		this._disposeAllViewZones();
+		this._outputsByCell.clear();
+		this._executionInfoByCell.clear();
+		this._cellsAwaitingRecomputeOutput.clear();
+	}
+
+	/**
+	 * Whether the cell at the given line number has output that can be copied.
+	 * Used to enable/disable the "Copy Cell Output" toolbar action.
+	 */
+	hasCopiableOutputForCellAtLine(lineNumber: number): boolean {
+		const model = this._editor.getModel();
+		if (!model) {
+			return false;
+		}
+		const quartoModel = this._documentModelService.getModel(model);
+		const cell = quartoModel.getCellAtLine(lineNumber);
+		if (!cell) {
+			return false;
+		}
+		const viewZone = this._viewZones.get(cell.id);
+		return !!viewZone && viewZone.hasCopiableContent();
+	}
+
+	/**
+	 * Copy output for the cell at the given line number.
+	 * Returns true if copy was initiated, false if no output exists for the cell.
+	 */
+	copyOutputForCellAtLine(lineNumber: number): boolean {
+		const model = this._editor.getModel();
+		if (!model) {
+			return false;
+		}
+
+		// Get the cell at this line
+		const quartoModel = this._documentModelService.getModel(model);
+		const cell = quartoModel.getCellAtLine(lineNumber);
+		if (!cell) {
+			return false;
+		}
+
+		// Get the view zone for this cell
+		const viewZone = this._viewZones.get(cell.id);
+		if (!viewZone || !viewZone.hasCopiableContent()) {
+			return false;
+		}
+
+		// Get the content to copy and handle it
+		const content = this._getContentToCopyFromViewZone(viewZone);
+		if (content) {
+			this._handleCopyRequest({ cellId: cell.id, content }, viewZone);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the content to copy from a view zone.
+	 * This duplicates the logic in QuartoOutputViewZone._getContentToCopy
+	 * since we can't access private methods.
+	 */
+	private _getContentToCopyFromViewZone(viewZone: QuartoOutputViewZone): CopyOutputRequest['content'] | undefined {
+		const outputs = viewZone.outputs;
+
+		// First pass: look for images
+		for (const output of outputs) {
+			for (const item of output.items) {
+				if (item.mime.startsWith('image/')) {
+					return { type: 'image', dataUrl: getImageDataUrl(item.mime, item.data) };
+				}
+			}
+		}
+
+		// Second pass: collect all text content
+		const textParts: string[] = [];
+		for (const output of outputs) {
+			for (const item of output.items) {
+				const text = this._extractTextFromItem(item);
+				if (text) {
+					textParts.push(text);
+				}
+			}
+		}
+
+		if (textParts.length > 0) {
+			return { type: 'text', text: textParts.join('\n') };
+		}
+
+		return undefined;
+	}
+
+	/**
+	 * Extract text content from an output item.
+	 */
+	private _extractTextFromItem(item: ICellOutputItem): string | undefined {
+		const { mime, data } = item;
+
+		if (mime === 'application/vnd.code.notebook.stdout' ||
+			mime === 'text/plain' ||
+			mime === 'application/vnd.code.notebook.stderr') {
+			return data;
+		}
+
+		if (mime === 'application/vnd.code.notebook.error') {
+			try {
+				const errorData = JSON.parse(data);
+				const stack = (errorData.stack || '').trim();
+				if (stack) {
+					return stack;
+				}
+				const name = (errorData.name || '').trim();
+				const message = (errorData.message || '').trim();
+				return name ? `${name}: ${message}` : (message || '');
+			} catch {
+				return data;
+			}
+		}
+
+		if (mime === 'text/markdown') {
+			return data;
+		}
+
+		return undefined;
+	}
+
+	override dispose(): void {
+		if (this._timestampTickInterval) {
+			clearInterval(this._timestampTickInterval);
+			this._timestampTickInterval = undefined;
+		}
+		this._disposeAllViewZones();
+		super.dispose();
+	}
+
+	private _isQuartoDocument(): boolean {
+		const model = this._editor.getModel();
+		return isQuartoDocument(this._documentUri?.path, model?.getLanguageId());
+	}
+
+	private _isInDiffEditor(): boolean {
+		return this._editor.getOption(EditorOption.inDiffEditor);
+	}
+
+	/**
+	 * Transfer cached outputs from an untitled document to a saved file.
+	 * This is called when a user saves an untitled Quarto document to a file.
+	 * The cached outputs need to be moved to the new file URI so they persist.
+	 *
+	 * This method also restores the in-memory output state and creates view zones
+	 * so that outputs are immediately visible after the save completes.
+	 */
+	private _transferCacheFromUntitled(fromUri: URI, toUri: URI): void {
+		this._logService.debug('[QuartoOutputContribution] Transferring cache from untitled to file:',
+			fromUri.toString(), '->', toUri.toString());
+
+		// Get the cached outputs for the old (untitled) document
+		const cachedOutputs = this._cacheService.getCachedOutputs(fromUri);
+		if (cachedOutputs.size === 0) {
+			this._logService.debug('[QuartoOutputContribution] No cached outputs to transfer');
+			return;
+		}
+
+		// Copy each cell's outputs to the new location
+		const model = this._editor.getModel();
+		if (!model) {
+			return;
+		}
+
+		const quartoModel = this._documentModelService.getModel(model);
+		this._logService.debug('[QuartoOutputContribution] Transfer: found', cachedOutputs.size, 'cached cells,',
+			quartoModel.cells.length, 'cells in new model');
+
+		let transferredCount = 0;
+		for (const [cellId, outputs] of cachedOutputs) {
+			// Try to find the cell by ID first
+			let cell = quartoModel.getCellById(cellId);
+
+			// If not found by ID, try to find by content hash
+			// (cell IDs include index which could differ if whitespace/parsing changed)
+			if (!cell) {
+				// Extract content hash from old cell ID (format: index-hashPrefix-label)
+				const parts = cellId.split('-');
+				if (parts.length >= 2) {
+					const hashPrefix = parts[1];
+					// Find cell with matching hash prefix
+					cell = quartoModel.cells.find(c => c.contentHash.startsWith(hashPrefix));
+				}
+			}
+
+			if (cell) {
+				// Get source code for cache storage
+				const codeRange = new Range(
+					cell.codeStartLine, 1,
+					cell.codeEndLine, model.getLineMaxColumn(cell.codeEndLine)
+				);
+				const source = model.getValueInRange(codeRange);
+
+				// Save outputs to cache under the new file URI
+				for (const output of outputs) {
+					this._cacheService.saveOutput(toUri, cell.id, cell.contentHash, cell.label, output, source);
+				}
+
+				// Also restore the in-memory output state so view zones can be created
+				// This is needed because onDidChangeModel clears _outputsByCell before calling this method
+				this._outputsByCell.set(cell.id, [...outputs]);
+				this._contentHashByCellId.set(cell.id, cell.contentHash);
+
+				transferredCount++;
+				this._logService.debug('[QuartoOutputContribution] Transferred outputs for cell', cellId, '-> new cell', cell.id);
+			} else {
+				this._logService.debug('[QuartoOutputContribution] Could not find matching cell for', cellId);
+			}
+		}
+
+		// Clear the old cache
+		this._cacheService.clearCache(fromUri);
+
+		this._logService.debug('[QuartoOutputContribution] Successfully transferred', transferredCount, 'cells to', toUri.toString());
+	}
+
+	/**
+	 * Load cached outputs and restore view zones.
+	 */
+	private async _loadCachedOutputs(): Promise<void> {
+		if (!this._documentUri) {
+			return;
+		}
+
+		// Prevent duplicate loading
+		if (this._cachedOutputsLoaded) {
+			return;
+		}
+
+		// Check for stashed outputs first (e.g., from a tab switch). Stashed
+		// outputs preserve data explorer MIME items so the inline data explorer
+		// can reconnect to a live comm without going through the disk cache.
+		const stash = this._stashedOutputsByUri.get(this._documentUri.toString());
+		if (stash && (stash.outputsByCell.size > 0 || stash.executionInfoByCell.size > 0)) {
+			this._stashedOutputsByUri.delete(this._documentUri.toString());
+			this._cachedOutputsLoaded = true;
+			this._restoreFromStash(stash);
+			return;
+		}
+
+		try {
+			let cachedDoc = await this._cacheService.loadCache(this._documentUri);
+
+			const model = this._editor.getModel();
+			if (!model) {
+				return;
+			}
+
+			const quartoModel = this._documentModelService.getModel(model);
+
+			// Both lookups below match cached outputs to live cells by content
+			// hash, so they need the model's cells to be current.
+			if (!quartoModel.isParsed) {
+				this._logService.debug('[QuartoOutputContribution] Waiting for the document to be parsed before restoring cached outputs');
+				await quartoModel.whenParsed();
+				if (this._cachedOutputsLoaded || this._store.isDisposed) {
+					return;
+				}
+			}
+
+			// If no cache found, try to find cache by content hash
+			// This handles two cases:
+			// 1. A file document that was just saved from an untitled document
+			// 2. An untitled document that got a different URI after window reload
+			if ((!cachedDoc || cachedDoc.cells.length === 0) &&
+				quartoModel.cells.length > 0) {
+
+				const contentHashes = quartoModel.cells.map(c => c.contentHash);
+				cachedDoc = await this._cacheService.findCacheByContentHash(this._documentUri, contentHashes);
+
+				if (cachedDoc) {
+					this._logService.debug('[QuartoOutputContribution] Found cache by content hash match');
+				}
+			}
+
+			// Mark as loaded to prevent re-entry
+			this._cachedOutputsLoaded = true;
+
+			if (!cachedDoc || cachedDoc.cells.length === 0) {
+				this._logService.debug('[QuartoOutputContribution] No cached outputs to restore');
+				return;
+			}
+			let restoredCount = 0;
+
+			for (const cachedCell of cachedDoc.cells) {
+				// Find the cell by content hash (validates cell hasn't changed).
+				// Extract index from the cached cell ID (format: "{index}-{hash}-{label}")
+				// to disambiguate when multiple cells have the same content hash.
+				const cachedIndex = parseInt(cachedCell.cellId, 10);
+				const preferIndex = isNaN(cachedIndex) ? undefined : cachedIndex;
+				const cell = quartoModel.findCellByContentHash(cachedCell.contentHash, preferIndex);
+				if (!cell) {
+					// Cell content has changed - skip stale output
+					this._logService.debug('[QuartoOutputContribution] Skipping stale cached output for cell', cachedCell.cellId);
+					continue;
+				}
+
+				// Track content hash for this cell so we can find it if it moves
+				this._contentHashByCellId.set(cell.id, cell.contentHash);
+
+				// Restore outputs for this cell
+				for (const output of cachedCell.outputs) {
+					// Store in memory
+					const outputs = this._outputsByCell.get(cell.id) ?? [];
+					outputs.push(output);
+					this._outputsByCell.set(cell.id, outputs);
+
+					// Create or update view zone
+					let viewZone = this._viewZones.get(cell.id);
+					if (!viewZone) {
+						viewZone = this._createViewZone(cell.id);
+						if (viewZone) {
+							this._viewZones.set(cell.id, viewZone);
+						}
+					}
+
+					if (viewZone) {
+						viewZone.addOutput(output);
+					}
+				}
+
+				restoredCount++;
+			}
+
+			this._logService.debug('[QuartoOutputContribution] Restored cached outputs for', restoredCount, 'cells');
+
+		} catch (error) {
+			this._logService.warn('[QuartoOutputContribution] Failed to load cached outputs:', error);
+		}
+	}
+
+	/**
+	 * Restore outputs from a stash saved during a previous model change (tab switch).
+	 * The stash preserves data explorer MIME items that the disk cache strips.
+	 */
+	private _restoreFromStash(stash: {
+		outputsByCell: Map<string, ICellOutput[]>;
+		contentHashByCellId: Map<string, string>;
+		executionInfoByCell: Map<string, { state: CellExecutionState; startTime?: number; endTime?: number }>;
+	}): void {
+		// Restore content hashes and execution info
+		for (const [cellId, hash] of stash.contentHashByCellId) {
+			this._contentHashByCellId.set(cellId, hash);
+		}
+		for (const [cellId, info] of stash.executionInfoByCell) {
+			this._executionInfoByCell.set(cellId, info);
+		}
+
+		// Restore outputs and recreate view zones
+		let restoredCount = 0;
+		for (const [cellId, outputs] of stash.outputsByCell) {
+			this._outputsByCell.set(cellId, outputs);
+
+			for (const output of outputs) {
+				let viewZone = this._viewZones.get(cellId);
+				if (!viewZone) {
+					viewZone = this._createViewZone(cellId);
+					if (viewZone) {
+						this._viewZones.set(cellId, viewZone);
+					}
+				}
+				if (viewZone) {
+					viewZone.addOutput(output);
+				}
+			}
+			restoredCount++;
+		}
+
+		// Restore execution info on view zones (including status-only cells
+		// that had no outputs but did have a status bar)
+		for (const [cellId, info] of stash.executionInfoByCell) {
+			let viewZone = this._viewZones.get(cellId);
+			if (!viewZone) {
+				// Create a view zone for status-only cells (no outputs but had status bar)
+				viewZone = this._createViewZone(cellId);
+				if (viewZone) {
+					this._viewZones.set(cellId, viewZone);
+				}
+			}
+			if (viewZone) {
+				viewZone.setExecutionInfo(info.state, info.startTime, info.endTime);
+			}
+		}
+
+		this._logService.debug('[QuartoOutputContribution] Restored outputs from stash for', restoredCount, 'cells');
+	}
+
+	/**
+	 * Resolve the cell context (code, language, location) for quick-fix buttons.
+	 */
+	private _resolveCellContext(cellId: string): QuartoCellErrorContext | undefined {
+		if (!this._documentUri) {
+			return undefined;
+		}
+		const model = this._editor.getModel();
+		if (!model) {
+			return undefined;
+		}
+		const quartoModel = this._documentModelService.getModel(model);
+		const cell = quartoModel.getCellById(cellId);
+		if (!cell) {
+			return undefined;
+		}
+		return {
+			code: quartoModel.getCellCode(cell),
+			language: cell.language,
+			label: cell.label,
+			path: this._labelService.getUriLabel(this._documentUri, { relative: true }),
+			codeStartLine: cell.codeStartLine,
+			codeEndLine: cell.codeEndLine,
+		};
+	}
+
+	private _handleOutput(cellId: string, output: ICellOutput): void {
+		this._logService.debug('[QuartoOutputContribution] Received output for cell', cellId);
+
+		// First replacement output of a re-execution: now that new output is
+		// actually arriving, drop the previously cached output for this cell so
+		// the new run replaces it instead of appending. This is deferred from
+		// execution start so an interrupted run never destroys the old cache.
+		if (this._cellsAwaitingRecomputeOutput.delete(cellId) && this._documentUri) {
+			this._cacheService.clearCellOutputs(this._documentUri, cellId);
+		}
+
+		// Store output
+		const outputs = this._outputsByCell.get(cellId) ?? [];
+		outputs.push(output);
+		this._outputsByCell.set(cellId, outputs);
+
+		// Get or create view zone
+		let viewZone = this._viewZones.get(cellId);
+		if (!viewZone) {
+			viewZone = this._createViewZone(cellId);
+			if (!viewZone) {
+				return;
+			}
+			this._viewZones.set(cellId, viewZone);
+		}
+
+		// Enable quick-fix buttons with cell context (code, language, location)
+		viewZone.enableQuickFix(this._resolveCellContext(cellId));
+
+		// Add output to view zone
+		viewZone.addOutput(output);
+
+		// Follow the output as it appears (no-op unless auto-scroll is armed).
+		this._autoScrollTrackedCellId = cellId;
+		this._revealTrackedCell();
+
+		// Save to cache and track content hash
+		if (this._documentUri) {
+			const model = this._editor.getModel();
+			if (model) {
+				const quartoModel = this._documentModelService.getModel(model);
+				const cell = quartoModel.getCellById(cellId);
+				if (cell) {
+					// Track content hash so we can find this cell if it moves
+					this._contentHashByCellId.set(cellId, cell.contentHash);
+
+					// Get source code for cache storage
+					const codeRange = new Range(
+						cell.codeStartLine, 1,
+						cell.codeEndLine, model.getLineMaxColumn(cell.codeEndLine)
+					);
+					const source = model.getValueInRange(codeRange);
+
+					this._cacheService.saveOutput(
+						this._documentUri,
+						cellId,
+						cell.contentHash,
+						cell.label,
+						output,
+						source
+					);
+				}
+			}
+		}
+
+		// Fire event
+		this._onDidChangeOutputs.fire({
+			cellId,
+			documentUri: this._documentUri!,
+			outputs: outputs,
+		});
+	}
+
+	/**
+	 * Whether this contribution's editor is the one the user is currently
+	 * working in. The same Quarto document can be open in several editors at
+	 * once (a split view), each with its own contribution; only the active
+	 * editor should arm auto-scroll so running a cell in one pane doesn't yank
+	 * the scroll position of another pane showing the same file.
+	 */
+	private _isActiveEditor(): boolean {
+		return this._editorService.activeTextEditorControl === this._editor;
+	}
+
+	/**
+	 * Scroll the editor to reveal the currently tracked cell's output view zone,
+	 * but only when auto-scroll is armed. A no-op when the feature is disabled,
+	 * the user has scrolled away, the zone isn't visible, or the bottom of the
+	 * zone (where new output appears) is already on screen. Keeps the bottom of
+	 * the zone at the bottom of the viewport (see {@link computeAutoScrollTop}).
+	 */
+	private _revealTrackedCell(): void {
+		if (!this._autoScrollEnabled || !this._autoScrollArmed || !this._autoScrollTrackedCellId) {
+			return;
+		}
+
+		const viewZone = this._viewZones.get(this._autoScrollTrackedCellId);
+		if (!viewZone || !viewZone.isVisible()) {
+			return;
+		}
+
+		const model = this._editor.getModel();
+		if (!model) {
+			return;
+		}
+
+		// The view zone sits after this (model) line; guard against a stale
+		// anchor after edits.
+		const afterLine = viewZone.afterLineNumber;
+		if (afterLine < 1 || afterLine > model.getLineCount()) {
+			return;
+		}
+
+		// Top of the zone is the offset just after its anchor line (Monaco's
+		// getBottomForLineNumber excludes view-zone whitespace); the zone's own
+		// reserved height gives the bottom. Using heightInPx avoids depending on
+		// the include-view-zones offset overload and handles a last-line anchor.
+		const zoneTop = this._editor.getBottomForLineNumber(afterLine);
+		const layoutInfo = this._editor.getLayoutInfo();
+		const target = computeAutoScrollTop({
+			zoneTop,
+			zoneBottom: zoneTop + viewZone.heightInPx,
+			scrollTop: this._editor.getScrollTop(),
+			viewportHeight: layoutInfo.height,
+			scrollHeight: this._editor.getScrollHeight(),
+		});
+
+		if (target === undefined) {
+			return;
+		}
+
+		// Mark the scroll as programmatic so its scroll event doesn't disarm us.
+		this._autoScrollProgrammatic = true;
+		this._editor.setScrollTop(target, ScrollType.Immediate);
+	}
+
+	private _createViewZone(cellId: string): QuartoOutputViewZone | undefined {
+		const model = this._editor.getModel();
+		if (!model) {
+			return undefined;
+		}
+
+		// Get the document model to find cell info
+		const quartoModel = this._documentModelService.getModel(model);
+		const cell = quartoModel.getCellById(cellId);
+		if (!cell) {
+			this._logService.warn('[QuartoOutputContribution] Cell not found:', cellId);
+			return undefined;
+		}
+
+		// Get current session if available
+		const session = this._documentUri
+			? this._kernelManager.getSessionForDocument(this._documentUri)
+			: undefined;
+
+		// Create view zone after the cell's closing fence with webview support
+		const viewZone = new QuartoOutputViewZone(
+			this._editor,
+			cellId,
+			cell.endLine,
+			this._webviewService,
+			session,
+			this._maxLines,
+			this._configurationService,
+			this._documentUri,
+			this._resourceUsageHistoryService,
+			this._timestampTickEmitter.event,
+			this._hoverService,
+		);
+
+		// Set up clear callback
+		viewZone.onClear = () => {
+			this._outputsByCell.delete(cellId);
+			this._executionInfoByCell.delete(cellId);
+			this._viewZones.delete(cellId);
+			this._onDidChangeOutputs.fire({
+				cellId,
+				documentUri: this._documentUri!,
+				outputs: [],
+			});
+		};
+
+		// Set up interrupt callback
+		viewZone.onInterrupt = () => {
+			if (this._documentUri) {
+				this._executionManager.cancelExecution(this._documentUri, cellId);
+			}
+		};
+
+		// Set up copy handler
+		this._outputHandlingDisposables.add(viewZone.onCopyRequested(request => {
+			this._handleCopyRequest(request, viewZone);
+		}));
+
+		// Set up save handler
+		this._outputHandlingDisposables.add(viewZone.onSaveRequested(request => {
+			this._handleSaveRequest(request, cellId);
+		}));
+
+		// Set up popout handler
+		this._outputHandlingDisposables.add(viewZone.onPopoutRequested(request => {
+			this._handlePopoutRequest(request);
+		}));
+
+		// Keep this cell in view as its output grows (e.g. streaming text or an
+		// image finishing loading) while we're following it.
+		this._outputHandlingDisposables.add(viewZone.onDidChangeHeight(() => {
+			if (this._autoScrollTrackedCellId === cellId) {
+				this._revealTrackedCell();
+			}
+		}));
+
+		// Set initial execution state
+		const executionState = this._executionManager.getExecutionState(cellId);
+		viewZone.setExecuting(executionState === CellExecutionState.Running);
+
+		// Restore a previously persisted collapsed state before subscribing so
+		// this initial application doesn't re-trigger the persist path, and
+		// before `show()` so the view zone paints in its collapsed form
+		// without flashing expanded.
+		if (this._documentUri) {
+			const collapsedCells = this._collapsedCellsByUri.get(this._documentUri.toString());
+			if (collapsedCells?.has(cellId)) {
+				viewZone.setCollapsed(true);
+			}
+		}
+
+		// Persist collapsed state to workspace storage whenever the user
+		// toggles it. Stored per document URI + cell ID so the state survives
+		// window reloads; discarded when the cell is edited (cell ID changes).
+		this._outputHandlingDisposables.add(viewZone.onDidChangeCollapsed(collapsed => {
+			this._updateCollapsedCell(cellId, collapsed);
+		}));
+
+		// Show the view zone
+		viewZone.show();
+
+		return viewZone;
+	}
+
+	/**
+	 * Handle a copy request from a view zone.
+	 * Copies the content to clipboard and shows visual feedback.
+	 */
+	private async _handleCopyRequest(request: CopyOutputRequest, viewZone: QuartoOutputViewZone): Promise<void> {
+		try {
+			if (request.content.type === 'text') {
+				await this._clipboardService.writeText(request.content.text);
+			} else if (request.content.type === 'image') {
+				await this._clipboardService.writeImage(request.content.dataUrl);
+			}
+			// Show success feedback
+			viewZone.showCopySuccess();
+		} catch (error) {
+			// Show error notification
+			this._logService.error('[QuartoOutputContribution] Copy failed:', error);
+			this._notificationService.error(localize('copyOutputFailed', 'Failed to copy output to clipboard'));
+		}
+	}
+
+	/**
+	 * Handle a save request from a view zone.
+	 * Shows a file save dialog and saves the plot to the selected location.
+	 */
+	private async _handleSaveRequest(request: SavePlotRequest, cellId: string): Promise<void> {
+		await this.savePlot(request.dataUrl, cellId);
+	}
+
+	/**
+	 * Handle a popout request from a view zone.
+	 * Opens the output in an appropriate location based on type:
+	 * - PLOT: Opens image in a new editor tab
+	 * - TEXT: Opens in a new untitled editor
+	 * - HTML: Opens in the Viewer pane
+	 */
+	private async _handlePopoutRequest(request: PopoutRequest): Promise<void> {
+		const { popout } = request;
+
+		try {
+			switch (popout.type) {
+				case 'plot':
+					await this._openPlotInEditor(popout.dataUrl, request.cellId);
+					break;
+				case 'text':
+					await this._openTextInEditor(popout.text);
+					break;
+				case 'html':
+					await this._openHtmlInViewer(popout.html, request.cellId);
+					break;
+				case 'webview':
+					await this._openWebviewInViewer(popout.rawData, popout.outputId);
+					break;
+			}
+		} catch (error) {
+			this._logService.error('[QuartoOutputContribution] Popout failed:', error);
+			this._notificationService.error(localize('popoutFailed', 'Failed to open output'));
+		}
+	}
+
+	/**
+	 * Opens a plot image in a data-backed editor tab without creating a project
+	 * file.
+	 */
+	private async _openPlotInEditor(dataUrl: string, cellId: string): Promise<void> {
+		if (!this._documentUri) {
+			return;
+		}
+
+		await openImageOutputInNewTab(
+			dataUrl,
+			this._documentUri,
+			getImageOutputName(this._documentUri, this._getCellIndex(cellId)),
+			this._plotsService,
+			this._logService,
+			this._notificationService,
+			this._getCellCode(cellId),
+		);
+	}
+
+	/**
+	 * Returns the zero-based cell index encoded at the start of the cell ID.
+	 */
+	private _getCellIndex(cellId: string): number {
+		const index = parseInt(cellId.split('-')[0], 10);
+		return Number.isNaN(index) ? 0 : index;
+	}
+
+	/** Returns the cell's current code, when the cell still exists. */
+	private _getCellCode(cellId: string): string | undefined {
+		const model = this._editor.getModel();
+		if (!model) {
+			return undefined;
+		}
+		const quartoModel = this._documentModelService.getModel(model);
+		const cell = quartoModel.getCellById(cellId);
+		return cell && quartoModel.getCellCode(cell);
+	}
+
+	/**
+	 * Open text content in a new untitled editor.
+	 */
+	private async _openTextInEditor(text: string): Promise<void> {
+		// Create an untitled document with the text content
+		const untitledUri = URI.from({
+			scheme: 'untitled',
+			path: 'Output',
+		});
+
+		await this._editorService.openEditor({
+			resource: untitledUri,
+			contents: text,
+			options: {
+				pinned: false,
+				preserveFocus: false,
+			}
+		});
+	}
+
+	/**
+	 * Open HTML content in the Viewer pane.
+	 * Uses openHtmlString to set the HTML directly on a webview, avoiding
+	 * temp files and proxy servers.
+	 */
+	private _openHtmlInViewer(html: string, cellId: string): void {
+		if (!this._documentUri) {
+			return;
+		}
+
+		const previewId = `quartoHtmlOutput.${cellId}`;
+		const docName = basename(this._documentUri);
+		const title = `Output - ${docName}`;
+
+		this._previewService.openHtmlString(previewId, html, title);
+	}
+
+	/**
+	 * Open a webview output in the Viewer pane.
+	 * Uses the notebook output webview service to render the output using the same
+	 * mechanism as inline output display.
+	 */
+	private async _openWebviewInViewer(rawData: Record<string, unknown>, outputId: string): Promise<void> {
+		if (!this._documentUri) {
+			return;
+		}
+
+		// Get the runtime session for this document
+		const session = this._kernelManager.getSessionForDocument(this._documentUri);
+		if (!session) {
+			throw new Error('No active session for document');
+		}
+
+		// Construct a runtime output message from the raw data
+		// This format is what createNotebookOutputWebview expects
+		const runtimeMessage: ILanguageRuntimeMessageWebOutput = {
+			id: `popout-${outputId}`,
+			parent_id: '',
+			when: new Date().toISOString(),
+			event_clock: 0,
+			type: LanguageRuntimeMessageType.Output,
+			kind: RuntimeOutputKind.ViewerWidget,
+			data: rawData,
+			output_location: PositronOutputLocation.Viewer,
+			resource_roots: undefined,
+		};
+
+		// Create a notebook output webview for the output.
+		// viewType ensures renderers registered for the jupyter-notebook type
+		// are resolved (e.g. Plotly) and that notebook static preloads (e.g.
+		// RequireJS from ms-toolsai.jupyter-renderers) are injected.
+		const notebookWebview = await this._webviewService.createNotebookOutputWebview({
+			id: runtimeMessage.id,
+			runtime: session,
+			output: runtimeMessage,
+			viewType: 'jupyter-notebook',
+		});
+
+		if (!notebookWebview) {
+			throw new Error('Failed to create webview for output');
+		}
+
+		// Open the webview in the Viewer pane using the preview service
+		const previewId = `quartoWebviewOutput.${outputId}`;
+		this._previewService.openWebview(previewId, notebookWebview.webview, 'Quarto Output');
+	}
+
+	/**
+	 * Popout the output for the cell at the given line number.
+	 * Returns true if popout was initiated, false if no popout content exists.
+	 */
+	popoutForCellAtLine(lineNumber: number): boolean {
+		const model = this._editor.getModel();
+		if (!model) {
+			this._logService.debug('[QuartoOutputContribution] popoutForCellAtLine: No editor model');
+			return false;
+		}
+
+		// Get the cell at this line
+		const quartoModel = this._documentModelService.getModel(model);
+		const cell = quartoModel.getCellAtLine(lineNumber);
+		if (!cell) {
+			this._logService.debug(`[QuartoOutputContribution] popoutForCellAtLine: No cell at line ${lineNumber}`);
+			return false;
+		}
+
+		this._logService.debug(`[QuartoOutputContribution] popoutForCellAtLine: Found cell ${cell.id} at line ${lineNumber}`);
+
+		// Get the view zone for this cell
+		const viewZone = this._viewZones.get(cell.id);
+		if (!viewZone) {
+			this._logService.debug(`[QuartoOutputContribution] popoutForCellAtLine: No view zone for cell ${cell.id}. Available: ${Array.from(this._viewZones.keys()).join(', ')}`);
+			return false;
+		}
+
+		// Get the content and handle it
+		const popout = viewZone.getPopoutContent();
+		if (!popout) {
+			this._logService.debug(`[QuartoOutputContribution] popoutForCellAtLine: No popout content for cell ${cell.id}`);
+			return false;
+		}
+
+		this._handlePopoutRequest({ cellId: cell.id, popout });
+		return true;
+	}
+
+	/**
+	 * Set the collapsed state on every output view zone in this document.
+	 * Used by the "Expand All Outputs" / "Collapse All Outputs" commands.
+	 * Per-cell persistence is driven by each view zone's change event, so no
+	 * extra bookkeeping is needed here.
+	 */
+	setAllOutputsCollapsed(collapsed: boolean): void {
+		for (const viewZone of this._viewZones.values()) {
+			viewZone.setCollapsed(collapsed, true);
+		}
+	}
+
+	/**
+	 * Toggle the collapsed state of the output view zone for the cell at the
+	 * given line number. Returns true if a view zone was toggled, false if
+	 * the line is not in a cell or the cell has no output view zone.
+	 */
+	toggleOutputCollapseForCellAtLine(lineNumber: number): boolean {
+		const model = this._editor.getModel();
+		if (!model) {
+			return false;
+		}
+
+		const quartoModel = this._documentModelService.getModel(model);
+		const cell = quartoModel.getCellAtLine(lineNumber);
+		if (!cell) {
+			return false;
+		}
+
+		const viewZone = this._viewZones.get(cell.id);
+		if (!viewZone) {
+			return false;
+		}
+
+		viewZone.toggleCollapsed();
+		return true;
+	}
+
+	/**
+	 * Save a plot to a file.
+	 * @param cellId The cell ID (used for generating default filename)
+	 * @param targetPath Optional target path for testing (bypasses dialog)
+	 */
+	async savePlot(dataUrl: string, cellId: string, targetPath?: URI): Promise<boolean> {
+		if (!this._documentUri) {
+			return false;
+		}
+
+		return saveImageOutput(
+			dataUrl,
+			this._documentUri,
+			getImageOutputName(this._documentUri, this._getCellIndex(cellId)),
+			this._fileDialogService,
+			this._fileService,
+			this._logService,
+			this._notificationService,
+			targetPath,
+		);
+	}
+
+	/**
+	 * Get the plot info for a cell at a given line number.
+	 * Returns undefined if no single plot exists.
+	 */
+	getPlotInfoForCellAtLine(lineNumber: number): { dataUrl: string; cellId: string } | undefined {
+		const model = this._editor.getModel();
+		if (!model) {
+			return undefined;
+		}
+
+		const quartoModel = this._documentModelService.getModel(model);
+		const cell = quartoModel.getCellAtLine(lineNumber);
+		if (!cell) {
+			return undefined;
+		}
+
+		const viewZone = this._viewZones.get(cell.id);
+		if (!viewZone) {
+			return undefined;
+		}
+
+		const plotInfo = viewZone.getSinglePlotInfo();
+		if (!plotInfo) {
+			return undefined;
+		}
+
+		return {
+			dataUrl: plotInfo.dataUrl,
+			cellId: cell.id,
+		};
+	}
+
+	/**
+	 * Get the cell ID for a given line number.
+	 * Returns undefined if no cell exists at that line.
+	 */
+	getCellIdAtLine(lineNumber: number): string | undefined {
+		const model = this._editor.getModel();
+		if (!model) {
+			return undefined;
+		}
+
+		const quartoModel = this._documentModelService.getModel(model);
+		const cell = quartoModel.getCellAtLine(lineNumber);
+		return cell?.id;
+	}
+
+	/**
+	 * Update session on all view zones when kernel state changes.
+	 */
+	private _updateViewZoneSessions(): void {
+		if (!this._documentUri) {
+			return;
+		}
+
+		const session = this._kernelManager.getSessionForDocument(this._documentUri);
+
+		for (const viewZone of this._viewZones.values()) {
+			viewZone.setSession(session);
+		}
+	}
+
+	private _clearCellOutputs(cellId: string): void {
+		const viewZone = this._viewZones.get(cellId);
+		if (viewZone) {
+			viewZone.clearOutputs();
+			viewZone.dispose();
+			this._viewZones.delete(cellId);
+		}
+		this._outputsByCell.delete(cellId);
+		this._contentHashByCellId.delete(cellId);
+
+		// Clear from cache
+		if (this._documentUri) {
+			this._cacheService.clearCellOutputs(this._documentUri, cellId);
+
+			this._onDidChangeOutputs.fire({
+				cellId,
+				documentUri: this._documentUri,
+				outputs: [],
+			});
+		}
+	}
+
+	/**
+	 * Update view zone positions based on current cell positions.
+	 * Called after the document model re-parses to ensure we have fresh line numbers.
+	 *
+	 * When cells move (e.g., a new cell is inserted above), their IDs change because
+	 * cell IDs include the index. We use content hashes to find moved cells and remap
+	 * the view zones to their new IDs, preserving outputs across position changes.
+	 */
+	private _updateViewZonePositionsImmediate(): void {
+		const model = this._editor.getModel();
+		if (!model) {
+			return;
+		}
+
+		const quartoModel = this._documentModelService.getModel(model);
+
+		// Collect remappings and deletions to apply after iteration
+		// (can't modify maps while iterating)
+		const remappings: Array<{ oldId: string; newId: string; contentHash: string }> = [];
+		const deletions: string[] = [];
+
+		for (const [cellId, viewZone] of this._viewZones) {
+			const cell = quartoModel.getCellById(cellId);
+			if (cell) {
+				// Cell still exists with same ID - just update position
+				viewZone.updateAfterLineNumber(cell.endLine);
+			} else {
+				// Cell ID not found - check if the cell just moved (ID changed due to index shift)
+				const contentHash = this._contentHashByCellId.get(cellId);
+				if (contentHash) {
+					const oldIndex = parseInt(cellId, 10);
+					const movedCell = quartoModel.findCellByContentHash(contentHash, isNaN(oldIndex) ? undefined : oldIndex);
+					if (movedCell) {
+						// Cell moved! Remap to new ID and update position
+						this._logService.debug('[QuartoOutputContribution] Cell moved from', cellId, 'to', movedCell.id);
+						viewZone.updateAfterLineNumber(movedCell.endLine);
+						remappings.push({ oldId: cellId, newId: movedCell.id, contentHash });
+					} else {
+						// Cell content hash no longer exists - cell was truly deleted
+						deletions.push(cellId);
+					}
+				} else {
+					// No content hash tracked - cell was truly deleted
+					deletions.push(cellId);
+				}
+			}
+		}
+
+		// Apply remappings
+		for (const { oldId, newId, contentHash } of remappings) {
+			const viewZone = this._viewZones.get(oldId);
+			const outputs = this._outputsByCell.get(oldId);
+
+			// Remove old entries
+			this._viewZones.delete(oldId);
+			this._outputsByCell.delete(oldId);
+			this._contentHashByCellId.delete(oldId);
+
+			// Add with new ID
+			if (viewZone) {
+				this._viewZones.set(newId, viewZone);
+			}
+			if (outputs) {
+				this._outputsByCell.set(newId, outputs);
+			}
+			this._contentHashByCellId.set(newId, contentHash);
+		}
+
+		// Apply deletions
+		for (const cellId of deletions) {
+			const viewZone = this._viewZones.get(cellId);
+			if (viewZone) {
+				viewZone.dispose();
+			}
+			this._viewZones.delete(cellId);
+			this._outputsByCell.delete(cellId);
+			this._contentHashByCellId.delete(cellId);
+		}
+	}
+
+	private _handleFeatureToggle(): void {
+		const enabled = this._contextKeyService.getContextKeyValue<boolean>(QUARTO_INLINE_OUTPUT_ENABLED.key) ?? false;
+		this._featureEnabled = enabled;
+
+		if (!enabled) {
+			// Hide all view zones and clear subscriptions when feature is disabled
+			this._disposeAllViewZones();
+			this._outputHandlingDisposables.clear();
+			this._outputHandlingInitialized = false;
+		} else if (this._isQuartoDocument()) {
+			// Initialize output handling when feature is enabled
+			// This will also load cached outputs
+			this._initializeOutputHandling();
+		}
+	}
+
+	private _disposeAllViewZones(): void {
+		for (const viewZone of this._viewZones.values()) {
+			viewZone.dispose();
+		}
+		this._viewZones.clear();
+	}
+
+	/**
+	 * Read the collapsed-cell map from workspace storage. Returns an empty
+	 * map on first run or if the stored value is malformed.
+	 */
+	private _loadCollapsedCells(): Map<string, Set<string>> {
+		const result = new Map<string, Set<string>>();
+		const map = readCollapsedCellsMap(this._storageService, this._logService, '[QuartoOutputContribution]');
+		for (const [uri, cellIds] of Object.entries(map)) {
+			if (cellIds.length > 0) {
+				result.set(uri, new Set(cellIds));
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Update the collapsed state for a single cell in the current document
+	 * and write the change back to workspace storage.
+	 */
+	private _updateCollapsedCell(cellId: string, collapsed: boolean): void {
+		if (!this._documentUri) {
+			return;
+		}
+		const uriKey = this._documentUri.toString();
+		let cells = this._collapsedCellsByUri.get(uriKey);
+		if (collapsed) {
+			if (!cells) {
+				cells = new Set<string>();
+				this._collapsedCellsByUri.set(uriKey, cells);
+			}
+			if (cells.has(cellId)) {
+				return;
+			}
+			cells.add(cellId);
+		} else {
+			if (!cells?.has(cellId)) {
+				return;
+			}
+			cells.delete(cellId);
+			if (cells.size === 0) {
+				this._collapsedCellsByUri.delete(uriKey);
+			}
+		}
+		this._persistCellCollapsedChange(uriKey, cellId, collapsed);
+	}
+
+	/**
+	 * Drop the in-memory collapsed-cell entry for a single document. The
+	 * backing storage is cleared by `QuartoOutputManagerService` so even
+	 * documents with no open editor are cleaned up; this mirrors the change
+	 * here so our cached copy can't re-persist stale data.
+	 */
+	private _clearCollapsedStateForDocument(documentUri: URI): void {
+		this._collapsedCellsByUri.delete(documentUri.toString());
+	}
+
+	/**
+	 * Drop the whole in-memory collapsed-cell map. Paired with the service
+	 * clearing `STORAGE_KEY_COLLAPSED_CELLS` in workspace storage.
+	 */
+	private _clearAllCollapsedState(): void {
+		this._collapsedCellsByUri.clear();
+	}
+
+	/**
+	 * Apply a single cell's collapsed-state change to workspace storage using
+	 * read-modify-write against the on-disk map. Scoped to one cell so
+	 * concurrent toggles from other contributions (different documents, or
+	 * split editors on the same document) don't clobber each other by writing
+	 * stale whole-map snapshots.
+	 */
+	private _persistCellCollapsedChange(uriKey: string, cellId: string, collapsed: boolean): void {
+		const map = readCollapsedCellsMap(this._storageService, this._logService, '[QuartoOutputContribution]');
+
+		const existing = new Set(map[uriKey] ?? []);
+		if (collapsed) {
+			existing.add(cellId);
+		} else {
+			existing.delete(cellId);
+		}
+		if (existing.size > 0) {
+			map[uriKey] = Array.from(existing);
+		} else {
+			delete map[uriKey];
+		}
+
+		writeCollapsedCellsMap(this._storageService, map);
+	}
+}
+
+/**
+ * Singleton service that coordinates output management across all editors.
+ */
+export class QuartoOutputManagerService extends Disposable implements IQuartoOutputManager {
+	declare readonly _serviceBrand: undefined;
+
+	private readonly _outputsByCell = new Map<string, ICellOutput[]>();
+	private _cleanupScheduled = false;
+
+	private readonly _onDidChangeOutputs = this._register(new Emitter<OutputChangeEvent>());
+	readonly onDidChangeOutputs = this._onDidChangeOutputs.event;
+
+	private readonly _onDidRequestClearDocument = this._register(new Emitter<URI>());
+	readonly onDidRequestClearDocument = this._onDidRequestClearDocument.event;
+
+	private readonly _onDidRequestClearAll = this._register(new Emitter<void>());
+	readonly onDidRequestClearAll = this._onDidRequestClearAll.event;
+
+	constructor(
+		@IQuartoExecutionManager private readonly _executionManager: IQuartoExecutionManager,
+		@IQuartoOutputCacheService private readonly _cacheService: IQuartoOutputCacheService,
+		@ILogService private readonly _logService: ILogService,
+		@IStorageService private readonly _storageService: IStorageService,
+	) {
+		super();
+
+		// Listen to execution outputs to maintain global output state
+		this._register(this._executionManager.onDidReceiveOutput(event => {
+			const key = `${event.documentUri.toString()}:${event.cellId}`;
+			const outputs = this._outputsByCell.get(key) ?? [];
+			outputs.push(event.output);
+			this._outputsByCell.set(key, outputs);
+
+			this._onDidChangeOutputs.fire({
+				cellId: event.cellId,
+				documentUri: event.documentUri,
+				outputs: outputs,
+			});
+		}));
+
+		// Clear outputs when execution starts
+		this._register(this._executionManager.onDidChangeExecutionState(event => {
+			if (event.execution.state === CellExecutionState.Running &&
+				event.previousState !== CellExecutionState.Running) {
+				const key = `${event.execution.documentUri.toString()}:${event.execution.cellId}`;
+				this._outputsByCell.delete(key);
+			}
+		}));
+
+		// Schedule cache cleanup after a delay (avoid slowing down startup)
+		this._scheduleCleanup();
+	}
+
+	/**
+	 * Schedule cache cleanup to run after startup.
+	 */
+	private _scheduleCleanup(): void {
+		if (this._cleanupScheduled) {
+			return;
+		}
+
+		this._cleanupScheduled = true;
+
+		// Run cleanup after 30 seconds to avoid impacting startup
+		setTimeout(() => {
+			this._cacheService.runCleanup().catch(error => {
+				this._logService.warn('[QuartoOutputManagerService] Cache cleanup failed:', error);
+			});
+		}, 30000);
+	}
+
+	getOutputsForCell(cellId: string): readonly ICellOutput[] {
+		// This is a simplified implementation
+		// In practice, we'd need the document URI to get the right outputs
+		for (const [key, outputs] of this._outputsByCell) {
+			if (key.endsWith(`:${cellId}`)) {
+				return outputs;
+			}
+		}
+		return [];
+	}
+
+	clearOutputsForCell(documentUri: URI, cellId: string): void {
+		const key = `${documentUri.toString()}:${cellId}`;
+		this._outputsByCell.delete(key);
+
+		// Clear from cache
+		this._cacheService.clearCellOutputs(documentUri, cellId);
+
+		this._onDidChangeOutputs.fire({
+			cellId,
+			documentUri,
+			outputs: [],
+		});
+	}
+
+	clearAllOutputs(documentUri: URI): void {
+		const prefix = documentUri.toString() + ':';
+		const keysToDelete: string[] = [];
+
+		for (const key of this._outputsByCell.keys()) {
+			if (key.startsWith(prefix)) {
+				keysToDelete.push(key);
+			}
+		}
+
+		for (const key of keysToDelete) {
+			const cellId = key.substring(prefix.length);
+			this._outputsByCell.delete(key);
+
+			this._onDidChangeOutputs.fire({
+				cellId,
+				documentUri,
+				outputs: [],
+			});
+		}
+
+		// Drop this document's collapsed-cell entry from workspace storage.
+		// Must happen before firing the clear event so per-editor contributions
+		// clearing their in-memory state don't re-persist stale data.
+		this._removeCollapsedStateForDocument(documentUri);
+
+		// Fire document-level clear event so per-editor contributions also
+		// clear view zones for cached outputs that the service does not track.
+		this._onDidRequestClearDocument.fire(documentUri);
+
+		// Clear entire document cache
+		this._cacheService.clearCache(documentUri);
+	}
+
+	clearAllOutputsGlobally(): void {
+		// Clear our internal state
+		this._outputsByCell.clear();
+
+		// Wipe the persisted collapsed-cell map. Must happen before firing the
+		// clear event so per-editor contributions clearing their in-memory
+		// state don't re-persist stale data.
+		this._storageService.remove(STORAGE_KEY_COLLAPSED_CELLS, StorageScope.WORKSPACE);
+
+		// Fire event to notify all contributions to clear their outputs
+		// This is needed because contributions may have outputs loaded from cache
+		// that were never registered with the service
+		this._onDidRequestClearAll.fire();
+	}
+
+	/**
+	 * Remove a single document's entry from the persisted collapsed-cell map.
+	 * Rewrites the whole JSON payload; if no other documents have collapsed
+	 * cells, the key is removed.
+	 */
+	private _removeCollapsedStateForDocument(documentUri: URI): void {
+		const map = readCollapsedCellsMap(this._storageService, this._logService, '[QuartoOutputManagerService]');
+		const uriKey = documentUri.toString();
+		if (!(uriKey in map)) {
+			return;
+		}
+		delete map[uriKey];
+		writeCollapsedCellsMap(this._storageService, map);
+	}
+}

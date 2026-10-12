@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Documentación y ayuda de lenguaje"
+---
+
+RHS-IA separa la documentación del producto del material de referencia contextual de los lenguajes.
+
+Abre **Documentación de RHS-IA** desde **Auxiliary Bar**, el menú **Ayuda** o **Cmd/Ctrl+Shift+H**. Las páginas y las imágenes están incluidas con RHS-IA, por lo que esta guía se puede usar sin conexión. Las referencias HTTPS externas se abren en el navegador predeterminado.
+
+Las solicitudes de ayuda para R y Python abren la vista independiente **Language Help** cuando el tiempo de ejecución activo lo admite. Esa vista permanece oculta hasta que una acción de ayuda de lenguaje la solicita; no es la página principal de documentación del producto.
+
+La documentación sigue el idioma de visualización de RHS-IA. Cambia el idioma de visualización de la aplicación y reinicia RHS-IA para leer la documentación en ese idioma.

@@ -1,0 +1,16 @@
+{
+	"commands.clearConnectionsHistory.title": "Limpiar el historial de conexiones",
+	"commands.closeConnection.title": "Cerrar conexión",
+	"commands.copyCodeToClipboard.title": "Copiar código de conexión al portapapeles",
+	"commands.expandAll.title": "Conexiones: Expandir todo",
+	"commands.previewTable.category": "Conexiones",
+	"commands.previewTable.title": "Vista previa de la tabla",
+	"commands.refresh.title": "Actualizar la conexión",
+	"commands.removeFromHistory.title": "Eliminar conexión del historial",
+	"commands.reopenConnection.title": "Ejecutar código de conexión en la consola",
+	"description": "Proporciona una vista de las conexiones activas de la base de datos.",
+	"displayName": "RHS-IA Conexiones",
+	"view.description": "Conexiones de base de datos",
+	"view.title": "Conexiones",
+	"view.welcome": "Actualmente no hay conexiones de base de datos activas."
+}

@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Catalog Explorer"
+---
+
+Catalog Explorer explora fuentes de datos compatibles respaldadas por catálogos. Usa su árbol para navegar por espacios de nombres e inspeccionar tablas, vistas y campos sin introducir manualmente cada identificador.
+
+Actualiza el nodo correspondiente después de cambios externos del esquema. Abrir o previsualizar datos usa las capacidades y los permisos de la conexión de catálogo configurada.
+
+La visibilidad de los metadatos no implica acceso de escritura. Confirma el catálogo, el espacio de nombres y la cuenta seleccionados antes de ejecutar consultas generadas o copiadas.

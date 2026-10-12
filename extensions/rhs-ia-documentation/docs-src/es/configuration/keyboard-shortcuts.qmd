@@ -1,0 +1,16 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Métodos abreviados de teclado"
+---
+
+Abre **Métodos abreviados de teclado** desde la **Paleta de comandos** para buscar acciones, revisar conflictos y cambiar combinaciones. Selecciona el icono de edición junto a un comando, introduce la nueva combinación y presiona Entrar.
+
+RHS-IA hereda métodos abreviados conocidos del editor y añade acciones de ciencia de datos. **Cmd/Ctrl+Shift+P** abre la **Paleta de comandos**, **Cmd/Ctrl+&#96;** alterna el terminal y **Cmd/Ctrl+Shift+H** abre **Documentación**. En macOS, `Cmd` suele sustituir a `Ctrl`.
+
+Los cambios se guardan en las combinaciones de teclas del usuario. Usa la acción de restablecimiento del menú contextual para restaurar el valor predeterminado de un comando.
+
+[Abrir Métodos abreviados de teclado](rhs-doc-action:keyboard-shortcuts).

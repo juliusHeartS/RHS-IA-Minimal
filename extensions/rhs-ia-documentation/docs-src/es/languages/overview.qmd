@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Guías de lenguajes"
+---
+
+RHS-IA proporciona tiempos de ejecución integrados para [Python](python.qmd) y [R](r.qmd). Un tiempo de ejecución permite ejecutar código, obtener completado, diagnósticos, variables, gráficos, explorar datos y acceder a la ayuda de lenguaje.
+
+Selecciona un intérprete antes de ejecutar código. El tiempo de ejecución activo aparece en el entorno de trabajo y se puede cambiar con los comandos de selección de intérprete. Los proyectos pueden usar más de un lenguaje, pero cada sesión de consola pertenece a un tiempo de ejecución específico.
+
+Mantén las dependencias del proyecto en un entorno dedicado y regístralas con las herramientas habituales de ese lenguaje.

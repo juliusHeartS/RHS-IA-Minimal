@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Command-Line Launcher"
+---
+
+The command-line launcher opens files and folders in RHS-IA from a terminal. In RHS-IA, open the Command Palette and run **Shell Command: Install 'rhs-ia' command in PATH** when that command is available for your platform.
+
+After installation, run `rhs-ia .` to open the current folder or `rhs-ia path/to/file` to open a file. Restart the terminal if it was already open so it receives the updated `PATH`.
+
+If the launcher command is unavailable, start RHS-IA normally and use **File > Open Folder**.

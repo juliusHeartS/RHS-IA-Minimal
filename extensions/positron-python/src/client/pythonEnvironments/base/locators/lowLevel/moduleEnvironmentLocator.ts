@@ -1,0 +1,223 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as vscode from 'vscode';
+import { PythonEnvKind, PythonEnvSource } from '../../info';
+import { BasicEnvInfo, IPythonEnvsIterator, Locator } from '../../locator';
+import { traceInfo, traceWarn } from '../../../../logging';
+
+/**
+ * Module metadata stored with the environment
+ */
+export interface ModuleMetadata {
+    type: 'module';
+    environmentName: string;
+    modules: string[];
+    startupCommand: string;
+    version: string;
+}
+
+/**
+ * API interface for the environment-modules extension
+ */
+interface ModuleEnvironmentConfig {
+    languages: string[];
+    modules: string[];
+}
+
+interface ModuleResolvedInterpreter {
+    environmentName: string;
+    interpreterPath: string;
+    version: string;
+    modules: string[];
+    startupCommand: string;
+}
+
+interface ResolveInterpreterOptions {
+    environmentName: string;
+    language: string;
+    interpreterBinaryNames: string[];
+    versionArgs: string[];
+    parseVersion: (output: string) => string | undefined;
+}
+
+/**
+ * A single environment variable contributed by loading modules, as an action to
+ * apply to a terminal's environment. Mirrors the type exported by the
+ * positron-environment-modules extension; defined locally to avoid a hard
+ * dependency.
+ */
+export interface CapturedEnvironmentVariable {
+    name: string;
+    value: string;
+    action: 'replace' | 'prepend' | 'append';
+}
+
+export interface EnvironmentModulesApi {
+    isAvailable(): Promise<boolean>;
+    getEnvironmentsForLanguage(language: string): Promise<Map<string, ModuleEnvironmentConfig>>;
+    resolveInterpreter(options: ResolveInterpreterOptions): Promise<ModuleResolvedInterpreter | undefined>;
+    captureEnvironmentVariables(modules: string[]): Promise<CapturedEnvironmentVariable[]>;
+    registerDiscoveredRuntime(environmentName: string, language: string, interpreterPath: string): void;
+}
+
+/**
+ * Get the Environment Modules API if available.
+ */
+export async function getEnvironmentModulesApi(): Promise<EnvironmentModulesApi | undefined> {
+    const ext = vscode.extensions.getExtension<EnvironmentModulesApi>('positron.positron-environment-modules');
+    if (!ext) {
+        traceInfo('[ModuleEnvironmentLocator] positron-environment-modules extension not found');
+        return undefined;
+    }
+    try {
+        return await ext.activate();
+    } catch (error) {
+        traceWarn(`[ModuleEnvironmentLocator] Failed to activate positron-environment-modules: ${error}`);
+        return undefined;
+    }
+}
+
+/**
+ * Parse Python version from `python --version` output.
+ * Example output: "Python 3.11.3"
+ */
+function parsePythonVersion(output: string): string | undefined {
+    const match = output.match(/Python (\d+\.\d+\.\d+)/);
+    return match ? match[1] : undefined;
+}
+
+/**
+ * Map from executable path to module metadata for module-discovered environments.
+ * This is used to store metadata that can be retrieved later when creating the runtime.
+ */
+export const moduleMetadataMap = new Map<string, ModuleMetadata>();
+
+/**
+ * Resolves when the most recent module discovery pass has populated
+ * {@link moduleMetadataMap}. Module discovery runs asynchronously (it shells out
+ * per environment), so a runtime can be created for a module-managed interpreter
+ * before its metadata lands in the map -- e.g. the eager onDidChangeInterpreters
+ * registration in PythonRuntimeManager races discovery. Awaiting this before
+ * reading the map ensures the interpreter is labelled Module rather than Unknown.
+ *
+ * Defaults to resolved so non-module setups (and code paths that run before any
+ * discovery) never block.
+ */
+let moduleDiscoveryReady: Promise<void> = Promise.resolve();
+
+/**
+ * Mark a module discovery pass as in-flight. Called by the discovery driver
+ * (NativeWithModulesApi.triggerRefresh) with the promise that resolves once the
+ * pass has finished populating {@link moduleMetadataMap}.
+ */
+export function setModuleDiscoveryInFlight(pass: Promise<unknown>): void {
+    moduleDiscoveryReady = pass.then(
+        () => undefined,
+        () => undefined,
+    );
+}
+
+/**
+ * Await the most recent module discovery pass. Resolves immediately if none has
+ * run (or is in flight). See {@link moduleDiscoveryReady}.
+ */
+export function whenModuleMetadataReady(): Promise<void> {
+    return moduleDiscoveryReady;
+}
+
+/**
+ * Map from interpreter path to pending module runtime registration info.
+ * This is used to track which environments need to be registered when runtimes are discovered.
+ */
+export const pendingModuleRuntimeRegistrations = new Map<
+    string,
+    {
+        environmentName: string;
+        interpreterPath: string;
+    }
+>();
+
+/**
+ * Locator for Python environments provided by environment modules.
+ */
+export class ModuleEnvironmentLocator extends Locator<BasicEnvInfo> {
+    public readonly providerId: string = 'module-envs';
+
+    public iterEnvs(): IPythonEnvsIterator<BasicEnvInfo> {
+        const iterator = this.doIterEnvs();
+        return iterator;
+    }
+
+    private async *doIterEnvs(): IPythonEnvsIterator<BasicEnvInfo> {
+        // Module systems are only supported on Linux
+        if (process.platform === 'win32' || process.platform === 'darwin') {
+            return;
+        }
+
+        const api = await getEnvironmentModulesApi();
+        if (!api) {
+            return;
+        }
+
+        const available = await api.isAvailable();
+        if (!available) {
+            traceInfo('[ModuleEnvironmentLocator] Environment modules not available on this system');
+            return;
+        }
+
+        const environments = await api.getEnvironmentsForLanguage('python');
+
+        // clear any previously cached metadata
+        moduleMetadataMap.clear();
+
+        for (const [envName, _config] of environments) {
+            traceInfo(`[ModuleEnvironmentLocator] Discovering Python from module environment: ${envName}`);
+
+            const resolved = await api.resolveInterpreter({
+                environmentName: envName,
+                language: 'python',
+                // Python binary names to search for
+                interpreterBinaryNames: ['python3', 'python'],
+                // Arguments to get version
+                versionArgs: ['--version'],
+                // Python-specific version parser
+                parseVersion: parsePythonVersion,
+            });
+
+            if (resolved) {
+                traceInfo(
+                    `[ModuleEnvironmentLocator] Found Python at ${resolved.interpreterPath} from module environment "${envName}"`,
+                );
+
+                // Store the module metadata for later retrieval
+                const metadata: ModuleMetadata = {
+                    type: 'module',
+                    environmentName: resolved.environmentName,
+                    modules: resolved.modules,
+                    startupCommand: resolved.startupCommand,
+                    version: resolved.version,
+                };
+                moduleMetadataMap.set(resolved.interpreterPath, metadata);
+
+                // Store pending registration for when runtime is registered with Positron
+                pendingModuleRuntimeRegistrations.set(resolved.interpreterPath, {
+                    environmentName: resolved.environmentName,
+                    interpreterPath: resolved.interpreterPath,
+                });
+
+                yield {
+                    kind: PythonEnvKind.Module, // Using Module kind for module environments
+                    executablePath: resolved.interpreterPath,
+                    source: [PythonEnvSource.UserSettings], // Mark as user-configured
+                    envPath: undefined,
+                    searchLocation: undefined,
+                };
+            } else {
+                traceWarn(`[ModuleEnvironmentLocator] Failed to resolve Python from module environment "${envName}"`);
+            }
+        }
+    }
+}

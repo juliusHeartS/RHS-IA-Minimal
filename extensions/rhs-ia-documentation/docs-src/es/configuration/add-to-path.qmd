@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Iniciador de línea de comandos"
+---
+
+El iniciador de línea de comandos abre archivos y carpetas en RHS-IA desde un terminal. En RHS-IA, abre la **Paleta de comandos** y ejecuta **Shell Command: Install 'rhs-ia' command in PATH** cuando ese comando esté disponible para tu plataforma.
+
+Después de instalarlo, ejecuta `rhs-ia .` para abrir la carpeta actual o `rhs-ia path/to/file` para abrir un archivo. Reinicia el terminal si ya estaba abierto para que reciba el `PATH` actualizado.
+
+Si el comando del iniciador no está disponible, inicia RHS-IA normalmente y usa **Archivo > Abrir carpeta**.

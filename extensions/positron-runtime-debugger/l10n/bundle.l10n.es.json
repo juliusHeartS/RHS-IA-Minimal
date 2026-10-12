@@ -1,0 +1,8 @@
+{
+	"Command '{0}' called without a cell.": "Comando '{0}' llamado sin una celda.",
+	"Debugger": "Depurador",
+	"Unexpected error: Cell {0} not found": "Error inesperado: Celda {0} no encontrada",
+	"Unexpected error: No active runtime session found for notebook {0}": "Error inesperado: No se encontró ninguna sesión de ejecución activa para cuaderno {0}",
+	"Unexpected error: Notebook {0} is already being debugged": "Error inesperado: Cuaderno {0} ya está siendo depurado",
+	"Unexpected error: Notebook {0} not found": "Error inesperado: No se encontró el Cuaderno {0}"
+}

@@ -1,0 +1,16 @@
+{
+	"command.diagnosticsReport.title": "Generar el informe de diagnóstico",
+	"command.manageEnvironments.title": "Gestionar entornos de módulos",
+	"command.refreshEnvironments.title": "Refrescar entornos de módulos",
+	"configuration.applyToTerminals.description": "Cuando el intérprete activo proviene de un módulo de entorno, captura las variables de entorno que el módulo establece y las aplica a terminales integrados, por lo que las herramientas lanzadas en el terminal utilizan el mismo intérprete que la consola.",
+	"configuration.enabled.description": "Habilitar el soporte de módulos de entorno para el descubrimiento de tiempo de ejecución en sistemas tipo Unix",
+	"configuration.environments.description": "Configuraciones de entorno con nombres. Cada clave es un nombre de entorno, y el valor especifica los idiomas de destino y los módulos a cargar.",
+	"configuration.environments.languages.description": "Idiomas de destino para este entorno (por ejemplo, 'r', 'python')",
+	"configuration.environments.modules.description": "Lista de módulos a cargar (en orden)",
+	"configuration.initScript.description": "Ruta al script de inicialización del sistema del módulo (por ejemplo, '/etc/profile.d/modules.sh'). Deje vacío para usar la detección predeterminada.",
+	"configuration.moduleCommand.description": "El comando utilizado para interactuar con el sistema del módulo (por defecto: 'módulo')",
+	"configuration.moduleLoadTimeout.description": "Tiempo de espera en milisegundos para los módulos de carga",
+	"configuration.title": "Módulos de entorno",
+	"description": "Compatibilidad con módulos de entorno (Lmod y Environment Modules) en RHS-IA",
+	"displayName": "RHS-IA Módulos de Medio Ambiente"
+}

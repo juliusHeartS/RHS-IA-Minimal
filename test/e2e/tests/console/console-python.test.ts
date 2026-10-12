@@ -1,0 +1,108 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { test as base, tags } from '../_test.setup';
+
+const test = base.extend<{}, {}>({
+	beforeApp: [
+		async ({ settingsFile }, use) => {
+			await settingsFile.append({
+				'python.useBundledIpykernel': false,
+				// Trace-level supervisor logs to diagnose https://github.com/posit-dev/positron/issues/15060.
+				// At the default `debug` level the supervisor logs "sending to Jupyter socket Shell"
+				// before queueing to an in-process channel; only `trace` logs the actual ZMQ send, which
+				// is what tells us whether a wedged kernel ever received the message. Must be pre-launch:
+				// the level is read once when the supervisor server starts.
+				'kernelSupervisor.logLevel': 'trace',
+			});
+			await use();
+		},
+		{ scope: 'worker' }
+	],
+});
+
+test.use({
+	suiteId: __filename
+});
+
+test.describe('Console Pane: Alternate Python', { tag: [tags.WEB, tags.CONSOLE, tags.WIN] }, () => {
+
+	test('Verify alternate python can skip bundled ipykernel', async ({ app, sessions }) => {
+		await sessions.start('pythonAlt');
+		await sessions.clearConsoleAllSessions();
+		await app.workbench.console.executeCode('Python', 'import ipykernel; ipykernel.__file__');
+		await app.workbench.console.waitForConsoleContents('site-packages');
+		await sessions.deleteAll();
+	});
+});
+
+test.describe('Console Pane: Python', { tag: [tags.WEB, tags.CONSOLE, tags.WIN] }, () => {
+
+	test('Python - do not allow extra console output on start', async function ({ app, python }) {
+
+		await app.workbench.console.waitForConsoleContents(process.env.POSITRON_PY_VER_SEL!, { expectedCount: 2, timeout: 20000 });
+	});
+
+	// Very flaky test which looks like a bug but cannot be manually reproduced. Skipping for now.
+	test.skip('Python - queue user input while interpreter is starting', async function ({ app, sessions }) {
+		await sessions.startAndSkipMetadata({ language: 'Python', waitForReady: false });
+		await app.workbench.console.executeCode('Python', 'import time; time.sleep(5); print("done");',);
+		await app.workbench.console.waitForConsoleContents('done', { expectedCount: 2, timeout: 90000 });
+	});
+
+	test('Python - Verify console commands are queued during execution', async function ({ app, sessions, python }) {
+		await app.workbench.sessions.clearConsoleAllSessions();
+		await app.workbench.console.pasteCodeToConsole('123 + 123'); // do not send to console
+		await app.workbench.console.executeCode('Python', '456 + 456');
+
+		await app.workbench.console.waitForConsoleContents('912', { expectedCount: 1, timeout: 10000 });
+		await app.workbench.console.waitForConsoleContents('123 + 123', { expectedCount: 1, timeout: 10000 });
+		await app.workbench.console.waitForConsoleContents('246', { expectedCount: 0, timeout: 5000 });
+	});
+
+	test('Python - Verify interrupt stops execution mid-work', async function ({ app, sessions, python }) {
+		const { console } = app.workbench;
+
+		// Execute code that does work in a loop and prints progress
+		const code = `
+import time
+for i in range(10):
+	print(f"Step {i}")
+	time.sleep(1)
+print("Completed all steps")
+`;
+		await sessions.clearConsoleAllSessions();
+		await console.executeCode('Python', code, { waitForReady: false });
+
+		// Wait for some work to be done (at least 2-3 steps) and then interrupt
+		await console.waitForConsoleContents('Step 2', { expectedCount: 1, timeout: 10000 });
+		await console.interruptExecution();
+		await console.waitForConsoleContents('KeyboardInterrupt', { expectedCount: 1, timeout: 5000 });
+
+		// Verify that some work was done (we saw Step 2)
+		await console.waitForConsoleContents('Step 2', { expectedCount: 1, timeout: 1000 });
+
+		// Verify that not all work was completed (Step 9 should not appear)
+		await console.waitForConsoleContents('Step 9', { expectedCount: 0, timeout: 1000 });
+	});
+
+	test('Python - Incomplete input shows a continuation prompt (Unprocessed path)', async function ({ app, python }) {
+		const { console } = app.workbench;
+
+		// Python has no input boundary provider, so completeness is checked by
+		// the session over the Unprocessed mode. An incomplete statement must
+		// not execute; the console shows the continuation prompt instead.
+		await console.typeToConsole('def f():', true);
+		await console.waitForReady('...', 10000);
+
+		// Clearing the input returns the console to the primary prompt.
+		await console.clearInput();
+		await console.waitForReady('>>>', 10000);
+
+		// A complete statement still executes normally.
+		await console.typeToConsole('40 + 2', true);
+		await console.waitForConsoleContents('42', { timeout: 10000 });
+	});
+});

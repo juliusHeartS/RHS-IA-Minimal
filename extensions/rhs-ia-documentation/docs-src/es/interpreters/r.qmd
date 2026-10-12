@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Instalaciones de R"
+---
+
+RHS-IA detecta las instalaciones de R compatibles disponibles en el equipo. Selecciona una instalación para el espacio de trabajo antes de iniciar una sesión de R.
+
+El ejecutable de R elegido, los archivos de inicio, las rutas de bibliotecas y el entorno determinan los paquetes visibles para la sesión. Usa una biblioteca del proyecto o un administrador de dependencias cuando el proyecto deba ser reproducible.
+
+Después de instalar otra versión de R, actualiza la detección de intérpretes o vuelve a cargar la ventana. Si el inicio falla, ejecuta el ejecutable en un terminal e inspecciona el canal de salida de R para detectar bibliotecas o errores de archivos de inicio faltantes.

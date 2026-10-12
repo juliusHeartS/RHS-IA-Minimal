@@ -1,0 +1,913 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { createReadStream, promises } from 'fs';
+import type * as http from 'http';
+import * as url from 'url';
+import * as cookie from 'cookie';
+import * as crypto from 'crypto';
+import { isEqualOrParent } from '../../base/common/extpath.js';
+import { getMediaMime } from '../../base/common/mime.js';
+import { isLinux, isWorkbench } from '../../base/common/platform.js';
+import { ILogService, LogLevel } from '../../platform/log/common/log.js';
+import { IServerEnvironmentService } from './serverEnvironmentService.js';
+import { extname, dirname, join, normalize, posix, resolve } from '../../base/common/path.js';
+import { FileAccess, connectionTokenCookieName, connectionTokenQueryName, Schemas, builtinExtensionsPath } from '../../base/common/network.js';
+import { generateUuid } from '../../base/common/uuid.js';
+import { IProductService } from '../../platform/product/common/productService.js';
+import { ServerConnectionToken, ServerConnectionTokenType } from './serverConnectionToken.js';
+import { asTextOrError, IRequestService } from '../../platform/request/common/request.js';
+import { IHeaders } from '../../base/parts/request/common/request.js';
+import { CancellationToken } from '../../base/common/cancellation.js';
+import { URI } from '../../base/common/uri.js';
+import { streamToBuffer } from '../../base/common/buffer.js';
+import { IProductConfiguration } from '../../base/common/product.js';
+import { isString, Mutable } from '../../base/common/types.js';
+import { CharCode } from '../../base/common/charCode.js';
+import { IExtensionManifest } from '../../platform/extensions/common/extensions.js';
+import { ICSSDevelopmentService } from '../../platform/cssDev/node/cssDevService.js';
+
+// --- Start PWB: Server proxy support ---
+// eslint-disable-next-line local/code-import-patterns
+import httpProxy from 'http-proxy';
+// eslint-disable-next-line no-duplicate-imports
+import { existsSync } from 'fs';
+import { HAS_STATIC_ROUTE, kProxyRegex, resolveSessionlessStaticCallbackRoute, VSCODE_STATIC_PREFIX, WORKBENCH_DEPLOYMENT_PREFIX } from './pwbConstants.js';
+import { getListeningPortUid, isProxyPortOwnershipEnforced, ISocketOwnershipCheck } from './socketOwnership.js';
+import type * as net from 'net';
+// --- End PWB ---
+// --- Start Positron ---
+import { shouldUseSessionLessStaticCallbackRoute, shouldUseSessionLessStaticRoute } from './positronStaticRoute.js';
+import { IPositronAcademicLicenseService, licenseMarkerScript } from '../../platform/positronLicense/common/positronAcademicLicenseService.js';
+import { isSageMakerSession, sageMakerMarkerScript } from '../../platform/positronLicense/common/positronSageMakerSession.js';
+// --- End Positron ---
+
+const textMimeType: { [ext: string]: string | undefined } = {
+	'.html': 'text/html',
+	'.js': 'text/javascript',
+	// --- Start Positron ---
+	// Add MJS mime type (for ES modules)
+	'.mjs': 'text/javascript',
+	// --- End Positron ---
+	'.json': 'application/json',
+	'.css': 'text/css',
+	'.svg': 'image/svg+xml',
+};
+
+/**
+ * Return an error to the client.
+ */
+export async function serveError(req: http.IncomingMessage, res: http.ServerResponse, errorCode: number, errorMessage: string): Promise<void> {
+	res.writeHead(errorCode, { 'Content-Type': 'text/plain' });
+	res.end(errorMessage);
+}
+
+export const enum CacheControl {
+	NO_CACHING, ETAG, NO_EXPIRY
+}
+
+/**
+ * Serve a file at a given path or 404 if the file is missing.
+ */
+export async function serveFile(filePath: string, cacheControl: CacheControl, logService: ILogService, req: http.IncomingMessage, res: http.ServerResponse, responseHeaders: Record<string, string>): Promise<void> {
+	try {
+		const stat = await promises.stat(filePath); // throws an error if file doesn't exist
+		if (cacheControl === CacheControl.ETAG) {
+
+			// Check if file modified since
+			const etag = `W/"${[stat.ino, stat.size, stat.mtime.getTime()].join('-')}"`; // weak validator (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag)
+			if (req.headers['if-none-match'] === etag) {
+				res.writeHead(304);
+				return void res.end();
+			}
+
+			responseHeaders['Etag'] = etag;
+		} else if (cacheControl === CacheControl.NO_EXPIRY) {
+			responseHeaders['Cache-Control'] = 'public, max-age=31536000';
+		} else if (cacheControl === CacheControl.NO_CACHING) {
+			responseHeaders['Cache-Control'] = 'no-store';
+		}
+
+		responseHeaders['Content-Type'] = textMimeType[extname(filePath)] || getMediaMime(filePath) || 'text/plain';
+
+		// --- Start PWB: serve pre-compressed .gz sibling when available ---
+		const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] ?? '');
+		if (acceptsGzip) {
+			try {
+				const gzContents = await promises.readFile(filePath + '.gz');
+				responseHeaders['Content-Encoding'] = 'gzip';
+				const existingVary = responseHeaders['Vary'];
+				responseHeaders['Vary'] = existingVary ? `${existingVary}, Accept-Encoding` : 'Accept-Encoding';
+				// Content-Length must be set explicitly: the C++ proxy (ServerSessionProxy.cpp)
+				// strips Transfer-Encoding: chunked, so omitting it truncates the response.
+				responseHeaders['Content-Length'] = String(gzContents.byteLength);
+				res.writeHead(200, responseHeaders);
+				res.end(gzContents);
+				return;
+			} catch (err: unknown) {
+				if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
+					logService.error(err instanceof Error ? err : new Error(String(err)));
+				}
+				// .gz not present - fall through to uncompressed
+			}
+		}
+		// --- End PWB ---
+
+		// Create the stream first and wait for it to open before sending
+		// headers so that errors (e.g. ENOENT race) can still produce a
+		// proper 404 response instead of aborting a half-sent 200.
+		const fileStream = createReadStream(filePath);
+		await new Promise<void>((resolve, reject) => {
+			fileStream.on('error', reject);
+			fileStream.on('open', () => {
+				// File opened successfully - send headers and pipe
+				res.writeHead(200, responseHeaders);
+				fileStream.pipe(res);
+				// Destroy the read stream if the response is closed prematurely
+				// (e.g. client disconnect) to avoid leaking the file descriptor.
+				res.once('close', () => fileStream.destroy());
+				fileStream.on('end', resolve);
+				// Replace the initial error handler now that headers are sent
+				fileStream.removeAllListeners('error');
+				fileStream.on('error', error => {
+					logService.error(error);
+					console.error(error.toString());
+					res.destroy();
+				});
+			});
+		});
+	} catch (error) {
+		if (error.code !== 'ENOENT') {
+			logService.error(error);
+			console.error(error.toString());
+		} else {
+			console.error(`File not found: ${filePath}`);
+		}
+
+		res.writeHead(404, { 'Content-Type': 'text/plain' });
+		return void res.end('Not found');
+	}
+}
+
+const APP_ROOT = dirname(FileAccess.asFileUri('').fsPath);
+
+const STATIC_PATH = `/static`;
+const CALLBACK_PATH = `/callback`;
+const WEB_EXTENSION_PATH = `/web-extension-resource`;
+
+export class WebClientServer {
+
+	private readonly _webExtensionResourceUrlTemplate: URI | undefined;
+	// --- Start PWB ---
+	private readonly _proxyServer;
+	private readonly _rsLoginCheckScriptTag: string;
+	private _loggedProxyOwnershipDisabled = false;
+	private _socketOwnershipCheck: ISocketOwnershipCheck = { getListeningPortUid, isProxyPortOwnershipEnforced };
+
+	/**
+	 * Test-only seam for the `/proxy/` ownership gate (rstudio-pro#11470): overrides the
+	 * `/proc`-reading implementations with stubs. Not called in production. See webClientServer.vitest.ts.
+	 */
+	setSocketOwnershipCheckForTesting(check: ISocketOwnershipCheck): void {
+		this._socketOwnershipCheck = check;
+	}
+	// --- End PWB ---
+
+	constructor(
+		private readonly _connectionToken: ServerConnectionToken,
+		private readonly _basePath: string,
+		private readonly _productPath: string,
+		@IServerEnvironmentService private readonly _environmentService: IServerEnvironmentService,
+		@ILogService private readonly _logService: ILogService,
+		@IRequestService private readonly _requestService: IRequestService,
+		@IProductService private readonly _productService: IProductService,
+		@ICSSDevelopmentService private readonly _cssDevService: ICSSDevelopmentService,
+		// --- Start Positron ---
+		@IPositronAcademicLicenseService private readonly _academicLicenseService: IPositronAcademicLicenseService
+		// --- End Positron ---
+	) {
+		this._webExtensionResourceUrlTemplate = this._productService.extensionsGallery?.resourceUrlTemplate ? URI.parse(this._productService.extensionsGallery.resourceUrlTemplate) : undefined;
+
+		// --- Start PWB: Server proxy support ---
+		this._proxyServer = httpProxy.createProxyServer({});
+		this._proxyServer.on('proxyRes', (res: http.IncomingMessage, req: http.IncomingMessage) => {
+			const base = req.url?.split('/').slice(0, 3).join('/');
+			if (res.headers.location && res.headers.location.startsWith('/') && base) {
+				res.headers.location = base + res.headers.location;
+			}
+		});
+
+		this._proxyServer.on('error', (err: Error, req: http.IncomingMessage, res: http.ServerResponse | unknown) => {
+			const message = `Could not proxy ${req.method} request to ${req.url}: ${err.message}`;
+			console.error(message);
+			if (res && typeof (res as http.ServerResponse).end === 'function') {
+				(res as http.ServerResponse).end(message);
+			}
+		});
+
+		// Cache rsLoginCheck.js existence at startup to avoid synchronous file check on every request
+		const rsLoginCheckPath = join(APP_ROOT, 'out/vs/code/browser/workbench/rsLoginCheck.js');
+		this._rsLoginCheckScriptTag = existsSync(rsLoginCheckPath)
+			? `<script src="{{VS_BASE}}{{STATIC_ROUTE}}/out/vs/code/browser/workbench/rsLoginCheck.js"></script>`
+			: '';
+		// --- End PWB ---
+	}
+
+	// --- Start Positron ---
+	private get _useSessionLessStaticRoute(): boolean {
+		return shouldUseSessionLessStaticRoute(isWorkbench, HAS_STATIC_ROUTE, this._productService.quality);
+	}
+
+	private get _useSessionLessStaticCallbackRoute(): boolean {
+		return shouldUseSessionLessStaticCallbackRoute(isWorkbench, HAS_STATIC_ROUTE);
+	}
+	// --- End Positron ---
+
+	/**
+	 * Handle web resources (i.e. only needed by the web client).
+	 * **NOTE**: This method is only invoked when the server has web bits.
+	 * **NOTE**: This method is only invoked after the connection token has been validated.
+	 * @param parsedUrl The URL to handle, including base and product path
+	 * @param pathname The pathname of the URL, without base and product path
+	 */
+	async handle(req: http.IncomingMessage, res: http.ServerResponse, parsedUrl: url.UrlWithParsedQuery, pathname: string): Promise<void> {
+		try {
+			// --- Start PWB ---
+			const sessionlessStaticCallbackRoute = resolveSessionlessStaticCallbackRoute();
+			const sessionlessStaticCallbackPath = sessionlessStaticCallbackRoute.substring(WORKBENCH_DEPLOYMENT_PREFIX.length);
+			if (this._useSessionLessStaticCallbackRoute && (pathname === sessionlessStaticCallbackRoute || pathname === sessionlessStaticCallbackPath)) {
+				return this._handleCallback(res);
+			}
+			// --- End PWB ---
+			// --- Start PWB: session-less static path (nginx serves these in prod; this is the dev fallback) ---
+			if (this._useSessionLessStaticRoute && pathname.startsWith(VSCODE_STATIC_PREFIX) && pathname.charCodeAt(VSCODE_STATIC_PREFIX.length) === CharCode.Slash) {
+				const afterPrefix = pathname.substring(VSCODE_STATIC_PREFIX.length + 1);
+				const versionSlash = afterPrefix.indexOf('/');
+				if (versionSlash === -1) {
+					return serveError(req, res, 404, 'Not found.');
+				}
+				const afterVersion = afterPrefix.substring(versionSlash);
+				if (afterVersion.startsWith(STATIC_PATH) && afterVersion.charCodeAt(STATIC_PATH.length) === CharCode.Slash) {
+					return this._handleStatic(req, res, afterVersion.substring(STATIC_PATH.length));
+				}
+				return serveError(req, res, 404, 'Not found.');
+			}
+			// --- End PWB ---
+			if (pathname.startsWith(STATIC_PATH) && pathname.charCodeAt(STATIC_PATH.length) === CharCode.Slash) {
+				return this._handleStatic(req, res, pathname.substring(STATIC_PATH.length));
+			}
+			if (pathname === '/') {
+				return this._handleRoot(req, res, parsedUrl);
+			}
+			if (pathname === CALLBACK_PATH) {
+				// callback support
+				return this._handleCallback(res);
+			}
+			// --- PWB Start: Server proxy support ---
+			if (kProxyRegex.test(pathname)) {
+				// Refuse to proxy to a localhost port owned by another user (rstudio-pro#11470).
+				const proxyPort = this._parseProxyPort(pathname);
+				if (proxyPort !== undefined && !this._verifyProxyPortOwnership(proxyPort)) {
+					return serveError(req, res, 403, 'Access to the requested port is forbidden.');
+				}
+
+				let path: string = pathname.replace('/proxy/', 'http://0.0.0.0:');
+
+				// Append query string if it exists
+				if (parsedUrl.search) {
+					path = path.concat(parsedUrl.search);
+				}
+
+				return this._proxyServer.web(req, res, {
+					ignorePath: true,
+					target: path
+				});
+			}
+			// --- PWB End ---
+			if (pathname.startsWith(WEB_EXTENSION_PATH) && pathname.charCodeAt(WEB_EXTENSION_PATH.length) === CharCode.Slash) {
+				// extension resource support
+				return this._handleWebExtensionResource(req, res, pathname.substring(WEB_EXTENSION_PATH.length));
+			}
+
+			return serveError(req, res, 404, 'Not found.');
+		} catch (error) {
+			this._logService.error(error);
+			console.error(error.toString());
+
+			return serveError(req, res, 500, 'Internal Server Error.');
+		}
+	}
+
+	// --- PWB Start: Proxy server websocket support ---
+	/**
+	 * Handle proxy requests for websockets
+	 */
+	async handleUpgrade(req: http.IncomingMessage, socket: unknown, upgradeHead: unknown, parsedUrl: string): Promise<void> {
+		// Refuse to proxy to a localhost port owned by another user (rstudio-pro#11470). There is no
+		// response object on the upgrade path, so on failure we just destroy the socket.
+		const proxyPort = this._parseProxyPort(parsedUrl);
+		if (proxyPort !== undefined && !this._verifyProxyPortOwnership(proxyPort)) {
+			(socket as net.Socket).destroy();
+			return;
+		}
+
+		let path: string = parsedUrl.replace('/proxy/', 'http://0.0.0.0:');
+
+		// Append query string if it exists. The caller passes only the pathname, so the query
+		// string must be recovered from req.url; websocket apps like marimo require it
+		// (e.g. /ws?session_id=...).
+		const search = url.parse(req.url ?? '').search;
+		if (search) {
+			path = path.concat(search);
+		}
+
+		return this._proxyServer.ws(req, socket, upgradeHead, {
+			ignorePath: true,
+			target: path
+		});
+	}
+
+	/**
+	 * Extract the localhost port number from a `/proxy/<port>/...` path, or undefined if it can't be
+	 * parsed (in which case the caller skips the ownership check rather than blocking).
+	 */
+	private _parseProxyPort(pathname: string): number | undefined {
+		const match = /\/proxy\/([0-9]+)/.exec(pathname);
+		if (!match) {
+			return undefined;
+		}
+		const port = parseInt(match[1], 10);
+		return Number.isNaN(port) ? undefined : port;
+	}
+
+	/**
+	 * Verify the localhost port we've been asked to proxy to is owned by this session's user. Each
+	 * vscode-server session runs as its own user, so the expected owner is simply our own uid.
+	 * Skipped entirely when disabled via `--www-proxy-localhost-verify-port-owner=0` (or `=false`).
+	 * Otherwise fails open when enforcement is not applicable (non-Linux, root session, or /proc
+	 * unreadable); fails closed (returns false) when the check runs but no matching listener is
+	 * owned by us.
+	 */
+	private _verifyProxyPortOwnership(port: number): boolean {
+		const verifyPortOwnerArg = this._environmentService.args['www-proxy-localhost-verify-port-owner'];
+		if (verifyPortOwnerArg === '0' || verifyPortOwnerArg === 'false') {
+			return true;
+		}
+
+		const uid = process.getuid?.() ?? 0;
+		if (!this._socketOwnershipCheck.isProxyPortOwnershipEnforced(uid)) {
+			if (!this._loggedProxyOwnershipDisabled && uid !== 0) {
+				this._loggedProxyOwnershipDisabled = true;
+				this._logService.warn(`Cannot verify which local ports belong to your session, so requests will be forwarded to any port on this server without verifying ownership.`);
+			}
+			return true;
+		}
+
+		const ownerUid = this._socketOwnershipCheck.getListeningPortUid(port);
+		if (ownerUid === uid) {
+			return true;
+		}
+		this._logService.warn(`Cannot forward your request to port ${port}: it is in use by another user (uid ${ownerUid ?? '<no listener>'}, not your uid ${uid}). You can only reach applications running under your own account.`);
+		return false;
+	}
+	// --- PWB End ---
+
+	/**
+	 * Handle HTTP requests for /static/*
+	 * @param resourcePath The path after /static/
+	 */
+	private async _handleStatic(req: http.IncomingMessage, res: http.ServerResponse, resourcePath: string): Promise<void> {
+		const headers: Record<string, string> = Object.create(null);
+
+		// Strip the this._staticRoute from the path
+		const normalizedPathname = decodeURIComponent(resourcePath); // support paths that are uri-encoded (e.g. spaces => %20)
+
+		const filePath = join(APP_ROOT, normalizedPathname); // join also normalizes the path
+		if (!isEqualOrParent(filePath, APP_ROOT, !isLinux)) {
+			return serveError(req, res, 400, `Bad request.`);
+		}
+
+		return serveFile(filePath, this._environmentService.isBuilt ? CacheControl.NO_EXPIRY : CacheControl.ETAG, this._logService, req, res, headers);
+	}
+
+	private _getResourceURLTemplateAuthority(uri: URI): string | undefined {
+		const index = uri.authority.indexOf('.');
+		return index !== -1 ? uri.authority.substring(index + 1) : undefined;
+	}
+
+	/**
+	 * Handle extension resources
+	 * @param resourcePath The path after /web-extension-resource/
+	 */
+	private async _handleWebExtensionResource(req: http.IncomingMessage, res: http.ServerResponse, resourcePath: string): Promise<void> {
+		if (!this._webExtensionResourceUrlTemplate) {
+			return serveError(req, res, 500, 'No extension gallery service configured.');
+		}
+
+		const normalizedPathname = decodeURIComponent(resourcePath); // support paths that are uri-encoded (e.g. spaces => %20)
+		const path = normalize(normalizedPathname);
+		const uri = URI.parse(path).with({
+			scheme: this._webExtensionResourceUrlTemplate.scheme,
+			authority: path.substring(0, path.indexOf('/')),
+			path: path.substring(path.indexOf('/') + 1)
+		});
+
+		if (this._getResourceURLTemplateAuthority(this._webExtensionResourceUrlTemplate) !== this._getResourceURLTemplateAuthority(uri)) {
+			return serveError(req, res, 403, 'Request Forbidden');
+		}
+
+		const headers: IHeaders = {};
+		const setRequestHeader = (header: string) => {
+			const value = req.headers[header];
+			if (value && (isString(value) || value[0])) {
+				headers[header] = isString(value) ? value : value[0];
+			} else if (header !== header.toLowerCase()) {
+				setRequestHeader(header.toLowerCase());
+			}
+		};
+		setRequestHeader('X-Client-Name');
+		setRequestHeader('X-Client-Version');
+		setRequestHeader('X-Machine-Id');
+		setRequestHeader('X-Client-Commit');
+
+		const context = await this._requestService.request({
+			type: 'GET',
+			url: uri.toString(true),
+			headers,
+			callSite: 'webClientServer.fetchAndWriteFile'
+		}, CancellationToken.None);
+
+		const status = context.res.statusCode || 500;
+		if (status !== 200) {
+			let text: string | null = null;
+			try {
+				text = await asTextOrError(context);
+			} catch (error) {/* Ignore */ }
+			return serveError(req, res, status, text || `Request failed with status ${status}`);
+		}
+
+		const responseHeaders: Record<string, string | string[]> = Object.create(null);
+		const setResponseHeader = (header: string) => {
+			const value = context.res.headers[header];
+			if (value) {
+				responseHeaders[header] = value;
+			} else if (header !== header.toLowerCase()) {
+				setResponseHeader(header.toLowerCase());
+			}
+		};
+		setResponseHeader('Cache-Control');
+		setResponseHeader('Content-Type');
+		res.writeHead(200, responseHeaders);
+		const buffer = await streamToBuffer(context.stream);
+		return void res.end(buffer.buffer);
+	}
+
+	/**
+	 * Handle HTTP requests for /
+	 */
+	private async _handleRoot(req: http.IncomingMessage, res: http.ServerResponse, parsedUrl: url.UrlWithParsedQuery): Promise<void> {
+
+		const getFirstHeader = (headerName: string) => {
+			const val = req.headers[headerName];
+			return Array.isArray(val) ? val[0] : val;
+		};
+
+		// Prefix routes with basePath for clients
+		const basePath = getFirstHeader('x-forwarded-prefix') || this._basePath;
+
+		const queryConnectionToken = parsedUrl.query[connectionTokenQueryName];
+		if (typeof queryConnectionToken === 'string') {
+			// We got a connection token as a query parameter.
+			// We want to have a clean URL, so we strip it
+			const responseHeaders: Record<string, string> = Object.create(null);
+			responseHeaders['Set-Cookie'] = cookie.serialize(
+				connectionTokenCookieName,
+				queryConnectionToken,
+				{
+					sameSite: 'lax',
+					// --- Start PWB: Use secure auth cookie
+					httpOnly: true,
+					// --- End PWB
+					maxAge: 60 * 60 * 24 * 7 /* 1 week */
+				}
+			);
+
+			const newQuery = Object.create(null);
+			for (const key in parsedUrl.query) {
+				if (key !== connectionTokenQueryName) {
+					newQuery[key] = parsedUrl.query[key];
+				}
+			}
+			const newLocation = url.format({ pathname: basePath, query: newQuery });
+			responseHeaders['Location'] = newLocation;
+
+			res.writeHead(302, responseHeaders);
+			return void res.end();
+		}
+
+		// --- Start PWB: support use as web app (removed code to retrieve removeAuthority from a header) ---
+
+		const remoteAuthority = 'remote';
+		const useTestResolver = (!this._environmentService.isBuilt && this._environmentService.args['use-test-resolver']);
+
+		/*
+		const replacePort = (host: string, port: string) => {
+			const index = host?.indexOf(':');
+			if (index !== -1) {
+				host = host?.substring(0, index);
+			}
+			host += `:${port}`;
+			return host;
+		};
+		// --- End PWB ---
+
+		let remoteAuthority = (
+			useTestResolver
+				? 'test+test'
+				: (getFirstHeader('x-original-host') || getFirstHeader('x-forwarded-host') || req.headers.host)
+		);
+		if (!remoteAuthority) {
+			return serveError(req, res, 400, `Bad request.`);
+		}
+		const forwardedPort = getFirstHeader('x-forwarded-port');
+		if (forwardedPort) {
+			remoteAuthority = replacePort(remoteAuthority, forwardedPort);
+		}
+		*/
+
+		// --- End PWB ---
+
+		function asJSON(value: unknown): string {
+			return JSON.stringify(value).replace(/"/g, '&quot;');
+		}
+
+		let _wrapWebWorkerExtHostInIframe: undefined | false = undefined;
+		if (this._environmentService.args['enable-smoke-test-driver']) {
+			// integration tests run at a time when the built output is not yet published to the CDN
+			// so we must disable the iframe wrapping because the iframe URL will give a 404
+			_wrapWebWorkerExtHostInIframe = false;
+		}
+
+		if (this._logService.getLevel() === LogLevel.Trace) {
+			['x-original-host', 'x-forwarded-host', 'x-forwarded-port', 'host'].forEach(header => {
+				const value = getFirstHeader(header);
+				if (value) {
+					this._logService.trace(`[WebClientServer] ${header}: ${value}`);
+				}
+			});
+			this._logService.trace(`[WebClientServer] Request URL: ${req.url}, basePath: ${basePath}, remoteAuthority: ${remoteAuthority}`);
+		}
+
+		const staticRoute = posix.join(basePath, this._productPath, STATIC_PATH);
+		// --- Start PWB ---
+		const callbackRoute = this._useSessionLessStaticCallbackRoute
+			? resolveSessionlessStaticCallbackRoute()
+			: posix.join(basePath, this._productPath, CALLBACK_PATH);
+		// --- End PWB ---
+		// --- Start PWB ---
+		// const webExtensionRoute = posix.join(basePath, this._productPath, WEB_EXTENSION_PATH);
+		// --- End PWB ---
+		// --- Start PWB: session-less static route for cacheable assets (workbench.js/.css, NLS, icons, rsLoginCheck) ---
+		// Absolute-from-root so it bypasses the /s/<sid>/ session prefix; `<quality>-<commit>` is the cache-version key.
+		// WORKBENCH_DEPLOYMENT_PREFIX (e.g. "/rstudio") is prepended for installations mounted under a sub-path,
+		// where the front-end reverse proxy only routes that prefix back to Workbench. Empty when mounted at root.
+		// Only used when running under Workbench -- standalone/dev falls back to session-scoped relative URLs below.
+		const sessionlessStaticRoute = posix.join(WORKBENCH_DEPLOYMENT_PREFIX, VSCODE_STATIC_PREFIX, this._productPath, STATIC_PATH);
+		// --- End PWB ---
+		// --- Start PWB ---
+		// const webExtensionRoute = posix.join(basePath, this._productPath, WEB_EXTENSION_PATH);
+		// --- End PWB ---
+
+		const resolveWorkspaceURI = (defaultLocation?: string) => defaultLocation && URI.file(resolve(defaultLocation)).with({ scheme: Schemas.vscodeRemote, authority: remoteAuthority });
+
+		const filePath = FileAccess.asFileUri(`vs/code/browser/workbench/workbench${this._environmentService.isBuilt ? '' : '-dev'}.html`).fsPath;
+		const authSessionInfo = !this._environmentService.isBuilt && this._environmentService.args['github-auth'] ? {
+			id: generateUuid(),
+			providerId: 'github',
+			accessToken: this._environmentService.args['github-auth'],
+			scopes: [['user:email'], ['repo']]
+		} : undefined;
+
+		// --- Start PWB: add base web prefix ---
+		const base = relativeRoot(req.url!);
+		const vscodeBase = relativePath(req.url!);
+		// When under Workbench, session-less URLs are absolute-from-root; otherwise keep the
+		// session-scoped relative form that works behind the default reverse proxy.
+		const useStaticRoute = this._useSessionLessStaticRoute;
+		const effectiveVsBase = useStaticRoute ? '' : vscodeBase;
+		const effectiveStaticRoute = useStaticRoute ? sessionlessStaticRoute : staticRoute;
+		// --- End PWB ---
+
+		const productConfiguration: Partial<Mutable<IProductConfiguration>> = {
+			embedderIdentifier: 'server-distro',
+			// --- Start PWB: web prefix, proxy port url, custom extensions gallery ---
+			rootEndpoint: base,
+			proxyEndpointTemplate: base + `/p/{{port}}/${process.env.RS_PORT_TOKEN}`,
+			extensionsGallery: this._productService.extensionsGallery,
+			// --- End PWB ---
+			// --- Start Positron ---
+			// Pass the rules for trusted extension auth access (allows Positron
+			// Assistant and Copilot Chat to work with Github authenticaiton out
+			// of the box)
+			trustedExtensionAuthAccess: this._productService.trustedExtensionAuthAccess,
+			// Pass defaultChatAgent so the DefaultAccountService can initialize
+			// (required by upstream VS Code 1.109+, not in the web dev fallback product config)
+			defaultChatAgent: this._productService.defaultChatAgent,
+			// --- End Positron ---
+		} satisfies Partial<IProductConfiguration>;
+
+		if (!this._environmentService.isBuilt) {
+			try {
+				const productOverrides = JSON.parse((await promises.readFile(join(APP_ROOT, 'product.overrides.json'))).toString());
+				Object.assign(productConfiguration, productOverrides);
+			} catch (err) {/* Ignore Error */ }
+		}
+
+		// --- Start PWB: Admin enforced settings ---
+		const enforcedSettings = process.env['POSITRON_ENFORCED_SETTINGS'];
+		if (enforcedSettings) {
+			this._logService.info(`[WebClientServer] Passing POSITRON_ENFORCED_SETTINGS to browser: ${enforcedSettings}`);
+		} else {
+			this._logService.info('[WebClientServer] No POSITRON_ENFORCED_SETTINGS environment variable found');
+		}
+
+		// --- Start Positron ---
+		const positronDocsUrl = process.env['POSITRON_DOCS_URL'];
+		if (positronDocsUrl) {
+			this._logService.info(`[WebClientServer] Using POSITRON_DOCS_URL: ${positronDocsUrl}`);
+		}
+		// --- End Positron ---
+
+		// --- Start PWB: Use secure auth cookie ---
+		const cookies = cookie.parse(req.headers.cookie || '');
+		const connectionTokenFromCookie = cookies[connectionTokenCookieName];
+		// --- End PWB ---
+
+		const workbenchWebConfiguration = {
+			remoteAuthority,
+			serverBasePath: basePath,
+			// --- Start PWB: Local storage ---
+			userDataPath: this._environmentService.userDataPath,
+			// --- End PWB ---
+			// --- Start PWB: disable file downloads ---
+			isEnabledFileDownloads: !this._environmentService.args['disable-file-downloads'],
+			isEnabledFileUploads: !this._environmentService.args['disable-file-uploads'],
+			// --- End PWB ---
+			// --- Start PWB: serve same origin ---
+			// Use the session-less static route when under Workbench. The webview iframe registers
+			// `pre/service-worker.js`, and as of VS Code 1.130 that registration is a *module*
+			// service worker (`register(..., { type: 'module' })`). The browser fetches a module
+			// service worker script without the Workbench auth cookie, so a session-scoped URL is
+			// answered with a 302 to /auth-sign-in and no webview ever loads. The session-less route
+			// is served off disk by Workbench's nginx with no auth check, and as a bonus these
+			// assets become cacheable across sessions like the rest of the static bundle.
+			webviewEndpoint: effectiveVsBase + effectiveStaticRoute + '/out/vs/workbench/contrib/webview/browser/pre',
+			// --- End PWB: serve same origin ---
+			_wrapWebWorkerExtHostInIframe,
+			developmentOptions: { enableSmokeTestDriver: this._environmentService.args['enable-smoke-test-driver'] ? true : undefined, logLevel: this._logService.getLevel() },
+			settingsSyncOptions: !this._environmentService.isBuilt && this._environmentService.args['enable-sync'] ? { enabled: true } : undefined,
+			enableWorkspaceTrust: !this._environmentService.args['disable-workspace-trust'],
+			folderUri: resolveWorkspaceURI(this._environmentService.args['default-folder']),
+			workspaceUri: resolveWorkspaceURI(this._environmentService.args['default-workspace']),
+			// --- Start Positron ---
+			disableExtension: this._environmentService.args['disable-extension'],
+			bootstrapExtensionsDir: this._environmentService.args['bootstrap-extensions-dir'],
+			positronDocsUrl,
+			// Forward EXTENSIONS_GALLERY so the browser can apply the same
+			// env-var-over-setting precedence and reporting as desktop. The
+			// browser cannot read the server process environment directly.
+			extensionsGalleryEnv: process.env['EXTENSIONS_GALLERY'],
+			// --- End Positron ---
+			productConfiguration,
+			callbackRoute: callbackRoute,
+			// --- Start PWB: Admin enforced settings ---
+			adminPoliciesData: enforcedSettings,
+			// --- Start PWB: Use secure auth cookie ---
+			connectionToken: connectionTokenFromCookie
+			// --- End PWB ---
+		};
+		const locale = cookies['vscode.nls.locale'] || req.headers['accept-language']?.split(',')[0]?.toLowerCase() || 'en';
+		let WORKBENCH_NLS_BASE_URL: string | undefined;
+		let WORKBENCH_NLS_URL: string;
+		if (!locale.startsWith('en') && this._productService.nlsCoreBaseUrl) {
+			WORKBENCH_NLS_BASE_URL = this._productService.nlsCoreBaseUrl;
+			WORKBENCH_NLS_URL = `${WORKBENCH_NLS_BASE_URL}${this._productService.commit}/${this._productService.version}/${locale}/nls.messages.js`;
+		} else {
+			WORKBENCH_NLS_URL = ''; // fallback will apply
+		}
+
+		// --- Start PWB: Conditionally inject rsLoginCheck.js script if it exists in the build ---
+		// Uses cached value from constructor to avoid blocking I/O on every request.
+		const rsLoginCheckScript = this._rsLoginCheckScriptTag
+			.replace('{{VS_BASE}}', effectiveVsBase)
+			.replace('{{STATIC_ROUTE}}', effectiveStaticRoute);
+		// --- End PWB ---
+
+		// --- Start PWB: browser-side Workbench marker ---
+		// When running under Workbench, emit an inline script that sets a global before any module
+		// loads. `platform.isWorkbench` reads this global in the browser; code that needs to branch on
+		// Workbench context (e.g. omitting the tkn query param from resource URLs) reads that flag.
+		// The script gets picked up by _getScriptCspHashes below so the CSP hash list covers it.
+		const pwbWorkbenchMarker = isWorkbench ? '<script>globalThis._PWB_IS_WORKBENCH = true;</script>' : '';
+		// --- End PWB ---
+
+		// --- Start Positron: browser-side license markers ---
+		// Same early-injection trick as the Workbench marker above, reusing the PWB_WORKBENCH_MARKER
+		// slot so no template changes are needed.
+		const licenseMarker = licenseMarkerScript(this._academicLicenseService.isAcademic, this._academicLicenseService.licenseHash);
+		const sageMakerMarker = sageMakerMarkerScript(isSageMakerSession());
+		// --- End Positron ---
+
+		const values: { [key: string]: string } = {
+			WORKBENCH_WEB_CONFIGURATION: asJSON(workbenchWebConfiguration),
+			WORKBENCH_AUTH_SESSION: authSessionInfo ? asJSON(authSessionInfo) : '',
+			// --- Start PWB: session-less static paths when under Workbench, session-scoped otherwise ---
+			// WORKBENCH_WEB_BASE_URL: this._staticRoute,
+			WORKBENCH_WEB_BASE_URL: effectiveVsBase + effectiveStaticRoute,
+			WORKBENCH_NLS_BASE_URL: WORKBENCH_NLS_BASE_URL ?? '',
+			WORKBENCH_NLS_URL,
+			WORKBENCH_NLS_FALLBACK_URL: `${effectiveVsBase}${effectiveStaticRoute}/out/nls.messages.js`,
+			BASE: base,
+			VS_BASE: vscodeBase,
+			RS_LOGIN_CHECK_SCRIPT: rsLoginCheckScript,
+			PWB_WORKBENCH_MARKER: pwbWorkbenchMarker + licenseMarker + sageMakerMarker,
+			// --- End PWB ---
+		};
+
+		// DEV ---------------------------------------------------------------------------------------
+		// DEV: This is for development and enables loading CSS via import-statements via import-maps.
+		// DEV: The server needs to send along all CSS modules so that the client can construct the
+		// DEV: import-map.
+		// DEV ---------------------------------------------------------------------------------------
+		if (this._cssDevService.isEnabled) {
+			const cssModules = await this._cssDevService.getCssModules();
+			values['WORKBENCH_DEV_CSS_MODULES'] = JSON.stringify(cssModules);
+		}
+
+		if (useTestResolver) {
+			const bundledExtensions: { extensionPath: string; packageJSON: IExtensionManifest }[] = [];
+			for (const extensionPath of ['vscode-test-resolver', 'github-authentication']) {
+				const packageJSON = JSON.parse((await promises.readFile(FileAccess.asFileUri(`${builtinExtensionsPath}/${extensionPath}/package.json`).fsPath)).toString());
+				bundledExtensions.push({ extensionPath, packageJSON });
+			}
+			values['WORKBENCH_BUILTIN_EXTENSIONS'] = asJSON(bundledExtensions);
+		}
+
+		let data;
+		try {
+			const workbenchTemplate = (await promises.readFile(filePath)).toString();
+			data = workbenchTemplate.replace(/\{\{([^}]+)\}\}/g, (_, key) => values[key] ?? 'undefined');
+		} catch (e) {
+			res.writeHead(404, { 'Content-Type': 'text/plain' });
+			return void res.end('Not found');
+		}
+
+		// --- Start PWB ---
+		// Update SHA hash to account for our modifications to the script.
+		const webWorkerExtensionHostIframeScriptSHA = 'sha256-ghZYhGSRQSQb5D/2cH7lc4GsDuoiyAikrw/Ur/xPKc0=';
+		// --- End PWB ---
+
+		const cspDirectives = [
+			'default-src \'self\';',
+			'img-src \'self\' https: data: blob:;',
+			'media-src \'self\';',
+			`script-src 'self' 'unsafe-eval' ${WORKBENCH_NLS_BASE_URL ?? ''} blob: 'nonce-1nline-m4p' ${this._getScriptCspHashes(data).join(' ')} '${webWorkerExtensionHostIframeScriptSHA}' 'sha256-/r7rqQ+yrxt57sxLuQ6AMYcy/lUpvAIzHjIJt/OeLWU=' ${useTestResolver ? '' : `http://${remoteAuthority}`};`,  // the sha is the same as in src/vs/workbench/services/extensions/worker/webWorkerExtensionHostIframe.html
+			'child-src \'self\';',
+			`frame-src 'self' https://*.vscode-cdn.net data:;`,
+			'worker-src \'self\' data: blob:;',
+			'style-src \'self\' \'unsafe-inline\';',
+			'connect-src \'self\' ws: wss: https:;',
+			'font-src \'self\' blob:;',
+			'manifest-src \'self\';'
+		].join(' ');
+
+		const headers: http.OutgoingHttpHeaders = {
+			'Content-Type': 'text/html',
+			'Content-Security-Policy': cspDirectives
+		};
+		if (this._connectionToken.type !== ServerConnectionTokenType.None) {
+			// At this point we know the client has a valid cookie
+			// and we want to set it prolong it to ensure that this
+			// client is valid for another 1 week at least
+			headers['Set-Cookie'] = cookie.serialize(
+				connectionTokenCookieName,
+				this._connectionToken.value,
+				{
+					sameSite: 'lax',
+					// --- Start PWB: Use secure auth cookie
+					httpOnly: true,
+					// --- End PWB
+					maxAge: 60 * 60 * 24 * 7 /* 1 week */
+				}
+			);
+		}
+
+		res.writeHead(200, headers);
+		return void res.end(data);
+	}
+
+	private _getScriptCspHashes(content: string): string[] {
+		// Compute the CSP hashes for line scripts. Uses regex
+		// which means it isn't 100% good.
+		const regex = /<script>([\s\S]+?)<\/script>/img;
+		const result: string[] = [];
+		let match: RegExpExecArray | null;
+		while (match = regex.exec(content)) {
+			const hasher = crypto.createHash('sha256');
+			// This only works on Windows if we strip `\r` from `\r\n`.
+			const script = match[1].replace(/\r\n/g, '\n');
+			const hash = hasher
+				.update(Buffer.from(script))
+				.digest().toString('base64');
+
+			result.push(`'sha256-${hash}'`);
+		}
+		return result;
+	}
+
+	/**
+	 * Handle HTTP requests for /callback
+	 */
+	private async _handleCallback(res: http.ServerResponse): Promise<void> {
+		const filePath = FileAccess.asFileUri('vs/code/browser/workbench/callback.html').fsPath;
+		const data = (await promises.readFile(filePath)).toString();
+		const cspDirectives = [
+			'default-src \'self\';',
+			'img-src \'self\' https: data: blob:;',
+			'media-src \'none\';',
+			`script-src 'self' ${this._getScriptCspHashes(data).join(' ')};`,
+			'style-src \'self\' \'unsafe-inline\';',
+			'font-src \'self\' blob:;'
+		].join(' ');
+
+		res.writeHead(200, {
+			'Content-Type': 'text/html',
+			'Cache-Control': 'no-store',
+			'Content-Security-Policy': cspDirectives
+		});
+		return void res.end(data);
+	}
+}
+
+
+// --- Start Positron ---
+
+/**
+ * Remove extra slashes in a URL.
+ *
+ * This is meant to fill the job of `path.join` so you can concatenate paths and
+ * then normalize out any extra slashes.
+ *
+ * If you are using `path.join` you do not need this but note that `path` is for
+ * file system paths, not URLs.
+ */
+export const normalizeUrlPath = (url: string, keepTrailing = false): string => {
+	return url.replace(/\/\/+/g, '/').replace(/\/+$/, keepTrailing ? '/' : '');
+};
+
+/**
+ * Get the relative path that will get us to the root of the page. For each
+ * slash we need to go up a directory.  Will not have a trailing slash.
+ *
+ * For example:
+ *
+ * / => .
+ * /foo => .
+ * /foo/ => ./..
+ * /foo/bar => ./..
+ * /foo/bar/ => ./../..
+ *
+ * All paths must be relative in order to work behind a reverse proxy since we
+ * we do not know the base path.  Anything that needs to be absolute (for
+ * example cookies) must get the base path from the frontend.
+ *
+ * All relative paths must be prefixed with the relative root to ensure they
+ * work no matter the depth at which they happen to appear.
+ *
+ * For Express `req.originalUrl` should be used as they remove the base from the
+ * standard `url` property making it impossible to get the true depth.
+ */
+export const relativeRoot = (originalUrl: string): string => {
+	const depth = (originalUrl.split('?', 1)[0].match(/\//g) || []).length;
+	return normalizeUrlPath('./' + (depth > 1 ? '../'.repeat(depth - 1) : ''));
+};
+
+/**
+ * Get the relative path to the current resource.
+ *
+ * For example:
+ *
+ * / => .
+ * /foo => ./foo
+ * /foo/ => .
+ * /foo/bar => ./bar
+ * /foo/bar/ => .
+ */
+export const relativePath = (originalUrl: string): string => {
+	const parts = originalUrl.split('?', 1)[0].split('/');
+	return normalizeUrlPath('./' + parts[parts.length - 1]);
+};
+
+// --- End Positron ---

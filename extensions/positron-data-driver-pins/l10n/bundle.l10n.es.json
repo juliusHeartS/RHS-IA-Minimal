@@ -1,0 +1,19 @@
+{
+	"API Key": "Clave de API",
+	"API Key is required": "Clave de API es obligatoria",
+	"Browse pins on a Posit Connect server": "Buscar pines en un servidor Posit Connect",
+	"Connect to a Posit Connect server with a server URL and an API key.": "Conéctese a un servidor Posit Connect con una URL de servidor y una clave de API.",
+	"Create an API key from your Posit Connect account under \"Manage Your API Keys\".": "Cree una clave de API desde su cuenta de Posit Connect en \"Gestione sus claves de API\".",
+	"Default Connection": "Conexión predeterminada",
+	"Downloading {0}...": "Descargando {0}...",
+	"Environment Variables": "Variables de entorno",
+	"Explicit Server": "Servidor explícito",
+	"Server URL": "URL del servidor",
+	"Server URL is required": "URL del servidor es obligatoria",
+	"Set the CONNECT_SERVER and CONNECT_API_KEY environment variables in the environment Positron was launched from, then reconnect. Variables set only in .Renviron or a shell profile are not visible to Positron.": "Establecer las variables de entorno CONNECT_SERVER y CONNECT_API_KEY en el entorno RHS-IA se lanzó desde, luego volver a conectar. Las variables establecidas sólo en .Renviron o un perfil de shell no son visibles a RHS-IA.",
+	"Sign in to a Posit Connect server in your browser. No API key needed.": "Inicie sesión en un servidor de Posit Connect mediante el navegador. No se necesita una clave de API.",
+	"Sign in with a browser": "Iniciar sesión con un navegador",
+	"Unknown connection mechanism '{0}'.": "Mecanismo de conexión desconocido '{0}'.",
+	"Use the CONNECT_SERVER and CONNECT_API_KEY environment variables, set from the environment Positron was launched from.": "Utilice las variables de entorno CONNECT_SERVER y CONNECT_API_KEY, establecidas desde el entorno desde donde se lanzó RHS-IA.",
+	"Waiting for sign-in in your browser...": "Esperando el inicio de sesión en el navegador..."
+}

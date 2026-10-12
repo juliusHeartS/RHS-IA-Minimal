@@ -1,0 +1,553 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+// CSS.
+import './positronActionBarVariables.css';
+import './positronDynamicActionBar.css';
+
+// React.
+import React, { CSSProperties, KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+
+// Other dependencies.
+import * as DOM from '../../../base/browser/dom.js';
+import { ThemeIcon } from '../../../base/common/themables.js';
+import { ActionBarButton } from './components/actionBarButton.js';
+import { ActionBarSeparator } from './components/actionBarSeparator.js';
+import { usePositronActionBarContext } from './positronActionBarContext.js';
+import { DisposableStore, toDisposable } from '../../../base/common/lifecycle.js';
+import { optionalValue, positronClassNames } from '../../../base/common/positronUtilities.js';
+import { CustomContextMenuSeparator } from '../../../workbench/browser/positronComponents/customContextMenu/customContextMenuSeparator.js';
+import { CustomContextMenuEntry, CustomContextMenuSubmenu, CustomContextMenuSubmenuOptions, showCustomContextMenu } from '../../../workbench/browser/positronComponents/customContextMenu/customContextMenu.js';
+import { CustomContextMenuItem, CustomContextMenuItemOptions } from '../../../workbench/browser/positronComponents/customContextMenu/customContextMenuItem.js';
+
+/**
+ * Constants.
+ */
+export const DEFAULT_ACTION_BAR_BUTTON_WIDTH = 24;
+export const DEFAULT_ACTION_BAR_DROPDOWN_BUTTON_WIDTH = 36;
+export const DEFAULT_ACTION_BAR_SEPARATOR_WIDTH = 7;
+
+/**
+ * OverflowContextMenuItem type.
+ */
+export type OverflowContextMenuItem = CustomContextMenuItemOptions;
+
+/**
+ * OverflowContextMenuSubmenu type.
+ */
+export type OverflowContextMenuSubmenu = CustomContextMenuSubmenuOptions;
+
+/**
+ * DynamicActionBarAction interface.
+ */
+export interface DynamicActionBarAction {
+	/**
+	 * The fixed width of the action from any icons and padding (but not including text labels).
+	 */
+	fixedWidth: number;
+
+	/**
+	 * The text of the action. This width of this text will be measured and
+	 * added to the fixed width to calculate the width of the action.
+	 */
+	text?: string;
+
+	/**
+	 * A value indicating whether the action should be followed by a separator.
+	 */
+	separator: boolean;
+
+	/**
+	 * The component to be rendered for the action bar.
+	 */
+	component: React.JSX.Element | (() => React.JSX.Element);
+
+	/**
+	 * The overflow custom context menu item. Use this for simple actions that
+	 * should appear as a single menu item in the overflow menu.
+	 */
+	overflowContextMenuItem?: OverflowContextMenuItem;
+
+	/**
+	 * The overflow custom context menu submenu. Use this for actions that
+	 * should appear as a submenu in the overflow menu.
+	 */
+	overflowContextMenuSubmenu?: OverflowContextMenuSubmenu;
+
+	/**
+	 * When true, the action shrinks to fit the available space instead of
+	 * being dropped from the layout. The action's component is responsible for
+	 * truncating its content (e.g. via CSS text-overflow: ellipsis).
+	 */
+	growable?: boolean;
+
+	/**
+	 * The maximum (preferred) width of the action in pixels. When set, the
+	 * action is allocated its {@link fixedWidth} during layout and then grows
+	 * into any leftover space (the gap between the left and right action
+	 * groups) up to this width. The action's component is responsible for
+	 * adapting its content to the granted width (e.g. via a ResizeObserver).
+	 */
+	maxWidth?: number;
+}
+
+/**
+ * CommonPositronActionBarProps interface.
+ */
+interface CommonPositronDynamicActionBarProps {
+	paddingLeft?: number;
+	paddingRight?: number;
+	leftActions: DynamicActionBarAction[];
+	rightActions: DynamicActionBarAction[];
+
+	/**
+	 * Optional context menu handler for the empty space between the left and
+	 * right action groups. When provided, right-clicking the gap invokes it.
+	 * This lets a consumer offer an action (e.g. re-showing a hidden status
+	 * element) in the region where that element would otherwise appear. When the
+	 * action bar is full there is no gap, so there is nothing to right-click.
+	 */
+	onEmptySpaceContextMenu?: (e: React.MouseEvent<HTMLDivElement>) => void;
+}
+
+/**
+ * NestedPositronDynamicActionBarProps interface.
+ */
+type NestedPositronDynamicActionBarProps = | {
+	nestedActionBar?: true;
+	borderTop?: never;
+	borderBottom?: never;
+} | {
+	nestedActionBar?: false | undefined;
+	borderTop?: boolean;
+	borderBottom?: boolean;
+};
+
+/**
+ * PositronDynamicActionBarProps interface.
+ */
+type PositronDynamicActionBarProps =
+	CommonPositronDynamicActionBarProps &
+	NestedPositronDynamicActionBarProps;
+
+/**
+ * PositronDynamicActionBar component.
+ * @param props A PositronDynamicActionBarProps that contains the component properties.
+ * @returns The rendered component.
+ */
+export const PositronDynamicActionBar = (props: PositronDynamicActionBarProps) => {
+	// Context hooks.
+	const context = usePositronActionBarContext();
+
+	// Reference hooks.
+	const refActionBar = useRef<HTMLDivElement>(undefined!);
+	const refExemplar = useRef<HTMLDivElement>(undefined!);
+	const refOverflowButton = useRef<HTMLButtonElement>(undefined!);
+
+	// State hooks.
+	const [width, setWidth] = useState(0);
+	const [focusedIndex, setFocusedIndex] = React.useState(0);
+	const [prevIndex, setPrevIndex] = React.useState(-1);
+
+	// Width useLayoutEffect. This is only for setting or updating the width state.
+	useLayoutEffect(() => {
+		// Create the disposable store for cleanup.
+		const disposableStore = new DisposableStore();
+
+		// Set the initial width.
+		setWidth(refActionBar.current.offsetWidth);
+
+		// Allocate and initialize the resize observer.
+		const resizeObserver = new ResizeObserver(entries => {
+			setWidth(refActionBar.current.offsetWidth);
+			// Update the width state.
+			// setWidth(entries[0].contentRect.width);
+		});
+
+		// Start observing the size of the action bar.
+		resizeObserver.observe(refActionBar.current);
+
+		// Add the resize observer to the disposable store.
+		disposableStore.add(toDisposable(() => resizeObserver.disconnect()));
+
+		// Return the cleanup function that will dispose of the disposables.
+		return () => disposableStore.dispose();
+	}, []);
+
+	// Handle keyboard navigation
+	const keyDownHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+		if (props.nestedActionBar) {
+			return;
+		}
+
+		// Let keyboard events pass through to text controls
+		if (DOM.isHTMLInputElement(e.target)) {
+			const input = e.target as HTMLInputElement;
+			if (input.type === 'text') {
+				return;
+			}
+		}
+
+		switch (e.code) {
+			case 'ArrowLeft': {
+				e.preventDefault();
+				e.stopPropagation();
+				setPrevIndex(() => focusedIndex);
+				if (focusedIndex === 0) {
+					setFocusedIndex(context.focusableComponents.size - 1);
+				} else {
+					setFocusedIndex(() => focusedIndex - 1);
+				}
+				break;
+			}
+			case 'ArrowRight': {
+				e.preventDefault();
+				e.stopPropagation();
+				setPrevIndex(() => focusedIndex);
+				if (focusedIndex === context.focusableComponents.size - 1) {
+					setFocusedIndex(0);
+				} else {
+					setFocusedIndex(() => focusedIndex + 1);
+				}
+				break;
+			}
+			case 'Home': {
+				e.preventDefault();
+				e.stopPropagation();
+				setPrevIndex(() => focusedIndex);
+				setFocusedIndex(0);
+				break;
+			}
+			case 'End': {
+				e.preventDefault();
+				e.stopPropagation();
+				setPrevIndex(() => focusedIndex);
+				setFocusedIndex(() => context.focusableComponents.size - 1);
+				break;
+			}
+		}
+	};
+
+	useEffect(() => {
+		if (!props.nestedActionBar && prevIndex >= 0 && (focusedIndex !== prevIndex)) {
+			const items = Array.from(context.focusableComponents);
+			const currentNode = items[focusedIndex];
+			const previousNode = items[prevIndex];
+
+			if (previousNode) {
+				previousNode.tabIndex = -1;
+			}
+			if (currentNode) {
+				currentNode.tabIndex = 0;
+				currentNode.focus();
+			}
+		}
+	}, [context.focusableComponents, focusedIndex, prevIndex, props.nestedActionBar]);
+
+	// If the exemplar is available, we can calculate widths and construct the grid.
+	const gridColumns: string[] = [];
+	const gridComponents: React.JSX.Element[] = [];
+	if (refExemplar.current) {
+		// Get the exemplar window and style.
+		const exemplarWindow = DOM.getWindow(refExemplar.current);
+		const style = DOM.getComputedStyle(refExemplar.current);
+
+		// Create a canvas in the exemplar window.
+		const canvas = exemplarWindow.document.createElement('canvas');
+
+		// Get the canvas rendering 2D context and set its font.
+		const canvasRenderingContext2D = canvas.getContext('2d');
+		if (!canvasRenderingContext2D) {
+			return null;
+		}
+		canvasRenderingContext2D.font = style.font;
+
+		/**
+		 * Measures the width of text in the canvas.
+		 * @param text The text.
+		 * @returns The text width.
+		 */
+		const measureTextWidth = (text: string) => Math.ceil(canvasRenderingContext2D.measureText(text).width);
+
+		// Calculate the layout width available. We subtract DEFAULT_ACTION_BAR_BUTTON_WIDTH to account for the overflow menu button.
+		let layoutWidth = Math.max(width - (props.paddingLeft ?? 0) - (props.paddingRight ?? 0), 0) - DEFAULT_ACTION_BAR_BUTTON_WIDTH;
+		let overflowing = layoutWidth === 0;
+
+		// Grid entry interface.
+		interface GridEntry {
+			width: number;
+			action: DynamicActionBarAction;
+		}
+
+		/**
+		 * Checks if an action has an overflow menu entry (either item or submenu).
+		 * This means this action is allowed to overflow into the overflow menu if we run out of space.
+		 *
+		 * @param action The action to check.
+		 * @returns True if the action has an overflow menu entry.
+		 */
+		const hasOverflowEntry = (action: DynamicActionBarAction) =>
+			action.overflowContextMenuItem || action.overflowContextMenuSubmenu;
+
+		/**
+		 * Lays out the specified actions.
+		 * @param actions The actions to layout.
+		 * @param gridEntries The grid entries.
+		 * @param overflowActions The overflow actions.
+		 */
+		const layoutActions = (actions: DynamicActionBarAction[], gridEntries: GridEntry[], overflowActions: DynamicActionBarAction[]) => {
+			// Handle overflowing.
+			if (overflowing) {
+				overflowActions.push(...actions.filter(hasOverflowEntry));
+				return;
+			}
+
+			// Layout the actions.
+			let appendSeparator = false;
+			for (let i = 0; i < actions.length; i++) {
+				// Set the separator width.
+				const separatorWidth = appendSeparator ? DEFAULT_ACTION_BAR_SEPARATOR_WIDTH : 0;
+
+				// Get the action.
+				const action = actions[i];
+
+				// Calculate the width of the action.
+				let width = 0;
+				if (action.fixedWidth) {
+					width += action.fixedWidth;
+				}
+				if (action.text) {
+					width += measureTextWidth(action.text);
+				}
+
+				// Handle overflowing.
+				if (separatorWidth + width > layoutWidth) {
+					// Growable actions shrink to fill remaining space instead of being dropped,
+					// as long as the fixed width still fits. The component handles truncation.
+					if (action.growable && action.fixedWidth + separatorWidth <= layoutWidth) {
+						width = layoutWidth - separatorWidth;
+						gridEntries.push({ width, action });
+						layoutWidth = 0;
+						overflowing = true;
+						overflowActions.push(...actions.slice(i + 1).filter(hasOverflowEntry));
+						return;
+					}
+					overflowing = true;
+					overflowActions.push(...actions.slice(i).filter(hasOverflowEntry));
+					return;
+				}
+
+				// Push the grid entry for the action.
+				gridEntries.push({ width, action });
+
+				// Adjust the layout width for the next iteration.
+				layoutWidth -= separatorWidth + width;
+
+				// Set the append separator flag for the next iteration.
+				appendSeparator = action.separator;
+			}
+		};
+
+		// Layout the right actions.
+		const rightGridEntries: GridEntry[] = [];
+		const rightOverflowActions: DynamicActionBarAction[] = [];
+		layoutActions(props.rightActions, rightGridEntries, rightOverflowActions);
+
+		// Layout the left actions.
+		const leftGridEntries: GridEntry[] = [];
+		const leftOverflowActions: DynamicActionBarAction[] = [];
+		layoutActions(props.leftActions, leftGridEntries, leftOverflowActions);
+
+		// Text measurement is complete. Remove the canvas.
+		canvas.remove();
+
+		// Distribute any leftover space (the gap that would otherwise become the
+		// '1fr' column) to actions that declare a maxWidth, growing them up to
+		// their preferred width. This lets an action such as the console
+		// resource monitor expand into available space and shrink as the action
+		// bar narrows.
+		const growableEntries = [...rightGridEntries, ...leftGridEntries].filter(entry => entry.action.maxWidth);
+		for (const entry of growableEntries) {
+			if (layoutWidth <= 0) {
+				break;
+			}
+			const headroom = entry.action.maxWidth! - entry.width;
+			if (headroom <= 0) {
+				continue;
+			}
+			const grant = Math.min(headroom, layoutWidth);
+			entry.width += grant;
+			layoutWidth -= grant;
+		}
+
+		/**
+		 * Lays out the grid entries.
+		 * @param gridEntries The grid entries.
+		 * @returns
+		 */
+		const layoutGridEntries = (gridEntries: GridEntry[]): [gridColumns: string[], gridElements: React.JSX.Element[]] => {
+			// Create the grid columns and grid elements.
+			const gridColumns: string[] = [];
+			const gridElements: React.JSX.Element[] = [];
+
+			// Layout the grid entries.
+			let appendSeparator = false;
+			gridEntries.forEach((gridEntry, index) => {
+				// Append the separator.
+				if (appendSeparator) {
+					gridColumns.push(`${DEFAULT_ACTION_BAR_SEPARATOR_WIDTH}px`);
+					gridElements.push(
+						<div className='container'>
+							<ActionBarSeparator />
+						</div>
+					);
+				}
+
+				// Layout the grid entry.
+				gridColumns.push(`${gridEntry.width}px`);
+				gridElements.push(
+					<div className='container'>
+						{gridEntry.action.component instanceof Function ?
+							gridEntry.action.component() :
+							gridEntry.action.component
+						}
+					</div>
+				);
+
+				// Set the append separator flag for the next iteration.
+				appendSeparator = gridEntry.action.separator;
+			});
+
+			// Return the grid columns and grid elements tuple.
+			return [gridColumns, gridElements];
+		};
+
+		// Layout the left and right grid entries.
+		const [leftGridColumns, leftGridElements] = layoutGridEntries(leftGridEntries);
+		const [rightGridColumns, rightGridElements] = layoutGridEntries(rightGridEntries);
+
+		// Create the overflow actions.
+		const overflowActions = [...rightOverflowActions, ...leftOverflowActions];
+
+		// If there are overflow actions, add the overflow button.
+		if (overflowActions.length) {
+			/**
+			 * Creates a custom context menu entry from an overflow action.
+			 *
+			 * @param overflowAction The overflow action.
+			 * @returns The custom context menu entry.
+			 */
+			const createOverflowEntry = (overflowAction: DynamicActionBarAction): CustomContextMenuEntry => {
+				if (overflowAction.overflowContextMenuSubmenu) {
+					return new CustomContextMenuSubmenu(overflowAction.overflowContextMenuSubmenu);
+				}
+				if (overflowAction.overflowContextMenuItem) {
+					return new CustomContextMenuItem(overflowAction.overflowContextMenuItem);
+				}
+
+				throw new Error('Overflow action must define an overflow context menu item or submenu.');
+			};
+
+			rightGridColumns.push(`${DEFAULT_ACTION_BAR_BUTTON_WIDTH}px`);
+			rightGridElements.push(
+				<div style={{ display: 'flex', width: `${DEFAULT_ACTION_BAR_BUTTON_WIDTH}px` }}>
+					<ActionBarButton
+						ref={refOverflowButton}
+						align='right'
+						ariaLabel={'overflow'}
+						icon={ThemeIcon.fromId('toolbar-more')}
+						tooltip={'overflow'}
+						onPressed={async () => {
+							// The custom context menu entries for the overflow context menu.
+							const customContextMenuEntries: CustomContextMenuEntry[] = [];
+
+							// Build the left custom context menu entries for the overflow context menu
+							leftOverflowActions.filter(hasOverflowEntry).forEach((overflowAction, index, overflowActions) => {
+								// Add the custom context menu entry.
+								customContextMenuEntries.push(createOverflowEntry(overflowAction));
+
+								// Add the custom context menu separator, if needed.
+								if (overflowAction.separator && index < overflowActions.length - 1) {
+									customContextMenuEntries.push(new CustomContextMenuSeparator());
+								}
+							});
+
+							// Build the right custom context menu entries for the overflow context menu
+							rightOverflowActions.filter(hasOverflowEntry).forEach((overflowAction, index, overflowActions) => {
+								// Add a separator between the left custom context menu entries and the right custom context menu entries.
+								if (!index && customContextMenuEntries.length) {
+									customContextMenuEntries.push(new CustomContextMenuSeparator());
+								}
+
+								// Add the custom context menu entry.
+								customContextMenuEntries.push(createOverflowEntry(overflowAction));
+
+								// Add the custom context menu separator, if needed.
+								if (overflowAction.separator && index < overflowActions.length - 1) {
+									customContextMenuEntries.push(new CustomContextMenuSeparator());
+								}
+							});
+
+							// Show the custom context.
+							showCustomContextMenu({
+								anchorElement: refOverflowButton.current,
+								popupPosition: 'auto',
+								popupAlignment: 'auto',
+								width: 'auto',
+								entries: customContextMenuEntries
+							});
+						}}
+					/>
+				</div>
+			);
+		}
+
+		// Construct the grid columns.
+		gridColumns.push(...leftGridColumns);
+		gridColumns.push('1fr');
+		gridColumns.push(...rightGridColumns);
+
+		// Construct the grid elements. The middle element fills the '1fr' gap
+		// between the left and right groups; it stretches to the full height so
+		// it can host an optional context menu (see onEmptySpaceContextMenu).
+		gridComponents.push(...leftGridElements);
+		gridComponents.push(
+			// eslint-disable-next-line jsx-a11y/no-static-element-interactions -- optional right-click-only affordance for empty space; any action it offers is also reachable elsewhere (e.g. Settings), so no keyboard equivalent is required here.
+			<div className='action-bar-gap' onContextMenu={props.onEmptySpaceContextMenu} />
+		);
+		gridComponents.push(...rightGridElements);
+	}
+
+	// Create the class names.
+	const classNames = positronClassNames(
+		'positron-dynamic-action-bar',
+		{ 'border-top': props?.borderTop },
+		{ 'border-bottom': props?.borderBottom },
+		{ 'transparent-background': props?.nestedActionBar }
+	);
+
+	// Create the dynamic style.
+	const style: CSSProperties = {
+		paddingLeft: optionalValue(props.paddingLeft, 0),
+		paddingRight: optionalValue(props.paddingRight, 0),
+		gridTemplateColumns: gridColumns.join(' ')
+	};
+
+	// Render.
+	return (
+		<>
+			<div ref={refExemplar} className='exemplar' />
+			<div
+				ref={refActionBar}
+				className={classNames}
+				role='toolbar'
+				style={style}
+				onKeyDown={keyDownHandler}
+			>
+				{gridComponents}
+			</div>
+		</>
+	);
+};

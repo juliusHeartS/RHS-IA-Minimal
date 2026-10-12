@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Desarrollo de aplicaciones de datos"
+---
+
+RHS-IA puede ejecutar aplicaciones de datos compatibles desde archivos del proyecto y mostrarlas en **Visor** o en un navegador externo. Las acciones de ejecución disponibles dependen del lenguaje, el framework y los paquetes instalados.
+
+Selecciona el tiempo de ejecución correcto, abre el archivo de entrada de la aplicación y usa su acción **Run App**. Detén o reinicia la tarea en ejecución después de cambiar la configuración de inicio o las dependencias.
+
+Mantén en el proyecto la configuración de la aplicación y las instrucciones reproducibles de inicio. Vincula los servidores de desarrollo solo a interfaces de confianza y nunca confirmes las credenciales que usa la aplicación.

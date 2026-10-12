@@ -1,0 +1,6 @@
+{
+	"command.positronProxy.openBrowserPreview.title": "Abrir en el navegador",
+	"command.positronProxy.showHtmlPreview.title": "Abrir en el visor",
+	"description": "Proxy HTTP para RHS-IA",
+	"displayName": "RHS-IA Proxy"
+}

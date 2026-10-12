@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Editor de cuadernos heredado"
+---
+
+El editor de cuadernos heredado conserva el flujo de trabajo del editor estándar que usan las extensiones compatibles y los espacios de trabajo existentes. Admite la selección de kernel, la edición y ejecución de celdas, la salida y los comandos de cuaderno.
+
+Usa **Volver a abrir el editor con...** en el menú contextual de la pestaña del editor cuando haya más de un editor de cuadernos registrado. La selección se puede aplicar una vez o recordar para el tipo de archivo.
+
+Cambiar de editor no cambia el formato del archivo del cuaderno, pero debes gestionar las ediciones sin guardar y el estado del kernel activo antes de cambiar.

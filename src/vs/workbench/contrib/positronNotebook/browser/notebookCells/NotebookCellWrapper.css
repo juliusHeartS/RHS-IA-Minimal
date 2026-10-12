@@ -1,0 +1,15 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-notebook-cell {
+	position: relative;
+	margin-left: 12px;
+
+	border-radius: var(--vscode-positronNotebook-cell-radius);
+
+	/* Ensure the action bar (which overlaps above the cell by half its height)
+	 * is not clipped when scrollIntoView aligns the cell to the viewport top. */
+	scroll-margin-top: var(--vscode-positronNotebook-action-bar-inset);
+}

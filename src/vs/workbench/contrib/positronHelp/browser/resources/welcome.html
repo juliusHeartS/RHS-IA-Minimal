@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Security-Policy"
+		content="media-src 'self'; script-src 'self' 'nonce-__nonce__'; style-src 'nonce-__nonce__'; frame-src *;">
+	<style nonce="__nonce__">
+		body {
+			padding: 0;
+			background-color: var(--vscode-editor-background);
+		}
+
+		.container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			height: 100vh;
+			max-width: 36em;
+			margin: 0 auto;
+			padding: 2em;
+		}
+
+		h1 {
+			font-size: 1.5em;
+			font-weight: 500;
+		}
+
+		p {
+			line-height: 1.5;
+		}
+
+		code {
+			font-family: var(--vscode-editor-font-family);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Language Help</h1>
+		<p>Contextual R and Python reference pages appear here when requested by an active language runtime.</p>
+		<p>Place the cursor on a symbol and run <strong>Show Help at Cursor</strong>, or run <strong>Look Up Help Topic</strong>.</p>
+		<p>For RHS-IA product guidance, open <a href="command:rhs-ia.documentation.open">RHS-IA Documentation</a>.</p>
+	</div>
+
+	<script nonce="__nonce__" async type="module">
+		const vscode = acquireVsCodeApi();
+		vscode.postMessage({
+			"id": "positron-help-complete",
+			"title": "Language Help",
+		});
+
+		document.addEventListener("click", (event) => {
+			if (event.target.tagName === "A") {
+				const href = event.target.getAttribute("href");
+				if (href) {
+					if (href.startsWith("command:")) {
+						// If the link is a command, post it to the extension host.
+						vscode.postMessage({
+							"id": "positron-help-execute-command",
+							"command": href.substring(8) // Remove "command:" prefix
+						});
+					} else {
+						// Otherwise, treat it as a URL and navigate.
+						vscode.postMessage({
+							"id": "positron-help-navigate",
+							"url": href
+						});
+					}
+				}
+			}
+		});
+
+		// Adds message listener.
+		const addMessageListener = () => {
+			// Add the event listener.
+			window.addEventListener("message", (message) => {
+				// Switch on the message ID.
+				switch (message.data.id) {
+					// positron-help-scroll-to message. Sent to scroll the window to a saved scroll
+					// position. This message will arrive when the document's readyState becomes
+					// interactive.
+					case "positron-help-scroll-to":
+						window.scrollTo(message.data.scrollX, message.data.scrollY);
+						break;
+
+					// positron-help-update-find message. Sent to start a new find operation.
+					case "positron-help-update-find":
+						// Reset selection so we are finding from the top of the document.
+						window.getSelection().removeAllRanges();
+
+						// If the find value was specified, perform the find.
+						if (message.data.findValue) {
+							// Perform the find.
+							findResult = window.find(
+								message.data.findValue,
+								false, // aCaseSensitive
+								false, // aBackwards
+								false, // aWrapAround
+								false, // aWholeWord - Unimplemented
+								false // aSearchInFrames
+							);
+
+							// Post the find result.
+							window.parent.postMessage(
+								{
+									id: "positron-help-find-result",
+									findResult,
+								},
+								"*"
+							);
+						}
+						break;
+
+					// positron-help-find-previous message. Sent to find the previous occurance.
+					case "positron-help-find-previous":
+						if (findResult && message.data.findValue) {
+							window.find(
+								message.data.findValue,
+								false, // aCaseSensitive
+								true, // aBackwards
+								false, // aWrapAround
+								false, // aWholeWord - Unimplemented
+								false // aSearchInFrames
+							);
+						}
+						break;
+
+					// positron-help-find-previous message. Sent to find the next occurance.
+					case "positron-help-find-next":
+						if (findResult && message.data.findValue) {
+							window.find(
+								message.data.findValue,
+								false, // aCaseSensitive
+								false, // aBackwards
+								false, // aWrapAround
+								false, // aWholeWord - Unimplemented
+								false // aSearchInFrames
+							);
+						}
+						break;
+
+					// positron-help-copy-selection message. Sent to copy the selection.
+					case "positron-help-copy-selection":
+						// Post the positron-help-selection message.
+						window.parent.postMessage(
+							{
+								id: "positron-help-copy-selection",
+								selection: window.getSelection().toString(),
+							},
+							"*"
+						);
+						break;
+				}
+			});
+		};
+
+		addMessageListener();
+	</script>
+</body>
+
+</html>

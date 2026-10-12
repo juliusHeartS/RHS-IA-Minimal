@@ -1,0 +1,41 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.positron-button {
+	border: none;
+	cursor: pointer;
+	background-color: transparent;
+
+	/* Unset user agent stylesheet styles. */
+	font-family: unset !important;
+	text-align: unset !important;
+}
+
+.positron-button.disabled {
+	cursor: default;
+}
+
+.hc-black .positron-button:not(.border),
+.hc-light .positron-button:not(.border) {
+	border: 1px solid transparent;
+}
+
+.hc-black .positron-button:hover:not(.disabled),
+.hc-light .positron-button:hover:not(.disabled) {
+	border: 1px dashed var(--vscode-focusBorder);
+}
+
+.positron-button:focus {
+	outline: none !important;
+}
+
+.positron-button:focus-visible {
+	border-radius: 4px;
+	outline: 1px solid var(--vscode-focusBorder) !important;
+}
+
+.positron-button.solid:focus-visible {
+	outline-offset: 2px !important;
+}

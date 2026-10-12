@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Quarto Inline Output"
+---
+
+Executable Quarto cells can show results next to their source. Use the cell toolbar to run one cell or an applicable sequence. Text, tables, images, and supported interactive results appear in output zones.
+
+Inline results belong to the current runtime session and are not a substitute for the rendered document. Clear output when it is stale, restart the runtime when state matters, and render from a clean session before publication.
+
+If a cell is not detected, verify its fenced-code syntax and language identifier.

@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Módulos de entorno"
+---
+
+En los sistemas que proporcionan módulos de entorno, RHS-IA puede usar herramientas y tiempos de ejecución administrados por módulos cuando la integración de environment-modules está habilitada y configurada.
+
+Carga el conjunto de módulos necesario antes de seleccionar un intérprete o iniciar herramientas relacionadas. Un cambio de módulo puede alterar `PATH`, las rutas de bibliotecas y otras variables de entorno; por eso, reinicia después las sesiones de tiempo de ejecución afectadas.
+
+Los módulos disponibles están controlados por el sistema host. Si falta un módulo o un intérprete, verifica el mismo comando de módulo en un shell de inicio de sesión y consulta la configuración de módulos del sitio.

@@ -1,0 +1,19 @@
+{
+	"name": "RHS-IA",
+	"short_name": "RHS-IA",
+	"start_url": "/",
+	"lang": "en-US",
+	"display": "browser",
+	"icons": [
+		{
+			"src": "rhs-ia-192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "rhs-ia-512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	]
+}

@@ -1,0 +1,11 @@
+{
+	"Connect to a SQLite database file": "Conectarse a un archivo de base de datos SQLite",
+	"Connect to a SQLite database file on disk": "Conectarse a un archivo de base de datos SQLite en el disco",
+	"Database File": "Archivo de base de datos",
+	"Database file path is required": "Ruta del archivo de base de datos es obligatoria",
+	"example: /path/to/database.sqlite": "ejemplo: /path/to/database.sqlite",
+	"example: C:\\path\\to\\database.sqlite": "ejemplo: C:\\path\\to\\database.sqlite",
+	"Read Only": "Solo lectura",
+	"SQLite Files": "Archivos SQLite",
+	"Unknown connection mechanism '{0}'.": "Mecanismo de conexión desconocido '{0}'."
+}

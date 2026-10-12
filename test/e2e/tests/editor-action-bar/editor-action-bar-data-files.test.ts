@@ -1,0 +1,140 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+/**
+ * Editor Action Bar: Data Files
+ *
+ * Summary:
+ * This test suite validates the functionality of the Editor Action Bar when interacting with
+ * various types of data based files (e.g., data frames in R/Python, Parquet, CSV).
+ *
+ * Flow:
+ *  - Open a file containing data frames or a standalone data file directly (e.g., Parquet, CSV via DuckDB)
+ *  - Use the Variables pane to open a data frame in the Data Explorer (when applicable)
+ *  - Verify the Editor Action Bar functionality:
+ */
+
+import { Application, DataExplorer } from '../../infra';
+import { EditorActionBar } from '../../pages/editorActionBar';
+import { test, expect, tags } from '../_test.setup';
+
+let editorActionBar: EditorActionBar;
+let dataExplorer: DataExplorer;
+
+const testCases = [
+	{
+		title: 'R - Can load data frame via variables pane',
+		openFile: 'workspaces/generate-data-frames-r/simple-data-frames.r',
+		variable: 'df',
+		tabName: 'Data: df',
+	},
+	{
+		title: 'Python - Can load data frame via variables pane',
+		openFile: 'workspaces/generate-data-frames-py/simple-data-frames.py',
+		variable: 'df',
+		tabName: 'Data: df',
+	},
+	{
+		title: 'Can open parquet file via DuckDB',
+		openDataFile: 'data-files/100x100/100x100.parquet',
+		tabName: 'Data: 100x100.parquet',
+	},
+	{
+		title: 'Can open CSV file via DuckDB',
+		openDataFile: 'data-files/flights/flights.csv',
+		tabName: 'Data: flights.csv'
+	}];
+
+test.use({
+	suiteId: __filename
+});
+
+test.describe('Editor Action Bar: Data Files', {
+	tag: [tags.WEB, tags.WIN, tags.EDITOR_ACTION_BAR, tags.DATA_EXPLORER]
+}, () => {
+
+	test.beforeAll(async function ({ app }) {
+		editorActionBar = app.workbench.editorActionBar;
+		dataExplorer = app.workbench.dataExplorer;
+	});
+
+	test.afterEach(async function ({ runCommand }) {
+		await runCommand('workbench.action.closeAllEditors');
+		await runCommand('Console: Clear Console');
+	});
+
+	for (const testCase of testCases) {
+		test(testCase.title, async function ({ app, sessions, openDataFile, openFile }) {
+			// Set interpreter
+			const language = testCase.title.startsWith('R') ? 'r' : 'python';
+			await sessions.start(language);
+
+			// Open file
+			testCase.openFile
+				? await openFile(testCase.openFile)
+				: await openDataFile(testCase.openDataFile!);
+
+			// Open data explorer via variable pane
+			if (testCase.variable) {
+				const sourceFileTab = testCase.openFile!.split('/').pop()!;
+				await openDataExplorerViaVariablePane(app, testCase.variable, testCase.tabName, sourceFileTab);
+			}
+
+			// Ensure the summary panel is visible
+			await dataExplorer.summaryPanel.show();
+
+			// Save button should NOT appear on the Data Explorer's editor
+			// action bar; the data explorer URI is virtual (not file-backed).
+			await editorActionBar.verifyButtonVisible('Save', false);
+
+			// Verify action bar behavior
+			await editorActionBar.selectSummaryOn(app.web, 'Left');
+			await editorActionBar.verifySummaryPosition('Left');
+
+			await editorActionBar.selectSummaryOn(app.web, 'Right');
+			await editorActionBar.verifySummaryPosition('Right');
+
+			await editorActionBar.clickButton('Split Editor Right');
+			await editorActionBar.verifySplitEditor('right', testCase.tabName);
+
+			await editorActionBar.clickButton('Split Editor Down');
+			await editorActionBar.verifySplitEditor('down', testCase.tabName);
+
+			await editorActionBar.verifyOpenInNewWindow(app.web, testCase.tabName);
+		});
+	}
+
+	test('Excel file shows "Open as Spreadsheet" on desktop only', async function ({ app, openDataFile }) {
+		// Open an Excel workbook directly via DuckDB.
+		await openDataFile('data-files/supermarkt_sales/supermarkt_sales.xlsx');
+		await expect(app.code.driver.currentPage.getByText('Data: supermarkt_sales.xlsx', { exact: true })).toBeVisible();
+
+		// "Open as Plain Text File" is never offered for Excel workbooks.
+		await editorActionBar.verifyButtonVisible('Open as Plain Text File', false);
+
+		// "Open as Spreadsheet" opens the file with the OS-native application, which is
+		// only possible in the desktop app; it is hidden in web/server mode.
+		await editorActionBar.verifyButtonVisible('Open as Spreadsheet', !app.web);
+	});
+});
+
+
+async function openDataExplorerViaVariablePane(app: Application, variable: string, tabName: string, sourceFileTab: string) {
+	await test.step('Open data explorer via variable pane', async () => {
+		const page = app.code.driver.currentPage;
+		// Run the source file so the data frame appears in the Variables pane.
+		await app.workbench.editor.playButton.click();
+		// Open the data frame in the Data Explorer.
+		await app.workbench.variables.doubleClickVariableRow(variable);
+		// Close the source file editor so only the Data Explorer remains. Scope the
+		// close to the source file's own tab: a page-wide `getByLabel('Close')` can
+		// match an unrelated control and leave the file editor open, whose (disabled)
+		// Save button would then trip the "Save not visible" assertion in the test.
+		const sourceTab = app.workbench.editors.editorTab(sourceFileTab);
+		await sourceTab.hover();
+		await sourceTab.getByLabel('Close').click();
+		await expect(page.getByText(tabName, { exact: true })).toBeVisible();
+	});
+}

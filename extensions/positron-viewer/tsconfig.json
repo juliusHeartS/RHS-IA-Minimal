@@ -1,0 +1,14 @@
+{
+	"extends": "../tsconfig.base.json",
+	"compilerOptions": {
+		"outDir": "./out",
+		"rootDir": "src",
+		"types": []
+	},
+	"include": [
+		"src/**/*",
+		"../../src/positron-dts/positron.d.ts",
+		"../../src/vscode-dts/vscode.d.ts",
+		"../../src/vscode-dts/vscode.proposed.externalUriOpener.d.ts",
+	]
+}

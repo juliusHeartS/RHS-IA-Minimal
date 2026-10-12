@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Legacy Notebook Editor"
+---
+
+The legacy notebook editor preserves the standard editor workflow used by compatible extensions and existing workspaces. It supports kernel selection, cell editing, execution, output, and notebook commands.
+
+Use **Reopen Editor With** from the editor tab context menu when more than one notebook editor is registered. The selection can be applied once or remembered for the file type.
+
+Changing editors does not change the notebook file format, but unsaved edits and active kernel state should be handled before switching.

@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Quarto"
+---
+
+RHS-IA reconoce documentos y proyectos de Quarto, incluidas celdas de código ejecutables de Python y R. Abre un archivo `.qmd` para editar el código fuente, ejecutar celdas compatibles, previsualizar ecuaciones y usar acciones del editor que reconocen Quarto.
+
+La renderización requiere una instalación compatible de Quarto y los tiempos de ejecución que use el documento. Ejecuta una acción de renderización desde el editor o el terminal; la salida y los errores aparecen en el canal o terminal asociado.
+
+Mantén las opciones del documento en el frontmatter YAML o en la configuración del proyecto. Usa la [salida insertada](inline-output.qmd) para explorar rápidamente y una renderización completa para validar el documento final.

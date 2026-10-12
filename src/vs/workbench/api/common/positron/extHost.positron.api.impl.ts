@@ -1,0 +1,755 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { ExtHostLanguageRuntime } from './extHostLanguageRuntime.js';
+import type * as positron from 'positron';
+import type * as vscode from 'vscode';
+import { URI } from '../../../../base/common/uri.js';
+import { IExtHostRpcService } from '../extHostRpcService.js';
+import { ILogService } from '../../../../platform/log/common/log.js';
+import { ServicesAccessor } from '../../../../platform/instantiation/common/instantiation.js';
+import { IExtensionRegistries } from '../extHost.api.impl.js';
+import { IExtensionDescription } from '../../../../platform/extensions/common/extensions.js';
+import { ExtHostConfigProvider, IExtHostConfiguration } from '../extHostConfiguration.js';
+import { ExtHostPositronContext } from './extHost.positron.protocol.js';
+import * as extHostTypes from './extHostTypes.positron.js';
+import { NotebookCellType } from '../../../common/positron/notebookAssistant.js';
+import { IExtHostInitDataService } from '../extHostInitDataService.js';
+import { ExtHostPreviewPanels } from './extHostPreviewPanels.js';
+import { ExtHostModalDialogs } from './extHostModalDialogs.js';
+import { ExtHostContextKeyService } from './extHostContextKeyService.js';
+import { ExtHostDocuments } from '../extHostDocuments.js';
+import { ExtHostContext } from '../extHost.protocol.js';
+import { IExtHostWorkspace } from '../extHostWorkspace.js';
+import { IExtHostCommands } from '../extHostCommands.js';
+import { ExtHostWebviews } from '../extHostWebview.js';
+import { ExtHostLanguageFeatures } from '../extHostLanguageFeatures.js';
+import { createExtHostQuickOpen } from '../extHostQuickOpen.js';
+import { ExtHostOutputService } from '../extHostOutput.js';
+import { ExtHostConsoleService } from './extHostConsoleService.js';
+import { ExtHostDocumentsAndEditors } from '../extHostDocumentsAndEditors.js';
+import { ExtHostMethods } from './extHostMethods.js';
+import { ExtHostEditors } from '../extHostTextEditors.js';
+import { UiFrontendRequest } from '../../../services/languageRuntime/common/positronUiComm.js';
+import { ExtHostConnections } from './extHostConnections.js';
+import { ExtHostDataConnections } from './extHostDataConnections.js';
+import { createLazyDriverLogger } from './extHostDataConnectionsLogging.js';
+import { ExtHostDataExplorer } from './extHostDataExplorer.js';
+import { ExtHostAiFeatures } from './extHostAiFeatures.js';
+import { IToolInvocationContext } from '../../../contrib/chat/common/tools/languageModelToolsService.js';
+import { IPositronLanguageModelConfig, IPositronLanguageModelSource } from '../../../contrib/positronAssistant/common/interfaces/positronAssistantService.js';
+import { ExtHostEnvironment } from './extHostEnvironment.js';
+import { convertClipboardFiles, formatPathForCode, ResolvedBase } from '../../../contrib/positronPathUtils/common/filePathConverter.js';
+import { ExtHostPlotsService } from './extHostPlotsService.js';
+import { ExtHostNotebookFeatures } from './extHostNotebookFeatures.js';
+import { ExtHostPositronEphemeralStorage } from './extHostPositronEphemeralStorage.js';
+import { IExtHostStorage } from '../extHostStorage.js';
+import { ExtHostLifecycle } from './extHostLifecycle.js';
+import { ExtHostFileTransfer } from './extHostFileTransfer.js';
+import { IExtHostDocs } from './extHostDocs.js';
+
+/**
+ * Factory interface for creating an instance of the Positron API.
+ */
+export interface IExtensionPositronApiFactory {
+	(extension: IExtensionDescription, extensionInfo: IExtensionRegistries, configProvider: ExtHostConfigProvider): typeof positron;
+}
+
+/**
+ * This method instantiates and returns the extension API surface for Positron;
+ * it mirrors IExtensionApiFactory for VS Code.
+ */
+export function createPositronApiFactoryAndRegisterActors(accessor: ServicesAccessor): IExtensionPositronApiFactory {
+	const rpcProtocol = accessor.get(IExtHostRpcService);
+	const initData = accessor.get(IExtHostInitDataService);
+	const extHostWorkspace = accessor.get(IExtHostWorkspace);
+	const extHostCommands = accessor.get(IExtHostCommands);
+	const extHostLogService = accessor.get(ILogService);
+	const extHostConfiguration = accessor.get(IExtHostConfiguration);
+	const extHostDocs = accessor.get(IExtHostDocs);
+
+	// Retrieve the raw `ExtHostWebViews` object from the rpcProtocol; this
+	// object is needed to create webviews, and was previously created in
+	// `createApiFactoryAndRegisterActors` when VS Code's API factory was
+	// created earlier.
+	//
+	// The `getRaw` method is a Positron extension to the `rpcProtocol` that
+	// allows us to retrieve the raw actor object so that the Positron API and
+	// VS Code API can share a single instance of for instance `ExtHostWebViews`,
+	// which is necessary since the instance effectively needs to be a singleton.
+	const extHostWebviews: ExtHostWebviews = rpcProtocol.getRaw(ExtHostContext.ExtHostWebviews);
+	const extHostOutputService: ExtHostOutputService = rpcProtocol.getRaw(ExtHostContext.ExtHostOutputService);
+	const extHostLanguageFeatures: ExtHostLanguageFeatures =
+		rpcProtocol.getRaw(ExtHostContext.ExtHostLanguageFeatures);
+	const extHostEditors: ExtHostEditors = rpcProtocol.getRaw(ExtHostContext.ExtHostEditors);
+	const extHostDocuments: ExtHostDocuments = rpcProtocol.getRaw(ExtHostContext.ExtHostDocuments);
+	const extHostDocumentsAndEditors: ExtHostDocumentsAndEditors = rpcProtocol.getRaw(ExtHostContext.ExtHostDocumentsAndEditors);
+	const extHostQuickOpen = rpcProtocol.set(ExtHostPositronContext.ExtHostQuickOpen, createExtHostQuickOpen(rpcProtocol, extHostWorkspace, extHostCommands));
+	const extHostLanguageRuntime = rpcProtocol.set(ExtHostPositronContext.ExtHostLanguageRuntime, new ExtHostLanguageRuntime(rpcProtocol, extHostLogService));
+	const extHostAiFeatures = rpcProtocol.set(ExtHostPositronContext.ExtHostAiFeatures, new ExtHostAiFeatures(rpcProtocol, extHostCommands, extHostWorkspace));
+	const extHostPreviewPanels = rpcProtocol.set(ExtHostPositronContext.ExtHostPreviewPanel, new ExtHostPreviewPanels(rpcProtocol, extHostWebviews, extHostWorkspace));
+	const extHostModalDialogs = rpcProtocol.set(ExtHostPositronContext.ExtHostModalDialogs, new ExtHostModalDialogs(rpcProtocol));
+	const extHostContextKeyService = rpcProtocol.set(ExtHostPositronContext.ExtHostContextKeyService, new ExtHostContextKeyService(rpcProtocol));
+	const extHostConsoleService = rpcProtocol.set(ExtHostPositronContext.ExtHostConsoleService, new ExtHostConsoleService(rpcProtocol, extHostLogService, extHostDocumentsAndEditors));
+	const extHostPlotsService = rpcProtocol.set(ExtHostPositronContext.ExtHostPlotsService, new ExtHostPlotsService(rpcProtocol));
+	const extHostMethods = rpcProtocol.set(ExtHostPositronContext.ExtHostMethods,
+		new ExtHostMethods(rpcProtocol, extHostEditors, extHostDocuments, extHostModalDialogs,
+			extHostLanguageRuntime, extHostWorkspace, extHostQuickOpen, extHostCommands, extHostContextKeyService));
+	const extHostConnections = rpcProtocol.set(ExtHostPositronContext.ExtHostConnections, new ExtHostConnections(rpcProtocol));
+	const extHostDataConnections = rpcProtocol.set(ExtHostPositronContext.ExtHostDataConnections, new ExtHostDataConnections(rpcProtocol));
+	const extHostDataExplorer = rpcProtocol.set(ExtHostPositronContext.ExtHostDataExplorer, new ExtHostDataExplorer(rpcProtocol));
+	const extHostEnvironment = rpcProtocol.set(ExtHostPositronContext.ExtHostEnvironment, new ExtHostEnvironment(rpcProtocol));
+	const extHostNotebookFeatures = rpcProtocol.set(ExtHostPositronContext.ExtHostNotebookFeatures, new ExtHostNotebookFeatures(rpcProtocol));
+	const extHostLifecycle = rpcProtocol.set(ExtHostPositronContext.ExtHostLifecycle, new ExtHostLifecycle());
+	const extHostFileTransfer = rpcProtocol.set(ExtHostPositronContext.ExtHostFileTransfer, new ExtHostFileTransfer());
+	const storage = accessor.get(IExtHostStorage);
+	const extHostEphemeralStorage = new ExtHostPositronEphemeralStorage(rpcProtocol, accessor.get(ILogService));
+	storage.setPositronEphemeralStorage(extHostEphemeralStorage);
+
+	return function (extension: IExtensionDescription, extensionInfo: IExtensionRegistries, configProvider: ExtHostConfigProvider): typeof positron {
+
+		// --- Start Positron ---
+		const runtime: typeof positron.runtime = {
+			executeCode(languageId, code, focus, allowIncomplete?, mode?, errorBehavior?, observer?, sessionId?, documentUri?, executionMetadata?, attributionMetadata?): Thenable<Record<string, unknown>> {
+				const extensionId = extension.identifier.value;
+				return extHostLanguageRuntime.executeCode(languageId, code, extensionId, focus, allowIncomplete, mode, errorBehavior, observer, sessionId, documentUri, executionMetadata, attributionMetadata);
+			},
+			evaluateCode(languageId: string, code: string, cancellationToken?: vscode.CancellationToken, sessionId?: string, whenBusy?: positron.RuntimeBusyBehavior): Thenable<positron.EvalResult> {
+				return extHostLanguageRuntime.evaluateCode(languageId, code, cancellationToken, sessionId, whenBusy);
+			},
+			executeInlineCell(documentUri, ranges, executionMetadata?): Thenable<void> {
+				const extensionId = extension.identifier.value;
+				return extHostLanguageRuntime.executeInlineCells(extensionId, documentUri, ranges, executionMetadata);
+			},
+			registerLanguageRuntimeManager(
+				languageId: string,
+				manager: positron.LanguageRuntimeManager): vscode.Disposable {
+				return extHostLanguageRuntime.registerLanguageRuntimeManager(extension, languageId, manager);
+			},
+			getRegisteredRuntimes(): Thenable<positron.LanguageRuntimeMetadata[]> {
+				return extHostLanguageRuntime.getRegisteredRuntimes();
+			},
+			getPreferredRuntime(languageId: string): Thenable<positron.LanguageRuntimeMetadata | undefined> {
+				return extHostLanguageRuntime.getPreferredRuntime(languageId);
+			},
+			getActiveSessions(): Thenable<positron.BaseLanguageRuntimeSession[]> {
+				return extHostLanguageRuntime.getActiveSessions();
+			},
+			getSession(sessionId: string): Thenable<positron.BaseLanguageRuntimeSession | undefined> {
+				return extHostLanguageRuntime.getSession(sessionId);
+			},
+			getForegroundSession(): Thenable<positron.BaseLanguageRuntimeSession | undefined> {
+				return extHostLanguageRuntime.getForegroundSession();
+			},
+			getNotebookSession(notebookUri: vscode.Uri): Thenable<positron.BaseLanguageRuntimeSession | undefined> {
+				return extHostLanguageRuntime.getNotebookSession(notebookUri);
+			},
+			selectLanguageRuntime(runtimeId: string): Thenable<void> {
+				return extHostLanguageRuntime.selectLanguageRuntime(runtimeId);
+			},
+			startLanguageRuntime(runtimeId: string,
+				sessionName: string,
+				notebookUri?: vscode.Uri): Thenable<positron.LanguageRuntimeSession> {
+
+				// If a notebook document is provided, we are in notebook mode.
+				const sessionMode = notebookUri ?
+					extHostTypes.LanguageRuntimeSessionMode.Notebook :
+					extHostTypes.LanguageRuntimeSessionMode.Console;
+
+				// Start the language runtime.
+				return extHostLanguageRuntime.startLanguageRuntime(runtimeId,
+					sessionName,
+					sessionMode,
+					notebookUri);
+			},
+			interruptSession(sessionId: string): Thenable<void> {
+				return extHostLanguageRuntime.interruptSession(sessionId);
+			},
+			restartSession(sessionId: string): Thenable<boolean> {
+				return extHostLanguageRuntime.restartSession(sessionId);
+			},
+			focusSession(sessionId: string): void {
+				return extHostLanguageRuntime.focusSession(sessionId);
+			},
+			deleteSession(sessionId: string): Thenable<boolean> {
+				return extHostLanguageRuntime.deleteSession(sessionId);
+			},
+			getSessionVariables(sessionId: string, accessKeys?: Array<Array<string>>):
+				Thenable<Array<Array<positron.RuntimeVariable>>> {
+				return extHostLanguageRuntime.getSessionVariables(sessionId, accessKeys);
+			},
+			querySessionTables(sessionId: string, accessKeys: Array<Array<string>>, queryTypes: Array<string>):
+				Thenable<Array<positron.QueryTableSummaryResult>> {
+				return extHostLanguageRuntime.querySessionTables(sessionId, accessKeys, queryTypes);
+			},
+			getConsoleHistory(sessionId: string, numberOfEntries?: number): Thenable<positron.runtime.ConsoleHistoryEntry[]> {
+				return extHostLanguageRuntime.getConsoleHistory(sessionId, numberOfEntries);
+			},
+			registerClientHandler(handler: positron.RuntimeClientHandler): vscode.Disposable {
+				return extHostLanguageRuntime.registerClientHandler(handler);
+			},
+			registerClientInstance(clientInstanceId: string): vscode.Disposable {
+				/**
+				 * Register a runtime client instance. Registering the instance
+				 * indicates that the caller has ownership of the instance, and that
+				 * messages the instance receives do not need to be forwarded to the
+				 * Positron core.
+				 */
+				return extHostLanguageRuntime.registerClientInstance(clientInstanceId);
+			},
+			emitPerfMark(name: string): void {
+				const extensionId = extension.identifier.value;
+				return extHostLanguageRuntime.emitPerfMark(extensionId, name);
+			},
+			get onDidRegisterRuntime() {
+				return extHostLanguageRuntime.onDidRegisterRuntime;
+			},
+			get onDidChangeForegroundSession() {
+				return extHostLanguageRuntime.onDidChangeForegroundSession;
+			},
+			get onDidExecuteCode() {
+				return extHostLanguageRuntime.onDidExecuteCode;
+			},
+			registerRuntimePickerContribution(
+				contribution: positron.runtime.RuntimePickerContribution
+			): vscode.Disposable {
+				return extHostLanguageRuntime.registerRuntimePickerContribution(contribution);
+			}
+		};
+
+		const window: typeof positron.window = {
+			createPreviewPanel(viewType: string, title: string, preserveFocus?: boolean, options?: vscode.WebviewPanelOptions & vscode.WebviewOptions) {
+				return extHostPreviewPanels.createPreviewPanel(extension, viewType, title, preserveFocus, options);
+			},
+			previewUrl(url: vscode.Uri, source?: positron.PreviewSource) {
+				return extHostPreviewPanels.previewUrl(extension, url, source);
+			},
+			previewHtml(path: string) {
+				return extHostPreviewPanels.previewHtml(extension, path);
+			},
+			createRawLogOutputChannel(name: string): vscode.LogOutputChannel {
+				return extHostOutputService.createRawLogOutputChannel(name, extension);
+			},
+			showSimpleModalDialogPrompt(title: string, message: string, okButtonTitle?: string, cancelButtonTitle?: string): Thenable<boolean> {
+				return extHostModalDialogs.showSimpleModalDialogPrompt(title, message, okButtonTitle, cancelButtonTitle);
+			},
+			showThreeButtonModalDialogPrompt(options: positron.window.ThreeButtonModalDialogPromptOptions): Thenable<string | undefined> {
+				return extHostModalDialogs.showThreeButtonModalDialogPrompt(options);
+			},
+			showSimpleModalDialogMessage(title: string, message: string, okButtonTitle?: string): Thenable<null> {
+				return extHostModalDialogs.showSimpleModalDialogMessage(title, message, okButtonTitle);
+			},
+			showSimpleModalDialogInputPrompt(title: string, message: string, placeholder?: string): Thenable<string | undefined> {
+				return extHostModalDialogs.showSimpleModalDialogInput(title, message, undefined, placeholder).then(result => result === null ? undefined : result);
+			},
+			getConsoleForLanguage(languageId: string) {
+				return extHostConsoleService.getConsoleForLanguage(languageId);
+			},
+			get activeConsoleEditor() {
+				return extHostConsoleService.activeConsoleEditor;
+			},
+			get onDidChangeActiveConsoleEditor() {
+				return extHostConsoleService.onDidChangeActiveConsoleEditor;
+			},
+			get onDidChangeConsoleWidth() {
+				return extHostConsoleService.onDidChangeConsoleWidth;
+			},
+			getConsoleWidth(): Thenable<number> {
+				return extHostConsoleService.getConsoleWidth();
+			},
+			get onDidChangePlotsRenderSettings() {
+				return extHostPlotsService.onDidChangePlotsRenderSettings;
+			},
+			getPlotsRenderSettings(): Thenable<positron.PlotRenderSettings> {
+				return extHostPlotsService.getPlotsRenderSettings();
+			},
+			get onWillShutdown() {
+				return extHostLifecycle.onWillShutdown;
+			},
+			get onDidUploadFile() {
+				return extHostFileTransfer.onDidUploadFile;
+			},
+			get onDidDownloadFile() {
+				return extHostFileTransfer.onDidDownloadFile;
+			},
+		};
+
+		const context: typeof positron.context = {
+			get ephemeralState() {
+				return extHostEphemeralStorage.getOrCreateMemento(extension.identifier.value);
+			},
+		};
+
+		const languages: typeof positron.languages = {
+			registerStatementRangeProvider(
+				selector: vscode.DocumentSelector,
+				provider: positron.StatementRangeProvider): vscode.Disposable {
+				return extHostLanguageFeatures.registerStatementRangeProvider(extension, selector, provider);
+			},
+			registerInputBoundaryProvider(
+				selector: vscode.DocumentSelector,
+				provider: positron.InputBoundaryProvider): vscode.Disposable {
+				return extHostLanguageFeatures.registerInputBoundaryProvider(extension, selector, provider);
+			},
+			registerHelpTopicProvider(
+				selector: vscode.DocumentSelector,
+				provider: positron.HelpTopicProvider): vscode.Disposable {
+				return extHostLanguageFeatures.registerHelpTopicProvider(extension, selector, provider);
+			}
+		};
+
+		const methods: typeof positron.methods = {
+			// This takes a string to avoid making `positron.d.ts` depend on the UI comm types
+			call(method: string, params: Record<string, unknown>): Thenable<unknown> {
+				return extHostMethods.call(extension.identifier.value, method as UiFrontendRequest, params);
+			},
+			lastActiveEditorContext(): Thenable<positron.EditorContext | null> {
+				return extHostMethods.lastActiveEditorContext();
+			},
+			showDialog(title: string, message: string): Thenable<null> {
+				return extHostMethods.showDialog(title, message);
+			},
+			showQuestion(title: string, message: string, okButtonTitle: string, cancelButtonTitle: string): Thenable<boolean> {
+				return extHostMethods.showQuestion(title, message, okButtonTitle, cancelButtonTitle);
+			},
+		};
+
+		const connections: typeof positron.connections = {
+			/**
+			 * Register a connection driver that's used to generate code for connecting to a data source
+			 * using the 'New Connection' dialog.
+			 * @param driver The connection driver to register.
+			 * @returns A disposable that can be used to unregister the driver.
+			 */
+			registerConnectionDriver(driver: positron.ConnectionsDriver): vscode.Disposable {
+				return extHostConnections.registerConnectionDriver(driver);
+			}
+		};
+
+		const dataConnections: typeof positron.dataConnections = {
+			/**
+			 * Creates a lazily built log output channel for a data connection driver.
+			 * @param driverName The driver's display name; core adds the shared prefix.
+			 */
+			createDriverLogger(driverName: string): positron.DataConnectionLogger & vscode.Disposable {
+				return createLazyDriverLogger(driverName, name =>
+					extHostOutputService.createOutputChannel(name, { log: true }, extension) as vscode.LogOutputChannel);
+			},
+
+			/**
+			 * Registers a data connection driver, allowing extensions to contribute to the
+			 * 'New Data Connection' dialog.
+			 * @param driver The data connection driver to register.
+			 * @returns A disposable that unregisters the driver when disposed.
+			 */
+			registerDriver(driver: positron.DataConnectionDriver): vscode.Disposable {
+				// Delegates to the ext host class which stores the driver and sends serializable
+				// metadata to the main thread via RPC.
+				return extHostDataConnections.registerDriver(driver);
+			},
+
+			/**
+			 * Returns summaries of all registered data connection drivers.
+			 */
+			getDrivers(): Thenable<positron.DataConnectionDriverSummary[]> {
+				return extHostDataConnections.getDrivers();
+			},
+
+			/**
+			 * Connects to a data connection driver using the selected mechanism and the given parameters.
+			 * @param driverId The driver identifier.
+			 * @param mechanismId The id of the mechanism to connect with. One of the driver's mechanisms.
+			 * @param parameters The parameter values for the connection.
+			 * @returns A DataConnection that can be used to browse and interact with the data source.
+			 */
+			connect(driverId: string, mechanismId: string, parameters: positron.DataConnectionParameterValues): Thenable<positron.DataConnection> {
+				return extHostDataConnections.connect(driverId, mechanismId, parameters);
+			},
+		};
+
+		const dataExplorer: typeof positron.dataExplorer = {
+			/**
+			 * Registers a Data Explorer RPC handler under a provider id.
+			 * @param providerId A stable identifier for the providing extension.
+			 * @param handler The handler that services RPC requests for this provider's datasets.
+			 * @returns A session for pushing UI events; dispose it to unregister the handler.
+			 */
+			registerRpcHandler(providerId: string, handler: positron.DataExplorerRpcHandler): positron.DataExplorerRpcSession {
+				return extHostDataExplorer.registerRpcHandler(providerId, handler);
+			},
+
+			/**
+			 * Opens (or focuses) a Data Explorer for a dataset served by a registered provider.
+			 * @param options The provider id, dataset identifier, and display name.
+			 */
+			open(options: { providerId: string; datasetId: string; displayName: string }): Thenable<void> {
+				return extHostDataExplorer.open(options);
+			},
+
+			registerDataImporter(importer: positron.DataImporter): vscode.Disposable {
+				return extHostDataExplorer.registerDataImporter(importer);
+			},
+		};
+
+		const environment: typeof positron.environment = {
+			/**
+			 * Get the environment variable contributions for all extensions.
+			 *
+			 * @returns A map of environment variable actions, keyed by the extension ID.
+			 */
+			getEnvironmentContributions(filter?: positron.EnvironmentContributionFilter): Thenable<Record<string, positron.EnvironmentVariableAction[]>> {
+				return extHostEnvironment.getEnvironmentContributions(filter);
+			}
+		};
+
+		/**
+		 * Resolves abstract base references to actual URIs for the path formatter.
+		 *
+		 * - 'workspace': Resolves to the first workspace folder
+		 * - 'session': Resolves to the working directory of the foreground session,
+		 *    or a specific session if sessionId is provided. Note that this is
+		 *  likely to require knowledge of homeUri, because working directory
+		 *  reported by the runtime probably uses the `~` shorthand
+		 *  (would be nice to fix this!).
+		 * - 'home': Requires homeUri to be provided by the caller
+		 * - vscode.Uri: Used as-is
+		 */
+		async function resolveRelativeBases(
+			relativeTo: positron.paths.RelativeBase | positron.paths.RelativeBase[] | undefined,
+			sessionId: string | undefined,
+			homeUri: vscode.Uri | undefined
+		): Promise<ResolvedBase[]> {
+			if (!relativeTo) {
+				return [];
+			}
+
+			const bases: ResolvedBase[] = [];
+			const items = Array.isArray(relativeTo) ? relativeTo : [relativeTo];
+
+			for (const item of items) {
+				if (typeof item === 'string') {
+					if (item === 'workspace') {
+						const workspaceFolders = extHostWorkspace.getWorkspaceFolders();
+						if (workspaceFolders && workspaceFolders.length > 0) {
+							bases.push({ uri: URI.from(workspaceFolders[0].uri) });
+						}
+					} else if (item === 'session') {
+						let workingDir = await extHostLanguageRuntime.getSessionWorkingDirectory(sessionId);
+						if (workingDir) {
+							// Expand ~ to actual home directory path
+							if (workingDir.startsWith('~/') && homeUri) {
+								workingDir = homeUri.fsPath + workingDir.slice(1);
+							}
+							bases.push({ uri: URI.file(workingDir) });
+						}
+					} else if (item === 'home') {
+						if (homeUri) {
+							bases.push({ uri: URI.from(homeUri), prefix: '~/' });
+						}
+					}
+				} else {
+					// It's a vscode.Uri - convert to internal URI
+					bases.push({ uri: URI.from(item) });
+				}
+			}
+
+			return bases;
+		}
+
+		const paths: typeof positron.paths = {
+			/**
+			 * Format a file path for use in code.
+			 */
+			async formatPathForCode(
+				filePath: string,
+				options?: positron.paths.FormatPathForCodeOptions
+			): Promise<string> {
+				const resolved = await resolveRelativeBases(options?.relativeTo, options?.sessionId, options?.homeUri);
+				return formatPathForCode(filePath, resolved);
+			},
+
+			/**
+			 * Extract file paths from files on the clipboard.
+			 */
+			async extractClipboardFilePaths(
+				dataTransfer: vscode.DataTransfer,
+				options?: positron.paths.FormatPathForCodeOptions
+			): Promise<string[] | null> {
+				// Get URI list data from VS Code DataTransfer
+				const uriListItem = dataTransfer.get('text/uri-list');
+				if (!uriListItem) {
+					return null;
+				}
+
+				try {
+					const uriListData = await uriListItem.asString();
+					if (!uriListData) {
+						return null;
+					}
+
+					// Default to workspace-relative for clipboard paths
+					const relativeTo = options?.relativeTo ?? ['workspace', 'home'];
+					const resolved = await resolveRelativeBases(relativeTo, options?.sessionId, options?.homeUri);
+					return convertClipboardFiles(uriListData, resolved);
+				} catch {
+					return null;
+				}
+			}
+		};
+
+		const ai: typeof positron.ai = {
+			getCurrentPlotUri(): Thenable<string | undefined> {
+				return extHostAiFeatures.getCurrentPlotUri();
+			},
+			showLanguageModelConfig(options?: positron.ai.ShowLanguageModelConfigOptions): Thenable<void> {
+				return extHostAiFeatures.showLanguageModelConfig(options);
+			},
+			registerChatAgent(agentData: positron.ai.ChatAgentData): Thenable<vscode.Disposable> {
+				return extHostAiFeatures.registerChatAgent(extension, agentData);
+			},
+			responseProgress(token: unknown, part: vscode.ChatResponsePart | vscode.ChatResponseTextEditPart | vscode.ChatResponseConfirmationPart): void {
+				const context = token as IToolInvocationContext;
+				return extHostAiFeatures.responseProgress(context, part);
+			},
+			getPositronChatContext(request: vscode.ChatRequest): Thenable<positron.ai.ChatContext> {
+				return extHostAiFeatures.getPositronChatContext(request);
+			},
+			getEnabledTools(request: vscode.ChatRequest, tools: readonly vscode.LanguageModelToolInformation[]): string[] {
+				return extHostAiFeatures.getEnabledTools(request, tools);
+			},
+			generateAssistantPrompt(request: vscode.ChatRequest): Thenable<string> {
+				return extHostAiFeatures.generateAssistantPrompt(request);
+			},
+			getChatExport(): Thenable<object | undefined> {
+				return extHostAiFeatures.getChatExport();
+			},
+			registerProvider(source: positron.ai.LanguageModelSource, onAction?: (source: positron.ai.LanguageModelSource, config: positron.ai.LanguageModelConfig, action: string) => Thenable<void>): vscode.Disposable {
+				return extHostAiFeatures.registerProvider(extension, source as IPositronLanguageModelSource, onAction as (source: IPositronLanguageModelSource, config: IPositronLanguageModelConfig, action: string) => Thenable<void>);
+			},
+			updateProvider(id: string, update: Partial<positron.ai.LanguageModelSource>): void {
+				return extHostAiFeatures.updateProvider(id, update as Partial<IPositronLanguageModelSource>);
+			},
+			getRegisteredProviders(): Thenable<positron.ai.LanguageModelSource[]> {
+				return extHostAiFeatures.getRegisteredProviders() as Thenable<positron.ai.LanguageModelSource[]>;
+			},
+			onDidChangeProviderConfig: (listener, thisArgs?, disposables?) => {
+				return extHostAiFeatures.onDidChangeProviderConfig(
+					source => listener.call(thisArgs, source as positron.ai.LanguageModelSource),
+					undefined,
+					disposables
+				);
+			},
+			onDidChangeProviderEnablement: (listener, thisArgs?, disposables?) => {
+				return extHostAiFeatures.onDidChangeProviderEnablement(listener, thisArgs, disposables);
+			},
+			areCompletionsEnabled(file: vscode.Uri): Promise<boolean> {
+				return extHostAiFeatures.areCompletionsEnabled(file);
+			},
+			getCurrentProvider(): Promise<positron.ai.ChatProvider | undefined> {
+				return extHostAiFeatures.getCurrentProvider();
+			},
+			getCurrentChatMode(): Promise<string | undefined> {
+				return extHostAiFeatures.getCurrentChatMode();
+			},
+			getProviders(): Promise<positron.ai.ChatProvider[]> {
+				return extHostAiFeatures.getProviders();
+			},
+			setCurrentProvider(id: string): Promise<positron.ai.ChatProvider | undefined> {
+				return extHostAiFeatures.setCurrentProvider(id);
+			},
+			getEnabledProviders(): Thenable<string[]> {
+				return extHostAiFeatures.getEnabledProviders();
+			},
+			isProviderEnabled(id: string): Thenable<boolean> {
+				return extHostAiFeatures.isProviderEnabled(id);
+			},
+			getAgentAllowedCommands(options?: positron.ai.GetAgentAllowedCommandsOptions): Thenable<positron.ai.AgentCommand[]> {
+				return extHostAiFeatures.getAgentAllowedCommands(options);
+			},
+			getAgentSkillRoots(): Thenable<string[]> {
+				return extHostAiFeatures.getAgentSkillRoots();
+			},
+			registerAgentSkillRoot(root: string): vscode.Disposable {
+				return extHostAiFeatures.registerAgentSkillRoot(root);
+			},
+			onDidChangeAgentSkillRoots: extHostAiFeatures.onDidChangeAgentSkillRoots,
+			validateAndExecuteCommand(
+				commandId: string,
+				args?: unknown[],
+			): Thenable<positron.ai.ValidateAndExecuteCommandResult> {
+				return extHostAiFeatures.validateAndExecuteCommand(commandId, args);
+			},
+			LanguageModelAutoconfigureType: extHostTypes.LanguageModelAutoconfigureType
+		};
+
+		const notebooks: typeof positron.notebooks = {
+			NotebookCellType,
+			async getContext(): Promise<positron.notebooks.NotebookContext | undefined> {
+				const context = await extHostNotebookFeatures.getActiveNotebookContext();
+				if (!context) {
+					return undefined;
+				}
+
+				// Convert DTO to public API types
+				return {
+					uri: context.uri,
+					kernelId: context.kernelId,
+					kernelLanguage: context.kernelLanguage,
+					cellCount: context.cellCount,
+					selectedCells: context.selectedCells,
+					allCells: context.allCells,
+					runtimeState: context.runtimeState
+				};
+			},
+
+			async getCells(notebookUri: string): Promise<positron.notebooks.NotebookCell[]> {
+				const cells = await extHostNotebookFeatures.getCells(notebookUri);
+				return cells.map(cell => ({
+					id: cell.id,
+					index: cell.index,
+					type: cell.type,
+					content: cell.content,
+					hasOutput: cell.hasOutput,
+					selectionStatus: cell.selectionStatus,
+					executionStatus: cell.executionStatus,
+					executionOrder: cell.executionOrder,
+					lastRunSuccess: cell.lastRunSuccess,
+					lastExecutionDuration: cell.lastExecutionDuration,
+					lastRunEndTime: cell.lastRunEndTime,
+					editorShown: cell.editorShown
+				}));
+			},
+
+			async getCell(notebookUri: string, cellIndex: number): Promise<positron.notebooks.NotebookCell | undefined> {
+				const cell = await extHostNotebookFeatures.getCell(notebookUri, cellIndex);
+				if (!cell) {
+					return undefined;
+				}
+				return cell;
+			},
+
+			async runCells(notebookUri: string, cellIndices: number[]): Promise<void> {
+				return extHostNotebookFeatures.runCells(notebookUri, cellIndices);
+			},
+
+			async addCell(notebookUri: string, type: positron.notebooks.NotebookCellType, index: number, content: string): Promise<string> {
+				const cellIndex = await extHostNotebookFeatures.addCell(notebookUri, type, index, content);
+				// Get the cell to retrieve its ID
+				const cell = await extHostNotebookFeatures.getCell(notebookUri, cellIndex);
+				if (!cell) {
+					throw new Error(`Failed to retrieve newly added cell at index ${cellIndex}`);
+				}
+				return cell.id;
+			},
+
+			async deleteCell(notebookUri: string, cellIndex: number): Promise<void> {
+				return extHostNotebookFeatures.deleteCell(notebookUri, cellIndex);
+			},
+
+			async deleteCells(notebookUri: string, cellIndices: number[]): Promise<void> {
+				return extHostNotebookFeatures.deleteCells(notebookUri, cellIndices);
+			},
+
+			async updateCellContent(notebookUri: string, cellIndex: number, content: string): Promise<void> {
+				return extHostNotebookFeatures.updateCellContent(notebookUri, cellIndex, content);
+			},
+
+			async getCellOutputs(notebookUri: string, cellIndex: number): Promise<positron.notebooks.NotebookCellOutput[]> {
+				return extHostNotebookFeatures.getCellOutputs(notebookUri, cellIndex);
+			},
+
+			async moveCell(notebookUri: string, fromIndex: number, toIndex: number): Promise<void> {
+				return extHostNotebookFeatures.moveCell(notebookUri, fromIndex, toIndex);
+			},
+
+			async reorderCells(notebookUri: string, newOrder: number[]): Promise<void> {
+				return extHostNotebookFeatures.reorderCells(notebookUri, newOrder);
+			},
+
+			async scrollToCellIfNeeded(notebookUri: string, cellIndex: number): Promise<void> {
+				return extHostNotebookFeatures.scrollToCellIfNeeded(notebookUri, cellIndex);
+			},
+
+			async clearCellOutputs(notebookUri: string, cellIndices?: number[]): Promise<void> {
+				return extHostNotebookFeatures.clearCellOutputs(notebookUri, cellIndices);
+			}
+		};
+
+		const docs: typeof positron.docs = {
+			/**
+			 * Get the locally cached Positron documentation, or undefined when
+			 * the caller should fall back to the web.
+			 */
+			async getLocalDocs(): Promise<positron.docs.LocalDocs | undefined> {
+				return await extHostDocs.getLocalDocs();
+			},
+			/**
+			 * Get the locally cached Positron documentation without
+			 * downloading, or undefined when none is present yet.
+			 */
+			async getLocalDocsCache(): Promise<positron.docs.LocalDocs | undefined> {
+				return await extHostDocs.getLocalDocsCache();
+			},
+		};
+
+		const workspace: typeof positron.workspace = {
+			registerConfigurationMigrations(migrations: ReadonlyArray<positron.ConfigurationMigrationSpec>): vscode.Disposable {
+				extHostConfiguration.registerConfigurationMigrations(extension, migrations);
+				return { dispose: () => { } };
+			},
+		};
+
+		// --- End Positron ---
+
+		return {
+			version: initData.positronVersion,
+			buildNumber: initData.positronBuildNumber,
+			runtime,
+			window,
+			context,
+			languages,
+			methods,
+			environment,
+			paths,
+			docs,
+			connections,
+			dataConnections,
+			dataExplorer,
+			ai,
+			notebooks,
+			workspace,
+			CodeAttributionSource: extHostTypes.CodeAttributionSource,
+			EnvironmentContributionFilter: extHostTypes.EnvironmentContributionFilter,
+			PositronLanguageModelType: extHostTypes.PositronLanguageModelType,
+			PositronChatAgentLocation: extHostTypes.PositronChatAgentLocation,
+			PositronOutputLocation: extHostTypes.PositronOutputLocation,
+			PositronChatMode: extHostTypes.PositronChatMode,
+			RuntimeClientType: extHostTypes.RuntimeClientType,
+			RuntimeClientState: extHostTypes.RuntimeClientState,
+			RuntimeExitReason: extHostTypes.RuntimeExitReason,
+			RuntimeMethodErrorCode: extHostTypes.RuntimeMethodErrorCode,
+			LanguageRuntimeArchitecture: extHostTypes.LanguageRuntimeArchitecture,
+			LanguageRuntimeMessageType: extHostTypes.LanguageRuntimeMessageType,
+			LanguageRuntimeStreamName: extHostTypes.LanguageRuntimeStreamName,
+			LanguageRuntimeSessionChannel: extHostTypes.LanguageRuntimeSessionChannel,
+			LanguageRuntimeSessionMode: extHostTypes.LanguageRuntimeSessionMode,
+			RuntimeCodeExecutionMode: extHostTypes.RuntimeCodeExecutionMode,
+			RuntimeErrorBehavior: extHostTypes.RuntimeErrorBehavior,
+			RuntimeBusyBehavior: extHostTypes.RuntimeBusyBehavior,
+			LanguageRuntimeStartupBehavior: extHostTypes.LanguageRuntimeStartupBehavior,
+			LanguageRuntimeSessionLocation: extHostTypes.LanguageRuntimeSessionLocation,
+			RuntimeOnlineState: extHostTypes.RuntimeOnlineState,
+			RuntimeState: extHostTypes.RuntimeState,
+			RuntimeCodeFragmentStatus: extHostTypes.RuntimeCodeFragmentStatus,
+			PlotRenderFormat: extHostTypes.PlotRenderFormat,
+			PreviewSourceType: extHostTypes.PreviewSourceType,
+			UiRuntimeNotifications: extHostTypes.UiRuntimeNotifications,
+			StatementRangeSyntaxError: extHostTypes.StatementRangeSyntaxError,
+			DataConnectionParameterType: extHostTypes.DataConnectionParameterType,
+			DataConnectionNodeKind: extHostTypes.DataConnectionNodeKind,
+			ShutdownReason: extHostTypes.ShutdownReason,
+		};
+	};
+}

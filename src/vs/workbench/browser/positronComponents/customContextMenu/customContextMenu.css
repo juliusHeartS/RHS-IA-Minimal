@@ -1,0 +1,135 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.custom-context-menu-items {
+	width: 100%;
+	padding: 4px;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	background: var(--vscode-positronContextMenu-background);
+}
+
+.custom-context-menu-separator {
+	height: 1px;
+	margin: 4px 0;
+	background: var(--vscode-positronContextMenu-separatorBackground);
+}
+
+.custom-context-menu-separator-title {
+	padding: 2px 8px;
+	font-size: 0.9em;
+	text-transform: uppercase;
+	color: var(--vscode-descriptionForeground);
+}
+
+.custom-context-menu-item {
+	width: 100%;
+	height: 26px;
+	border: none;
+	display: grid;
+	cursor: pointer;
+	text-align: left;
+	align-items: center;
+	align-content: center;
+	background: transparent;
+	color: var(--vscode-positronContextMenu-foreground);
+	grid-template-columns: [icon] 24px [title] 1fr [shortcut] min-content [end];
+}
+
+.custom-context-menu-item.checkable {
+	grid-template-columns: [check] 22px [icon] 24px [title] 1fr [shortcut] min-content [end];
+}
+
+/*
+ * When no entry in the menu has an icon, collapse the icon column to 0px so labels aren't
+ * pushed right by an empty icon gutter. The check column (if any) is preserved.
+ */
+.custom-context-menu-items.no-icons .custom-context-menu-item {
+	grid-template-columns: [icon] 0px [title] 1fr [shortcut] min-content [end];
+}
+
+.custom-context-menu-items.no-icons .custom-context-menu-item.checkable {
+	grid-template-columns: [check] 22px [icon] 0px [title] 1fr [shortcut] min-content [end];
+}
+
+.custom-context-menu-item.destructive {
+	color: var(--vscode-errorForeground);
+}
+
+.custom-context-menu-item:not(.disabled):hover {
+	border-radius: 4px;
+	color: var(--vscode-positronContextMenu-hoverForeground);
+	background: var(--vscode-positronContextMenu-hoverBackground);
+}
+
+.custom-context-menu-item.destructive:not(.disabled):hover {
+	color: var(--vscode-errorForeground);
+}
+
+.custom-context-menu-item:focus {
+	outline: none !important;
+}
+
+.custom-context-menu-item:focus-visible {
+	border-radius: 4px;
+	outline: 1px solid var(--vscode-focusBorder) !important;
+}
+
+.custom-context-menu-item:not(.disabled):focus-visible {
+	background: var(--vscode-positronContextMenu-hoverBackground);
+}
+
+.custom-context-menu-item .check {
+	text-align: left;
+	grid-column: check / icon;
+}
+
+.custom-context-menu-item .icon {
+	text-align: left;
+	grid-column: icon / title;
+}
+
+.custom-context-menu-item .icon.icon-image {
+	width: 16px;
+	height: 16px;
+	align-self: center;
+	object-fit: contain;
+}
+
+.custom-context-menu-item .icon.destructive {
+	color: var(--vscode-errorForeground);
+}
+
+.custom-context-menu-item .title {
+	display: block;
+	max-width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	grid-column: title / shortcut;
+	margin: 2px 0;
+}
+
+.custom-context-menu-item .shortcut {
+	padding-inline: 10px; /* Vertical padding can cause overflow and spurious scrollbars. */
+	white-space: nowrap;
+	grid-column: shortcut / end;
+}
+
+/* The submenu chevron indicator uses the shortcut column slot */
+.custom-context-menu-item .submenu-indicator {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-right: 4px;
+	grid-column: shortcut / end;
+}
+
+.custom-context-menu-item .icon.disabled,
+.custom-context-menu-item .title.disabled,
+.custom-context-menu-item .submenu-indicator.disabled {
+	opacity: 50%;
+}

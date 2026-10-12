@@ -1,0 +1,124 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { join, resolve } from 'path';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as playwright from '@playwright/test';
+import { ApplicationOptions, copyFixtureFile, Quality, getRandomUserDataDir, Browser, StorageFile } from '../../infra';
+import { ROOT_PATH, TEMP_DIR } from './constants';
+import { copyUserSettings } from './shared-utils.js';
+import { shouldUseCustomTracing } from './reporting.fixtures.js';
+import { isMemoryScenario } from '../../utils/memory/scenarios.js';
+import { GC_TARGETS } from '../../utils/memory/gc.js';
+
+export interface CustomTestOptions {
+	artifactDir: string;
+	headless?: boolean;
+	browserName?: "chromium" | "firefox" | "webkit" | undefined;
+	/**
+	 * When true, connects to an existing server instead of launching one.
+	 * Use with externalServerUrl to specify the server to connect to.
+	 */
+	useExternalServer?: boolean;
+	/**
+	 * The URL of an external server to connect to.
+	 * Only used when useExternalServer is true.
+	 */
+	externalServerUrl?: string;
+}
+
+export function OptionsFixture() {
+	return async (logsPath: string, logger: any, snapshots: boolean, project: CustomTestOptions, workerInfo: playwright.WorkerInfo) => {
+		const TEST_DATA_PATH = process.env.POSITRON_TEST_DATA_PATH || join(os.tmpdir(), 'vscsmoke');
+		// Every memory scenario measures Positron and its bundled extensions, so
+		// they get an extensions dir of their own. The shared one accumulates
+		// whatever the suite installs, and that lands in the memory baseline as if
+		// it were product memory: one CI run had two versions of ruff in it, 60 MB,
+		// with the version changing between launches of the same run.
+		const EXTENSIONS_PATH = isMemoryScenario(process.env.MEMORY_SCENARIO)
+			? join(TEST_DATA_PATH, 'extensions-dir-memory')
+			: join(TEST_DATA_PATH, 'extensions-dir');
+		const WORKSPACE_PATH = join(TEST_DATA_PATH, 'test-files');
+		const SPEC_CRASHES_PATH = join(ROOT_PATH, '.build', 'crashes', project.artifactDir, TEMP_DIR);
+
+		// get the version from package.json
+		const packageJsonPath = join(ROOT_PATH, 'package.json');
+		const packageJson = JSON.parse(await fs.promises.readFile(packageJsonPath, 'utf-8'));
+		const packageVersion = packageJson.version || '0.0.0';
+		const version = {
+			major: parseInt(packageVersion.split('.')[0], 10),
+			minor: parseInt(packageVersion.split('.')[1], 10),
+			patch: parseInt(packageVersion.split('.')[2], 10),
+		};
+
+		let browser: Browser = project.browserName;
+		const channel = workerInfo.project.use.channel;
+		if (project.browserName === "chromium" && channel) {
+			browser = `chromium-${channel}` as Browser;
+		}
+
+		const options: ApplicationOptions = {
+			codePath: process.env.BUILD,
+			workspacePath: WORKSPACE_PATH,
+			userDataDir: join(TEST_DATA_PATH, 'd'),
+			extensionsPath: EXTENSIONS_PATH,
+			logger,
+			logsPath,
+			crashesPath: SPEC_CRASHES_PATH,
+			verbose: !!process.env.VERBOSE,
+			remote: !!process.env.REMOTE,
+			web: !!browser,
+			headless: project.headless,
+			browser,
+			tracing: true,
+			customTracing: shouldUseCustomTracing(workerInfo.project),
+			snapshots,
+			quality: Quality.Dev,
+			version,
+			// --- Start Positron ---
+			...(process.env.DEMO_RECORD_VIDEO ? {
+				recordVideo: {
+					dir: resolve(ROOT_PATH, 'demo-videos'),
+					size: { width: 1920, height: 1080 },
+				},
+			} : {}),
+			// --- End Positron ---
+			useExternalServer: project.useExternalServer,
+			externalServerUrl: project.externalServerUrl,
+			// --- Start Positron ---
+			// Memory runs force a GC in the shared process and extension host through
+			// these inspector ports before sampling; see utils/memory/gc.ts.
+			...(isMemoryScenario(process.env.MEMORY_SCENARIO) && !browser
+				? { extraArgs: GC_TARGETS.map(t => `${t.flag}=${t.port}`) }
+				: {})
+			// --- End Positron ---
+		};
+
+		options.userDataDir = getRandomUserDataDir(options);
+
+		return options;
+	};
+}
+
+export function UserDataDirFixture() {
+	return async (options: ApplicationOptions) => {
+		if (!options.userDataDir) {
+			throw new Error('Cannot create user data dir from undefined userDataDir');
+		}
+		const userDir = options.web ? join(options.userDataDir, 'data', 'User') : join(options.userDataDir, 'User');
+		process.env.PLAYWRIGHT_USER_DATA_DIR = userDir;
+
+		// Copy keybindings and settings fixtures to the user data directory
+		await copyFixtureFile('keybindings.json', userDir, true);
+		await copyUserSettings(userDir);
+
+		// Pre-populate storage to dismiss prompts that would interfere with tests
+		const storageFile = new StorageFile(userDir);
+		await storageFile.set('positron.notebook.promptDismissed', true, false /* enable to debug */);
+
+		return userDir;
+	};
+}

@@ -1,0 +1,26 @@
+[
+	{
+		"c": ".ssdsd",
+		"t": "text.pug meta.selector.css entity.other.attribute-name.class.css.pug",
+		"r": {
+			"hc_black": "entity.other.attribute-name.class.css: #D7BA7D",
+			"2026-light": "entity.other.attribute-name.class.css: #800000",
+			"2026-dark": "entity.other.attribute-name.class.css: #D7BA7D",
+			"rhs_ia_dark": "entity.other.attribute-name.class.css: #D7BA7D",
+			"rhs_ia_light": "entity.other.attribute-name.class.css: #E88023",
+			"hc_light": "entity.other.attribute-name.class.css: #0F4A85"
+		}
+	},
+	{
+		"c": "    // asdsdas",
+		"t": "text.pug string.comment.buffered.block.pug",
+		"r": {
+			"hc_black": "string: #CE9178",
+			"2026-light": "string.comment.buffered.block.pug: #0000FF",
+			"2026-dark": "string.comment: #8B949E",
+			"rhs_ia_dark": "string: #CE9178",
+			"rhs_ia_light": "string.comment.buffered.block.pug: #0000FF",
+			"hc_light": "string.comment.buffered.block.pug: #0F4A85"
+		}
+	}
+]

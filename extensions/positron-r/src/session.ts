@@ -1,0 +1,1248 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import * as positron from 'positron';
+import * as vscode from 'vscode';
+import PQueue from 'p-queue';
+
+import { PositronSupervisorApi, JupyterKernelSpec, JupyterLanguageRuntimeSession, JupyterKernelExtra, DapComm } from './positron-supervisor';
+import { ArkLsp, ArkLspState } from './lsp';
+import { delay, whenTimeout, timeout, PromiseHandles } from './util';
+import { ArkAttachOnStartup, ArkDelayStartup } from './startup';
+import { RHtmlWidget, getResourceRoots } from './htmlwidgets';
+import { randomUUID } from 'crypto';
+import { handleRCode } from './hyperlink';
+import { RSessionManager } from './session-manager';
+import { LOGGER, supervisorApi } from './extension.js';
+import { ArkComm } from './ark-comm';
+import { RPackageManager } from './packages';
+import { listMissingRPackages, rMissingPackageProbe } from './missingPackages';
+import { RMetadataExtra } from './r-installation';
+import { warnOnArkVersionMismatch } from './arkVersionCheck';
+
+interface RPackageInstallation {
+	packageName: string;
+	packageVersion: string;
+	minimumVersion: string;
+	compatible: boolean;
+}
+
+export interface EnvVar {
+	[key: string]: string;
+}
+
+// At the time of writing, we only use LANG, but we expect other aspects of the active R session's
+// locale to also be present here, such as LC_CTYPE or LC_TIME. These can vary by OS, so this
+// interface doesn't attempt to enumerate them.
+interface Locale {
+
+	LANG: string;
+	[key: string]: string;
+}
+
+/**
+ * Metadata for an RStudio addin discovered from a package's inst/rstudio/addins.dcf
+ */
+export interface RStudioAddin {
+	name: string;
+	description: string;
+	binding: string;
+	interactive: boolean;
+	package: string;
+}
+
+/**
+ * Metadata for an R Markdown template discovered from a package's inst/rmarkdown/templates/
+ */
+export interface RmdTemplate {
+	name: string;
+	description: string;
+	create_dir: boolean;
+	package: string;
+	template: string;
+}
+
+/**
+ * A Positron language runtime that wraps a Jupyter kernel and a Language Server
+ * Protocol client.
+ */
+export class RSession implements positron.LanguageRuntimeSession, vscode.Disposable {
+	/** The Language Server Protocol client wrapper */
+	private _lsp: ArkLsp;
+
+	/** The Ark Comm for direct communication with the kernel */
+	private _arkComm?: ArkComm;
+
+	get arkComm(): ArkComm | undefined {
+		return this._arkComm;
+	}
+
+	/** Queue for services (LSP and DAP) events */
+	private _servicesQueue: PQueue;
+
+	/**
+	 * Promise that resolves after LSP server activation is finished.
+	 * Tracked to avoid stopping in the middle of startup.
+	 * Resolves to the port number the client should connect on.
+	 */
+	private _lspStartingPromise: Promise<number> = Promise.resolve(0);
+
+	/** Client ID for the LSP, used to close the Jupyter comm during deactivation */
+	private _lspClientId?: string;
+
+	/** The Jupyter kernel-based session implementing the Language Runtime API */
+	private _kernel?: JupyterLanguageRuntimeSession;
+
+	private _dapComm?: Promise<DapComm>;
+
+	/** The emitter for language runtime messages */
+	private _messageEmitter =
+		new vscode.EventEmitter<positron.LanguageRuntimeMessage>();
+
+	/** The emitter for language runtime state changes */
+	private _stateEmitter =
+		new vscode.EventEmitter<positron.RuntimeState>();
+
+	/** The emitter for runtime exits */
+	private _exitEmitter =
+		new vscode.EventEmitter<positron.LanguageRuntimeExit>();
+
+	/** The emitter for resource usage updates */
+	private _resourceUsageEmitter =
+		new vscode.EventEmitter<positron.RuntimeResourceUsage>();
+
+	/** The emitter fired when the connection to the underlying runtime is lost */
+	private _onDidDisconnect = new vscode.EventEmitter<void>();
+
+	/** The emitter fired when the connection to the underlying runtime is re-established */
+	private _onDidReconnect = new vscode.EventEmitter<void>();
+
+	/** The Positron Supervisor extension API */
+	private adapterApi?: PositronSupervisorApi;
+
+	/** The registration for console width changes */
+	private _consoleWidthDisposable?: vscode.Disposable;
+
+	/** The current state of the runtime */
+	private _state: positron.RuntimeState = positron.RuntimeState.Uninitialized;
+
+	/** A timestamp assigned when the session was created. */
+	private _created: number;
+
+	/** Cache of installed packages and associated version info */
+	private _packageCache: Map<string, RPackageInstallation> = new Map();
+
+	/** Cache of RStudio addins from installed packages */
+	private _addinsCache?: RStudioAddin[];
+
+	/** Cache of R Markdown templates from installed packages */
+	private _templatesCache?: RmdTemplate[];
+
+	/** Package manager for this session */
+	private _packageManager?: RPackageManager;
+
+	/** Disposables. Disposed of after main resources (LSP, kernel, etc) */
+	private _disposables: vscode.Disposable[] = [];
+
+	/** The current dynamic runtime state */
+	public dynState: positron.LanguageRuntimeDynState;
+
+	constructor(
+		readonly runtimeMetadata: positron.LanguageRuntimeMetadata,
+		readonly metadata: positron.RuntimeSessionMetadata,
+		readonly kernelSpec?: JupyterKernelSpec,
+		readonly extra?: JupyterKernelExtra,
+		sessionName?: string,
+	) {
+		// Set the initial dynamic state
+		this.dynState = {
+			sessionName: sessionName || runtimeMetadata.runtimeName,
+			continuationPrompt: '+',
+			inputPrompt: '>',
+		};
+
+		this._lsp = new ArkLsp(runtimeMetadata.languageVersion, metadata, this.dynState);
+		this._servicesQueue = new PQueue({ concurrency: 1 });
+		this.onDidReceiveRuntimeMessage = this._messageEmitter.event;
+		this.onDidChangeRuntimeState = this._stateEmitter.event;
+		this.onDidEndSession = this._exitEmitter.event;
+		this.onDidUpdateResourceUsage = this._resourceUsageEmitter.event;
+		this.onDidDisconnect = this._onDidDisconnect.event;
+		this.onDidReconnect = this._onDidReconnect.event;
+
+		// Ensure the emitters are disposed when the session is disposed
+		this._disposables.push(this._onDidDisconnect);
+		this._disposables.push(this._onDidReconnect);
+
+		// Timestamp the session creation
+		this._created = Date.now();
+
+		// Register this session with the session manager
+		RSessionManager.instance.setSession(this);
+
+		this.onDidChangeRuntimeState(async (state) => {
+			await this.onStateChange(state);
+		});
+	}
+
+	onDidEndSession: vscode.Event<positron.LanguageRuntimeExit>;
+	onDidReceiveRuntimeMessage: vscode.Event<positron.LanguageRuntimeMessage>;
+	onDidChangeRuntimeState: vscode.Event<positron.RuntimeState>;
+	onDidUpdateResourceUsage: vscode.Event<positron.RuntimeResourceUsage>;
+	onDidDisconnect: vscode.Event<void>;
+	onDidReconnect: vscode.Event<void>;
+
+	/**
+	 * Accessor for the current state of the runtime.
+	 */
+	get state(): positron.RuntimeState {
+		return this._state;
+	}
+
+	/**
+	 * Synchronously gets the current runtime state of the session.
+	 *
+	 * @returns The session's current runtime state.
+	 */
+	getRuntimeState(): positron.RuntimeState {
+		return this._state;
+	}
+
+	/**
+	 * Accessor for the creation time of the runtime.
+	 */
+	get created(): number {
+		return this._created;
+	}
+
+	/**
+	 * Information about the runtime that is only available after starting
+	 */
+	get runtimeInfo(): positron.LanguageRuntimeInfo | undefined {
+		return this._kernel?.runtimeInfo;
+	}
+
+	getDynState(): Thenable<positron.LanguageRuntimeDynState> {
+		return Promise.resolve(this.dynState);
+	}
+
+	/**
+	 * Opens a resource in the runtime.
+	 * @param resource The resource to open.
+	 * @returns true if the resource was opened; otherwise, false.
+	 */
+	openResource(resource: vscode.Uri | string): Thenable<boolean> {
+		// If the resource is a string, parse it as a URI.
+		if (typeof resource === 'string') {
+			resource = vscode.Uri.parse(resource);
+		}
+
+		// Dispatch the open.
+		switch (resource.scheme) {
+			// Open help resource.
+			case 'x-r-help':
+				this.showHelpTopic(resource.path);
+				return Promise.resolve(true);
+
+			// Open vignette resource.
+			case 'x-r-vignette':
+				this.showVignetteTopic(resource.path);
+				return Promise.resolve(true);
+
+			// Run code.
+			case 'x-r-run':
+				handleRCode(this, resource.path);
+				return Promise.resolve(true);
+
+			// Unhandled.
+			default:
+				return Promise.resolve(false);
+		}
+	}
+
+	async debug(request: positron.DebugProtocolRequest): Promise<positron.DebugProtocolResponse> {
+		if (this._kernel) {
+			return await this._kernel.debug(request);
+		} else {
+			throw new Error('Cannot debug; kernel not started');
+		}
+	}
+
+	execute(
+		code: string,
+		id: string,
+		mode: positron.RuntimeCodeExecutionMode,
+		errorBehavior: positron.RuntimeErrorBehavior,
+		codeLocation?: positron.Utf8Location,
+		executionMetadata?: Record<string, any>
+	): Promise<void> {
+		if (this._kernel) {
+			// Return the kernel's execution promise so a rejection (e.g. an
+			// Unprocessed submission found to be incomplete) propagates back to
+			// the caller instead of surfacing as an unhandled rejection.
+			return Promise.resolve(
+				this._kernel.execute(code, id, mode, errorBehavior, codeLocation, executionMetadata));
+		} else {
+			throw new Error(`Cannot execute '${code}'; kernel not started`);
+		}
+	}
+
+	callMethod(method: string, ...args: any[]): Thenable<any> {
+		if (this._kernel) {
+			return this._kernel.callMethod(method, ...args);
+		} else {
+			throw new Error(`Cannot call method '${method}'; kernel not started`);
+		}
+	}
+
+	evaluate(code: string): Promise<positron.EvalResult> {
+		if (this._kernel) {
+			return this._kernel.evaluate(code);
+		} else {
+			throw new Error(`Cannot evaluate '${code}'; kernel not started`);
+		}
+	}
+
+	isCodeFragmentComplete(code: string): Thenable<positron.RuntimeCodeFragmentStatus> {
+		if (this._kernel) {
+			return this._kernel.isCodeFragmentComplete(code);
+		} else {
+			throw new Error(`Cannot check code fragment '${code}'; kernel not started`);
+		}
+	}
+
+	createClient(id: string, type: positron.RuntimeClientType, params: any, metadata?: any): Thenable<void> {
+		if (this._kernel) {
+			return this._kernel.createClient(id, type, params, metadata);
+		} else {
+			throw new Error(`Cannot create client of type '${type}'; kernel not started`);
+		}
+	}
+
+	listClients(type?: positron.RuntimeClientType | undefined): Thenable<Record<string, string>> {
+		if (this._kernel) {
+			return this._kernel.listClients(type);
+		} else {
+			throw new Error(`Cannot list clients; kernel not started`);
+		}
+	}
+
+	removeClient(id: string): void {
+		if (this._kernel) {
+			this._kernel.removeClient(id);
+		} else {
+			throw new Error(`Cannot remove client ${id}; kernel not started`);
+		}
+	}
+
+	sendClientMessage(clientId: string, messageId: string, message: any): void {
+		if (this._kernel) {
+			this._kernel.sendClientMessage(clientId, messageId, message);
+		} else {
+			throw new Error(`Cannot send message to client ${clientId}; kernel not started`);
+		}
+	}
+
+	replyToPrompt(id: string, reply: string): void {
+		if (this._kernel) {
+			this._kernel.replyToPrompt(id, reply);
+		} else {
+			throw new Error(`Cannot reply to prompt ${id}; kernel not started`);
+		}
+	}
+
+	/**
+	 * Sets the working directory for the runtime.
+	 *
+	 * @param dir The working directory to set.
+	 */
+	async setWorkingDirectory(dir: string): Promise<void> {
+		if (this._kernel) {
+			// Escape any backslashes in the directory path
+			dir = dir.replace(/\\/g, '\\\\');
+
+			// Escape any quotes in the directory path
+			dir = dir.replace(/"/g, '\\"');
+
+			// Tell the kernel to change the working directory
+			this._kernel.execute(`setwd("${dir}")`,
+				randomUUID(),
+				positron.RuntimeCodeExecutionMode.Interactive,
+				positron.RuntimeErrorBehavior.Continue);
+		} else {
+			throw new Error(`Cannot change to ${dir}; kernel not started`);
+		}
+	}
+
+	async start(): Promise<positron.LanguageRuntimeInfo> {
+		if (!this._kernel) {
+			this._kernel = await this.createKernel();
+		}
+		RSessionManager.instance.setLastBinpath(this._kernel.runtimeMetadata.runtimePath);
+
+		// Register for console width changes, if we haven't already
+		if (!this._consoleWidthDisposable) {
+			this._consoleWidthDisposable =
+				positron.window.onDidChangeConsoleWidth((newWidth) => {
+					this.onConsoleWidthChange(newWidth);
+				});
+		}
+
+		// Initialize the package manager
+		this._packageManager = new RPackageManager(this);
+
+		const runtimeInfo = await this._kernel.start();
+
+		// Add interpreter architecture to the runtime info for mismatch detection.
+		const metadataExtra = this.runtimeMetadata.extraRuntimeData as RMetadataExtra;
+		const interpreterArch = metadataExtra?.arch;
+		if (interpreterArch) {
+			if (interpreterArch === 'arm64') {
+				runtimeInfo.interpreterArch = positron.LanguageRuntimeArchitecture.Arm64;
+			} else if (interpreterArch === 'x86_64') {
+				runtimeInfo.interpreterArch = positron.LanguageRuntimeArchitecture.X64;
+			} else {
+				runtimeInfo.interpreterArch = positron.LanguageRuntimeArchitecture.Other;
+			}
+		}
+
+		// Warn (once per session) if the running Ark doesn't match the commit
+		// pinned by the submodule. No-op in packaged builds and during local
+		// Ark development. Fire-and-forget so the git calls it may make never
+		// slow down session start.
+		void warnOnArkVersionMismatch(runtimeInfo);
+
+		return runtimeInfo;
+	}
+
+	private async onConsoleWidthChange(newWidth: number): Promise<void> {
+		// Ignore if no kernel
+		if (!this._kernel) {
+			return;
+		}
+
+		// Ignore if kernel exited
+		if (this._state === positron.RuntimeState.Exited) {
+			return;
+		}
+
+		try {
+			// Send the new width to R; this returns the old width for logging
+			const oldWidth = await this.callMethod('setConsoleWidth', newWidth);
+			this._kernel!.emitJupyterLog(`Set console width from ${oldWidth} to ${newWidth}`);
+		} catch (err) {
+			// Log the error if we can't set the console width; this is not
+			// fatal, so we don't rethrow the error
+			const runtimeError = err as positron.RuntimeMethodError;
+			this._kernel!.emitJupyterLog(
+				`Error setting console width: ${runtimeError.message} ${runtimeError.code})`,
+				vscode.LogLevel.Error);
+		}
+	}
+
+	async interrupt(): Promise<void> {
+		if (this._kernel) {
+			return this._kernel.interrupt();
+		} else {
+			throw new Error('Cannot interrupt; kernel not started');
+		}
+	}
+
+	async restart(workingDirectory: string | undefined): Promise<void> {
+		if (this._kernel) {
+			this._kernel.emitJupyterLog('Restarting');
+			// Stop the LSP client before restarting the kernel. Don't stop it
+			// until fully started to avoid an inconsistent state where the
+			// deactivation request comes in between the creation of the LSP
+			// comm and the LSP client.
+			//
+			// A cleaner way to set this up might be to put `this._lsp` in
+			// charge of creating the LSP comm, then `deactivate()` could
+			// keep track of this state itself.
+			const timedOut = await Promise.race([
+				// No need to log LSP start failures here; they're logged on activation.
+				this._lspStartingPromise.catch(() => { }),
+				whenTimeout(400, () => true),
+			]);
+			if (timedOut) {
+				this._kernel.emitJupyterLog(
+					'LSP startup timed out during interpreter restart',
+					vscode.LogLevel.Warning,
+				);
+			}
+			await this.deactivateServices('restarting session');
+			return this._kernel.restart(workingDirectory);
+		} else {
+			throw new Error('Cannot restart; kernel not started');
+		}
+	}
+
+	async shutdown(exitReason = positron.RuntimeExitReason.Shutdown): Promise<void> {
+		if (this._kernel) {
+			this._kernel.emitJupyterLog('Shutting down');
+			// Stop the LSP client before shutting down the kernel
+			await this.deactivateServices('shutting down session');
+			return this._kernel.shutdown(exitReason);
+		} else {
+			throw new Error('Cannot shutdown; kernel not started');
+		}
+	}
+
+	async forceQuit(): Promise<void> {
+		if (this._kernel) {
+			this._kernel.emitJupyterLog('Force quitting');
+			// Stop the LSP client before shutting down the kernel. We only give
+			// the LSP a quarter of a second to shut down before we force the
+			// kernel to quit; we need to balance the need to respond to the
+			// force-quit quickly with the fact that the LSP will show error
+			// messages if we yank the kernel out from beneath it without
+			// warning.
+			await Promise.race([
+				this.deactivateServices('force quitting session'),
+				delay(250)
+			]);
+			return this._kernel.forceQuit();
+		} else {
+			throw new Error('Cannot force quit; kernel not started');
+		}
+	}
+
+	async dispose() {
+		// Clean up the console width listener
+		this._consoleWidthDisposable?.dispose();
+		this._consoleWidthDisposable = undefined;
+
+		await this._lsp.dispose();
+		if (this._arkComm) {
+			await this._arkComm.dispose();
+		}
+		if (this._kernel) {
+			await this._kernel.dispose();
+		}
+
+		// LIFO clean up of external resources
+		while (this._disposables.length > 0) {
+			this._disposables.pop()?.dispose();
+		}
+	}
+
+	async register(disposable: vscode.Disposable) {
+		this._disposables.push(disposable);
+	}
+
+	/**
+	 * Show runtime log in output panel.
+	 */
+	showOutput(channel?: positron.LanguageRuntimeSessionChannel) {
+		// Show the output for the LSP channel, if requested
+		if (channel === positron.LanguageRuntimeSessionChannel.LSP) {
+			this._lsp.showOutput();
+		} else {
+			this._kernel?.showOutput(channel);
+		}
+	}
+
+	listOutputChannels(): positron.LanguageRuntimeSessionChannel[] {
+		const channels = this._kernel?.listOutputChannels?.() ?? [];
+		// Add LSP channel in addition to the kernel channels
+		return [...channels, positron.LanguageRuntimeSessionChannel.LSP];
+	}
+
+	/**
+	 * Show profiler log if supported.
+	 */
+	async showProfile() {
+		await this._kernel?.showProfile?.();
+	}
+
+	getLaunchInfo(): positron.LanguageRuntimeLaunchInfo | undefined {
+		return this._kernel?.getLaunchInfo?.();
+	}
+
+	updateSessionName(sessionName: string): void {
+		// Update the dynamic state of the session
+		this.dynState.sessionName = sessionName;
+		this._kernel?.updateSessionName(sessionName);
+	}
+
+	/**
+	 * Get the LANG env var and all categories of the locale, in R's Sys.getlocale() sense, from
+	 * the R session.
+	 */
+	async getLocale(): Promise<Locale> {
+		try {
+			const locale: Locale = await this.callMethod('get_locale');
+			return locale;
+		} catch (err) {
+			const runtimeError = err as positron.RuntimeMethodError;
+			throw new Error(`Error getting locale information: ${runtimeError.message} ` +
+				`(${runtimeError.code})`);
+		}
+	}
+
+	/**
+	 * Get environment variables from the R session.
+	 */
+	async getEnvVars(envVarNames: string[]): Promise<EnvVar> {
+		try {
+			const envVars: EnvVar = await this.callMethod('get_env_vars', envVarNames);
+			return envVars;
+		} catch (err) {
+			const runtimeError = err as positron.RuntimeMethodError;
+			throw new Error(`Error getting environment variable(s) ${envVarNames}: ${runtimeError.message} ` +
+				`(${runtimeError.code})`);
+		}
+	}
+
+	/**
+	 * Get all installed RStudio Addins.
+	 * Results are cached; use refresh=true to force re-scan.
+	 * @param refresh If true, bypasses cache and re-scans packages
+	 * @returns Array of addin metadata from all installed packages
+	 */
+	public async getAddins(refresh: boolean = false): Promise<RStudioAddin[]> {
+		if (!refresh && this._addinsCache !== undefined) {
+			return this._addinsCache;
+		}
+
+		try {
+			const addins = await this.callMethod('getAddins') as RStudioAddin[] | null;
+			this._addinsCache = addins ?? [];
+			return this._addinsCache;
+		} catch (err) {
+			const runtimeError = err as positron.RuntimeMethodError;
+			throw new Error(`Error getting addins: ${runtimeError.message} (${runtimeError.code})`);
+		}
+	}
+
+	/**
+	 * Get all installed R Markdown templates.
+	 * Results are cached; use refresh=true to force re-scan.
+	 * @param refresh If true, bypasses cache and re-scans packages
+	 * @returns Array of template metadata from all installed packages
+	 */
+	public async getRmdTemplates(refresh: boolean = false): Promise<RmdTemplate[]> {
+		if (!refresh && this._templatesCache !== undefined) {
+			return this._templatesCache;
+		}
+
+		try {
+			const templates = await this.callMethod('getRmdTemplates') as RmdTemplate[] | null;
+			this._templatesCache = templates ?? [];
+			return this._templatesCache;
+		} catch (err) {
+			const runtimeError = err as positron.RuntimeMethodError;
+			throw new Error(`Error getting R Markdown templates: ${runtimeError.message} (${runtimeError.code})`);
+		}
+	}
+
+	/**
+	 * Invalidate the addins and templates caches.
+	 * Should be called after package install/remove operations.
+	 */
+	public invalidatePackageResourceCaches(): void {
+		this._addinsCache = undefined;
+		this._templatesCache = undefined;
+	}
+
+	/**
+	 * Gets information from the runtime about a specific installed package (or maybe not
+	 *   installed). This method caches the results of the package check and, by default, consults
+	 *   this cache in subsequent calls. If positron-r initiates package installation via
+	 *   checkInstalled(), we update the cache. But our cache does not reflect changes made through
+	 *   other channels.
+	 * @param pkgName The name of the package to check.
+	 * @param minimumVersion Optionally, a minimum version to check for. This may seem weird, but we
+	 *   need R to compare versions for us. We can't easily do it over here.
+	 * @param refresh If true, removes any cache entry for pkgName (without regard to
+	 *   minimumVersion), gets fresh info from the runtime, and caches it.
+	 * @returns An instance of RPackageInstallation if the package is installed, `null` otherwise.
+	 */
+	public async packageVersion(
+		pkgName: string,
+		minimumVersion: string | null = null,
+		refresh: boolean = false
+	): Promise<RPackageInstallation | null> {
+		const cacheKey = `${pkgName}>=${minimumVersion ?? '0.0.0'}`;
+
+		if (!refresh) {
+			if (this._packageCache.has(cacheKey)) {
+				return this._packageCache.get(cacheKey)!;
+			}
+
+			if (minimumVersion === null) {
+				for (const key of this._packageCache.keys()) {
+					if (key.startsWith(pkgName)) {
+						return this._packageCache.get(key)!;
+					}
+				}
+			}
+		}
+		// Possible sceanrios:
+		// - We're skipping the cache and refreshing the package info.
+		// - The package isn't in the cache.
+		// - The package is in the cache, but version is insufficient (last time we checked).
+
+		// Remove a pre-existing cache entry for this package, regardless of minimumVersion.
+		for (const key of this._packageCache.keys()) {
+			if (key.startsWith(pkgName)) {
+				this._packageCache.delete(key);
+			}
+		}
+
+		const pkgInst = await this._getPackageVersion(pkgName, minimumVersion);
+
+		if (pkgInst) {
+			this._packageCache.set(cacheKey, pkgInst);
+		}
+
+		return pkgInst;
+	}
+
+	private async _getPackageVersion(
+		pkgName: string,
+		minimumVersion: string | null = null
+	): Promise<RPackageInstallation | null> {
+		let pkg: any;
+		try {
+			pkg = await this.callMethod('packageVersion', pkgName, minimumVersion);
+		} catch (err) {
+			const runtimeError = err as positron.RuntimeMethodError;
+			throw new Error(`Error getting version of package ${pkgName}: ${runtimeError.message} (${runtimeError.code})`);
+		}
+
+		if (pkg.version === null) {
+			return null;
+		}
+
+		const pkgInst: RPackageInstallation = {
+			packageName: pkgName,
+			packageVersion: pkg.version,
+			minimumVersion: minimumVersion ?? '0.0.0',
+			compatible: pkg.compatible
+		};
+
+		return pkgInst;
+	}
+
+	/**
+	 * Checks whether a package is installed in the runtime, possibly at a minimum version. If not,
+	 * prompts the user to install the package. See the documentation for `packageVersion() for some
+	 * caveats around caching.
+	 * @param pkgName The name of the package to check.
+	 * @param minimumVersion Optionally, the version of the package needed.
+	 * @returns true if the package is installed, at a sufficient version, false otherwise.
+	 */
+
+	async checkInstalled(pkgName: string, minimumVersion: string | null = null): Promise<boolean> {
+		let pkgInst = await this.packageVersion(pkgName, minimumVersion);
+		const installed = pkgInst !== null;
+		let compatible = pkgInst?.compatible ?? false;
+		if (compatible) {
+			return true;
+		}
+		// One of these is true:
+		// - Package is not installed.
+		// - Package is installed, but version is insufficient.
+		// - (Our cache gave us outdated info, but we're just accepting this risk.)
+
+		const title = installed
+			? vscode.l10n.t('Insufficient package version')
+			: vscode.l10n.t('Missing R package');
+		const message = installed
+			? vscode.l10n.t(
+				'The {0} package is installed at version {1}, but version {2} is required.',
+				pkgName, pkgInst!.packageVersion, minimumVersion as string
+			)
+			: vscode.l10n.t('The {0} package is required, but not installed.', pkgName);
+		const okButtonTitle = installed
+			? vscode.l10n.t('Update now')
+			: vscode.l10n.t('Install now');
+
+		const install = await positron.window.showSimpleModalDialogPrompt(
+			title,
+			message,
+			okButtonTitle
+		);
+		if (!install) {
+			return false;
+		}
+
+		const id = randomUUID();
+
+		// A promise that resolves when the runtime is idle:
+		const promise = new Promise<void>(resolve => {
+			const disp = this.onDidReceiveRuntimeMessage(runtimeMessage => {
+				if (runtimeMessage.parent_id === id &&
+					runtimeMessage.type === positron.LanguageRuntimeMessageType.State) {
+					const runtimeMessageState = runtimeMessage as positron.LanguageRuntimeState;
+					if (runtimeMessageState.state === positron.RuntimeOnlineState.Idle) {
+						resolve();
+						disp.dispose();
+					}
+				}
+			});
+		});
+
+		this.execute(`install.packages("${pkgName}")`,
+			id,
+			positron.RuntimeCodeExecutionMode.Interactive,
+			positron.RuntimeErrorBehavior.Continue);
+
+		// Wait for the the runtime to be idle, or for the timeout:
+		await Promise.race([promise, timeout(2e4, 'waiting for package installation')]);
+
+		// Invalidate addins/templates cache since new package may have them
+		this.invalidatePackageResourceCaches();
+
+		pkgInst = await this.packageVersion(pkgName, minimumVersion, true);
+		compatible = pkgInst?.compatible ?? false;
+		return compatible;
+	}
+
+	async isPackageAttached(packageName: string): Promise<boolean> {
+		let attached = false;
+
+		try {
+			attached = await this.callMethod('isPackageAttached', packageName);
+		} catch (err) {
+			const runtimeError = err as positron.RuntimeMethodError;
+			vscode.window.showErrorMessage(vscode.l10n.t(
+				"Error checking if '{0}' is attached: {1} ({2})",
+				packageName,
+				runtimeError.message,
+				runtimeError.code
+			));
+		}
+
+		return attached;
+	}
+
+	/**
+	 * Get the package manager for this session.
+	 */
+	getPackageManager(): positron.LanguageRuntimePackageManager {
+		if (!this._packageManager) {
+			throw new Error('Package manager not initialized');
+		}
+		return this._packageManager;
+	}
+
+	async listMissingPackages(
+		target: positron.RuntimeMissingPackagesTarget,
+		token?: vscode.CancellationToken,
+	): Promise<positron.RuntimeMissingPackage[]> {
+		if (!this._packageManager) {
+			return [];
+		}
+		return listMissingRPackages(this._packageManager, target, token);
+	}
+
+	getMissingPackageProbe(error: positron.RuntimeConsoleError): string | undefined {
+		return rMissingPackageProbe(error.message);
+	}
+
+	private async createKernel(): Promise<JupyterLanguageRuntimeSession> {
+		this.adapterApi = await supervisorApi();
+
+		// Create the Jupyter session
+		const kernel = this.kernelSpec ?
+			// We have a kernel spec, so create a new session
+			await this.adapterApi.createSession(
+				this.runtimeMetadata,
+				this.metadata,
+				this.kernelSpec,
+				this.dynState,
+				this.extra) :
+
+			// We don't have a kernel spec, so restore (reconnect) the session
+			await this.adapterApi.restoreSession(
+				this.runtimeMetadata,
+				this.metadata,
+				this.dynState);
+
+		kernel.onDidChangeRuntimeState((state) => {
+			this._stateEmitter.fire(state);
+		});
+		kernel.onDidReceiveRuntimeMessage((message) => {
+			this.onMessage(message);
+		});
+		kernel.onDidEndSession((exit) => {
+			this._exitEmitter.fire(exit);
+		});
+		kernel.onDidUpdateResourceUsage((usage) => {
+			this._resourceUsageEmitter.fire(usage);
+		});
+
+		// Forward the kernel's connection state changes, if it supports them.
+		const disconnectListener = kernel.onDidDisconnect?.(() => {
+			this._onDidDisconnect.fire();
+		});
+		if (disconnectListener) {
+			this._disposables.push(disconnectListener);
+		}
+		const reconnectListener = kernel.onDidReconnect?.(() => {
+			this._onDidReconnect.fire();
+		});
+		if (reconnectListener) {
+			this._disposables.push(reconnectListener);
+		}
+
+		return kernel;
+	}
+
+	/**
+	 * Processes a message received from the kernel; amends it with any
+	 * necessary metadata and then emits it to Positron.
+	 *
+	 * @param message The message to process
+	 */
+	private onMessage(message: positron.LanguageRuntimeMessage): void {
+		// Have we delivered the message to Positron yet?
+		let delivered = false;
+
+		if (message.type === positron.LanguageRuntimeMessageType.Output) {
+
+			// If this is an R HTML widget, upgrade the message to a web output
+			const msg = message as positron.LanguageRuntimeOutput;
+			if (Object.keys(msg.data).includes('application/vnd.r.htmlwidget')) {
+
+				// Get the widget data from the message
+				const widget = msg.data['application/vnd.r.htmlwidget'] as any as RHtmlWidget;
+				const webMsg = msg as positron.LanguageRuntimeWebOutput;
+
+				// Compute all the resource roots; these are the URIs the widget
+				// will need to render.
+				webMsg.resource_roots = getResourceRoots(widget);
+
+				// Set the output location based on the sizing policy
+				const sizing = widget.sizing_policy;
+				webMsg.output_location = sizing?.knitr?.figure ?
+					positron.PositronOutputLocation.Plot :
+					positron.PositronOutputLocation.Viewer;
+
+				// Deliver the message to Positron
+				this._messageEmitter.fire(message);
+				delivered = true;
+			}
+		}
+
+		// The message hasn't been delivered yet, so deliver it
+		if (!delivered) {
+			this._messageEmitter.fire(message);
+		}
+	}
+
+	/**
+	 * Activate services (LSP and DAP)
+	 *
+	 * Returns a promise that resolves when the services have been activated.
+	 *
+	 * Should never be called within `RSession`, only a session manager
+	 * should call this.
+	 */
+	public async activateServices(reason: string): Promise<void> {
+		this._kernel?.emitJupyterLog(
+			`Queueing services activation. Reason: ${reason}. ` +
+			`Queue size: ${this._servicesQueue.size}, ` +
+			`pending: ${this._servicesQueue.pending}`,
+			vscode.LogLevel.Debug,
+		);
+		return this._servicesQueue.add(async () => {
+			if (!this._kernel) {
+				LOGGER.warn('Cannot activate services; kernel not started');
+				return;
+			}
+
+			this._kernel.emitJupyterLog(
+				`Services activation started. Reason: ${reason}. ` +
+				`Queue size: ${this._servicesQueue.size}, ` +
+				`pending: ${this._servicesQueue.pending}`,
+				vscode.LogLevel.Debug,
+			);
+
+			await Promise.all([
+				this._activateLsp(),
+				this._dapComm?.then(dap => dap.connect()),
+			]);
+		});
+	}
+
+	/**
+	 * Deactivate services (LSP and DAP)
+	 *
+	 * Returns a promise that resolves when the services have been deactivated.
+	 *
+	 * The session manager is in charge of activating services, so
+	 * `activateServices()` should never be called from `RSession`, but
+	 * the session itself may need to call `deactivateServices()`. This
+	 * is okay for now, the important thing is that services should only ever
+	 * be activated by a session manager to ensure that other sessions are
+	 * deactivated first.
+	 *
+	 * Avoid calling `this._lsp.deactivate()` directly, use this instead
+	 * to enforce usage of the `_servicesQueue`.
+	 */
+	public async deactivateServices(reason: string): Promise<void> {
+		this._kernel?.emitJupyterLog(
+			`Queueing services deactivation. Reason: ${reason}. ` +
+			`Queue size: ${this._servicesQueue.size}, ` +
+			`pending: ${this._servicesQueue.pending}`,
+			vscode.LogLevel.Debug,
+		);
+		return this._servicesQueue.add(async () => {
+			this._kernel?.emitJupyterLog(
+				`Services deactivation started. Reason: ${reason}. ` +
+				`Queue size: ${this._servicesQueue.size}, ` +
+				`pending: ${this._servicesQueue.pending}`,
+				vscode.LogLevel.Debug,
+			);
+
+			await Promise.all([
+				this._deactivateLsp(),
+				this._dapComm?.then(dap => dap.disconnect()),
+			]);
+		});
+	}
+
+	private async _activateLsp(): Promise<void> {
+		if (!this._kernel) {
+			return;
+		}
+
+		if (this._lsp.state !== ArkLspState.Stopped && this._lsp.state !== ArkLspState.Uninitialized) {
+			this._kernel.emitJupyterLog('LSP already active', vscode.LogLevel.Debug);
+			return;
+		}
+
+		this._kernel.emitJupyterLog('Starting LSP');
+
+		// Create the LSP comm, which also starts the LSP server.
+		// We await the server selected port (the server selects the
+		// port since it is in charge of binding to it, which avoids
+		// race conditions). We also use this promise to avoid restarting
+		// in the middle of initialization.
+		this._lspClientId = this._kernel.createPositronLspClientId();
+		// Bind the LSP to IPv4 loopback and connect the client to the same
+		// address; otherwise the client's `localhost` resolution can land on
+		// `::1` and miss the server when IPv4 is disabled.
+		const host = '127.0.0.1';
+		this._lspStartingPromise = this._kernel.startPositronLsp(this._lspClientId, host);
+		let port: number;
+		try {
+			port = await this._lspStartingPromise;
+		} catch (err) {
+			this._kernel.emitJupyterLog(`Error starting Positron LSP: ${err}`, vscode.LogLevel.Error);
+			return;
+		}
+
+		this._kernel.emitJupyterLog(`Starting Positron LSP client on port ${port}`);
+
+		await this._lsp.activate(port, host);
+	}
+
+	private async _deactivateLsp(): Promise<void> {
+		if (this._lsp.state !== ArkLspState.Running) {
+			this._kernel?.emitJupyterLog('LSP already deactivated', vscode.LogLevel.Debug);
+			return;
+		}
+
+		this._kernel?.emitJupyterLog(`Stopping LSP`);
+		await this._lsp.deactivate();
+
+		if (this._lspClientId) {
+			this._kernel?.removeClient(this._lspClientId);
+			this._lspClientId = undefined;
+		}
+		this._kernel?.emitJupyterLog(`LSP stopped`, vscode.LogLevel.Debug);
+	}
+
+	/**
+	 * Wait for the LSP to be connected.
+	 *
+	 * Resolves to `ArkLsp` if the LSP is connected, or once the LSP is connected
+	 * if it's starting up. Resolves to `undefined` if the LSP has been stopped. Rejects
+	 * if the LSP fails to start.
+	 */
+	async waitLsp(): Promise<ArkLsp | undefined> {
+		if (await this._lsp.wait()) {
+			return this._lsp;
+		} else {
+			return undefined;
+		}
+	}
+
+	/**
+	 * Start the DAP
+	 *
+	 * Returns a promise that resolves when the DAP has been activated.
+	 * Creates the DAP comm without connecting to the server.
+	 * Idempotent.
+	 */
+	private async startDap(): Promise<void> {
+		if (!this._kernel) {
+			LOGGER.error('Error starting DAP: Kernel not started');
+			return;
+		}
+
+		if (this._dapComm) {
+			await this._dapComm;
+			return;
+		}
+
+		try {
+			this._dapComm = this._kernel!.createDapComm('ark_dap', 'ark', 'Ark Positron R');
+			await this._dapComm;
+
+			// Not awaited: we're spawning an infinite async loop
+			this.startDapMessageLoop();
+		} catch (err) {
+			LOGGER.error(`Error starting DAP: ${err}`);
+			this._dapComm = undefined;
+			throw err;
+		}
+	}
+
+	// Only called from tests for now
+	async startArkComm(): Promise<void> {
+		try {
+			if (!this._kernel) {
+				throw new Error('Kernel not started');
+			}
+
+			this._arkComm = new ArkComm(this._kernel);
+			await this._arkComm!.createComm();
+		} catch (err) {
+			LOGGER.error(`Error starting DAP: ${err}`);
+		}
+	}
+
+	/**
+	 * Handle DAP messages in an infinite loop.
+	 * Should typically not be awaited.
+	 */
+	private async startDapMessageLoop(): Promise<void> {
+		LOGGER.info('Starting DAP loop');
+
+		try {
+			const dapComm = await this._dapComm;
+			if (!dapComm?.comm) {
+				throw new Error('Must create comm before use');
+			}
+
+			for await (const message of dapComm.comm.receiver) {
+				LOGGER.trace('Received DAP message:', JSON.stringify(message));
+
+				if (!await dapComm.handleMessage(message)) {
+					LOGGER.info(`Unknown DAP message: ${message.method}`);
+
+					if (message.kind === 'request') {
+						message.handle(() => { throw new Error(`Unknown request '${message.method}' for DAP comm`); });
+					}
+				}
+			}
+		} catch (err) {
+			LOGGER.error(`Error in DAP loop: ${err}`);
+		}
+
+		LOGGER.info('Exiting DAP loop');
+		(await this._dapComm)?.dispose();
+		this._dapComm = undefined;
+	}
+
+	private async onStateChange(state: positron.RuntimeState): Promise<void> {
+		this._state = state;
+		if (state === positron.RuntimeState.Ready) {
+			await this.startDap();
+		} else if (state === positron.RuntimeState.Exited) {
+			await Promise.all([
+				this.deactivateServices('session exited'),
+				this._dapComm?.then(dap => dap.dispose()),
+			]);
+		}
+	}
+
+
+	/**
+	 * Shows a help topic in the Positron help viewer.
+	 *
+	 * @param topic The help topic to show.
+	 */
+	private async showHelpTopic(topic: string): Promise<void> {
+		try {
+			// showHelpTopic returns a logical value indicating whether the
+			// topic was found. If it wasn't, we'll show an error message.
+			const result = await this.callMethod('showHelpTopic', topic);
+			if (!result) {
+				vscode.window.showWarningMessage(
+					`The requested help topic '${topic}' was not found.`);
+			}
+		} catch (err) {
+			const runtimeError = err as positron.RuntimeMethodError;
+			vscode.window.showErrorMessage(
+				`Error showing help topic '${topic}': ${runtimeError.message} ` +
+				`(${runtimeError.code})`);
+		}
+	}
+
+	/**
+	 * Shows a vignette topic in the Positron help viewer.
+	 *
+	 * @param topic The vignette topic to show.
+	 */
+	private async showVignetteTopic(topic: string): Promise<void> {
+		try {
+			const result = await this.callMethod('showVignetteTopic', topic);
+			if (!result) {
+				vscode.window.showWarningMessage(
+					`The requested vignette topic '${topic}' was not found.`);
+			}
+		} catch (err) {
+			const runtimeError = err as positron.RuntimeMethodError;
+			vscode.window.showErrorMessage(
+				`Error showing vignette topic '${topic}': ${runtimeError.message} ` +
+				`(${runtimeError.code})`);
+		}
+	}
+}
+
+export function createJupyterKernelExtra(): JupyterKernelExtra {
+	return {
+		attachOnStartup: new ArkAttachOnStartup(),
+		sleepOnStartup: new ArkDelayStartup(),
+	};
+}
+
+export async function checkInstalled(pkgName: string,
+	pkgVersion?: string,
+	session?: RSession): Promise<boolean> {
+	session = session || await RSessionManager.instance.getConsoleSession();
+	if (session) {
+		return session.checkInstalled(pkgName, pkgVersion);
+	}
+	throw new Error(`Cannot check install status of ${pkgName}; no R session available`);
+}
+
+export async function getLocale(session?: RSession): Promise<Locale> {
+	session = session || await RSessionManager.instance.getConsoleSession();
+	if (session) {
+		return session.getLocale();
+	}
+	throw new Error(`Cannot get locale information; no R session available`);
+}
+
+export async function getEnvVars(envVars: string[], session?: RSession): Promise<EnvVar> {
+	session = session || await RSessionManager.instance.getConsoleSession();
+	if (session) {
+		return session.getEnvVars(envVars);
+	}
+	throw new Error(`Cannot get env var information; no R session available`);
+}
+
+/** Get the active R language runtime sessions. */
+export async function getActiveRSessions(): Promise<RSession[]> {
+	const sessions = await positron.runtime.getActiveSessions();
+	return sessions.filter((session) => session instanceof RSession) as RSession[];
+}

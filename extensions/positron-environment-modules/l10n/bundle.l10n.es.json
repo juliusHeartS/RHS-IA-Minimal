@@ -1,0 +1,23 @@
+{
+	"{0}\n\nLanguages: {1}\nModules: {2}\n\nDiscovered Interpreters:\n{3}": "{0} Idiomas: {1} Módulos: {2} Intérpretes descubiertos: {3}",
+	"{0} discovered interpreters": "{0} intérpretes descubiertos",
+	"$(add) Create New Module Environment": "$(add) Crear un nuevo entorno de módulo",
+	"An environment with this name already exists": "Ya existe un entorno con este nombre",
+	"Create Module Environment - Step 1 of 3": "Crear entorno de módulos - Paso 1 de 3",
+	"Create Module Environment - Step 2 of 3": "Crear entorno de módulos - Paso 2 de 3",
+	"Create Module Environment - Step 3 of 3": "Crear entorno de módulos - Paso 3 de 3",
+	"Define a new module environment configuration": "Definir una nueva configuración de entorno de módulo",
+	"e.g., python-3.11-env": "p. ej., python-3.11-env",
+	"Enter a name for this module environment (for display purposes only)": "Introduzca un nombre para este entorno de módulo (sólo para mostrar)",
+	"Failed to save module environment '{0}': {1}": "Fallo al guardar el entorno del módulo '{0}': {1}",
+	"Manage Module Environments": "Gestionar entornos de módulos",
+	"Module environment '{0}' was added successfully.": "El entorno del módulo '{0}' fue añadido con éxito.",
+	"Module environment '{0}' was saved to workspace settings (user settings not available in this environment): {1}": "El entorno del módulo '{0}' se guardó en la configuración del espacio de trabajo (la configuración del usuario no está disponible en este entorno): {1}",
+	"Name is required": "El nombre es obligatorio",
+	"No environment module system (such as Lmod or Environment Modules) was detected on this machine. Module environments require a module system to be installed.": "En esta máquina no se detectó ningún sistema de módulos de entorno (como Lmod o Environment Modules). Los entornos de módulos requieren que se instale un sistema de módulos.",
+	"No interpreters discovered yet": "Ningún intérprete descubierto todavía",
+	"No modules available. Please check your module system configuration.": "No hay módulos disponibles. Compruebe la configuración del sistema de módulos.",
+	"Select an environment to view details, or create a new one": "Seleccione un entorno para ver detalles o cree uno nuevo",
+	"Select modules to load": "Seleccione los módulos a cargar",
+	"Select target languages for this environment": "Seleccione los idiomas de destino para este entorno"
+}

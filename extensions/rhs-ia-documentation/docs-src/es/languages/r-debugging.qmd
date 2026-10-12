@@ -1,0 +1,14 @@
+# ---------------------------------------------------------------------------------------------
+# Copyright (C) 2026 Posit Software, PBC. All rights reserved.
+# Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+# ---------------------------------------------------------------------------------------------
+
+---
+title: "Depuración de R"
+---
+
+Establece un punto de interrupción seleccionando el margen junto a una línea de R ejecutable; después inicia la depuración con la acción de depuración de R o una configuración aplicable de **Ejecutar y depurar**. La ejecución se pausa en los puntos de interrupción para que puedas inspeccionar variables, la pila de llamadas y expresiones.
+
+Usa **Depurar paso a paso por procedimientos** para ejecutar la línea actual, **Depurar paso a paso por instrucciones** para entrar en una función llamada, **Salir de la depuración** para terminar la función actual y **Continuar** para llegar al siguiente punto de interrupción. **Detener** finaliza la sesión de depuración.
+
+El código evaluado dinámicamente puede no corresponder limpiamente con los puntos de interrupción del código fuente. Guarda el archivo y verifica que la sesión activa de R use el proyecto y la definición de función esperados.

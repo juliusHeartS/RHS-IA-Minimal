@@ -1,0 +1,40 @@
+{
+	// Vitest-only TypeScript config for intellisense in .vitest.{ts,tsx} files.
+	// Extends the main src tsconfig but adds Vitest global types.
+	// Does NOT affect the main build -- only used by Vitest and IDE language services.
+	"extends": "./src/tsconfig.json",
+	"compilerOptions": {
+		// TypeScript's "types" field replaces the parent's array rather than
+		// merging, so we re-list the ambient types from src/tsconfig.json that
+		// Vitest tests (or the code they import) might rely on, plus Vitest's
+		// own globals. Omits "mocha" (conflicts with Vitest's describe/it) and
+		// "sinon" (Mocha-era, migrated away from).
+		"types": [
+			"@webgpu/types",
+			"semver",
+			"trusted-types",
+			"winreg",
+			"wicg-file-system-access",
+			"vitest/globals"
+		]
+	},
+	"include": [
+		"src/vs/**/*.vitest.ts",
+		"src/vs/**/*.vitest.tsx",
+		"src/*.vitest.ts",
+		"src/vs/test/vitest/**/*",
+		// Vitest tests for e2e helper modules (test/e2e/utils/**), which are
+		// plain TypeScript with no workbench dependencies. Without these the
+		// type check silently skips them.
+		"test/e2e/**/*.vitest.ts",
+		// Add files from the base tsconfig that we need for Vitest tests
+		"src/typings",
+		"src/positron-dts/positron.d.ts",
+		"src/positron-dts/ui-comm.d.ts",
+		"src/vscode-dts/vscode.proposed.*.d.ts",
+		"src/vscode-dts/vscode.d.ts"
+	],
+	// Reset the exclude list so we aren't inheriting it from base tsconfig
+	// which excludes vitest files that we DO want to include here.
+	"exclude": []
+}

@@ -1,0 +1,459 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2025 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+// CSS.
+import './verticalSplitter.css';
+
+// React.
+import React, { useEffect, useRef, useState } from 'react';
+
+// Other dependencies.
+import * as DOM from '../../../dom.js';
+import { Delayer } from '../../../../common/async.js';
+import { useStateRef } from '../../react/useStateRef.js';
+import { isMacintosh } from '../../../../common/platform.js';
+import { createStyleSheet } from '../../../domStylesheets.js';
+import { DisposableStore } from '../../../../common/lifecycle.js';
+import { positronClassNames } from '../../../../common/positronUtilities.js';
+import { Button, KeyboardModifiers, MouseTrigger } from '../button/button.js';
+import { usePositronReactServicesContext } from '../../../positronReactRendererContext.js';
+import { IConfigurationService } from '../../../../../platform/configuration/common/configuration.js';
+
+/**
+ * Constants.
+ */
+const EXPAND_COLLAPSE_BUTTON_TOP = 4;
+const EXPAND_COLLAPSE_BUTTON_SIZE = 25;
+
+/**
+ * VerticalSplitterBaseProps type.
+ */
+type VerticalSplitterBaseProps = | {
+	readonly invert?: boolean;
+	readonly showSash?: boolean;
+	readonly onBeginResize: () => VerticalSplitterResizeParams;
+	readonly onResize: (width: number) => void;
+};
+
+/**
+ * VerticalSplitterCollapseProps type.
+ */
+type VerticalSplitterCollapseProps = | {
+	readonly collapsible?: false;
+	readonly isCollapsed?: never;
+	readonly onCollapsedChanged?: never;
+	readonly alwaysShowExpandCollapseButton?: never;
+} | {
+	readonly collapsible: true;
+	readonly isCollapsed: boolean;
+	readonly onCollapsedChanged: (collapsed: boolean) => void;
+	readonly alwaysShowExpandCollapseButton?: boolean;
+};
+
+/**
+ * VerticalSplitterProps type.
+ */
+type VerticalSplitterProps = VerticalSplitterBaseProps & VerticalSplitterCollapseProps;
+
+/**
+ * VerticalSplitterResizeParams interface. This defines the parameters of a resize operation.
+ */
+export interface VerticalSplitterResizeParams {
+	readonly minimumWidth: number;
+	readonly maximumWidth: number;
+	readonly startingWidth: number;
+}
+
+/**
+ * Gets the sash size.
+ * @param configurationService The configuration service.
+ * @returns The sash size.
+ */
+export const getSashSize = (configurationService: IConfigurationService) =>
+	configurationService.getValue<number>('workbench.sash.size');
+
+/**
+ * Gets the hover delay.
+ * @param configurationService The configuration service.
+ * @returns The hover delay.
+ */
+export const getHoverDelay = (configurationService: IConfigurationService) =>
+	configurationService.getValue<number>('workbench.sash.hoverDelay');
+
+
+/**
+ * Determines whether a point is inside an element.
+ * @param x The X coordinate.
+ * @param y The Y coordinate.
+ * @param element The element.
+ * @returns true, if the point is inside the specified element; otherwise, false.
+ */
+export const isPointInsideElement = (x: number, y: number, element?: HTMLElement) => {
+	if (!element) {
+		return false;
+	}
+
+	const rect = element.getBoundingClientRect();
+	return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+};
+
+/**
+ * Calculates the splitter width.
+ * @param configurationService The configuration service.
+ * @param collapsible A value which indicates whether the splitter is collapsible.
+ * @returns The splitter width.
+ */
+const calculateSplitterWidth = (
+	configurationService: IConfigurationService,
+	collapsible?: boolean
+) => !collapsible ? 1 : getSashSize(configurationService) * 2;
+
+/**
+ * Calculates the sash width.
+ * @param configurationService The configuration service.
+ * @param collapsible A value which indicates whether the vertical splitter is collapsible.
+ * @returns The sash width.
+ */
+const calculateSashWidth = (configurationService: IConfigurationService, collapsible?: boolean) => {
+	// Get the sash size.
+	let sashSize = getSashSize(configurationService);
+
+	// If the vertical splitter is collapsible, double the sash size.
+	if (collapsible) {
+		sashSize *= 2;
+	}
+
+	// Return the sash size.
+	return sashSize;
+};
+
+/**
+ * VerticalSplitter component.
+ * @param props A VerticalSplitterProps that contains the component properties.
+ * @returns The rendered component.
+ */
+export const VerticalSplitter = ({
+	invert,
+	showSash,
+	collapsible,
+	isCollapsed,
+	alwaysShowExpandCollapseButton,
+	onCollapsedChanged,
+	onBeginResize,
+	onResize,
+}: VerticalSplitterProps) => {
+	// Context hooks.
+	const services = usePositronReactServicesContext();
+
+	// Reference hooks.
+	const expandCollapseButtonRef = useRef<HTMLButtonElement>(undefined!);
+	const hoverDelayerRef = useRef<Delayer<void>>(undefined);
+
+	// State hooks.
+	const [splitterWidth, setSplitterWidth] = useState(() =>
+		calculateSplitterWidth(services.configurationService, collapsible)
+	);
+	const [sashWidth, setSashWidth] = useState(() =>
+		calculateSashWidth(services.configurationService, collapsible)
+	);
+	const [sashIndicatorWidth, setSashIndicatorWidth] = useState(() => getSashSize(services.configurationService));
+	const [hovering, setHovering] = useState(false);
+	const [highlightExpandCollapse, setHighlightExpandCollapse] = useState(false);
+	const [collapsed, setCollapsed, collapsedRef] = useStateRef(isCollapsed);
+	const [resizing, setResizing] = useState(false);
+
+	// Main useEffect.
+	useEffect(() => {
+		// Create the disposable store for cleanup.
+		const disposableStore = new DisposableStore();
+
+		// Set the hover delayer.
+		const hoverDelay = getHoverDelay(services.configurationService);
+		hoverDelayerRef.current = disposableStore.add(new Delayer<void>(hoverDelay));
+
+		// Add the onDidChangeConfiguration event handler.
+		disposableStore.add(
+			services.configurationService.onDidChangeConfiguration(configurationChangeEvent => {
+				// When workbench.sash.* changes, update state.
+				if (configurationChangeEvent.affectsConfiguration('workbench.sash')) {
+					// Track changes to workbench.sash.size.
+					if (configurationChangeEvent.affectedKeys.has('workbench.sash.size')) {
+						setSplitterWidth(calculateSplitterWidth(services.configurationService, collapsible));
+						setSashWidth(calculateSashWidth(services.configurationService, collapsible));
+						setSashIndicatorWidth(getSashSize(services.configurationService));
+					}
+
+					// Track changes to workbench.sash.hoverDelay.
+					if (configurationChangeEvent.affectedKeys.has('workbench.sash.hoverDelay') && hoverDelayerRef.current) {
+						hoverDelayerRef.current.defaultDelay = getHoverDelay(services.configurationService);
+					}
+				}
+			})
+		);
+
+		// Return the cleanup function that will dispose of the disposables.
+		return () => disposableStore.dispose();
+	}, [collapsible, services.configurationService]);
+
+	// Collapsed useEffect.
+	useEffect(() => {
+		setCollapsed(isCollapsed);
+	}, [isCollapsed, setCollapsed]);
+
+	/**
+	 * Sash onPointerEnter handler.
+	 * @param e A PointerEvent that describes a user interaction with the pointer.
+	 */
+	const sashPointerEnterHandler = (e: React.PointerEvent<HTMLDivElement>) => {
+		const sash = e.currentTarget;
+		hoverDelayerRef.current?.trigger(() => {
+			setHovering(true);
+			const rect = sash.getBoundingClientRect();
+			if (e.clientY >= rect.top + EXPAND_COLLAPSE_BUTTON_TOP &&
+				e.clientY <= rect.top + EXPAND_COLLAPSE_BUTTON_TOP + EXPAND_COLLAPSE_BUTTON_SIZE) {
+				setHighlightExpandCollapse(true);
+			}
+		});
+	};
+
+	/**
+	 * Sash onPointerLeave handler.
+	 * @param e A PointerEvent that describes a user interaction with the pointer.
+	 */
+	const sashPointerLeaveHandler = (e: React.PointerEvent<HTMLDivElement>) => {
+		// When not resizing, unset hover.
+		if (!resizing) {
+			hoverDelayerRef.current?.cancel();
+			setHovering(false);
+		}
+	};
+
+	/**
+	 * Expand / collapse button onPointerEnter handler.
+	 * @param e A PointerEvent that describes a user interaction with the pointer.
+	 */
+	const expandCollapseButtonPointerEnterHandler = (e: React.PointerEvent<HTMLDivElement>) => {
+		hoverDelayerRef.current?.cancel();
+		setHovering(true);
+		setHighlightExpandCollapse(true);
+	};
+
+	/**
+	 * Expand / collapse button onPointerLeave handler.
+	 * @param e A PointerEvent that describes a user interaction with the pointer.
+	 */
+	const expandCollapseButtonPointerLeaveHandler = (e: React.PointerEvent<HTMLDivElement>) => {
+		hoverDelayerRef.current?.cancel();
+		setHovering(false);
+		setHighlightExpandCollapse(false);
+	};
+
+	/**
+	 * onPressed handler.
+	 * @param e The keyboard modifiers.
+	 */
+	const expandCollapseButtonPressedHandler = (e: KeyboardModifiers) => {
+		if (!collapsed) {
+			setCollapsed(true);
+			onCollapsedChanged?.(true);
+		} else {
+			setCollapsed(false);
+			onCollapsedChanged?.(false);
+		}
+
+		hoverDelayerRef.current?.cancel();
+		setHovering(false);
+		setHighlightExpandCollapse(false);
+	};
+
+	/**
+	 * pointerDown handler.
+	 * @param e A PointerEvent that describes a user interaction with the pointer.
+	 */
+	const sashPointerDownHandler = (e: React.PointerEvent<HTMLDivElement>) => {
+		// Ignore events we don't process.
+		const isNonLeftMouseClick = e.pointerType === 'mouse' && e.buttons !== 1;
+		if (isNonLeftMouseClick) {
+			return;
+		}
+
+		// Determine whether the event occurred inside the expand / collapse button. If it did,
+		// don't process the event.
+		if (isPointInsideElement(e.clientX, e.clientY, expandCollapseButtonRef.current)) {
+			return;
+		}
+
+		// Consume the event.
+		e.preventDefault();
+		e.stopPropagation();
+
+		// Setup the resize state.
+		const resizeParams = onBeginResize();
+		const startingWidth = collapsed ? sashWidth : resizeParams.startingWidth;
+		const sash = e.currentTarget;
+		const body = DOM.getWindow(e.currentTarget).document.body;
+		const clientX = e.clientX;
+		const styleSheet = createStyleSheet(body);
+
+		// Track the last cursor we wrote to the global stylesheet. Rewriting `* { cursor }`
+		// on every pointermove invalidates style on every element in the document, which is
+		// the dominant cost during drag when the document tree is large. Only write on change.
+		let currentCursor: string | undefined = undefined;
+
+		/**
+		 * pointermove event handler.
+		 * @param e A PointerEvent that describes a user interaction with the pointer.
+		 */
+		const pointerMoveHandler = (e: PointerEvent) => {
+			// Consume the event.
+			e.preventDefault();
+			e.stopPropagation();
+
+			// Calculate the delta.
+			const delta = Math.trunc(e.clientX - clientX);
+
+			// Calculate the new width.
+			let newWidth = !invert ?
+				startingWidth + delta :
+				startingWidth - delta;
+
+			// Adjust the new width to be within limits and set cursor and collapsed state accordingly
+			let newCollapsed = false;
+			let cursor: string | undefined = undefined;
+			if (newWidth < resizeParams.minimumWidth / 2) {
+				newWidth = resizeParams.minimumWidth;
+				newCollapsed = true;
+				cursor = isMacintosh ? 'col-resize' : 'ew-resize';
+			} else if (newWidth < resizeParams.minimumWidth) {
+				newWidth = resizeParams.minimumWidth;
+				newCollapsed = false;
+				cursor = !invert ? 'e-resize' : 'w-resize';
+			} else if (newWidth > resizeParams.maximumWidth) {
+				newWidth = resizeParams.maximumWidth;
+				newCollapsed = false;
+				cursor = !invert ? 'w-resize' : 'e-resize';
+			} else {
+				newCollapsed = false;
+				cursor = isMacintosh ? 'col-resize' : 'ew-resize';
+			}
+
+			// Set the cursor only when it changes. Writing to the stylesheet invalidates
+			// style on every element matching `*` (the whole document), so this must not
+			// run every pointermove.
+			if (cursor && cursor !== currentCursor) {
+				currentCursor = cursor;
+				styleSheet.textContent = `* { cursor: ${cursor} !important; }`;
+			}
+
+			// Perform the resize
+			onResize(newWidth);
+
+			// Set the collapsed state.
+			if (newCollapsed !== collapsedRef.current) {
+				setCollapsed(newCollapsed);
+				onCollapsedChanged?.(newCollapsed);
+			}
+		};
+
+		/**
+		 * lostpointercapture event handler
+		 * @param e A PointerEvent that describes a user interaction with the pointer.
+		 */
+		const lostPointerCaptureHandler = (e: PointerEvent) => {
+			// Handle the last possible move change.
+			pointerMoveHandler(e);
+
+			// Remove our pointer event handlers.
+			sash.removeEventListener('pointermove', pointerMoveHandler);
+			sash.removeEventListener('lostpointercapture', lostPointerCaptureHandler);
+
+			// Remove the style sheet.
+			body.removeChild(styleSheet);
+
+			// Clear the resizing flag.
+			setResizing(false);
+			hoverDelayerRef.current?.cancel();
+			setHovering(isPointInsideElement(e.clientX, e.clientY, sash));
+		};
+
+		// Set the dragging flag
+		setResizing(true);
+
+		// Set the capture target of future pointer events to be the current target and add our
+		// pointer event handlers.
+		sash.setPointerCapture(e.pointerId);
+		sash.addEventListener('pointermove', pointerMoveHandler);
+		sash.addEventListener('lostpointercapture', lostPointerCaptureHandler);
+	};
+
+	// Render.
+	return (
+		<div
+			className={positronClassNames(
+				'vertical-splitter',
+				{ collapsible }
+			)}
+			data-testid='vertical-splitter'
+			style={{
+				width: splitterWidth
+			}}
+		>
+			<div
+				className='sash'
+				data-testid='vertical-splitter-sash'
+				style={{
+					left: collapsible ? -1 : -(sashWidth / 2),
+					width: collapsible ? sashWidth + 2 : sashWidth
+				}}
+				onPointerDown={sashPointerDownHandler}
+				onPointerEnter={sashPointerEnterHandler}
+				onPointerLeave={sashPointerLeaveHandler}
+			>
+				{showSash && (hovering || resizing) &&
+					<div
+						className={positronClassNames(
+							'sash-indicator',
+							{ 'hovering': showSash && hovering },
+							{ 'resizing': showSash && resizing },
+						)}
+						style={{
+							width: sashIndicatorWidth,
+						}}
+					/>
+				}
+			</div>
+			{collapsible && (alwaysShowExpandCollapseButton || hovering || resizing || collapsed) &&
+				<Button
+					ref={expandCollapseButtonRef}
+					className='expand-collapse-button'
+					mouseTrigger={MouseTrigger.MouseDown}
+					style={{
+						top: EXPAND_COLLAPSE_BUTTON_TOP,
+						width: EXPAND_COLLAPSE_BUTTON_SIZE,
+						height: EXPAND_COLLAPSE_BUTTON_SIZE
+					}}
+					onPressed={expandCollapseButtonPressedHandler}
+				>
+					<div
+						className={positronClassNames(
+							'expand-collapse-button-face',
+							'codicon',
+							!collapsed ?
+								!invert ? 'codicon-chevron-left' : 'codicon-chevron-right' :
+								!invert ? 'codicon-chevron-right' : 'codicon-chevron-left',
+							{ highlighted: highlightExpandCollapse }
+						)}
+						style={{
+							width: EXPAND_COLLAPSE_BUTTON_SIZE,
+							height: EXPAND_COLLAPSE_BUTTON_SIZE
+						}}
+						onPointerEnter={expandCollapseButtonPointerEnterHandler}
+						onPointerLeave={expandCollapseButtonPointerLeaveHandler}
+					/>
+				</Button>
+			}
+		</div>
+	);
+};

@@ -1,0 +1,40 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2023-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { MainThreadModalDialogsShape, MainPositronContext } from '../../common/positron/extHost.positron.protocol.js';
+import { extHostNamedCustomer, IExtHostContext } from '../../../services/extensions/common/extHostCustomers.js';
+import { DisposableStore } from '../../../../base/common/lifecycle.js';
+import { IPositronModalDialogsService, IThreeButtonModalDialogPromptOptions } from '../../../services/positronModalDialogs/common/positronModalDialogs.js';
+
+@extHostNamedCustomer(MainPositronContext.MainThreadModalDialogs)
+export class MainThreadModalDialogs implements MainThreadModalDialogsShape {
+
+	private readonly _disposables = new DisposableStore();
+
+	constructor(
+		extHostContext: IExtHostContext,
+		@IPositronModalDialogsService private readonly _positronModalDialogsService: IPositronModalDialogsService
+	) { }
+
+	$showSimpleModalDialogPrompt(title: string, message: string, okButtonTitle?: string, cancelButtonTitle?: string): Promise<boolean> {
+		return this._positronModalDialogsService.showSimpleModalDialogPrompt(title, message, okButtonTitle, cancelButtonTitle);
+	}
+
+	$showThreeButtonModalDialogPrompt(options: IThreeButtonModalDialogPromptOptions): Promise<string | undefined> {
+		return this._positronModalDialogsService.showThreeButtonModalDialogPrompt(options);
+	}
+
+	$showSimpleModalDialogMessage(title: string, message: string, okButtonTitle?: string): Promise<null> {
+		return this._positronModalDialogsService.showSimpleModalDialogMessage(title, message, okButtonTitle);
+	}
+
+	$showSimpleModalDialogInput(title: string, message: string, defaultValue?: string, placeholder?: string, timeout?: number): Promise<string | null> {
+		return this._positronModalDialogsService.showSimpleModalDialogInput(title, message, defaultValue, placeholder, timeout);
+	}
+
+	public dispose(): void {
+		this._disposables.dispose();
+	}
+}

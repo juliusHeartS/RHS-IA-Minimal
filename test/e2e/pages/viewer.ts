@@ -1,0 +1,141 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (C) 2024-2026 Posit Software, PBC. All rights reserved.
+ *  Licensed under the Elastic License 2.0. See LICENSE.txt for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import test, { expect, FrameLocator, Locator } from '@playwright/test';
+import { Code } from '../infra/code';
+import { ContextMenu } from './dialog-contextMenu.js';
+
+const OUTER_FRAME = '.webview';
+const INNER_FRAME = '#active-frame';
+const REFRESH_BUTTON = '.preview-action-bar .codicon-refresh';
+const VIEWER_PANEL = '[id="workbench.panel.positronPreview"]';
+const ACTION_BAR = '.positron-action-bar';
+const OPEN_IN_DROPDOWN_BUTTON = '.preview-action-bar .action-bar-button-drop-down-button[aria-label="Select where to open"]';
+const OPEN_IN_PRIMARY_BUTTON = '.preview-action-bar .action-bar-button-action-button[aria-label="Select where to open"]';
+
+const FULL_APP = 'body';
+
+export class Viewer {
+
+	get fullApp(): Locator { return this.code.driver.currentPage.locator(FULL_APP); }
+	get viewerFrame(): FrameLocator { return this.code.driver.currentPage.frameLocator(OUTER_FRAME).frameLocator(INNER_FRAME); }
+	get interruptButton(): Locator { return this.code.driver.currentPage.locator(ACTION_BAR).getByRole('button', { name: 'Interrupt execution' }); }
+
+	constructor(private code: Code, private contextMenu: ContextMenu) { }
+
+	getViewerLocator(locator: string): Locator {
+		return this.viewerFrame.locator(locator);
+	}
+
+	getViewerFrame(): FrameLocator {
+		return this.viewerFrame;
+	}
+
+	async refreshViewer() {
+		await this.code.driver.currentPage.locator(REFRESH_BUTTON).click({ timeout: 15000 });
+	}
+
+	async clearViewer() {
+		const viewerTab = this.code.driver.currentPage.getByRole('tab', { name: 'Viewer' });
+		if (!await viewerTab.isVisible()) {
+			return; // Viewer was never opened, nothing to clear.
+		}
+		await viewerTab.locator('a').click();
+
+		const clearRegex = /Clear the/;
+
+		if (await this.fullApp.getByLabel(clearRegex).isVisible()) {
+			await this.fullApp.getByLabel(clearRegex).click();
+			await this.expectContentNotVisible(() => this.fullApp.getByLabel(clearRegex), 10000);
+		}
+	}
+
+	async openViewerToEditor() {
+		await test.step('Open Viewer content in editor tab via "Open in..." dropdown', async () => {
+			const dropdownButton = this.code.driver.currentPage.locator(OPEN_IN_DROPDOWN_BUTTON);
+			await this.contextMenu.triggerAndClick({
+				menuTrigger: dropdownButton,
+				menuItemLabel: /Open in Editor Tab$/,
+				menuItemType: 'menuitemcheckbox'
+			});
+		});
+	}
+
+	async clickOpenInPrimaryButton() {
+		await test.step('Click primary half of "Open in..." split button', async () => {
+			await this.code.driver.currentPage.locator(OPEN_IN_PRIMARY_BUTTON).click();
+		});
+	}
+
+	async expectViewerPanelVisible(timeout = 10000): Promise<void> {
+		await test.step('Expect viewer panel visible', async () => {
+			await expect(this.code.driver.currentPage.locator(VIEWER_PANEL)).toBeVisible({ timeout });
+		});
+	}
+
+	async expectUrlToHaveValue(expectedUrl: string, timeout = 10000): Promise<void> {
+		await test.step(`Expect viewer URL to have value: ${expectedUrl}`, async () => {
+			await expect(this.code.driver.currentPage.getByRole('textbox', { name: 'The current URL' })).toHaveValue(expectedUrl, { timeout });
+		});
+	}
+
+	/**
+	 * Wait for content to be visible in the viewer frame, with retry on failure.
+	 *
+	 * Dev servers (Flask, Dash, etc.) may report "running" before actually accepting
+	 * connections, causing ERR_CONNECTION_RESET. If content isn't visible, the onRetry
+	 * callback is called to allow restarting the server before the next attempt.
+	 *
+	 * @param useIframe - Set to false for Positron output (great-tables, modelsummary) that renders directly.
+	 *                    Defaults to true for web apps (Flask, Dash) that render in an iframe.
+	 */
+	async expectContentVisible(
+		getLocator: (frame: FrameLocator) => Locator,
+		options?: { timeout?: number; onRetry?: () => Promise<void>; useIframe?: boolean }
+	): Promise<void> {
+		const { timeout = 60000, onRetry, useIframe = undefined } = options ?? {};
+
+		await test.step('Expect content visible in viewer frame', async () => {
+			await expect(async () => {
+				// Get the frame and locator for the content
+				const frame = useIframe === undefined
+					? !this.code.electronApp
+						? this.viewerFrame.frameLocator('iframe')
+						: this.getViewerFrame()
+					: useIframe
+						? this.viewerFrame.frameLocator('iframe')
+						: this.getViewerFrame();
+				const locator = getLocator(frame);
+
+
+				// Check if content is visible
+				let isVisible = false;
+				try {
+					isVisible = await locator.isVisible();
+				} catch {
+					// Frame might not be accessible after ERR_CONNECTION_RESET
+				}
+
+				// If content isn't visible, call onRetry to allow restarting the server
+				if (!isVisible && onRetry) {
+					await onRetry();
+				}
+
+				// Expect the content to be visible
+				await expect(locator).toBeVisible({ timeout: 5000 });
+			}).toPass({ timeout });
+		});
+	}
+
+	async expectContentNotVisible(getLocator: (frame: FrameLocator) => Locator, timeout = 10000): Promise<void> {
+		await test.step('Expect content not visible in viewer frame', async () => {
+			await expect(async () => {
+				const frame = this.getViewerFrame();
+				const locator = getLocator(frame);
+				await expect(locator).not.toBeVisible({ timeout: 5000 });
+			}).toPass({ timeout });
+		});
+	}
+}
