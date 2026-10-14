@@ -8,7 +8,7 @@ Napo is a desktop platform for data analysis, modelling, simulation, and plannin
 
 ## Project status
 
-The source is being prepared for a **Napo** handover. The underlying Code OSS package version and Positron base version are independent of that release name. The current macOS arm64 package has technical acceptance and a reproducible release manifest, but this repository does not yet publish a verified Napo installer or download channel. Source-build instructions below are for maintainers; public distribution remains blocked by human legal review, macOS signing/notarization, and the institutional knowledge-source gate. The update channel itself is decided: manual, explicit, hash-verified, signed, and reversible.
+The source is being prepared for a **Napo** handover. The underlying Code OSS package version and Positron base version are independent of that release name. The current macOS arm64 package has technical acceptance and a reproducible release manifest. A local drag-and-drop installer is generated as `dist/Napo-macOS-arm64.dmg`; this repository does not publish a download channel. Source-build instructions below are for maintainers; public distribution remains subject to human legal review and the institutional knowledge-source gate. The update channel itself is decided: manual, explicit, hash-verified, signed, and reversible.
 
 Current limitations that affect deployment:
 
@@ -58,9 +58,17 @@ rtk npm run gulp core-ci
 rtk npm run gulp vscode-darwin-arm64-min-ci
 ```
 
+After the Napo app has been built in `dist/Napo.app`, create the parallel-install DMG:
+
+```sh
+npm run package-napo-macos-installer
+```
+
+The result is [`dist/Napo-macOS-arm64.dmg`](dist/Napo-macOS-arm64.dmg) locally. Open the DMG and drag `Napo.app` to `Applications`; it can coexist with `/Applications/RHS-IA.app` because Napo uses the distinct bundle identifier `org.rhsia.napo`, URL protocol `napo`, and data folders `.napo`/`.napo-shared`. The generated evidence and SHA-256 are recorded in [`reports/napo-macos-installer.json`](reports/napo-macos-installer.json). This is a freely distributed, ad-hoc-sealed app and is not Apple-signed or notarized; macOS may require the user to approve it under their own responsibility.
+
 Linux DEB/RPM packaging additionally requires `RHS_IA_LINUX_MAINTAINER` to contain the approved maintainer in `Name <email>` form. The build deliberately has no upstream contact fallback. Windows Store/AppX packaging is not supported.
 
-These commands build a local artifact; they do not sign, notarize, or publish an installer. Check the actual output, bundled extensions, executable architectures, and startup behavior before distribution. Build targets for other platforms exist in the upstream toolchain but are not validated by this README.
+These commands build local artifacts; they do not publish a download channel. Check the actual output, bundled extensions, executable architectures, and startup behavior before distribution. Build targets for other platforms exist in the upstream toolchain but are not validated by this README.
 
 ## Validation for maintainers
 
@@ -84,17 +92,17 @@ For the Napo package acceptance gate, run:
 
 ```sh
 npm run validate-napo-package -- --require-runtime
-npm run smoke-napo-runtime -- --package ../VSCode-darwin-arm64/Napo.app
-npm run smoke-napo-privacy -- --package ../VSCode-darwin-arm64/Napo.app
-npm run audit-napo-macos-signature -- --package ../VSCode-darwin-arm64/Napo.app
-npm run validate-napo-gate -- --package ../VSCode-darwin-arm64/Napo.app
+npm run smoke-napo-runtime -- --package dist/Napo.app
+npm run smoke-napo-privacy -- --package dist/Napo.app
+npm run audit-napo-macos-signature -- --package dist/Napo.app
+npm run validate-napo-gate -- --package dist/Napo.app
 npm run audit-napo-data-integrity
 npm run audit-napo-license-inventory
 npm run audit-napo-extension-surface
-npm run audit-napo-extension-functional-coverage -- --package ../VSCode-darwin-arm64/Napo.app
-node scripts/audit-napo-extension-surface.mjs --package ../VSCode-darwin-arm64/Napo.app --out reports/napo-extension-surface-package.json
+npm run audit-napo-extension-functional-coverage -- --package dist/Napo.app
+node scripts/audit-napo-extension-surface.mjs --package dist/Napo.app --out reports/napo-extension-surface-package.json
 node scripts/test-napo-surface-reduction.mjs --extensions bat
-node scripts/audit-napo-license-inventory.mjs --package ../VSCode-darwin-arm64/Napo.app --out reports/napo-license-inventory-package.json
+node scripts/audit-napo-license-inventory.mjs --package dist/Napo.app --out reports/napo-license-inventory-package.json
 ```
 
 La reducción de extensiones ajenas al flujo R/Python/Quarto/datos o a Capibara está aplicada únicamente al empaquetado de Napo: el paquete actual contiene 59 extensiones, con 46 conservadas y 13 clasificadas como `requiere-prueba`. `debug-server-ready`, `make`, `javascript` y `html` fueron retiradas después de pruebas reversibles; sus carpetas fuente siguen presentes para mantener una ruta reversible. La evidencia estructural y de runtime está en [`reports/napo-extension-surface-package.json`](reports/napo-extension-surface-package.json), y el manifiesto vigente registra 32.904 archivos con digest `ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e`.

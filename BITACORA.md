@@ -1407,6 +1407,15 @@ Capibara (`rhs-agent4`) queda establecido como la extensión primaria prevista p
 - Después de la prueba, `codesign --verify --deep --strict dist/Napo.app` siguió pasando. El manifiesto de distribución se actualizó en `reports/napo-release-manifest.json`: árbol SHA-256 `3afac66832b8623d2ddde44a2c096d971eec40ea6e0e06c61a0213b84f140769`.
 - REA analizó la extensión empaquetada como artefacto servido: evidencia `ev_2133907db96c076a2413a306ee0a5e3976ce6b42d525a971dcd2aa220b30bd08`, 2.054 archivos relevantes, 1.548 JavaScript parseados y 0 fallos de parseo. El análisis estático es parcial por presupuesto de relaciones; la prueba de runtime aporta la confirmación funcional.
 
+## 2026-10-14 — Instalador paralelo de Napo para macOS
+
+- Se creó el empaquetador reproducible `scripts/package-napo-macos-installer.mjs` y el comando `npm run package-napo-macos-installer`; solo modifica `RHS-IA-Minimal` y no toca los repositorios fuente de estudio.
+- El instalador local generado es `dist/Napo-macOS-arm64.dmg`, con `Napo.app` y acceso directo a `Applications` para instalación por arrastre.
+- El DMG fue montado en modo solo lectura y comprobado: contiene `Napo.app` y `Applications`; la app es ARM64 y `codesign --verify --deep --strict` pasa.
+- La coexistencia queda comprobada por identidad: RHS-IA instalada usa `co.posit.positron`; Napo usa `org.rhsia.napo`, protocolo `napo` y carpetas `.napo`/`.napo-shared`.
+- SHA-256 del DMG: `ab0dc917f5976fde9debfe585b1ed80b4147827d73290eaf481ca082fc180f97`. Evidencia: `reports/napo-macos-installer.json`.
+- La app se arrancó directamente desde `dist/Napo.app` con `open -n` y el proceso Napo permaneció activo. El paquete no está firmado por Apple ni notarizado; la aprobación manual de macOS sigue siendo parte de la distribución libre.
+
 ## 2026-10-13 — Prueba de aceptación de Napo con país sintético
 
 - Se creó un proyecto temporal reproducible de la República de Andesia con seis regiones, datos sintéticos, política `AND-SALUD-2026-01`, scripts R/Python, gráfico y reporte Quarto. Evidencia: `reports/napo-country-planning.json`.

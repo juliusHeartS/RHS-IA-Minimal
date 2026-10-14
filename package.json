@@ -79,6 +79,7 @@
     "validate-napo-runtime": "node scripts/validate-napo.mjs --require-runtime",
     "validate-napo-package": "node scripts/validate-napo.mjs --require-runtime --package dist/Napo.app",
     "record-napo-release": "node scripts/napo-release-manifest.mjs --package dist/Napo.app --out reports/napo-release-manifest.json",
+    "package-napo-macos-installer": "node scripts/package-napo-macos-installer.mjs",
     "verify-napo-release": "node scripts/napo-release-manifest.mjs --package dist/Napo.app --verify reports/napo-release-manifest.json",
     "test-napo-release-manifest": "node scripts/test-napo-release-manifest.mjs",
     "audit-napo-completion": "node scripts/audit-napo-completion.mjs --package dist/Napo.app",

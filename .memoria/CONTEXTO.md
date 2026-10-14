@@ -830,3 +830,11 @@ El flujo oficial de empaquetado macOS arm64 generó `../VSCode-darwin-arm64/Napo
 - En las tres tareas nuevas no hubo `approval_required`. Los eventos históricos siguen en `capibara-task-mv72j721-75tcmp`.
 - Incidencias abiertas: falla inicial de `positron_execute_code` para Python con fallback exitoso a `python3` del sistema; Bienvenida muestra “R/Python no disponible” aunque el paquete contiene las extensiones y R inicia.
 - Reporte completo: `reports/napo-dogfood-country-evaluation.json`.
+
+## Instalador paralelo de Napo para macOS — 2026-10-14
+
+- Napo se distribuye localmente como `dist/Napo-macOS-arm64.dmg`, generado por `scripts/package-napo-macos-installer.mjs` mediante `npm run package-napo-macos-installer`.
+- El DMG es de arrastre a `Applications` y contiene `Napo.app` más el acceso directo a `/Applications`; no reemplaza ni renombra `/Applications/RHS-IA.app`.
+- Identidad verificada: RHS-IA instalada `co.posit.positron`; Napo `org.rhsia.napo`, `napo`, `.napo` y `.napo-shared`. El DMG se montó en solo lectura, se inspeccionó y se desmontó correctamente.
+- Artefacto probado: ARM64, firma ad hoc coherente (`codesign --verify --deep --strict`), arranque directo exitoso con `open -n`. No hay firma Apple ni notarización, de acuerdo con la política de distribución libre y aprobación manual del usuario.
+- SHA-256 del instalador: `ab0dc917f5976fde9debfe585b1ed80b4147827d73290eaf481ca082fc180f97`; informe: `reports/napo-macos-installer.json`.

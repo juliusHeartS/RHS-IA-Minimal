@@ -38,12 +38,12 @@
     {
       "name": "rhs-agent4",
       "path": "/Users/julius3005/Documents/Github/rhs-agent4",
-      "head": null,
-      "statusDigest": "6070d9418ec5e9d13735cbff52b5c7fafc89d9a72f47a05aa777dc6414e2c8eb",
-      "statusLineCount": 37,
+      "head": "87f7e748b1344a9efa1b4645386f6801ef3a044b",
+      "statusDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "statusLineCount": 0,
       "trackedDiffDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "trackedDiffLineCount": 0,
-      "status": "?? .editorconfig\n?? .gitignore\n?? .npmrc\n?? .nvmrc\n?? .vscode/\n?? AGENTS.md\n?? ArquitecturaCapibara.md\n?? ArquitecturaSachaCuy.md\n?? Audit2026-08-17.md\n?? AuditoriaIntegracionHermesCuy.md\n?? CHANGELOG.md\n?? LICENSE\n?? LICENSES/\n?? NotaConceptualCapibara.md\n?? NotaConceptualSachaCuy.md\n?? PlanConstruccionCapibara.md\n?? PlanRenacimientoSachaCuy.md\n?? README.md\n?? THIRD_PARTY_NOTICES.md\n?? code-index-tracking.md\n?? docs/\n?? e2e/\n?? evaluation/\n?? gap_files.md\n?? package.json\n?? packages/\n?? pendientes.md\n?? pnpm-lock.yaml\n?? pnpm-workspace.yaml\n?? provenance/\n?? runtime/\n?? scripts/\n?? src/\n?? tests/\n?? tsconfig.json\n?? turbo.json\n?? webview-ui/\n"
+      "status": ""
     },
     {
       "name": "vscode",
