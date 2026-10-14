@@ -1,5 +1,6 @@
 **/*.map
 **/*.analyzer.html
+**/*.stats.json
 **/.env
 *.vsix
 .editorconfig
@@ -88,3 +89,9 @@ python-env-tools/.cargo/**
 
 python-env-tools/**/*.md
 pythonExtensionApi/**
+
+# Napo ships the PET runtime used by the Python environment discovery service.
+!python-env-tools/
+!python-env-tools/pet
+!resources/pet/
+!resources/pet/VERSION

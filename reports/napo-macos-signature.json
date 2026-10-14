@@ -1,0 +1,15 @@
+{
+  "format": "napo-macos-signature/v1",
+  "package": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
+  "status": "development-only",
+  "unsigned": false,
+  "requireDistribution": false,
+  "signature": "adhoc",
+  "teamIdentifier": "not set",
+  "authorities": [],
+  "codesignDisplayExitCode": 0,
+  "codesignVerifyExitCode": 0,
+  "spctlExitCode": 3,
+  "codesignVerifyOutput": "--prepared:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Napo Helper (Plugin).app\n--prepared:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Napo Helper (GPU).app\n--prepared:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.\n--validated:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Napo Helper (Plugin).app\n--validated:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Napo Helper (GPU).app\n--prepared:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Napo Helper.app\n--prepared:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Napo Helper (Renderer).app\n--prepared:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.\n--prepared:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Mantle.framework/Versions/Current/.\n--validated:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Napo Helper.app\n--validated:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Napo Helper (Renderer).app\n--validated:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.\n--validated:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.\n--validated:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Mantle.framework/Versions/Current/.\n--prepared:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.\n--prepared:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler\n--validated:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler\n--validated:/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.\n/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app: valid on disk\n/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app: satisfies its Designated Requirement",
+  "spctlOutput": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app: rejected"
+}

@@ -1,0 +1,76 @@
+{
+  "format": "napo-knowledge-governance/v1",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "fuente pendiente trazable",
+      "status": "pass",
+      "detail": "metadatos y hash correctos; usableForPlanning=false"
+    },
+    {
+      "name": "versión de esquema protegida",
+      "status": "pass",
+      "detail": "schemaVersion debe ser 1"
+    },
+    {
+      "name": "fuente pendiente bloqueada",
+      "status": "pass",
+      "detail": "la fuente requiere revisión humana aprobada antes de usarse para planificación"
+    },
+    {
+      "name": "hash de contenido protegido",
+      "status": "pass",
+      "detail": "hash de contenido no coincide para planning-policy.md"
+    },
+    {
+      "name": "fuente aprobada utilizable",
+      "status": "pass",
+      "detail": "TEST-PLANNING-SOURCE@2026.01 / Ecuador"
+    },
+    {
+      "name": "fecha efectiva real",
+      "status": "pass",
+      "detail": "effectiveDate debe ser una fecha calendario válida YYYY-MM-DD"
+    },
+    {
+      "name": "traversal fuera de raíz rechazado",
+      "status": "pass",
+      "detail": "contentPath debe permanecer dentro de la raíz de conocimiento"
+    },
+    {
+      "name": "symlink fuera de raíz rechazado",
+      "status": "pass",
+      "detail": "el contenido no puede escapar de la raíz autorizada mediante un symlink"
+    },
+    {
+      "name": "paquete pendiente trazable",
+      "status": "pass",
+      "detail": "fuentes=1; aprobadas=0; utilizables=0"
+    },
+    {
+      "name": "paquete pendiente bloqueado",
+      "status": "pass",
+      "detail": "pendientes=1"
+    },
+    {
+      "name": "CLI de auditoría de paquete",
+      "status": "pass",
+      "detail": "modo normal produjo un reporte versionado"
+    },
+    {
+      "name": "CLI estricto de auditoría de paquete",
+      "status": "pass",
+      "detail": "require-approved bloqueó el reporte pendiente"
+    },
+    {
+      "name": "identidad de fuente única",
+      "status": "pass",
+      "detail": "la raíz rechaza duplicados de id/version/jurisdiction"
+    }
+  ],
+  "policy": "las fuentes pendientes se pueden rastrear, pero no se usan como conocimiento aprobado para planificación",
+  "limitations": [
+    "La validación comprueba metadatos, hash y estado de revisión; no determina la verdad jurídica ni la autoridad real de una fuente.",
+    "La aprobación requiere revisión humana fuera de este script."
+  ]
+}

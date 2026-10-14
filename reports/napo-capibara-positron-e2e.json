@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-12",
+  "package": "/Users/julius3005/Documents/Github/VSCode-darwin-arm64/Napo.app",
+  "profile": "/tmp/napo-agent-modeling-profile3.KNq8dL",
+  "workspace": "/tmp/napo-agent-modeling-e2e.MiQVzA",
+  "provider": "local deterministic OpenAI-compatible mock on 127.0.0.1:18124",
+  "route": "Capibara -> positron_execute_code -> Napo/Positron live R session",
+  "checks": {
+    "cleanProfileActivation": {
+      "status": "pass",
+      "detail": "RHS-Agent v4.0.0 became interactive in a clean Napo profile after the packaged runtime was selected."
+    },
+    "visibleApproval": {
+      "status": "pass",
+      "detail": "The UI exposed the command and required explicit approval before execution."
+    },
+    "livePositronExecution": {
+      "status": "pass",
+      "language": "r",
+      "tool": "positron_execute_code",
+      "runtime": "R 4.5.3",
+      "marker": "NAPO_AGENT_MODELING_OK",
+      "detail": "The live R session produced a linear model, a deterministic trajectory, a two-scenario data frame, and the marker file."
+    },
+    "runtimeEvidence": {
+      "status": "pass",
+      "variables": ["fit", "trajectory", "scenarios", "x", "y"],
+      "scenarioRows": 2,
+      "trajectoryLength": 100,
+      "slope": 3.0000000000000004
+    }
+  },
+  "limitations": [
+    "This is a focused manual UI evidence record; it does not replace the automated package gate.",
+    "The mock provider is loopback-only and is not part of the shipped application."
+  ],
+  "decision": "pass-focused-positron-coordination"
+}

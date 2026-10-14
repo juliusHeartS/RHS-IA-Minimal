@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "format": "napo-architecture-audit/v1",
+  "product": "Napo",
+  "status": "pass",
+  "checks": [
+    {
+      "id": "architecture-document",
+      "status": "pass",
+      "detail": "La arquitectura base identifica Napo como distribución de escritorio y receptor de las integraciones.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "layer-host",
+      "status": "pass",
+      "detail": "La arquitectura declara ### Capa A — Host de escritorio.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "layer-data",
+      "status": "pass",
+      "detail": "La arquitectura declara ### Capa B — Análisis de datos.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "layer-agent",
+      "status": "pass",
+      "detail": "La arquitectura declara ### Capa C — Agente integrado.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "layer-planning",
+      "status": "pass",
+      "detail": "La arquitectura declara ### Capa D — Modelación y planificación.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "host-contract-1",
+      "status": "pass",
+      "detail": "Contrato mínimo presente: 1. descubrimiento, instalación y activación de la extensión.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "host-contract-2",
+      "status": "pass",
+      "detail": "Contrato mínimo presente: 4. disponibilidad de workspace, archivos, terminal, R, Python y Quarto.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "host-contract-3",
+      "status": "pass",
+      "detail": "Contrato mínimo presente: 7. proveedores visibles y configuración segura de credenciales.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "host-contract-4",
+      "status": "pass",
+      "detail": "Contrato mínimo presente: 8. aprobaciones, cancelación, permisos y aislamiento.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "host-contract-5",
+      "status": "pass",
+      "detail": "Contrato mínimo presente: 9. auditoría, procedencia y recuperación ante errores.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "host-contract-6",
+      "status": "pass",
+      "detail": "Contrato mínimo presente: 10. empaquetado completo de Capibara y sus recursos.",
+      "evidence": "ARQUITECTURA_NAPO.md"
+    },
+    {
+      "id": "host-matrix-activació",
+      "status": "pass",
+      "detail": "Matriz del host declara Activación.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "host-matrix-runtim",
+      "status": "pass",
+      "detail": "Matriz del host declara Runtime.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "host-matrix-workspac",
+      "status": "pass",
+      "detail": "Matriz del host declara Workspace.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "host-matrix-r-pytho",
+      "status": "pass",
+      "detail": "Matriz del host declara R/Python.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "host-matrix-quart",
+      "status": "pass",
+      "detail": "Matriz del host declara Quarto.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "host-matrix-proveedore",
+      "status": "pass",
+      "detail": "Matriz del host declara Proveedores.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "host-matrix-permiso",
+      "status": "pass",
+      "detail": "Matriz del host declara Permisos.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "host-matrix-persistenci",
+      "status": "pass",
+      "detail": "Matriz del host declara Persistencia.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "host-matrix-re",
+      "status": "pass",
+      "detail": "Matriz del host declara Red.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "host-matrix-empaquetad",
+      "status": "pass",
+      "detail": "Matriz del host declara Empaquetado.",
+      "evidence": "MATRIZ_HOST_CAPIBARA.md"
+    },
+    {
+      "id": "transfer-matrix",
+      "status": "pass",
+      "detail": "La matriz de transferencia conserva fuente, destino, decisión, evidencia, Capibara y Quarto.",
+      "evidence": "MATRIZ_TRANSFERENCIA_NAPO.md"
+    },
+    {
+      "id": "data-evidence",
+      "status": "pass",
+      "detail": "La evidencia de extensiones de datos está aprobada y sin diferencias funcionales.",
+      "evidence": "reports/napo-data-extension-integrity.json"
+    },
+    {
+      "id": "capability-evidence",
+      "status": "pass",
+      "detail": "La superficie de capacidades analíticas y de planificación está aprobada.",
+      "evidence": "reports/napo-capability-surface.json"
+    },
+    {
+      "id": "source-baseline",
+      "status": "pass",
+      "detail": "Existe un baseline explícito para las cinco fuentes de solo lectura.",
+      "evidence": "reports/napo-source-readonly-baseline.json"
+    }
+  ],
+  "interpretation": "La arquitectura documental y sus evidencias mínimas están reconciliadas."
+}

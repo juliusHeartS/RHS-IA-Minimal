@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Napo's packaged extension host may be launched without a shell PATH. Use the
+# Node runtime embedded in Electron's plugin helper so bundled JavaScript CLIs
+# (notably Capibara's OKF CLI) remain self-contained.
+set -eu
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+helper="$script_dir/../../../Frameworks/Napo Helper (Plugin).app/Contents/MacOS/Napo Helper (Plugin)"
+
+if [ ! -x "$helper" ]; then
+	printf '%s\n' "Napo Node runtime not found: $helper" >&2
+	exit 127
+fi
+
+# Electron's run-as-node mode preserves the script path in process.argv when
+# invoked through its helper. Normal Node removes that path before the script
+# receives argv, which is required by Commander-based CLIs such as rhs-okf.
+# Recreate Node's argv contract without changing the packaged Capibara CLI.
+if [ "$#" -gt 0 ] && [ -f "$1" ]; then
+	script="$1"
+	shift
+	loader='const script=process.argv[1]; process.argv=[process.execPath,...process.argv.slice(2)]; require(script);'
+	ELECTRON_RUN_AS_NODE=1 exec "$helper" -e "$loader" "$script" "$@"
+fi
+
+ELECTRON_RUN_AS_NODE=1 exec "$helper" "$@"

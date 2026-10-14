@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "package": "dist/Napo.app",
+  "profile": "/tmp/napo-final-ui-profile-2",
+  "workspace": "/tmp/napo-python-ui-e2e.pAES71",
+  "packageExtensionSummary": {
+    "total": 90,
+    "conservar": 46,
+    "candidata-aplazar": 0,
+    "requiere-prueba": 44
+  },
+  "checks": {
+    "pythonFileExecution": {
+      "status": "pass",
+      "interpreter": "/usr/local/bin/python3",
+      "version": "3.13.3",
+      "marker": "NAPO_PYTHON_UI_OK"
+    },
+    "quartoPythonPreview": {
+      "status": "pass",
+      "quarto": "1.10.18",
+      "marker": "NAPO_QUARTO_UI_OK",
+      "html": "/tmp/napo-python-ui-e2e.pAES71/python-ui-check.html"
+    },
+    "rQuartoCellExecution": {
+      "status": "pass",
+      "runtime": "R 4.5.3",
+      "marker": "NAPO_REDUCED_R_QUARTO_OK"
+    },
+    "coexistenceWithRhsIa": {
+      "status": "pass",
+      "detail": "The Python kernel selected a free IPv4 loopback port while the installed RHS-IA instance held another 127.0.0.1 port.",
+      "hostFix": "src/vs/workbench/api/node/extensionHostProcess.ts: Napo extension host uses IPv4-first DNS resolution"
+    },
+    "nativePolicyWatcher": {
+      "status": "pass",
+      "path": "Contents/Resources/app/node_modules.asar.unpacked/@vscode/policy-watcher/build/Release/vscode-policy-watcher.node",
+      "detail": "The macOS arm64 native binding is packaged and a clean launch produced no missing-binding warning."
+    }
+  },
+  "limitations": [
+    "This evidence does not close the human legal review or release signing/notarization gates."
+  ],
+  "decision": "evidence-for-final-package-ui"
+}

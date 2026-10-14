@@ -187,9 +187,21 @@ export class ExtHostExtensionService extends AbstractExtHostExtensionService {
 		performance.mark('code/extHost/didInitAPI');
 
 		// Do this when extension service exists, but extensions are not being activated yet.
-		const configProvider = await this._extHostConfiguration.getConfigProvider();
-		await connectProxyResolver(this._extHostWorkspace, configProvider, this, this._logService, this._mainThreadTelemetryProxy, this._initData, this._store);
-		performance.mark('code/extHost/didInitProxyResolver');
+		// Napo starts its local process host on demand. Waiting here for the
+		// configuration barrier can deadlock that host before the main thread sends
+		// the workspace initialization message, which in turn prevents integrated
+		// extensions such as Capibara from activating. Set up the resolver as soon
+		// as configuration arrives while allowing the host handshake to continue.
+		const initializeProxyResolver = async (): Promise<void> => {
+			const configProvider = await this._extHostConfiguration.getConfigProvider();
+			await connectProxyResolver(this._extHostWorkspace, configProvider, this, this._logService, this._mainThreadTelemetryProxy, this._initData, this._store);
+			performance.mark('code/extHost/didInitProxyResolver');
+		};
+		if (this._initData.environment.appName === 'Napo') {
+			void initializeProxyResolver().catch(error => this._logService.error('Napo proxy resolver initialization failed', error));
+		} else {
+			await initializeProxyResolver();
+		}
 	}
 
 	protected _getEntryPoint(extensionDescription: IExtensionDescription): string | undefined {

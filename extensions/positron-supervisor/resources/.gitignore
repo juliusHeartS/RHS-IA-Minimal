@@ -1,2 +1,4 @@
-# Ignore Kallichore binaries
-kallichore/
+# Napo ships the macOS arm64 Kallichore runtime required by R sessions.
+# Keep other locally built Kallichore artifacts ignored.
+kallichore/*
+!kallichore/kcserver

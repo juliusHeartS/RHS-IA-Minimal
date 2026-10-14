@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "capibara",
+  "generatedAt": "2026-10-13T05:05:03.125Z",
+  "extensionVersion": "4.0.0",
+  "okfVersion": "0.1",
+  "okfTimestamp": "2026-07-15T00:00:00-05:00",
+  "buildOkfSkillVersion": "0.7",
+  "assets": [
+    {
+      "key": "okf",
+      "assetPath": ".rhs-okf",
+      "present": true,
+      "fileCount": 211,
+      "totalBytes": 8682785,
+      "sha256": "52de55beccde89309759cf5b32b7f68c74a6b4285bb8aba887cd7387a798d2ba"
+    },
+    {
+      "key": "baseglobal",
+      "assetPath": ".baseglobal",
+      "present": true,
+      "fileCount": 162,
+      "totalBytes": 33016256,
+      "sha256": "31574b3d1c928ac251fca4522e852cb34be26d64b487c9e0fbed5abf6a57cce9"
+    },
+    {
+      "key": "canonicalRag",
+      "assetPath": ".rhs-rag-canonical",
+      "present": false,
+      "fileCount": 0,
+      "totalBytes": 0,
+      "sha256": null
+    }
+  ],
+  "toolchain": [
+    {
+      "key": "rhsRag",
+      "assetPath": "resources/bin/darwin-arm64/rhs-rag",
+      "present": true,
+      "size": 220103136,
+      "sha256": "54dd97c8d8679d16c8b7d213696679ce13253171cbb4f6cec820be8c645aafdb"
+    },
+    {
+      "key": "pdfstruct",
+      "assetPath": "resources/bin/darwin-arm64/pdfstruct",
+      "present": true,
+      "size": 87169856,
+      "sha256": "e0cdc119a5a0c557d2095d197e32d693fe124ca9a381a33b058f95caf529dfcf"
+    },
+    {
+      "key": "yoloModel",
+      "assetPath": "resources/bin/darwin-arm64/yolov8_doclaynet.onnx",
+      "present": true,
+      "size": 272778080,
+      "sha256": "1b035f7ff4a444c38d28fd28d4fce498f60a8ce12168d55341bafaaa309705c0"
+    },
+    {
+      "key": "buildOkfSkill",
+      "assetPath": "assets/skills/build-okf/SKILL.md",
+      "present": true,
+      "size": 4708,
+      "sha256": "222ab6a571d61eeb8b30a8829290a5fa1be85e9a17e41b04e0987e9af1535bbf",
+      "version": "0.7"
+    }
+  ]
+}

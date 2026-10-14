@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-12",
+  "package": "/Users/julius3005/Documents/Github/VSCode-darwin-arm64/Napo.app",
+  "profile": "/tmp/napo-sensitivity-profile.5DqRa7",
+  "workspace": "/tmp/napo-sensitivity-e2e.8HkLw2",
+  "provider": "local deterministic OpenAI-compatible mock on 127.0.0.1:18125",
+  "route": "Capibara -> positron_execute_code -> Napo/Positron live R session",
+  "checks": {
+    "cleanProfileActivation": {
+      "status": "pass",
+      "detail": "RHS-Agent v4.0.0 became interactive in a clean trusted Napo workspace."
+    },
+    "visibleApproval": {
+      "status": "pass",
+      "detail": "The UI exposed the sensitivity code and required explicit approval before execution."
+    },
+    "livePositronSensitivity": {
+      "status": "pass",
+      "language": "r",
+      "tool": "positron_execute_code",
+      "runtime": "R 4.5.3",
+      "marker": "NAPO_SENSITIVITY_OK",
+      "detail": "The live R session evaluated shocks of -10%, 0%, and +10% and displayed the sensitivity data frame."
+    },
+    "runtimeEvidence": {
+      "status": "pass",
+      "rows": 3,
+      "baseline": 100,
+      "shocks": [-0.1, 0, 0.1],
+      "slope": 100.00000000000007,
+      "monotonicOutcome": true
+    }
+  },
+  "limitations": [
+    "This is a focused manual UI evidence record; it does not replace the automated package gate.",
+    "The mock provider is loopback-only and is not part of the shipped application."
+  ],
+  "decision": "pass-focused-sensitivity-coordination"
+}

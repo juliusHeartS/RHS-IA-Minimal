@@ -65,7 +65,7 @@ function positronBlockedDependencyError(displayName: string, version: string, bl
 	return new ExtensionManagementError(
 		nls.localize(
 			'positron.blockedExtensionDependency',
-			"Cannot install version {0} of the '{1}' extension because it depends on '{2}', which conflicts with RHS-IA built-in features.",
+			"Cannot install version {0} of the '{1}' extension because it depends on '{2}', which conflicts with Napo built-in features.",
 			version,
 			displayName,
 			blockedDependencies.join(', ')
@@ -89,7 +89,7 @@ export function positronExtensionCompatibility(
 			compatible: false,
 			reason: nls.localize(
 				'positronExtensionConflicts',
-				"Cannot install the '{0}' extension because it conflicts with RHS-IA built-in features.", extension.displayName || extension.name
+				"Cannot install the '{0}' extension because it conflicts with Napo built-in features.", extension.displayName || extension.name
 			)
 		};
 	}
@@ -126,7 +126,7 @@ export function positronExtensionCompatibility(
  * @returns Error with ExtensionManagementErrorCode.Incompatible
  */
 export function positronExtensionCompatibilityError(reason?: string): Error {
-	const error = new Error(reason || nls.localize('positronExtensionIncompatible', "Cannot install the extension because it is incompatible with RHS-IA"));
+	const error = new Error(reason || nls.localize('positronExtensionIncompatible', "Cannot install the extension because it is incompatible with Napo"));
 	error.name = ExtensionManagementErrorCode.Incompatible;
 	return error;
 }

@@ -93,12 +93,14 @@ Antes de modificar el host se debe comprobar, documentar y probar:
 ## 4. Política de red, telemetría y actualizaciones
 
 - Napo no tendrá telemetría, analítica de uso ni diagnósticos enviados de forma automática.
-- Napo no tendrá servicios externos obligatorios ni tráfico oculto.
-- Los proveedores que Capibara pueda ver se mantienen como capacidad de Capibara; una conexión remota requiere configuración y acción de la persona usuaria.
-- Las actualizaciones serán manuales, explícitas, verificables y reversibles.
+- Napo no tendrá servicios externos obligatorios ni tráfico oculto. “Servicio externo” incluye proveedores LLM remotos, servidores locales opcionales como Ollama/LM Studio, búsqueda web, Obscura y endpoints configurables; ninguno es telemetría y ninguno se inicia como requisito oculto.
+- Los proveedores que Capibara pueda ver se mantienen completos. La visibilidad no implica uso: una conexión remota requiere configuración, credencial y acción explícita de la persona usuaria; la búsqueda web inicia apagada.
+- Las actualizaciones serán manuales, explícitas, verificables y reversibles; no habrá consultas silenciosas de actualización ni instalación desde Marketplace.
 - Una actualización deberá indicar versión, cambios, hash y firma o mecanismo equivalente.
 - No se instalarán actualizaciones silenciosas.
 - La versión anterior debe poder restaurarse si una actualización falla.
+
+La especificación operativa completa queda en [POLITICA_NAPO.md](POLITICA_NAPO.md).
 
 ## 5. Reglas de repositorio y procedencia
 
@@ -159,6 +161,7 @@ No se avanza de un incremento al siguiente sin:
 - comprobación de telemetría cero;
 - inventario de licencias y procedencia;
 - prueba de actualización y recuperación;
+- verificación automática de que los cinco repositorios fuente conservan el estado de solo lectura documentado;
 - evidencia del artefacto final mediante inspección estática y, cuando corresponda, REA.
 
 ## 8. Riesgos iniciales

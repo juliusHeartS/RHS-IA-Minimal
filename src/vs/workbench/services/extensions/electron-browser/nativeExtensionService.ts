@@ -146,7 +146,11 @@ export class NativeExtensionService extends AbstractExtensionService implements 
 		lifecycleService.when(LifecyclePhase.Ready).then(() => {
 			// reschedule to ensure this runs after restoring viewlets, panels, and editors
 			runWhenWindowIdle(mainWindow, () => {
-				this._initializeIfNeeded();
+				// `_initializeIfNeeded` owns the initial host startup. Capibara is
+				// activated by its visible view after the workspace has settled; doing it
+				// here would construct its runtime against the extension directory when
+				// workspace folders are still being restored.
+				void this._initializeIfNeeded();
 			}, 50 /*max delay*/);
 		});
 	}

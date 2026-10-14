@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "format": "napo-destination-tests/v1",
+  "product": "Napo",
+  "generatedAt": "2026-10-13T19:37:33.254Z",
+  "status": "pass",
+  "typecheckClient": {
+    "command": "npm run typecheck-client",
+    "exitCode": 0,
+    "status": "pass"
+  },
+  "positronSuite": {
+    "command": "npm run test:positron",
+    "exitCode": 0,
+    "status": "pass",
+    "fileCount": 417,
+    "filesPassed": 415,
+    "filesSkipped": 2,
+    "totalFiles": 417,
+    "testsPassed": 4949,
+    "expectedFailures": 3,
+    "testsSkipped": 21,
+    "totalTests": 4973
+  },
+  "knownWarnings": [
+    "missing-DOMPurify-source-map",
+    "node-util-extend-deprecation"
+  ],
+  "interpretation": "El cliente y la suite ejecutable del destino pasan; los fallos esperados y avisos conocidos permanecen explícitos."
+}

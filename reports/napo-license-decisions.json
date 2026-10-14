@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "format": "napo-license-decisions/v1",
+  "product": "Napo",
+  "release": {
+    "version": "1.130.0",
+    "treeSha256": "c568e2a7a1c9c3d4d9ee9e8254ec1e5d3c2cac2be7f9d8ae924ff1a8ec290321"
+  },
+  "decisions": {}
+}

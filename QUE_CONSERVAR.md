@@ -47,7 +47,7 @@ Cada elemento de este grupo debe justificar su presencia con un caso de uso de N
 - herramientas de desarrollo web, móvil o de extensiones que no sean necesarias para construir Napo;
 - Docker, contenedores, SSH remoto y túneles si no son parte del alcance inicial;
 - vistas, temas, servicios y extensiones duplicadas o no relacionadas con datos;
-- marketplace y autenticación no necesarios para el análisis local; la telemetría queda prohibida;
+- marketplace, cuentas e integraciones de terceros que no formen parte de Capibara; la telemetría queda prohibida;
 - componentes de colaboración o publicación que no tengan una política de seguridad y procedencia.
 
 ### No transferir por defecto
@@ -171,7 +171,7 @@ La reducción debe hacerse por etapas. Primero conviene ocultar o desactivar fun
 4. **Aprobación explícita:** escribir, ejecutar, publicar, instalar o eliminar requiere una decisión clara cuando corresponda.
 5. **Aislamiento:** una sesión del agente no debe contaminar el contexto de otro proyecto.
 6. **Degradación clara:** si R, Python, Quarto, un proveedor o una extensión no están disponibles, la interfaz debe explicar la limitación.
-7. **Software libre redistribuible:** los componentes se pueden redistribuir conforme a sus licencias libres; se conservan avisos, atribuciones, textos de licencia y cualquier obligación de distribución de fuentes o cambios.
+7. **Redistribución conforme a licencia:** los componentes se pueden redistribuir únicamente conforme a las licencias aplicables; se conservan avisos, atribuciones, textos de licencia y cualquier obligación de distribución de fuentes o cambios. Napo no se presenta como un paquete bajo una única licencia de software libre mientras la revisión legal no confirme esa descripción.
 8. **Reproducibilidad:** una persona debe poder entender y repetir cómo se obtuvo un resultado.
 9. **Configuración reversible:** los cambios de configuración son aditivos, idempotentes y recuperables.
 10. **Distribución enfocada:** se reducen las capacidades ajenas al análisis de datos, pero no se alteran las extensiones de datos ni Capibara.
@@ -195,6 +195,17 @@ La política recomendada para Napo es **manual, explícita, verificable y revers
 Son servicios que viven fuera de la computadora de la persona usuaria: marketplace, sincronización en la nube, publicación remota, autenticación externa, servidores de actualización, telemetría, almacenamiento remoto, bases de datos remotas o endpoints de proveedores de modelos.
 
 Napo no tendrá servicios externos obligatorios ni tráfico oculto. Los proveedores de modelos que Capibara puede ver siguen siendo parte de Capibara: si la persona usuaria configura uno, la conexión será visible, voluntaria y controlada por ella. El núcleo local de Napo no dependerá de una cuenta, marketplace, nube ni servidor propio para funcionar.
+
+### Decisión cerrada sobre proveedores y autenticación
+
+Los proveedores que Capibara ya expone no son una decisión abierta de Napo: se conservan completos, junto con su configuración, credenciales seguras, selección de modelo, errores recuperables, cancelación, historial y procedencia. “Servicio externo opcional” describe el destino de una conexión elegida por la persona usuaria; no autoriza a recortar la superficie de proveedores de Capibara ni implica que Napo se conecte por sí solo.
+
+La autenticación se separa en dos grupos:
+
+- **Se conserva:** el almacenamiento seguro y los contratos que Capibara necesita para sus proveedores visibles.
+- **Se aplaza:** autenticación Microsoft, sugerencias de Posit AI, Dev Containers y Positron Skills, porque son integraciones externas o de desarrollo de Positron y no son necesarias para el núcleo local de Capibara, R, Python, datos o Quarto.
+
+La extensión `positron-run-app` se conserva: permite ejecutar aplicaciones analíticas y no se considera una integración externa de cuenta.
 
 ## 8. Primera matriz de decisión
 
@@ -252,8 +263,8 @@ REA está disponible en la sesión actual y ya se utilizó para inventariar el a
 
 ## 10. Decisiones aún abiertas
 
-- ¿Qué contratos de `rhs-agent4`/Capibara debe implementar o exponer el host Napo?
+Los contratos principales que el host Napo debe exponer para `rhs-agent4`/Capibara ya están identificados en `MATRIZ_HOST_CAPIBARA.md` y validados en el paquete actual mediante pruebas estructurales, de runtime y de interfaz. La matriz continúa siendo un documento vivo para regresiones y nuevas capacidades, pero ya no constituye una decisión de producto abierta.
 
-Quedan fuera de decisiones abiertas: Quarto, que siempre estará incluido; las funciones de análisis de datos, que se integran completas y sin alteración; Capibara, que se distribuye como función integrada; la telemetría, que queda prohibida; y la redistribución de software libre, que se realizará conservando sus obligaciones de licencia.
+Quedan fuera de decisiones abiertas: Quarto, que siempre estará incluido; las funciones de análisis de datos, que se integran completas y sin alteración; Capibara, que se distribuye como función integrada; la telemetría, que queda prohibida; y la redistribución conforme a las licencias aplicables, que se realizará conservando sus obligaciones de licencia.
 
 Este archivo define la dirección inicial. No autoriza todavía copiar repositorios completos ni eliminar componentes del host: esas decisiones deben apoyarse en un inventario de dependencias, pruebas y revisión de licencias.

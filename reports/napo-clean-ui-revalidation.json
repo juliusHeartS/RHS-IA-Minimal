@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-13T03:55:08-05:00",
+  "package": "/Users/julius3005/Documents/Github/VSCode-darwin-arm64/Napo.app",
+  "profile": "/tmp/napo-ui-direct",
+  "workspace": "perfil y workspace temporales",
+  "launch": {
+    "status": "pass",
+    "mode": "macOS arm64 direct launch",
+    "remoteDebuggingPort": 57210,
+    "initialExtensionSyncNotice": "resolved by one workbench reload"
+  },
+  "observations": {
+    "rhsAgent": {
+      "status": "pass",
+      "marker": "RHS-Agent v4.0.0",
+      "detail": "La vista RHS-Agent se abrió dentro del workbench y mostró el espacio Workspace · Sensibles, las acciones Nueva tarea y Configuración, y el asesor para análisis con RHS-IA, RAG y OKF."
+    },
+    "r": {
+      "status": "pass",
+      "marker": "Se inició R 4.5.3",
+      "detail": "La consola R inició y quedó disponible en el perfil limpio."
+    },
+    "quarto": {
+      "status": "pass",
+      "marker": "Quarto: 1.10.18",
+      "detail": "La barra de estado mostró Quarto 1.10.18 desde el paquete Napo."
+    },
+    "python": {
+      "status": "partial",
+      "checksPassed": "2 de 4",
+      "detail": "El intérprete detectado por la interfaz fue /opt/homebrew/bin/python3 y no tenía un ipykernel utilizable. Napo ofreció Instalar ipykernel; no se instaló nada ni se alteró el entorno del usuario.",
+      "interpretation": "Es una limitación del entorno Python detectado en esta prueba gráfica. La compuerta reproducible del paquete conserva la validación Python/Jupyter con el intérprete preparado /usr/local/bin/python3 3.13.3."
+    }
+  },
+  "evidence": {
+    "screenshot": "screenshots/2026-10-13-clean-ui/napo-rhs-agent.png",
+    "packageTreeSha256": "cf7fde539d2c23bf85bb8b92bfff00e9c1673ef664fd52345e2859792aadd572",
+    "revalidatedAt": "2026-10-13T05:37:00-05:00"
+  },
+  "limitations": [
+    "La evidencia no cierra revisión legal humana, firma, notarización ni canal de distribución.",
+    "La observación de Python no implica una carencia del paquete: depende del intérprete que el perfil limpio seleccionó."
+  ],
+  "status": "pass-with-python-environment-limitation"
+}

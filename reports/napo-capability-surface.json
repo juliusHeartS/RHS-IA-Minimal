@@ -1,0 +1,239 @@
+{
+  "format": "napo-capability-surface/v1",
+  "generatedAt": "deterministic",
+  "product": "Napo",
+  "package": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
+  "sourceRoot": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/extensions/rhs-agent4/assets/skills",
+  "packageRoot": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Resources/app/extensions/rhs-agent4/assets/skills",
+  "policy": "las capacidades se transfieren desde Capibara; esta auditoría no modifica su código",
+  "requiredCapabilities": 8,
+  "passedCapabilities": 8,
+  "failedCapabilities": 0,
+  "status": "pass",
+  "capabilities": [
+    {
+      "name": "analytical-programming-r-python",
+      "purpose": "programación analítica, transformaciones, visualización y simulaciones con R/Python",
+      "status": "pass",
+      "integrated": {
+        "exists": true,
+        "fileCount": 1,
+        "treeSha256": "8650f6eaa1f58566f156150d5ddd2ab4b1ddb765f6f285fb10abdf8aa5e77889",
+        "markers": [
+          "simulación",
+          "reproducción",
+          "R o Python"
+        ]
+      },
+      "packaged": {
+        "exists": true,
+        "fileCount": 1,
+        "treeSha256": "8650f6eaa1f58566f156150d5ddd2ab4b1ddb765f6f285fb10abdf8aa5e77889",
+        "markers": [
+          "simulación",
+          "reproducción",
+          "R o Python"
+        ]
+      },
+      "filesMatch": true,
+      "digestMatch": true,
+      "markersMatch": true
+    },
+    {
+      "name": "predictive-modeling-r",
+      "purpose": "modelado predictivo reproducible con R",
+      "status": "pass",
+      "integrated": {
+        "exists": true,
+        "fileCount": 4,
+        "treeSha256": "c11137abd7c2a642152e873e65ef0b48e0d15c75e30bb4a79bbb8b7e590e69cd",
+        "markers": [
+          "tidymodels",
+          "Dividir entrenamiento y test",
+          "semillas"
+        ]
+      },
+      "packaged": {
+        "exists": true,
+        "fileCount": 4,
+        "treeSha256": "c11137abd7c2a642152e873e65ef0b48e0d15c75e30bb4a79bbb8b7e590e69cd",
+        "markers": [
+          "tidymodels",
+          "Dividir entrenamiento y test",
+          "semillas"
+        ]
+      },
+      "filesMatch": true,
+      "digestMatch": true,
+      "markersMatch": true
+    },
+    {
+      "name": "quarto-authoring",
+      "purpose": "documentos y resultados reproducibles con Quarto",
+      "status": "pass",
+      "integrated": {
+        "exists": true,
+        "fileCount": 20,
+        "treeSha256": "e371165600b5085912d5767cbf751c983c4302b70cbe801b4d3bc0a83bcfe1dc",
+        "markers": [
+          ".qmd",
+          "salida reproducible",
+          "Renderizar"
+        ]
+      },
+      "packaged": {
+        "exists": true,
+        "fileCount": 20,
+        "treeSha256": "e371165600b5085912d5767cbf751c983c4302b70cbe801b4d3bc0a83bcfe1dc",
+        "markers": [
+          ".qmd",
+          "salida reproducible",
+          "Renderizar"
+        ]
+      },
+      "filesMatch": true,
+      "digestMatch": true,
+      "markersMatch": true
+    },
+    {
+      "name": "report",
+      "purpose": "informes y notebooks reproducibles",
+      "status": "pass",
+      "integrated": {
+        "exists": true,
+        "fileCount": 3,
+        "treeSha256": "28f26d1a1e123fd4f875c984ed8694109cdcdeff9e171864c185fc35a8961d9f",
+        "markers": [
+          ".qmd",
+          ".ipynb",
+          "sesión limpia"
+        ]
+      },
+      "packaged": {
+        "exists": true,
+        "fileCount": 3,
+        "treeSha256": "28f26d1a1e123fd4f875c984ed8694109cdcdeff9e171864c185fc35a8961d9f",
+        "markers": [
+          ".qmd",
+          ".ipynb",
+          "sesión limpia"
+        ]
+      },
+      "filesMatch": true,
+      "digestMatch": true,
+      "markersMatch": true
+    },
+    {
+      "name": "grounded-citations",
+      "purpose": "afirmaciones sustentadas para política y planificación",
+      "status": "pass",
+      "integrated": {
+        "exists": true,
+        "fileCount": 3,
+        "treeSha256": "1e395096b2dfaba30d52d6a0705a632985bc4e5d1e5131be0d12d4ed5df41808",
+        "markers": [
+          "policy",
+          "planning",
+          "evidence"
+        ]
+      },
+      "packaged": {
+        "exists": true,
+        "fileCount": 3,
+        "treeSha256": "1e395096b2dfaba30d52d6a0705a632985bc4e5d1e5131be0d12d4ed5df41808",
+        "markers": [
+          "policy",
+          "planning",
+          "evidence"
+        ]
+      },
+      "filesMatch": true,
+      "digestMatch": true,
+      "markersMatch": true
+    },
+    {
+      "name": "capibara-rag-query",
+      "purpose": "recuperación trazable desde conocimiento institucional y local",
+      "status": "pass",
+      "integrated": {
+        "exists": true,
+        "fileCount": 1,
+        "treeSha256": "33319fcc6bc06095d7a25764f16b35cabbf887e2f6f1af40e758dd2872bd2828",
+        "markers": [
+          "RAG",
+          "fuentes",
+          "chunks-only"
+        ]
+      },
+      "packaged": {
+        "exists": true,
+        "fileCount": 1,
+        "treeSha256": "33319fcc6bc06095d7a25764f16b35cabbf887e2f6f1af40e758dd2872bd2828",
+        "markers": [
+          "RAG",
+          "fuentes",
+          "chunks-only"
+        ]
+      },
+      "filesMatch": true,
+      "digestMatch": true,
+      "markersMatch": true
+    },
+    {
+      "name": "build-okf",
+      "purpose": "conocimiento local y RAG gobernados",
+      "status": "pass",
+      "integrated": {
+        "exists": true,
+        "fileCount": 4,
+        "treeSha256": "421f90281a05209dc7d60b2201f3b9481cba3a6007adc3dd06284b68b4bbd7cb",
+        "markers": [
+          "CORE",
+          "LOCAL",
+          "rhs-okf verify"
+        ]
+      },
+      "packaged": {
+        "exists": true,
+        "fileCount": 4,
+        "treeSha256": "421f90281a05209dc7d60b2201f3b9481cba3a6007adc3dd06284b68b4bbd7cb",
+        "markers": [
+          "CORE",
+          "LOCAL",
+          "rhs-okf verify"
+        ]
+      },
+      "filesMatch": true,
+      "digestMatch": true,
+      "markersMatch": true
+    },
+    {
+      "name": "national-health-workforce-accounts",
+      "purpose": "modelos y planificación con datos institucionales CNPS/NHWA",
+      "status": "pass",
+      "integrated": {
+        "exists": true,
+        "fileCount": 1,
+        "treeSha256": "d8f9167e6aad68d731d7e58b14a35d48f161b679e778d4edb445227701a0de17",
+        "markers": [
+          "paho_nhwa",
+          "cnps_ops",
+          "planificadores"
+        ]
+      },
+      "packaged": {
+        "exists": true,
+        "fileCount": 1,
+        "treeSha256": "d8f9167e6aad68d731d7e58b14a35d48f161b679e778d4edb445227701a0de17",
+        "markers": [
+          "paho_nhwa",
+          "cnps_ops",
+          "planificadores"
+        ]
+      },
+      "filesMatch": true,
+      "digestMatch": true,
+      "markersMatch": true
+    }
+  ]
+}

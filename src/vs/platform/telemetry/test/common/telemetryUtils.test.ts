@@ -5,7 +5,7 @@
 
 import assert from 'assert';
 import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../base/test/common/utils.js';
-import { cleanRemoteAuthority } from '../../common/telemetryUtils.js';
+import { cleanRemoteAuthority, supportsTelemetry } from '../../common/telemetryUtils.js';
 
 suite('TelemetryUtils', () => {
 
@@ -119,6 +119,19 @@ suite('TelemetryUtils', () => {
 
 			assert.strictEqual(cleanRemoteAuthority('ssh-remote', config), 'other');
 			assert.strictEqual(cleanRemoteAuthority(undefined, config), 'none');
+		});
+	});
+
+	suite('supportsTelemetry', () => {
+
+		test('keeps telemetry disabled for an unbuilt Napo product', () => {
+			assert.strictEqual(
+				supportsTelemetry(
+					{ enableTelemetry: false } as any,
+					{ isBuilt: false, disableTelemetry: false } as any
+				),
+				false
+			);
 		});
 	});
 });

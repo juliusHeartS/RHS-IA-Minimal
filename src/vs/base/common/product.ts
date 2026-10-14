@@ -101,8 +101,15 @@ export interface IProductConfiguration {
 	 * Base URL for the slim LLM docs bundles the AI assistant reads from disk.
 	 * Overridden at runtime by the POSITRON_LLMS_DOCS_URL environment variable.
 	 * Distinct from the docs *website* URL, which is a separate knob.
+	 * An empty value disables implicit remote documentation downloads.
 	 */
 	readonly positronLlmsDocsUrl?: string;
+
+	/** Whether the product may offer importing settings from Visual Studio Code. */
+	readonly enableSettingsImport?: boolean;
+
+	/** Whether a launch without explicit files or folders should open a clean empty window. */
+	readonly openEmptyWindowOnStartup?: boolean;
 
 	/** The linux package type (DEB or RPM) */
 	readonly packageType?: string;

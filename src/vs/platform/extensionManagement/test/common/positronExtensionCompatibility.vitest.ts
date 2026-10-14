@@ -28,7 +28,7 @@ describe('Positron Extension Compatibility', () => {
 
 		expect(result.compatible).toBe(false);
 		expect(result.reason).toBeDefined();
-		expect(result.reason!).toContain('conflicts with Positron built-in features');
+		expect(result.reason!).toContain('conflicts with Napo built-in features');
 		expect(result.reason!).toContain('Python');
 	});
 
@@ -65,7 +65,7 @@ describe('Positron Extension Compatibility', () => {
 
 		expect(result.compatible).toBe(false);
 		expect(result.reason).toBeDefined();
-		expect(result.reason!).toContain('Extension is not compatible with Positron');
+		expect(result.reason!).toContain('Extension is not compatible with Napo');
 		expect(result.reason!).toContain('2026.02.0');
 		expect(result.reason!).toContain('2027.01.0');
 	});

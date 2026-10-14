@@ -2395,6 +2395,13 @@ export class ExtensionsWorkbenchService extends Disposable implements IExtension
 	}
 
 	private shouldAutoUpdateExtension(extension: IExtension): boolean {
+		// Napo follows a manual update policy. User-initiated installs and
+		// explicit update commands remain available, but background extension
+		// update paths must never download or replace code.
+		if (this.productService.applicationName === 'napo') {
+			return false;
+		}
+
 		if (extension.deprecationInfo?.disallowInstall) {
 			return false;
 		}

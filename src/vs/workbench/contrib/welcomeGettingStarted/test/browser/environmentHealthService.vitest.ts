@@ -43,13 +43,14 @@ describe('EnvironmentHealthService', () => {
 	const onDidChangeConfiguration = new Emitter<{ affectsConfiguration: (key: string) => boolean }>();
 	const executeCommand = vi.fn();
 	const getExtension = vi.fn();
+	const activateById = vi.fn();
 	const getValue = vi.fn();
 	const warn = vi.fn();
 	const trace = vi.fn();
 
 	const ctx = createTestContainer()
 		.stub(ICommandService, { executeCommand })
-		.stub(IExtensionService, { getExtension })
+		.stub(IExtensionService, { getExtension, activateById })
 		.stub(IConfigurationService, { getValue, onDidChangeConfiguration: onDidChangeConfiguration.event })
 		.stub(ILogService, { trace, warn })
 		.build();
@@ -58,6 +59,7 @@ describe('EnvironmentHealthService', () => {
 		vi.resetAllMocks();
 		getValue.mockReturnValue(['python', 'r']);
 		getExtension.mockResolvedValue({ identifier: { value: 'stub' } });
+		activateById.mockResolvedValue(undefined);
 		executeCommand.mockResolvedValue(passing);
 	});
 
@@ -94,6 +96,17 @@ describe('EnvironmentHealthService', () => {
 			['python', 'result'],
 			['r', 'result'],
 		]);
+		environmentHealthService.dispose();
+	});
+
+	it('activates each provider before calling its health command', async () => {
+		const environmentHealthService = open();
+		await settle();
+		expect(activateById.mock.calls.map(c => c[0].value)).toEqual([
+			'ms-python.python',
+			'positron.positron-r',
+		]);
+		expect(activateById.mock.calls.every(c => c[1].startup === false && c[1].activationEvent === 'api')).toBe(true);
 		environmentHealthService.dispose();
 	});
 

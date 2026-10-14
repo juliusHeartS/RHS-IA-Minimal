@@ -42,7 +42,11 @@ configurationRegistry.registerConfiguration({
 		[agentHostEnabledSettingId]: {
 			type: 'boolean',
 			description: nls.localize('chat.agentHost.enabled', "When enabled, some agents run in a separate agent host process."),
-			default: !isWeb && product.quality !== 'stable',
+			// Napo ships Capibara as its integrated agent. The generic VS Code
+			// Agent Host is a separate experimental stack and is not part of the
+			// Napo agent contract; keep it opt-in instead of starting its own
+			// session database and provider runtime by default.
+			default: !isWeb && product.applicationName !== 'napo' && product.quality !== 'stable',
 			tags: ['experimental', 'advanced'],
 			experiment: { mode: 'startup' },
 		},

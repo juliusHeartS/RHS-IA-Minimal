@@ -9,6 +9,7 @@ import { URI, UriComponents } from '../../../base/common/uri.js';
 import { IFileService } from '../../../platform/files/common/files.js';
 import { Disposable } from '../../../base/common/lifecycle.js';
 import { ILanguagePackService } from '../../../platform/languagePacks/common/languagePacks.js';
+import { IExtensionService } from '../../services/extensions/common/extensions.js';
 
 @extHostNamedCustomer(MainContext.MainThreadLocalization)
 export class MainThreadLocalization extends Disposable implements MainThreadLocalizationShape {
@@ -16,7 +17,8 @@ export class MainThreadLocalization extends Disposable implements MainThreadLoca
 	constructor(
 		extHostContext: IExtHostContext,
 		@IFileService private readonly fileService: IFileService,
-		@ILanguagePackService private readonly languagePackService: ILanguagePackService
+		@ILanguagePackService private readonly languagePackService: ILanguagePackService,
+		@IExtensionService private readonly extensionService: IExtensionService
 	) {
 		super();
 	}
@@ -25,6 +27,24 @@ export class MainThreadLocalization extends Disposable implements MainThreadLoca
 		try {
 			const uri = await this.languagePackService.getBuiltInExtensionTranslationsUri(id, language);
 			return uri;
+		} catch (e) {
+			return undefined;
+		}
+	}
+
+	async $fetchBuiltInExtensionBundleUri(id: string, language: string): Promise<URI | undefined> {
+		try {
+			const extension = await this.extensionService.getExtension(id);
+			if (!extension?.isBuiltin) {
+				return undefined;
+			}
+
+			// Napo may ship a local bundle for a built-in extension even when the
+			// inherited manifest does not declare `l10n`. Resolve the conventional
+			// location only after checking that the file is actually packaged.
+			const l10nPath = extension.l10n ?? './l10n';
+			const bundleUri = URI.joinPath(extension.extensionLocation, l10nPath, `bundle.l10n.${language}.json`);
+			return await this.fileService.exists(bundleUri) ? bundleUri : undefined;
 		} catch (e) {
 			return undefined;
 		}

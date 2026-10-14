@@ -5,7 +5,9 @@
 	"version": "",
 	"positronVersion": "2026.09.1",
 	"positronBuildNumber": 0,
-	"positronLlmsDocsUrl": "https://cdn.posit.co/positron/releases/docs",
+	"positronLlmsDocsUrl": "",
+	"enableSettingsImport": false,
+	"openEmptyWindowOnStartup": true,
 	"applicationName": "napo",
 	"dataFolderName": ".napo",
 	"sharedDataFolderName": ".napo-shared",
@@ -16,8 +18,8 @@
 	"serverGreeting": [],
 	"serverLicense": [],
 	"serverLicensePrompt": "",
-	"serverApplicationName": "rhs-ia-server",
-	"serverDataFolderName": ".rhs-ia-server",
+	"serverApplicationName": "napo-server",
+	"serverDataFolderName": ".napo-server",
 	"serverDownloadUrlTemplate": "https://cdn.posit.co/positron/${quality}/reh/${arch-long}/positron-reh-${os}-${arch}-${version}.tar.gz",
 	"tunnelApplicationName": "rhs-ia-tunnel",
 	"win32DirName": "Napo",
@@ -33,7 +35,7 @@
 	"win32ShellNameShort": "&Napo",
 	"win32TunnelServiceMutex": "rhs-ia-tunnelservice",
 	"win32TunnelMutex": "rhs-ia-tunnel",
-	"darwinBundleIdentifier": "co.posit.positron",
+	"darwinBundleIdentifier": "org.rhsia.napo",
 	"darwinProfileUUID": "0501C5DF-0DC9-4217-9C18-A5595A125743",
 	"darwinProfilePayloadUUID": "BEA2CCD2-3F74-4174-9C0E-606A6F13B050",
 	"linuxIconName": "org.rhsia.napo",
@@ -301,12 +303,12 @@
 		}
 	],
 	"extensionsGallery": {
-		"serviceUrl": "https://p3m.dev/openvsx/latest/vscode/gallery",
-		"itemUrl": "https://p3m.dev/openvsx/latest/vscode/item",
-		"resourceUrlTemplate": "https://p3m.dev/openvsx/latest/vscode/asset/{publisher}/{name}/{version}/Microsoft.VisualStudio.Code.WebResources/{path}",
+		"serviceUrl": "",
+		"itemUrl": "",
+		"resourceUrlTemplate": "",
 		"controlUrl": "",
 		"recommendationsUrl": "",
-		"extensionUrlTemplate": "https://p3m.dev/openvsx/latest/vscode/gallery/{publisher}/{name}/latest",
+		"extensionUrlTemplate": "",
 		"nlsBaseUrl": "",
 		"publisherUrl": ""
 	},
@@ -607,6 +609,11 @@
 			"languageModelSystem"
 		]
 	},
+	"extensionUntrustedWorkspaceSupport": {
+		"juliushearts.rhs-agent4": {
+			"override": true
+		}
+	},
 	"trustedExtensionPublishers": [
 		"posit",
 		"rstudio"
@@ -733,7 +740,7 @@
 	],
 	"builtInExtensionsEnabledWithAutoUpdates": [],
 	"sessionsWindowAllowedExtensions": [],
-	"voiceWsUrl": "wss://falcon-caas.mai.microsoft.com/voice-code/api/v1/realtime/voice",
+	"voiceWsUrl": "",
 	"defaultLocale": "es",
 	"nativeChatSetupEnabled": false,
 	"rhsIaUseMockKeychain": true

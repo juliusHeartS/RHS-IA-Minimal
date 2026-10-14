@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "purpose": "napo-source-readonly-guard",
+  "generatedAt": "deterministic",
+  "mode": "record",
+  "policy": "las fuentes se leen y no se escriben; el baseline conserva cambios preexistentes documentados",
+  "sources": [
+    {
+      "name": "RHS-IA",
+      "path": "/Users/julius3005/Documents/Github/RHS-IA",
+      "head": "453239ef149e66bb4a1a849b2e7c3c31bc28b30b",
+      "statusDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "statusLineCount": 0,
+      "trackedDiffDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trackedDiffLineCount": 0,
+      "status": ""
+    },
+    {
+      "name": "positron",
+      "path": "/Users/julius3005/Documents/Github/positron",
+      "head": "6a251c21f470eac78164e2793ca0c636ebbf5193",
+      "statusDigest": "0a39d2576ed1fb799115600e34af649e3632291800e5825fd316932142b236fe",
+      "statusLineCount": 2,
+      "trackedDiffDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trackedDiffLineCount": 0,
+      "status": "?? .rhs-core-manifest.json\n?? Instrucciones/\n"
+    },
+    {
+      "name": "rhs-agent3",
+      "path": "/Users/julius3005/Documents/Github/rhs-agent3",
+      "head": "1905844edd6ef2648fe9dd1ff9f7679276123188",
+      "statusDigest": "53f5a7a0d8042413fc272942e2e96bea44dfe9f9ea5cbc162ff0a39a48717ad2",
+      "statusLineCount": 9,
+      "trackedDiffDigest": "5566b596c672b62d5c2f92632825b6036090ef4bd147dcbcc798ff1886ae42cf",
+      "trackedDiffLineCount": 8,
+      "status": " M src/core/prompts/sections/positron-data-science.ts\n M src/core/tools/__tests__/toolDefinitions.test.ts\n M src/core/tools/registry.ts\n M src/core/tools/toolDefinitions.ts\n M src/host/RuntimeCuyContext.ts\n M src/host/ScuyWebviewProvider.ts\n M webview-ui/src/App.tsx\n M webview-ui/src/components/ChatRow.tsx\n?? src/core/tools/RenderQuartoTool.ts\n"
+    },
+    {
+      "name": "rhs-agent4",
+      "path": "/Users/julius3005/Documents/Github/rhs-agent4",
+      "head": null,
+      "statusDigest": "6070d9418ec5e9d13735cbff52b5c7fafc89d9a72f47a05aa777dc6414e2c8eb",
+      "statusLineCount": 37,
+      "trackedDiffDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trackedDiffLineCount": 0,
+      "status": "?? .editorconfig\n?? .gitignore\n?? .npmrc\n?? .nvmrc\n?? .vscode/\n?? AGENTS.md\n?? ArquitecturaCapibara.md\n?? ArquitecturaSachaCuy.md\n?? Audit2026-08-17.md\n?? AuditoriaIntegracionHermesCuy.md\n?? CHANGELOG.md\n?? LICENSE\n?? LICENSES/\n?? NotaConceptualCapibara.md\n?? NotaConceptualSachaCuy.md\n?? PlanConstruccionCapibara.md\n?? PlanRenacimientoSachaCuy.md\n?? README.md\n?? THIRD_PARTY_NOTICES.md\n?? code-index-tracking.md\n?? docs/\n?? e2e/\n?? evaluation/\n?? gap_files.md\n?? package.json\n?? packages/\n?? pendientes.md\n?? pnpm-lock.yaml\n?? pnpm-workspace.yaml\n?? provenance/\n?? runtime/\n?? scripts/\n?? src/\n?? tests/\n?? tsconfig.json\n?? turbo.json\n?? webview-ui/\n"
+    },
+    {
+      "name": "vscode",
+      "path": "/Users/julius3005/Documents/Github/vscode",
+      "head": "41c470f705e3a73501ef443daa0ac0060baff356",
+      "statusDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "statusLineCount": 0,
+      "trackedDiffDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trackedDiffLineCount": 0,
+      "status": ""
+    }
+  ]
+}

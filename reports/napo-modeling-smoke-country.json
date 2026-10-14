@@ -1,0 +1,46 @@
+{
+  "format": "napo-modeling-smoke/v1",
+  "package": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "paquete Napo",
+      "ok": true,
+      "detail": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app"
+    },
+    {
+      "name": "Quarto incluido",
+      "ok": true,
+      "detail": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Resources/app/quarto/bin/quarto"
+    },
+    {
+      "name": "R: modelo, simulación y escenarios",
+      "ok": true,
+      "detail": {
+        "status": 0,
+        "stdout": "NAPO_R_MODEL_SIMULATION_SCENARIO_OK",
+        "stderr": ""
+      }
+    },
+    {
+      "name": "Python: modelo, simulación y escenarios",
+      "ok": true,
+      "detail": {
+        "status": 0,
+        "stdout": "NAPO_PYTHON_MODEL_SIMULATION_SCENARIO_OK",
+        "stderr": ""
+      }
+    },
+    {
+      "name": "Quarto: informe reproducible de modelación",
+      "ok": true,
+      "detail": {
+        "status": 0,
+        "outputExists": true,
+        "outputSha256": "12b313ae7026fecd06645ce95fbb8445c6baf510c5315220eaa218f1fc8cefb3",
+        "stdout": "",
+        "stderr": "  html-math-method: mathjax\n  wrap: none\n  default-image-extension: png\n  \nmetadata\n  document-css: false\n  link-citations: true\n  date-format: long\n  lang: en\n  title: Napo modeling smoke test\n  \nOutput created: rendered/modeling-smoke.html"
+      }
+    }
+  ]
+}

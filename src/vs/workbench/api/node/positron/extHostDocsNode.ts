@@ -209,7 +209,9 @@ export function deriveBundleRequest(initData: IExtHostInitDataService, env: Node
 		profile: (isWorkbench ? 'workbench' : 'positron') as DocsProfile,
 		baseUrl: (override && override.length > 0)
 			? override
-			: (product.positronLlmsDocsUrl ?? DEFAULT_BUNDLE_BASE_URL),
+			: (product.applicationName === 'napo'
+				? (product.positronLlmsDocsUrl ?? '')
+				: (product.positronLlmsDocsUrl ?? DEFAULT_BUNDLE_BASE_URL)),
 	};
 }
 
@@ -219,6 +221,7 @@ export class NodeExtHostDocs extends Disposable implements IExtHostDocs {
 
 	private readonly _triggers: PositronDocsTriggers;
 	private readonly _launch: RunOnceScheduler;
+	private readonly _docsEnabled: boolean;
 
 	constructor(
 		@IExtHostInitDataService initData: IExtHostInitDataService,
@@ -233,6 +236,11 @@ export class NodeExtHostDocs extends Disposable implements IExtHostDocs {
 		// upstream-owned. Profile-scoped, which is one 655KB copy per profile.
 		const root = joinPath(dirname(initData.environment.globalStorageHome), CACHE_DIR_NAME);
 		const request = deriveBundleRequest(initData, process.env);
+		// Napo leaves the product URL empty so local documentation is the default
+		// and no CDN request is made implicitly. An endpoint supplied explicitly
+		// through POSITRON_LLMS_DOCS_URL opts this feature back in for controlled
+		// deployments and tests.
+		this._docsEnabled = request.baseUrl.length > 0;
 		const logger = {
 			info: (message: string) => this._logService.info(message),
 			warn: (message: string) => this._logService.warn(message),
@@ -252,7 +260,7 @@ export class NodeExtHostDocs extends Disposable implements IExtHostDocs {
 			cache,
 			request,
 			logger,
-			isAiEnabled: () => this._isAiEnabled(),
+			isAiEnabled: async () => this._docsEnabled && await this._isAiEnabled(),
 			waitMs: GET_LOCAL_DOCS_WAIT_MS,
 			delay: ms => new Promise(resolve => setTimeout(resolve, ms)),
 		});
@@ -262,9 +270,10 @@ export class NodeExtHostDocs extends Disposable implements IExtHostDocs {
 		// discipline is what keeps a slow download off the extension
 		// activation path, and the construction test asserts it.
 		this._launch = this._register(new RunOnceScheduler(() => { void this._triggers.runBackgroundFetch(); }, LAUNCH_DELAY_MS));
-		void this._scheduleLaunchAfterStartup();
-
-		void this._listenForAiEnabledFlip();
+		if (this._docsEnabled) {
+			void this._scheduleLaunchAfterStartup();
+			void this._listenForAiEnabledFlip();
+		}
 	}
 
 	async getLocalDocs(): Promise<positron.docs.LocalDocs | undefined> {

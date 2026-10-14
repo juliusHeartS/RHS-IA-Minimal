@@ -71,14 +71,14 @@ describe('resolveSessionlessStaticCallbackRoute', () => {
 	it('uses the existing sessionless static route with a stable callback segment', async () => {
 		await withSessionUrl(undefined, constants => {
 			expect(constants.resolveSessionlessStaticCallbackRoute())
-				.toBe('/positron-static/callback-0/static/out/vs/code/browser/workbench/callback.html');
+				.toBe('/napo-static/callback-0/static/out/vs/code/browser/workbench/callback.html');
 		});
 	});
 
 	it('keeps the Workbench deployment prefix', async () => {
 		await withSessionUrl('/rstudio/s/8791a6ae9dc1b037e055c/', constants => {
 			expect(constants.resolveSessionlessStaticCallbackRoute())
-				.toBe('/rstudio/positron-static/callback-0/static/out/vs/code/browser/workbench/callback.html');
+			.toBe('/rstudio/napo-static/callback-0/static/out/vs/code/browser/workbench/callback.html');
 		});
 	});
 
@@ -87,8 +87,8 @@ describe('resolveSessionlessStaticCallbackRoute', () => {
 		const second = await withSessionUrl('/s/bbbbbbbbbbbbbbbbbbbbb/', constants => constants.resolveSessionlessStaticCallbackRoute());
 
 		expect({ first, second }).toEqual({
-			first: '/positron-static/callback-0/static/out/vs/code/browser/workbench/callback.html',
-			second: '/positron-static/callback-0/static/out/vs/code/browser/workbench/callback.html'
+			first: '/napo-static/callback-0/static/out/vs/code/browser/workbench/callback.html',
+			second: '/napo-static/callback-0/static/out/vs/code/browser/workbench/callback.html'
 		});
 	});
 });

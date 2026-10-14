@@ -75,6 +75,20 @@ function updateExtensionPackageJSON(input: Stream, update: (data: any) => any): 
 		.pipe(packageJsonFilter.restore);
 }
 
+// Napo's product invariant is that no shipped extension has a telemetry
+// instrumentation key. This is applied only to the packaged copy: the source
+// repositories and their extension manifests remain untouched. The host also
+// hard-disables telemetry through product.json and telemetryUtils.ts; removing
+// the key here prevents an extension from carrying an inherited destination
+// even when its code contains an optional telemetry reporter.
+function applyNapoPackagePolicy(data: any): any {
+	delete data.aiKey;
+	if (data.enableTelemetry === true) {
+		data.enableTelemetry = false;
+	}
+	return data;
+}
+
 // --- Start Positron ---
 // Extensions that are still bundled with webpack instead of esbuild. Upstream
 // removed the webpack pathway from this file during their esbuild migration,
@@ -152,7 +166,7 @@ function fromLocal(extensionPath: string, forWeb: boolean, disableMangle: boolea
 			if (data.main) {
 				data.main = data.main.replace('/out/', '/dist/');
 			}
-			return data;
+			return applyNapoPackagePolicy(data);
 		});
 	}
 
@@ -174,10 +188,17 @@ export function typeCheckExtensionStream(extensionPath: string, forWeb: boolean)
 function fromLocalNormal(extensionPath: string): Stream {
 	const vsce = require('@vscode/vsce') as typeof import('@vscode/vsce');
 	const result = es.through();
+	// Capibara is transferred as a complete, pre-bundled VSIX artifact. Its
+	// runtime dependencies are already embedded in dist/extension.js, so the
+	// host must not ask npm to resolve the extension's workspace-only manifest
+	// dependencies while packaging Napo.
+	const packageManager = path.basename(extensionPath) === 'rhs-agent4'
+		? vsce.PackageManager.None
+		: vsce.PackageManager.Npm;
 
 	// --- Start PWB: from Positron ---
 	// Replace vsce.listFiles with listExtensionFiles to queue the work
-	listExtensionFiles({ cwd: extensionPath, packageManager: vsce.PackageManager.Npm })
+	listExtensionFiles({ cwd: extensionPath, packageManager })
 		.then(fileNames => {
 			createSequentialFileStream(extensionPath, fileNames).pipe(result);
 		})
@@ -599,6 +620,91 @@ const excludedExtensions = [
 	// --- End Positron ---
 ];
 
+// --- Start Napo ---
+// Keep the source tree intact while excluding language/tooling extensions that
+// are outside Napo's first R/Python/Quarto/data-analysis profile. This is a
+// packaging decision for Napo, not a deletion from the source tree. The list is
+// backed by the package-surface audit and the reversible 59-extension reduction
+// test; any extension with a data, runtime, Quarto, or Capibara contract must be
+// added to neither this list nor a future replacement without new evidence.
+const napoDeferredExtensions = [
+	'bat',
+	'clojure',
+	'coffeescript',
+	'cpp',
+	'csharp',
+	'dart',
+	'docker',
+	'extension-editing',
+	'fsharp',
+	'go',
+	'groovy',
+	'grunt',
+	'gulp',
+	'handlebars',
+	'hlsl',
+	'jake',
+	'java',
+	'julia',
+	'less',
+	'lua',
+	'npm',
+	'objective-c',
+	'open-remote-ssh',
+	'perl',
+	'php-language-features',
+	'php',
+	'powershell',
+	'pug',
+	'razor',
+	'ruby',
+	'rust',
+	'scss',
+	'shellscript',
+	'swift',
+	'tunnel-forwarding',
+	'typescript-basics',
+	// Deferred after a package-clone validation and R/Python/Quarto runtime
+	// smoke. These remain in the read-only source trees and can be restored
+	// from the package build without changing the source repositories.
+	'css',
+	'dotenv',
+	'ini',
+	'latex',
+	'log',
+	'make',
+	'javascript',
+	'html',
+	// Not part of Capibara's provider surface or the local R/Python/Quarto core.
+	// These remain in the read-only source trees for a future explicit decision.
+	'debug-server-ready',
+	'microsoft-authentication',
+	'ms-vscode.js-debug-companion',
+	'ms-vscode.js-debug',
+	'ms-vscode.vscode-js-profile-table',
+	'next-edit-suggestions',
+	'positron-dev-containers',
+	'positron-skills',
+	'restructuredtext',
+	'shaderlab',
+	'theme-abyss',
+	'theme-defaults',
+	'theme-kimbie-dark',
+	'theme-monokai-dimmed',
+	'theme-monokai',
+	'theme-quietlight',
+	'theme-red',
+	'theme-seti',
+	'theme-solarized-dark',
+	'theme-solarized-light',
+	'theme-tomorrow-night-blue',
+	'vb',
+	'xml',
+];
+
+excludedExtensions.push(...napoDeferredExtensions);
+// --- End Napo ---
+
 // --- Start Positron ---
 // Conditionally exclude open-remote-wsl on non-Windows platforms
 if (os.platform() !== 'win32') {
@@ -772,7 +878,10 @@ function doPackageLocalExtensionsStream(forWeb: boolean, disableMangle: boolean,
 
 export function packageMarketplaceExtensionsStream(forWeb: boolean): Stream {
 	const marketplaceExtensionsDescriptions = [
-		...builtInExtensions.filter(({ name, isBundled }) => (forWeb ? !isBundled && !marketplaceWebExtensionsExclude.has(name) : true)),
+		...builtInExtensions.filter(({ name, isBundled }) =>
+			!excludedExtensions.includes(name)
+			&& (forWeb ? !isBundled && !marketplaceWebExtensionsExclude.has(name) : true)
+		),
 		...(forWeb ? webBuiltInExtensions : [])
 	];
 	const marketplaceExtensionsStream = minifyExtensionResources(
@@ -784,7 +893,7 @@ export function packageMarketplaceExtensionsStream(forWeb: boolean): Stream {
 						delete data.scripts;
 						delete data.dependencies;
 						delete data.devDependencies;
-						return data;
+						return applyNapoPackagePolicy(data);
 					});
 				})
 		)

@@ -126,7 +126,7 @@ describe('WebClientServer /proxy/ port ownership gate', () => {
 			const callbackFile = URI.file(`${process.cwd()}/src/vs/code/browser/workbench/callback.html`);
 			vi.spyOn(FileAccess, 'asFileUri').mockReturnValue(callbackFile);
 
-			const response = await requestPath(webClientServer, '/positron-static/callback-0/static/out/vs/code/browser/workbench/callback.html');
+			const response = await requestPath(webClientServer, '/napo-static/callback-0/static/out/vs/code/browser/workbench/callback.html');
 
 			expect({
 				status: response.status,

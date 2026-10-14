@@ -62,6 +62,16 @@ interface IRelaxedScannedExtension {
 	forceAutoUpdate: boolean;
 }
 
+// These Positron packages are inputs to the build of the data-driver
+// extensions, not runtime extensions. They remain in the source tree because
+// the data-analysis stack is preserved, but Napo must not try to validate or
+// activate them during a development scan.
+const napoBuildTimeOnlyExtensions = new Set([
+	'positron-data-explorer-formatting',
+	'positron-data-explorer-duckdb',
+	'positron-data-explorer-protocol',
+]);
+
 export type IScannedExtension = Readonly<IRelaxedScannedExtension> & { manifest: IExtensionManifest };
 
 export interface Translations {
@@ -450,7 +460,9 @@ export abstract class AbstractExtensionsScannerService extends Disposable implem
 		const extensionsScanner = extensionsScannerInput.devMode ? this.extensionsScanner : this.systemExtensionsCachedScanner;
 		const result = await extensionsScanner.scanExtensions(extensionsScannerInput);
 		this.logService.trace('Scanned system extensions:', result.length);
-		return result;
+		return this.productService.applicationName === 'napo'
+			? result.filter(extension => !napoBuildTimeOnlyExtensions.has(path.basename(extension.location.fsPath)))
+			: result;
 	}
 
 	private async scanDevSystemExtensions(language: string | undefined, checkControlFile: boolean): Promise<IRelaxedScannedExtension[]> {
@@ -602,6 +614,7 @@ type NlsConfiguration = {
 class ExtensionsScanner extends Disposable {
 
 	private readonly productQuality: string | undefined;
+	private readonly productApplicationName: string;
 	private readonly productBuiltInExtensionsEnabledWithAutoUpdates: Set<string>;
 
 	constructor(
@@ -614,6 +627,7 @@ class ExtensionsScanner extends Disposable {
 	) {
 		super();
 		this.productQuality = productService.quality;
+		this.productApplicationName = productService.applicationName;
 		this.productBuiltInExtensionsEnabledWithAutoUpdates = getProductBuiltInExtensionsEnabledWithAutoUpdates(productService, environmentService);
 	}
 
@@ -636,6 +650,9 @@ class ExtensionsScanner extends Disposable {
 				// --- Start Positron ---
 				// Exclude the built-in 'r' extension, as 'positron-r' provides its facilities (and more).
 				if (input.type === ExtensionType.System && c.name === 'r') {
+					return null;
+				}
+				if (input.type === ExtensionType.System && this.productApplicationName === 'napo' && napoBuildTimeOnlyExtensions.has(c.name)) {
 					return null;
 				}
 				// --- End Positron ---
@@ -1021,7 +1038,7 @@ class CachedExtensionsScanner extends ExtensionsScanner {
 		@IExtensionsProfileScannerService extensionsProfileScannerService: IExtensionsProfileScannerService,
 		@IUriIdentityService uriIdentityService: IUriIdentityService,
 		@IFileService fileService: IFileService,
-		@IProductService productService: IProductService,
+		@IProductService private readonly productService: IProductService,
 		@IEnvironmentService environmentService: IEnvironmentService,
 		@ILogService logService: ILogService
 	) {
@@ -1070,6 +1087,16 @@ class CachedExtensionsScanner extends ExtensionsScanner {
 	private async validateCache(): Promise<void> {
 		if (!this.input) {
 			// Input has been unset by the time we get here, so skip validation
+			return;
+		}
+
+		// Napo is a self-contained distribution. Its system extensions are part of
+		// the immutable application bundle, while their localized display metadata
+		// can be resolved after the first scan. Comparing the early cache with the
+		// later localized scan produces a false invalidation, which makes the
+		// workbench reload and can tear down a live webview. User extension caches
+		// retain the normal validation path below.
+		if (this.productService.applicationName === 'napo' && this.input.type === ExtensionType.System) {
 			return;
 		}
 

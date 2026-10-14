@@ -465,6 +465,10 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 				'**/@microsoft/mxc-sdk/bin/**',
 				'**/node-pty/build/Release/*',
 				'**/node-pty/build/Release/conpty/*',
+				// node-pty's Unix implementation invokes this native helper by an
+				// on-disk path next to pty.node. Keeping it inside node_modules.asar
+				// makes every integrated terminal fail with posix_spawn ENOENT.
+				'**/node-pty/prebuilds/**/spawn-helper',
 				'**/node-pty/lib/worker/conoutSocketWorker.js',
 				'**/node-pty/lib/shared/conout.js',
 				// node-pty spawns `conoutSocketWorker.js` as a Worker from the unpacked
@@ -572,9 +576,16 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 				.pipe(replace('@@APPNAME@@', product.applicationName))
 				.pipe(replace('@@NAME@@', product.nameShort))
 				.pipe(rename('bin/code'));
+			// Napo's bundled Capibara OKF runner invokes `node` for its packaged
+			// cli.js. Ship a relative bridge to Electron's own Node runtime and add
+			// the app bin directory to Napo's extension-host PATH. This is host
+			// plumbing only; the Capibara extension remains byte-for-byte intact.
+			const napoNode = product.applicationName === 'napo'
+				? gulp.src('resources/darwin/bin/node').pipe(rename('bin/node'))
+				: undefined;
 			const policyDest = gulp.src('.build/policies/darwin/**', { base: '.build/policies/darwin' })
 				.pipe(rename(f => f.dirname = `policies/${f.dirname}`));
-			all = es.merge(all, shortcut, policyDest);
+			all = es.merge(all, shortcut, ...(napoNode ? [napoNode] : []), policyDest);
 		}
 
 		const electronConfig = {
@@ -671,6 +682,29 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 		return result.pipe(vfs.dest(destination));
 	};
 	task.taskName = `package-${platform}-${arch}`;
+	return task;
+}
+
+// Napo is distributed manually without an Apple Developer signature. Electron's
+// executable can arrive with a linker-generated ad hoc signature; leaving that
+// partial signature on the outer app makes macOS report the bundle as damaged.
+// Re-sign the complete bundle ad hoc so its nested code and sealed resources are
+// internally coherent. This is not an Apple Developer signature or notarization.
+function signNapoMacAdhocTask(destinationFolderName: string) {
+	const appPath = path.join(path.dirname(root), destinationFolderName, `${product.nameLong}.app`);
+
+	const task = async () => {
+		if (process.platform !== 'darwin') {
+			return;
+		}
+
+		await new Promise<void>((resolve, reject) => {
+			const child = cp.spawn('codesign', ['--deep', '--force', '--sign', '-', appPath], { stdio: 'inherit' });
+			child.once('error', reject);
+			child.once('exit', code => code === 0 ? resolve() : reject(new Error(`codesign --deep --force --sign - failed for ${appPath} (exit ${code ?? 'unknown'})`)));
+		});
+	};
+	task.taskName = 'sign-napo-mac-adhoc';
 	return task;
 }
 
@@ -800,6 +834,30 @@ function checkPathLengthsTask(platform: string, destinationFolderName: string) {
 		checkPathLengths(appRoot);
 	};
 }
+
+function buildNapoPolicyWatcherTask(platform: string, arch: string) {
+	return task.define(`build-napo-policy-watcher-${platform}-${arch}`, () => {
+		if (product.applicationName !== 'napo' || platform !== 'darwin' || arch !== 'arm64') {
+			return Promise.resolve();
+		}
+
+		return new Promise<void>((resolve, reject) => {
+			const script = path.join(root, 'scripts', 'build-napo-policy-watcher.mjs');
+			const child = cp.spawn(process.execPath, [script, '--platform', platform, '--arch', arch], {
+				cwd: root,
+				stdio: 'inherit',
+			});
+			child.once('error', reject);
+			child.once('close', code => {
+				if (code === 0) {
+					resolve();
+				} else {
+					reject(new Error(`policy-watcher build failed with exit code ${code ?? 'unknown'}`));
+				}
+			});
+		});
+	});
+}
 // --- End Positron ---
 
 const buildRoot = path.dirname(root);
@@ -823,6 +881,12 @@ BUILD_TARGETS.forEach(buildTarget => {
 		const sourceFolderName = `out-vscode${dashed(minified)}`;
 		// --- Start Positron ---
 		let destinationFolderName = `VSCode${dashed(platform)}${dashed(arch)}`;
+		// Napo is distributed from the repository's canonical dist/ directory.
+		// Keep the build output beside the project so packaging never recreates the
+		// ambiguous sibling VSCode-darwin-arm64 directory.
+		if (product.applicationName === 'napo' && platform === 'darwin' && arch === 'arm64') {
+			destinationFolderName = path.join(path.basename(root), 'dist');
+		}
 		if (platform === 'win32') {
 			// Use short folder names for Windows builds
 			destinationFolderName = `p${arch}`;
@@ -832,8 +896,10 @@ BUILD_TARGETS.forEach(buildTarget => {
 		const packageTasks: task.Task[] = [
 			compileNativeExtensionsBuildTask,
 			task.define(`prepare-quarto-${platform}-${arch}`, () => prepareQuarto(platform, arch)),
+			buildNapoPolicyWatcherTask(platform, arch),
 			util.rimraf(path.join(buildRoot, destinationFolderName)),
 			packageTask(platform, arch, sourceFolderName, destinationFolderName, opts),
+			...(product.applicationName === 'napo' && platform === 'darwin' ? [signNapoMacAdhocTask(destinationFolderName)] : []),
 			// --- Start Positron ---
 			checkPathLengthsTask(platform, destinationFolderName)
 			// --- End Positron ---

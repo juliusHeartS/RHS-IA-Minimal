@@ -150,7 +150,10 @@ Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Configuration)
 				// description: localize('extensions.autoUpdate', "Controls the automatic update behavior of extensions. The updates are fetched from a Microsoft online service."),
 				description: localize('positron.extensions.autoUpdate', "Controls the automatic update behavior of extensions. The updates are fetched from the Open VSX Registry."),
 				// --- End Positron ---
-				default: 'on',
+				// Napo uses explicit, user-triggered extension updates. Automatic
+				// downloads are disabled for the product, while other Positron
+				// distributions retain their upstream default.
+				default: product.applicationName === 'napo' ? 'off' : 'on',
 				scope: ConfigurationScope.APPLICATION,
 				tags: ['usesOnlineServices'],
 				policy: {
@@ -199,7 +202,8 @@ Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Configuration)
 				// description: localize('extensionsCheckUpdates', "When enabled, automatically checks extensions for updates. If an extension has an update, it is marked as outdated in the Extensions view. The updates are fetched from a Microsoft online service."),
 				description: localize('positron.extensionsCheckUpdates', "When enabled, automatically checks extensions for updates. If an extension has an update, it is marked as outdated in the Extensions view. The updates are fetched from the Open VSX Registry."),
 				// --- End Positron ---
-				default: true,
+				// Napo must not contact an extension gallery in the background.
+				default: product.applicationName !== 'napo',
 				scope: ConfigurationScope.APPLICATION,
 				tags: ['usesOnlineServices']
 			},
@@ -207,7 +211,8 @@ Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Configuration)
 			'extensions.gallery.sendUsageData': {
 				type: 'boolean',
 				description: localize('positron.extensions.gallery.sendUsageData', "When enabled, sends the RHS-IA distribution type, version, update-check trigger, and whether the session runs under an academic license as query parameters on extension gallery requests. Sessions licensed with a license file also send a hash that identifies that license. No user-identifying data is sent. Disable this to stop sending these parameters."),
-				default: true,
+				// Napo never appends distribution or usage data to gallery requests.
+				default: product.applicationName !== 'napo',
 				scope: ConfigurationScope.APPLICATION,
 				tags: ['usesOnlineServices']
 			},

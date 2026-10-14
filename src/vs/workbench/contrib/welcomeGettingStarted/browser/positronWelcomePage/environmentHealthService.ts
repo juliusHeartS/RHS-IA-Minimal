@@ -7,8 +7,9 @@ import { Emitter, Event } from '../../../../../base/common/event.js';
 import { Disposable } from '../../../../../base/common/lifecycle.js';
 import { ICommandService } from '../../../../../platform/commands/common/commands.js';
 import { IConfigurationService } from '../../../../../platform/configuration/common/configuration.js';
+import { ExtensionIdentifier } from '../../../../../platform/extensions/common/extensions.js';
 import { ILogService } from '../../../../../platform/log/common/log.js';
-import { IExtensionService } from '../../../../services/extensions/common/extensions.js';
+import { ExtensionActivationReason, IExtensionService } from '../../../../services/extensions/common/extensions.js';
 import { createDecorator } from '../../../../../platform/instantiation/common/instantiation.js';
 import { WELCOME_PAGE_ENVIRONMENT_CHECKS_KEY } from '../../common/positronWelcomePageConfiguration.js';
 import { GettingStartedInput } from '../gettingStartedInput.js';
@@ -343,6 +344,16 @@ export class EnvironmentHealthService extends Disposable implements IEnvironment
 				this._handleHealthCheckResult(source.language, { kind: 'unavailable' });
 				return;
 			}
+			// Health commands are registered programmatically by the language
+			// extensions. Activate the provider before invoking its command; merely
+			// finding the extension is not enough when the welcome page is the first
+			// consumer in a fresh window.
+			const extensionId = new ExtensionIdentifier(source.extensionId);
+			await this._extensionService.activateById(extensionId, {
+				startup: false,
+				extensionId,
+				activationEvent: 'api',
+			} satisfies ExtensionActivationReason);
 			const result = await this._commandService.executeCommand(source.healthCheckCommandId);
 			if (!isEnvironmentHealthResult(result)) {
 				this._logService.warn(`${LOG} ${source.language}: check returned an unusable result`);

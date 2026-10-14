@@ -6,6 +6,7 @@
 import minimist from 'minimist';
 import * as nativeWatchdog from '@vscode/native-watchdog';
 import * as net from 'net';
+import { setDefaultResultOrder } from 'node:dns';
 import { ProcessTimeRunOnceScheduler } from '../../../base/common/async.js';
 import { VSBuffer } from '../../../base/common/buffer.js';
 import { PendingMigrationError, isCancellationError, isSigPipeError, onUnexpectedError, onUnexpectedExternalError } from '../../../base/common/errors.js';
@@ -395,6 +396,12 @@ function connectToRenderer(protocol: IMessagePassingProtocol): Promise<IRenderer
 }
 
 async function startExtensionHostProcess(): Promise<void> {
+	// Napo's R/Python runtimes bind their loopback sockets on IPv4. Keep
+	// localhost resolution consistent in the extension host so a second Napo
+	// or RHS-IA instance cannot be mistaken for a free port on macOS.
+	if (product.applicationName === 'napo') {
+		setDefaultResultOrder('ipv4first');
+	}
 
 	// Print a console message when rejection isn't handled within N seconds. For details:
 	// see https://nodejs.org/api/process.html#process_event_unhandledrejection

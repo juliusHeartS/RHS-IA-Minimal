@@ -1,0 +1,1303 @@
+{
+  "schemaVersion": 1,
+  "format": "napo-positron-typecheck/v1",
+  "generatedAt": "2026-10-13T19:34:44.395Z",
+  "status": "upstream-debt",
+  "command": "tsc --noEmit -p vitest.tsconfig.json --skipLibCheck --pretty false",
+  "exitCode": 1,
+  "diagnosticCount": 182,
+  "diagnosticFileCount": 40,
+  "changedFileOverlap": [],
+  "diagnosticsByCode": {
+    "TS2339": 68,
+    "TS2322": 38,
+    "TS2511": 1,
+    "TS2554": 1,
+    "TS2353": 18,
+    "TS2741": 25,
+    "TS18048": 19,
+    "TS2341": 3,
+    "TS2345": 3,
+    "TS2532": 2,
+    "TS6133": 1,
+    "TS2740": 2,
+    "TS2416": 1
+  },
+  "diagnostics": [
+    {
+      "file": "src/vs/editor/contrib/positronStatementRange/test/browser/provideStatementRange.vitest.ts",
+      "line": 54,
+      "column": 18,
+      "code": "TS2339",
+      "message": "Property 'range' does not exist on type 'IStatementRange'."
+    },
+    {
+      "file": "src/vs/editor/contrib/positronStatementRange/test/browser/provideStatementRange.vitest.ts",
+      "line": 73,
+      "column": 18,
+      "code": "TS2339",
+      "message": "Property 'code' does not exist on type 'IStatementRange'."
+    },
+    {
+      "file": "src/vs/editor/contrib/positronStatementRange/test/browser/provideStatementRange.vitest.ts",
+      "line": 92,
+      "column": 18,
+      "code": "TS2339",
+      "message": "Property 'rejectionKind' does not exist on type 'IStatementRange'."
+    },
+    {
+      "file": "src/vs/editor/contrib/positronStatementRange/test/browser/provideStatementRange.vitest.ts",
+      "line": 93,
+      "column": 18,
+      "code": "TS2339",
+      "message": "Property 'line' does not exist on type 'IStatementRange'."
+    },
+    {
+      "file": "src/vs/platform/positronActionBar/test/browser/positronActionBarWidgetRegistry.vitest.ts",
+      "line": 26,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((rules: ContextKeyExpression | undefined) => boolean) | undefined'."
+    },
+    {
+      "file": "src/vs/test/vitest/vitestUtils.vitest.ts",
+      "line": 15,
+      "column": 29,
+      "code": "TS2511",
+      "message": "Cannot create an instance of an abstract class."
+    },
+    {
+      "file": "src/vs/workbench/api/test/browser/positron/mainThreadDataExplorerRouting.vitest.ts",
+      "line": 120,
+      "column": 42,
+      "code": "TS2554",
+      "message": "Expected 3 arguments, but got 2."
+    },
+    {
+      "file": "src/vs/workbench/contrib/chat/test/browser/tools/utils.vitest.ts",
+      "line": 32,
+      "column": 3,
+      "code": "TS2322",
+      "message": "Type '<T>(key: string | undefined) => T' is not assignable to type '{ <T>(): T; <T>(section: string): T; <T>(overrides: IConfigurationOverrides): T; <T>(section: string, overrides: IConfigurationOverrides): T; }'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/configureLLMProvidersModal.vitest.tsx",
+      "line": 23,
+      "column": 60,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/configureLLMProvidersModal.vitest.tsx",
+      "line": 31,
+      "column": 61,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 95,
+      "column": 73,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 133,
+      "column": 15,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: Mock<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 157,
+      "column": 35,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: Mock<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 377,
+      "column": 16,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: Mock<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 434,
+      "column": 16,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 443,
+      "column": 16,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 449,
+      "column": 16,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 456,
+      "column": 16,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 465,
+      "column": 16,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: Mock<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 480,
+      "column": 16,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: Mock<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 492,
+      "column": 17,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 511,
+      "column": 17,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 521,
+      "column": 17,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 526,
+      "column": 17,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 537,
+      "column": 17,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: Mock<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 552,
+      "column": 17,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: Mock<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 566,
+      "column": 17,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectProviderView.vitest.tsx",
+      "line": 573,
+      "column": 17,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectedProviderView.vitest.tsx",
+      "line": 223,
+      "column": 15,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectedProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectedProviderView.vitest.tsx",
+      "line": 230,
+      "column": 15,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: { type: PositronLanguageModelType; provider: IPositronProviderMetadata; ... 6 more ...; defaults: { ...; }; }; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectedProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectedProviderView.vitest.tsx",
+      "line": 245,
+      "column": 15,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: { type: PositronLanguageModelType; provider: IPositronProviderMetadata; ... 6 more ...; overrides: { ...; }; }; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectedProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectedProviderView.vitest.tsx",
+      "line": 255,
+      "column": 15,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: { type: PositronLanguageModelType; provider: IPositronProviderMetadata; ... 6 more ...; overrides: { ...; }; }; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectedProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectedProviderView.vitest.tsx",
+      "line": 265,
+      "column": 15,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: { type: PositronLanguageModelType; provider: IPositronProviderMetadata; ... 6 more ...; overrides: { ...; }; }; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectedProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectedProviderView.vitest.tsx",
+      "line": 270,
+      "column": 15,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectedProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectedProviderView.vitest.tsx",
+      "line": 278,
+      "column": 15,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: IPositronLanguageModelSource; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectedProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/connectedProviderView.vitest.tsx",
+      "line": 284,
+      "column": 15,
+      "code": "TS2741",
+      "message": "Property 'onEditRawConfig' is missing in type '{ renderer: PositronModalReactRenderer; title: string; width: number; source: { type: PositronLanguageModelType; provider: IPositronProviderMetadata; ... 6 more ...; defaults: { ...; }; }; onAction: () => Promise<...>; onBack: Mock<...>; }' but required in type 'ConnectedProviderViewProps'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/positronAssistantService.vitest.ts",
+      "line": 141,
+      "column": 17,
+      "code": "TS18048",
+      "message": "'context.plots' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/providerList.vitest.tsx",
+      "line": 19,
+      "column": 51,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/browser/useProviderUpdates.vitest.tsx",
+      "line": 19,
+      "column": 36,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 15,
+      "column": 36,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 96,
+      "column": 73,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 97,
+      "column": 70,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 98,
+      "column": 73,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 105,
+      "column": 82,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 106,
+      "column": 87,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 113,
+      "column": 80,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 114,
+      "column": 77,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 115,
+      "column": 82,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronAssistant/test/common/providerGrouping.vitest.ts",
+      "line": 116,
+      "column": 82,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'settingName' does not exist in type 'IPositronProviderMetadata'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronConsole/test/browser/actionBar.vitest.tsx",
+      "line": 130,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronConsole/test/browser/activityErrorSuggestion.vitest.tsx",
+      "line": 38,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronConsole/test/browser/activityErrorSuggestion.vitest.tsx",
+      "line": 50,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronConsole/test/browser/positronConsoleFindWidget.vitest.ts",
+      "line": 30,
+      "column": 8,
+      "code": "TS2341",
+      "message": "Property '_findInput' is private and only accessible within class 'SimpleFindWidget'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronConsole/test/browser/positronConsoleFindWidget.vitest.ts",
+      "line": 34,
+      "column": 8,
+      "code": "TS2341",
+      "message": "Property '_findInput' is private and only accessible within class 'SimpleFindWidget'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronConsole/test/browser/positronConsoleFindWidget.vitest.ts",
+      "line": 38,
+      "column": 8,
+      "code": "TS2341",
+      "message": "Property '_findInput' is private and only accessible within class 'SimpleFindWidget'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronIPyWidgets/test/browser/positronIPyWidgetsService.vitest.ts",
+      "line": 280,
+      "column": 22,
+      "code": "TS2339",
+      "message": "Property 'buffers' does not exist on type 'ToWebviewMessage'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/AssistantErrorQuickFix.vitest.tsx",
+      "line": 58,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/AssistantErrorQuickFix.vitest.tsx",
+      "line": 75,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/AssistantErrorQuickFix.vitest.tsx",
+      "line": 85,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/AssistantErrorQuickFix.vitest.tsx",
+      "line": 94,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/AssistantErrorQuickFix.vitest.tsx",
+      "line": 102,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/AssistantErrorQuickFix.vitest.tsx",
+      "line": 113,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/AssistantPanel/assistantPanelActions.vitest.tsx",
+      "line": 76,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/addCellSplitButton.vitest.tsx",
+      "line": 38,
+      "column": 71,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/addCellSplitButton.vitest.tsx",
+      "line": 47,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/addCellSplitButton.vitest.tsx",
+      "line": 58,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/addCellSplitButton.vitest.tsx",
+      "line": 68,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/addCellSplitButton.vitest.tsx",
+      "line": 78,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/addCellSplitButton.vitest.tsx",
+      "line": 94,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/addCellSplitButton.vitest.tsx",
+      "line": 106,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/contrib/find/positronFindWidget.vitest.tsx",
+      "line": 301,
+      "column": 27,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/contrib/find/positronFindWidget.vitest.tsx",
+      "line": 336,
+      "column": 27,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 99,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 100,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 106,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type '() => false' is not assignable to type '() => this is IPositronNotebookMarkdownCell'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 107,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type '() => true' is not assignable to type '() => this is IPositronNotebookCodeCell'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 124,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type '() => true' is not assignable to type '() => this is IPositronNotebookMarkdownCell'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 125,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type '() => false' is not assignable to type '() => this is IPositronNotebookCodeCell'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 143,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 144,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 188,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 189,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 214,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 234,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 235,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 241,
+      "column": 21,
+      "code": "TS2322",
+      "message": "Type '() => undefined' is not assignable to type '() => IPositronNotebookCell | null'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 272,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type '() => false' is not assignable to type '() => this is IPositronNotebookMarkdownCell'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 295,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 296,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'secondary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 297,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 304,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 305,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'secondary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 306,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 396,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 397,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 436,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 437,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 463,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 464,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 498,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 499,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 545,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 546,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'when' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/jupyterLabShortcuts.vitest.ts",
+      "line": 578,
+      "column": 35,
+      "code": "TS2339",
+      "message": "Property 'primary' does not exist on type 'OneOrN<Omit<IKeybindingRule, \"id\">>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/markdownRenderer.vitest.tsx",
+      "line": 28,
+      "column": 40,
+      "code": "TS2345",
+      "message": "Argument of type 'TokensList' is not assignable to parameter of type 'ExtendedToken[]'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCellWrapper.vitest.tsx",
+      "line": 54,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCellWrapper.vitest.tsx",
+      "line": 67,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCellWrapper.vitest.tsx",
+      "line": 82,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCellWrapper.vitest.tsx",
+      "line": 103,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCellWrapper.vitest.tsx",
+      "line": 121,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCellWrapper.vitest.tsx",
+      "line": 136,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCellWrapper.vitest.tsx",
+      "line": 151,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCellWrapper.vitest.tsx",
+      "line": 166,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/CellActionButton.vitest.tsx",
+      "line": 42,
+      "column": 3,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'dispose' does not exist in type 'Partial<MenuItemAction>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/CellActionButton.vitest.tsx",
+      "line": 80,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((cell: IPositronNotebookCell, selectType?: CellSelectionType) => void) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/CellActionButton.vitest.tsx",
+      "line": 83,
+      "column": 49,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'id' does not exist in type 'Partial<IPositronNotebookCell>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/CellEditorMonacoWidget.vitest.tsx",
+      "line": 373,
+      "column": 27,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/CellEditorMonacoWidget.vitest.tsx",
+      "line": 385,
+      "column": 27,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/CellOutputActionBar.vitest.tsx",
+      "line": 38,
+      "column": 3,
+      "code": "TS2353",
+      "message": "Object literal may only specify known properties, and 'dispose' does not exist in type 'Partial<MenuItemAction>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/CellOutputCollapseButton.vitest.tsx",
+      "line": 34,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '(() => void) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/CellOutputCollapseButton.vitest.tsx",
+      "line": 40,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((cell: IPositronNotebookCell, selectType?: CellSelectionType) => void) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/InlineDataExplorerHeader.vitest.tsx",
+      "line": 33,
+      "column": 3,
+      "code": "TS2322",
+      "message": "Type '(...args: unknown[]) => Promise<unknown>' is not assignable to type '(...args: unknown[]) => Promise<void>'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/openInDataExplorerAction.vitest.ts",
+      "line": 34,
+      "column": 65,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((identifier: string) => IPositronDataExplorerInstance | undefined) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/openInDataExplorerAction.vitest.ts",
+      "line": 34,
+      "column": 78,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((sessionId: string, variablePath: string[]) => IPositronDataExplorerInstance | undefined) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/openInDataExplorerAction.vitest.ts",
+      "line": 35,
+      "column": 59,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((notebookUri: URI) => INotebookLanguageRuntimeSession | undefined) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/openInDataExplorerAction.vitest.ts",
+      "line": 36,
+      "column": 57,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((message: NotificationMessage[] | NotificationMessage) => void) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookCells/openInDataExplorerAction.vitest.ts",
+      "line": 37,
+      "column": 48,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((message: string, ...args: unknown[]) => void) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookMarkdownCell.vitest.tsx",
+      "line": 105,
+      "column": 26,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookOutputFocus.vitest.tsx",
+      "line": 229,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type '(id: unknown) => { writeText: Mock<Procedure>; } | { writeText?: undefined; }' is not assignable to type '<T>(id: ServiceIdentifier<T>) => T'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookUndoRedo.vitest.ts",
+      "line": 313,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'IEditorPane' is not assignable to type 'IVisibleEditorPane'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookUndoRedo.vitest.ts",
+      "line": 333,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'IEditorPane' is not assignable to type 'IVisibleEditorPane'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookUndoRedo.vitest.ts",
+      "line": 351,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'IEditorPane' is not assignable to type 'IVisibleEditorPane'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookUndoRedo.vitest.ts",
+      "line": 380,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'IEditorPane' is not assignable to type 'IVisibleEditorPane'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookUndoRedo.vitest.ts",
+      "line": 410,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'IEditorPane' is not assignable to type 'IVisibleEditorPane'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/notebookUndoRedo.vitest.ts",
+      "line": 440,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'IEditorPane' is not assignable to type 'IVisibleEditorPane'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 55,
+      "column": 20,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 75,
+      "column": 20,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 95,
+      "column": 20,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 108,
+      "column": 11,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 121,
+      "column": 20,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 141,
+      "column": 11,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 144,
+      "column": 9,
+      "code": "TS2339",
+      "message": "Property 'collapseOutput' does not exist on type 'IPositronNotebookCell'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 145,
+      "column": 16,
+      "code": "TS2339",
+      "message": "Property 'outputIsCollapsed' does not exist on type 'IPositronNotebookCell'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 150,
+      "column": 11,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 151,
+      "column": 16,
+      "code": "TS2339",
+      "message": "Property 'outputIsCollapsed' does not exist on type 'IPositronNotebookCell'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 205,
+      "column": 20,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 228,
+      "column": 20,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 264,
+      "column": 20,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 285,
+      "column": 20,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 306,
+      "column": 20,
+      "code": "TS18048",
+      "message": "'cell.outputs' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 321,
+      "column": 28,
+      "code": "TS2532",
+      "message": "Object is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookCellOutputs.vitest.ts",
+      "line": 331,
+      "column": 28,
+      "code": "TS2532",
+      "message": "Object is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookConfigurationHandling.vitest.ts",
+      "line": 83,
+      "column": 9,
+      "code": "TS6133",
+      "message": "'ctx' is declared but its value is never read."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookConfigurationHandling.vitest.ts",
+      "line": 117,
+      "column": 5,
+      "code": "TS2740",
+      "message": "Type 'Pick<DisposableStore, \"add\">' is missing the following properties from type 'DisposableStore': _toDispose, _isDisposed, dispose, isDisposed, and 4 more."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookEditorResolution.vitest.ts",
+      "line": 57,
+      "column": 4,
+      "code": "TS2740",
+      "message": "Type 'Pick<DisposableStore, \"add\">' is missing the following properties from type 'DisposableStore': _toDispose, _isDisposed, dispose, isDisposed, and 4 more."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronNotebook/test/browser/positronNotebookInstance.vitest.ts",
+      "line": 74,
+      "column": 17,
+      "code": "TS2339",
+      "message": "Property 'active' does not exist on type 'SelectionStates'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronQuarto/test/browser/QuartoOutputQuickFix.vitest.tsx",
+      "line": 95,
+      "column": 27,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronQuarto/test/browser/QuartoOutputQuickFix.vitest.tsx",
+      "line": 121,
+      "column": 27,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronQuarto/test/browser/QuartoOutputQuickFix.vitest.tsx",
+      "line": 132,
+      "column": 27,
+      "code": "TS2339",
+      "message": "Property 'setup' does not exist on type 'typeof import(\"/Users/julius3005/Documents/Github/RHS-IA-Minimal/node_modules/@testing-library/user-event/dist/types/index\")'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronQuarto/test/common/quartoParser.vitest.ts",
+      "line": 34,
+      "column": 11,
+      "code": "TS18048",
+      "message": "'result.frontmatter' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronQuarto/test/common/quartoParser.vitest.ts",
+      "line": 43,
+      "column": 11,
+      "code": "TS18048",
+      "message": "'result.frontmatter' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronQuarto/test/common/quartoParser.vitest.ts",
+      "line": 50,
+      "column": 11,
+      "code": "TS18048",
+      "message": "'result.frontmatter' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronQuarto/test/common/quartoParser.vitest.ts",
+      "line": 57,
+      "column": 11,
+      "code": "TS18048",
+      "message": "'result.frontmatter' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronQuarto/test/common/quartoParser.vitest.ts",
+      "line": 64,
+      "column": 11,
+      "code": "TS18048",
+      "message": "'result.frontmatter' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/contrib/positronQuarto/test/common/quartoParser.vitest.ts",
+      "line": 71,
+      "column": 11,
+      "code": "TS18048",
+      "message": "'result.frontmatter' is possibly 'undefined'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronDataExplorer/test/browser/tableSummaryDataGridInstance.vitest.ts",
+      "line": 117,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((columnIndex: number) => boolean) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronDataExplorer/test/browser/tableSummaryDataGridInstance.vitest.ts",
+      "line": 118,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((columnIndex: number) => ColumnSchema | undefined) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronDataExplorer/test/browser/tableSummaryDataGridInstance.vitest.ts",
+      "line": 119,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((columnIndex: number) => ColumnProfileResult | undefined) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronDataExplorer/test/browser/tableSummaryDataGridInstance.vitest.ts",
+      "line": 120,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'Mock<Constructable | Procedure>' is not assignable to type '((columnIndex: number) => Promise<void>) | undefined'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 531,
+      "column": 2,
+      "code": "TS2416",
+      "message": "Property 'execute' in type 'TestLanguageRuntimeSession' is not assignable to the same property in base type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 665,
+      "column": 49,
+      "code": "TS2345",
+      "message": "Argument of type 'TestLanguageRuntimeSession' is not assignable to parameter of type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 666,
+      "column": 45,
+      "code": "TS2345",
+      "message": "Argument of type 'TestLanguageRuntimeSession' is not assignable to parameter of type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 676,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 692,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 714,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 766,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 818,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 873,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 916,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 959,
+      "column": 4,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 1084,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    },
+    {
+      "file": "src/vs/workbench/services/positronHistory/test/common/executionHistoryService.vitest.ts",
+      "line": 1111,
+      "column": 5,
+      "code": "TS2322",
+      "message": "Type 'TestLanguageRuntimeSession' is not assignable to type 'ILanguageRuntimeSession'."
+    }
+  ],
+  "interpretation": "Los diagnósticos están confinados a archivos no modificados por Napo; no se deben ocultar ni usar para declarar verde el chequeo."
+}

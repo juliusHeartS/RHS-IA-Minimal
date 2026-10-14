@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-12",
+  "package": "/Users/julius3005/Documents/Github/VSCode-darwin-arm64/Napo.app",
+  "profile": "/tmp/napo-planning-profile3.7LmQw2",
+  "workspace": "/tmp/napo-planning-e2e.4KpXr9",
+  "provider": "local deterministic OpenAI-compatible mock on 127.0.0.1:18126",
+  "route": "Capibara -> positron_execute_code (reads versioned Docs source) -> Napo/Positron live R session",
+  "source": {
+    "path": "Docs/planning-policy.md",
+    "sourceId": "EC-HWF",
+    "version": "2026.01",
+    "jurisdiction": "Ecuador",
+    "effectiveDate": "2026-01-15"
+  },
+  "checks": {
+    "cleanProfileActivation": {
+      "status": "pass",
+      "detail": "RHS-Agent v4.0.0 became interactive in a trusted Napo workspace."
+    },
+    "visibleApproval": {
+      "status": "pass",
+      "detail": "The UI exposed positron_execute_code and required explicit approval before execution."
+    },
+    "livePositronPlanning": {
+      "status": "pass",
+      "language": "r",
+      "tool": "positron_execute_code",
+      "runtime": "R 4.5.3",
+      "marker": "NAPO_PLANNING_OK",
+      "detail": "The live R session read the versioned policy, calculated the capacity gap, and created the staffing/training allocation."
+    },
+    "planningResult": {
+      "status": "pass",
+      "baselineCapacity": 100,
+      "targetCapacity": 120,
+      "gap": 20,
+      "allocation": {
+        "staffing": 15,
+        "training": 5
+      },
+      "sourceVersion": "EC-HWF-2026.01"
+    }
+  },
+  "limitations": [
+    "This is focused manual UI evidence; it does not replace the automated package gate.",
+    "The mock provider is loopback-only and is not part of the shipped application.",
+    "This evidence proves local versioned-source coordination and calculation; it does not establish legal validity of the source or replace institutional review."
+  ],
+  "decision": "pass-focused-planning-coordination"
+}

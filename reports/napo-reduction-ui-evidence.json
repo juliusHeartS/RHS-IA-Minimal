@@ -1,0 +1,34 @@
+{
+  "product": "Napo",
+  "date": "2026-10-13",
+  "scope": "clon reversible de Napo.app con 36 extensiones candidatas retiradas temporalmente",
+  "originalPackage": "/Users/julius3005/Documents/Github/VSCode-darwin-arm64/Napo.app",
+  "reducedClone": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-reduction-2gZA7U/Napo.app",
+  "workspace": "/tmp/napo-python-ui-e2e.pAES71",
+  "removedExtensions": 36,
+  "runtime": {
+    "python": "/usr/local/bin/python3",
+    "pythonVersion": "3.13.3",
+    "ipykernel": "available",
+    "quarto": "1.10.18",
+    "r": "4.5.3"
+  },
+  "uiChecks": {
+    "pythonFile": {
+      "status": "passed",
+      "marker": "NAPO_PYTHON_UI_OK",
+      "observedCommand": "% run -- \"python-ui-check.py\""
+    },
+    "quartoR": {
+      "status": "passed",
+      "marker": "NAPO_REDUCED_R_QUARTO_OK"
+    }
+  },
+  "priorCaveat": "Una corrida anterior seleccionó Python 3.14.6 sin ipykernel; fue repetida en un perfil limpio con el intérprete preparado y no se usa como fallo de la reducción.",
+  "decision": "evidence-for-reduction-review",
+  "limitations": [
+    "La prueba no autoriza por sí sola la eliminación permanente del subconjunto.",
+    "La auditoría legal, la revisión de dependencias implícitas y la reconstrucción desde la matriz aprobada siguen siendo necesarias.",
+    "El paquete original y los repositorios fuente no fueron modificados."
+  ]
+}

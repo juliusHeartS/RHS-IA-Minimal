@@ -716,7 +716,7 @@
 		"check-types": "tsc --noEmit",
 		"test": "vitest run --passWithNoTests",
 		"bundle": "node esbuild.mjs",
-		"vsix": "mkdirp ../bin && vsce package --no-dependencies --follow-symlinks --out ../bin"
+		"vsix": "node ../scripts/vendor-canonical-concepts.mjs --verify-bundled && mkdirp ../bin && vsce package --no-dependencies --follow-symlinks --out ../bin"
 	},
 	"dependencies": {
 		"@anthropic-ai/sdk": "^0.106.0",

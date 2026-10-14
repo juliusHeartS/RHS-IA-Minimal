@@ -14,9 +14,10 @@ import { IFileService } from '../../../platform/files/common/files.js';
 import { IInstantiationService } from '../../../platform/instantiation/common/instantiation.js';
 import { ILabelService } from '../../../platform/label/common/label.js';
 import { INotificationService } from '../../../platform/notification/common/notification.js';
+import { IProductService } from '../../../platform/product/common/productService.js';
 import { AuthInfo, Credentials, IRequestService } from '../../../platform/request/common/request.js';
 import { WorkspaceTrustRequestOptions, IWorkspaceTrustManagementService, IWorkspaceTrustRequestService, ResourceTrustRequestOptions } from '../../../platform/workspace/common/workspaceTrust.js';
-import { IWorkspace, IWorkspaceContextService, isUntitledWorkspace, WorkspaceFolder } from '../../../platform/workspace/common/workspace.js';
+import { IWorkspace, IWorkspaceContextService, isUntitledWorkspace, WorkspaceFolder, WorkbenchState } from '../../../platform/workspace/common/workspace.js';
 import { extHostNamedCustomer, IExtHostContext } from '../../services/extensions/common/extHostCustomers.js';
 import { checkGlobFileExists } from '../../services/extensions/common/workspaceContains.js';
 import { IFileQueryBuilderOptions, ITextQueryBuilderOptions, QueryBuilder } from '../../services/search/common/queryBuilder.js';
@@ -50,6 +51,7 @@ export class MainThreadWorkspace extends Disposable implements MainThreadWorkspa
 		@IRequestService private readonly _requestService: IRequestService,
 		@IInstantiationService private readonly _instantiationService: IInstantiationService,
 		@ILabelService private readonly _labelService: ILabelService,
+		@IProductService private readonly _productService: IProductService,
 		@IEnvironmentService private readonly _environmentService: IEnvironmentService,
 		@IFileService fileService: IFileService,
 		@IWorkspaceTrustManagementService private readonly _workspaceTrustManagementService: IWorkspaceTrustManagementService,
@@ -62,8 +64,12 @@ export class MainThreadWorkspace extends Disposable implements MainThreadWorkspa
 		const workspace = this._contextService.getWorkspace();
 		// The workspace file is provided be a unknown file system provider. It might come
 		// from the extension host. So initialize now knowing that `rootPath` is undefined.
-		if (workspace.configuration && !isNative && !fileService.hasProvider(workspace.configuration)) {
-			this._proxy.$initializeWorkspace(this.getWorkspaceData(workspace), this.isWorkspaceTrusted());
+		const isEmptyWorkspace = this._contextService.getWorkbenchState() === WorkbenchState.EMPTY;
+		const hasWorkspaceFolders = workspace.folders.length > 0;
+		const hasWorkspaceData = this._contextService.hasWorkspaceData();
+		const isNapo = this._productService.applicationName === 'napo';
+		if (isNapo || !hasWorkspaceData || hasWorkspaceFolders || isEmptyWorkspace || (workspace.configuration && !isNative && !fileService.hasProvider(workspace.configuration))) {
+			Promise.resolve().then(() => this._proxy.$initializeWorkspace(this.getWorkspaceData(workspace), this.isWorkspaceTrusted()));
 		} else {
 			this._contextService.getCompleteWorkspace().then(workspace => this._proxy.$initializeWorkspace(this.getWorkspaceData(workspace), this.isWorkspaceTrusted()));
 		}

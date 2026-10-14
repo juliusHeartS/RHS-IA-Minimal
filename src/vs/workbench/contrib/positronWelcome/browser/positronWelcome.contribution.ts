@@ -20,6 +20,7 @@ import { localize } from '../../../../nls.js';
 import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
 import { ITerminalService } from '../../terminal/browser/terminal.js';
 import { isWeb } from '../../../../base/common/platform.js';
+import { IProductService } from '../../../../platform/product/common/productService.js';
 
 export const POSITRON_SETTINGS_IMPORT_ENABLE_KEY = 'positron.importSettings.enable';
 class PositronWelcomeContribution extends Disposable implements IWorkbenchContribution {
@@ -32,10 +33,12 @@ class PositronWelcomeContribution extends Disposable implements IWorkbenchContri
 		@IContextKeyService private readonly contextKeyService: IContextKeyService,
 		@IConfigurationService private readonly configurationService: IConfigurationService,
 		@ITerminalService private readonly terminalService: ITerminalService,
+		@IProductService private readonly productService: IProductService,
 	) {
 		super();
 
-		const enabledGlobally = this.configurationService.getValue<boolean>(POSITRON_SETTINGS_IMPORT_ENABLE_KEY);
+		const enabledByProduct = this.productService.enableSettingsImport !== false;
+		const enabledGlobally = enabledByProduct && this.configurationService.getValue<boolean>(POSITRON_SETTINGS_IMPORT_ENABLE_KEY);
 
 		if (!enabledGlobally) {
 			return;
@@ -80,7 +83,7 @@ Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Configuration)
 			[POSITRON_SETTINGS_IMPORT_ENABLE_KEY]: {
 				type: 'boolean',
 				default: true,
-				description: localize('positron.importSettings.enable', "Should RHS-IA allow users to import settings from Visual Studio Code. Requires a restart to take effect."),
+				description: localize('positron.importSettings.enable', "Should the application allow users to import settings from Visual Studio Code. Requires a restart to take effect."),
 				doNotSuggest: true,
 				scope: ConfigurationScope.MACHINE_OVERRIDABLE
 			}

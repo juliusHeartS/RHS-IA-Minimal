@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "format": "napo-document-consistency/v1",
+  "product": "Napo",
+  "manifest": {
+    "path": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/reports/napo-release-manifest.json",
+    "fileCount": 32904,
+    "treeSha256": "ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e"
+  },
+  "legalInventory": {
+    "path": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/reports/napo-license-inventory-package.json",
+    "legalFileCount": 40
+  },
+  "status": "pass",
+  "checks": [
+    {
+      "path": "README.md",
+      "status": "pass",
+      "detail": "Digest y conteo vigentes reconciliados.",
+      "hasDigest": true,
+      "hasCount": true,
+      "activeCountMismatches": [],
+      "activeLegalCountMismatches": []
+    },
+    {
+      "path": "AUDITORIA_CIERRE_NAPO.md",
+      "status": "pass",
+      "detail": "Digest y conteo vigentes reconciliados.",
+      "hasDigest": true,
+      "hasCount": true,
+      "hasLegalCount": true,
+      "activeCountMismatches": [],
+      "activeLegalCountMismatches": []
+    },
+    {
+      "path": "MATRIZ_HOST_CAPIBARA.md",
+      "status": "pass",
+      "detail": "Digest y conteo vigentes reconciliados.",
+      "hasDigest": true,
+      "hasCount": true,
+      "activeCountMismatches": [],
+      "activeLegalCountMismatches": []
+    },
+    {
+      "path": "PLAN_TRABAJO_RHS_IA_MINIMAL.md",
+      "status": "pass",
+      "detail": "Digest y conteo vigentes reconciliados.",
+      "hasDigest": true,
+      "hasCount": true,
+      "activeCountMismatches": [],
+      "activeLegalCountMismatches": []
+    },
+    {
+      "path": "MATRIZ_CUMPLIMIENTO_NAPO.md",
+      "status": "pass",
+      "detail": "Digest y conteo vigentes reconciliados.",
+      "hasDigest": true,
+      "hasCount": true,
+      "hasLegalCount": true,
+      "activeCountMismatches": [],
+      "activeLegalCountMismatches": []
+    },
+    {
+      "path": "ENTRADAS_PENDIENTES_NAPO.md",
+      "status": "pass",
+      "detail": "Digest y conteo vigentes reconciliados.",
+      "hasDigest": true,
+      "hasCount": true,
+      "activeCountMismatches": [],
+      "activeLegalCountMismatches": []
+    },
+    {
+      "path": "PERFIL_NAPO_MINIMAL.md",
+      "status": "pass",
+      "detail": "Digest y conteo vigentes reconciliados.",
+      "hasDigest": true,
+      "hasCount": true,
+      "activeCountMismatches": [],
+      "activeLegalCountMismatches": []
+    },
+    {
+      "path": "AUDITORIA_LEGAL_NAPO.md",
+      "status": "pass",
+      "detail": "Digest y conteo vigentes reconciliados.",
+      "hasDigest": true,
+      "hasCount": true,
+      "hasLegalCount": true,
+      "activeCountMismatches": [],
+      "activeLegalCountMismatches": []
+    }
+  ],
+  "interpretation": "Los documentos canónicos distinguen el estado vigente de los addenda históricos y están ligados al manifiesto actual."
+}

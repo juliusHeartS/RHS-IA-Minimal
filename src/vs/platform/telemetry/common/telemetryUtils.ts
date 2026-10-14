@@ -94,6 +94,13 @@ export interface URIDescriptor {
  * @returns false - telemetry is completely disabled, true - telemetry is logged locally, but may not be sent
  */
 export function supportsTelemetry(productService: IProductService, environmentService: IEnvironmentService): boolean {
+	// Napo is distributed with telemetry disabled as a product invariant. Keep this
+	// guard ahead of the development-mode logging exception below so an unbuilt
+	// checkout cannot collect telemetry merely because it is not packaged yet.
+	if (!productService.enableTelemetry) {
+		return false;
+	}
+
 	// If it's OSS and telemetry isn't disabled via the CLI we will allow it for logging only purposes
 	if (!environmentService.isBuilt && !environmentService.disableTelemetry) {
 		return true;

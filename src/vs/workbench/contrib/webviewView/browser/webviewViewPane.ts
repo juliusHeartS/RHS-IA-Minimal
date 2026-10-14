@@ -18,6 +18,7 @@ import { IOpenerService } from '../../../../platform/opener/common/opener.js';
 import { IProgressService } from '../../../../platform/progress/common/progress.js';
 import { IStorageService, StorageScope, StorageTarget } from '../../../../platform/storage/common/storage.js';
 import { IThemeService } from '../../../../platform/theme/common/themeService.js';
+import { IWorkspaceContextService, WorkbenchState } from '../../../../platform/workspace/common/workspace.js';
 import { ViewPane, ViewPaneShowActions } from '../../../browser/parts/views/viewPane.js';
 import { IViewletViewOptions } from '../../../browser/parts/views/viewsViewlet.js';
 import { Memento } from '../../../common/memento.js';
@@ -50,6 +51,9 @@ export class WebviewViewPane extends ViewPane {
 	private readonly _webview = this._register(new MutableDisposable<IOverlayWebview>());
 	private readonly _webviewDisposables = this._register(new DisposableStore());
 	private _activated = false;
+	private _webviewRecoveryAttempted = false;
+	private _webviewRecoveryInProgress = false;
+	private _capibaraCancellationReloadTimer: ReturnType<typeof setTimeout> | undefined;
 
 	private _container?: HTMLElement;
 	private _rootContainer?: HTMLElement;
@@ -82,6 +86,7 @@ export class WebviewViewPane extends ViewPane {
 		@IViewsService private readonly viewService: IViewsService,
 		@IWebviewService private readonly webviewService: IWebviewService,
 		@IWebviewViewService private readonly webviewViewService: IWebviewViewService,
+		@IWorkspaceContextService private readonly workspaceContextService: IWorkspaceContextService,
 	) {
 		super({ ...options, titleMenuId: MenuId.ViewTitle, showActions: ViewPaneShowActions.WhenExpanded }, keybindingService, contextMenuService, configurationService, contextKeyService, viewDescriptorService, instantiationService, openerService, themeService, hoverService);
 		this.extensionId = options.fromExtensionId;
@@ -187,6 +192,56 @@ export class WebviewViewPane extends ViewPane {
 			this.viewState[storageKeys.webviewState] = webview.state;
 		}));
 
+		// Napo's Capibara view is an integrated, local extension. If its webview
+		// reports a fatal load error, give the host one bounded recovery attempt.
+		// Keep this in the host so the Capibara extension remains unmodified and
+		// avoid reloading on every task cancellation.
+		if (this.id === 'capibara.SidebarProvider') {
+			this._webviewDisposables.add(webview.onFatalError(() => {
+				if (this._webviewRecoveryAttempted || this._webviewRecoveryInProgress) {
+					return;
+				}
+
+				this._webviewRecoveryAttempted = true;
+				this._webviewRecoveryInProgress = true;
+				const recoveryTimer = setTimeout(() => {
+					this._webviewRecoveryInProgress = false;
+					if (this._webview.value === webview) {
+						webview.reload();
+					}
+				}, 100);
+				this._webviewDisposables.add(toDisposable(() => clearTimeout(recoveryTimer)));
+			}));
+			this._webviewDisposables.add(webview.onDidLoad(() => {
+				this._webviewRecoveryAttempted = false;
+			}));
+			this._webviewDisposables.add(webview.onMessage(({ message }) => {
+				if (!message || typeof message !== 'object' || message.type !== 'cancelTask') {
+					return;
+				}
+				if (this._capibaraCancellationReloadTimer !== undefined) {
+					return;
+				}
+
+				// Capibara cancels its runtime asynchronously. Reload after the host
+				// has had a chance to deliver the terminal status and history, then let
+				// the existing ready handshake restore the authoritative state. This is
+				// host recovery only; the integrated Capibara bundle is unchanged.
+				this._capibaraCancellationReloadTimer = setTimeout(() => {
+					this._capibaraCancellationReloadTimer = undefined;
+					if (this._webview.value === webview) {
+						webview.reload();
+					}
+				}, 750);
+				this._webviewDisposables.add(toDisposable(() => {
+					if (this._capibaraCancellationReloadTimer !== undefined) {
+						clearTimeout(this._capibaraCancellationReloadTimer);
+						this._capibaraCancellationReloadTimer = undefined;
+					}
+				}));
+			}));
+		}
+
 		// Re-dispatch all drag events back to the drop target to support view drag drop
 		for (const event of [EventType.DRAG, EventType.DRAG_END, EventType.DRAG_ENTER, EventType.DRAG_LEAVE, EventType.DRAG_START]) {
 			this._webviewDisposables.add(addDisposableListener(this._webview.value.container, event, e => {
@@ -201,6 +256,16 @@ export class WebviewViewPane extends ViewPane {
 		const source = this._webviewDisposables.add(new CancellationTokenSource());
 
 		this.withProgress(async () => {
+			// Napo's integrated Capibara provider reads vscode.workspace during its
+			// constructor. Resolve the host workspace first so the provider cannot
+			// bind its runtime to the extension directory when activation races the
+			// workspace initialization IPC message.
+			if (this.id === 'capibara.SidebarProvider') {
+				const workspace = this.workspaceContextService.getWorkspace();
+				if (workspace.folders.length === 0 && this.workspaceContextService.getWorkbenchState() !== WorkbenchState.EMPTY) {
+					await this.workspaceContextService.getCompleteWorkspace();
+				}
+			}
 			await this.extensionService.activateByEvent(`onView:${this.id}`);
 
 			const self = this;
@@ -221,6 +286,11 @@ export class WebviewViewPane extends ViewPane {
 				dispose: () => {
 					// Only reset and clear the webview itself. Don't dispose of the view container
 					this._activated = false;
+					// Recovery state belongs to this webview instance. Clear it before a
+					// later activation so a failed instance cannot suppress recovery for
+					// the replacement view.
+					this._webviewRecoveryAttempted = false;
+					this._webviewRecoveryInProgress = false;
 					this._webview.clear();
 					this._webviewDisposables.clear();
 				},

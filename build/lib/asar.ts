@@ -43,6 +43,9 @@ export function createAsar(folderPath: string, unpackGlobs: string[], skipGlobs:
 
 	const filesystem = new Filesystem(folderPath);
 	const out: Buffer[] = [];
+	// Dependency streams are merged concurrently. Buffering and sorting before
+	// insertion makes the ASAR header and payload deterministic across builds.
+	const pendingFiles: VinylFile[] = [];
 
 	// Keep track of pending inserts
 	let pendingInserts = 0;
@@ -91,40 +94,45 @@ export function createAsar(folderPath: string, unpackGlobs: string[], skipGlobs:
 		if (!file.stat.isFile()) {
 			throw new Error(`unknown item in stream!`);
 		}
-		if (shouldSkipFile(file)) {
-			this.queue(new VinylFile({
-				base: '.',
-				path: file.path,
-				stat: file.stat,
-				contents: file.contents
-			}));
-			return;
-		}
-		if (shouldDuplicateFile(file)) {
-			this.queue(new VinylFile({
-				base: '.',
-				path: file.path,
-				stat: file.stat,
-				contents: file.contents
-			}));
-		}
-		const shouldUnpack = shouldUnpackFile(file);
-		insertFile(file.relative, { size: file.contents.length, mode: file.stat.mode }, shouldUnpack);
-
-		if (shouldUnpack) {
-			// The file goes outside of xx.asar, in a folder xx.asar.unpacked
-			const relative = path.relative(folderPath, file.path);
-			this.queue(new VinylFile({
-				base: '.',
-				path: path.join(destFilename + '.unpacked', relative),
-				stat: file.stat,
-				contents: file.contents
-			}));
-		} else {
-			// The file goes inside of xx.asar
-			out.push(file.contents);
-		}
+		pendingFiles.push(file);
 	}, function () {
+		pendingFiles.sort((a, b) => a.relative < b.relative ? -1 : a.relative > b.relative ? 1 : 0);
+
+		for (const file of pendingFiles) {
+			if (shouldSkipFile(file)) {
+				this.queue(new VinylFile({
+					base: '.',
+					path: file.path,
+					stat: file.stat,
+					contents: file.contents
+				}));
+				continue;
+			}
+			if (shouldDuplicateFile(file)) {
+				this.queue(new VinylFile({
+					base: '.',
+					path: file.path,
+					stat: file.stat,
+					contents: file.contents
+				}));
+			}
+			const shouldUnpack = shouldUnpackFile(file);
+			insertFile(file.relative, { size: file.contents.length, mode: file.stat.mode }, shouldUnpack);
+
+			if (shouldUnpack) {
+				// The file goes outside of xx.asar, in a folder xx.asar.unpacked
+				const relative = path.relative(folderPath, file.path);
+				this.queue(new VinylFile({
+					base: '.',
+					path: path.join(destFilename + '.unpacked', relative),
+					stat: file.stat,
+					contents: file.contents
+				}));
+			} else {
+				// The file goes inside of xx.asar
+				out.push(file.contents);
+			}
+		}
 
 		const finish = () => {
 			{

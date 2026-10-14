@@ -1,0 +1,260 @@
+{
+  "format": "napo-extension-startup/v1",
+  "package": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-reduction-w3qW61/Napo.app",
+  "waitMs": 12000,
+  "reviewedExtensionCount": 21,
+  "checks": [
+    {
+      "name": "vscode.debug-auto-launch",
+      "folder": "debug-auto-launch",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onStartupFinished"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.debug-server-ready",
+      "folder": "debug-server-ready",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onDebugResolve"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.diff",
+      "folder": "diff",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.html",
+      "folder": "html",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.javascript",
+      "folder": "javascript",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.json",
+      "folder": "json",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.make",
+      "folder": "make",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.markdown",
+      "folder": "markdown-basics",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.media-preview",
+      "folder": "media-preview",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.merge-conflict",
+      "folder": "merge-conflict",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onStartupFinished"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.mermaid-markdown-features",
+      "folder": "mermaid-markdown-features",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onWebviewPanel:vscode.mermaid-markdown-features.preview"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.microsoft-authentication",
+      "folder": "microsoft-authentication",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "ms-ceintl.vscode-language-pack-es",
+      "folder": "ms-ceintl.vscode-language-pack-es",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "positron.next-edit-suggestions",
+      "folder": "next-edit-suggestions",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onAiEnabled",
+        "onAuthenticationRequest:posit-ai",
+        "onCommand:authentication.configureProviders"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "positron.dev-containers",
+      "folder": "positron-dev-containers",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onDebugResolve:extensionHost",
+        "onResolveRemoteAuthority:attached-container",
+        "onResolveRemoteAuthority:dev-container",
+        "onStartupFinished",
+        "workspaceContains:.devcontainer.json",
+        "workspaceContains:.devcontainer/devcontainer.json"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "positron.positron-run-app",
+      "folder": "positron-run-app",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onStartupFinished"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "positron.positron-skills",
+      "folder": "positron-skills",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onAiEnabled"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.prompt",
+      "folder": "prompt-basics",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "paho.rhs-ia-documentation",
+      "folder": "rhs-ia-documentation",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onCommand:rhs-ia.documentation.open",
+        "onView:rhs-ia.documentation.view",
+        "onCommand:rhs-ia.documentation.home",
+        "onCommand:rhs-ia.documentation.search"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.simple-browser",
+      "folder": "simple-browser",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onCommand:simpleBrowser.api.open",
+        "onOpenExternalUri:http",
+        "onOpenExternalUri:https",
+        "onWebviewPanel:simpleBrowser.view"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.yaml",
+      "folder": "yaml",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    }
+  ],
+  "startupErrors": [],
+  "logFiles": [
+    "editSessions.log",
+    "main.log",
+    "mcpGateway.log",
+    "network-shared.log",
+    "remoteTunnelService.log",
+    "sharedprocess.log",
+    "terminal.log",
+    "tunnelHostService.log",
+    "userDataSync.log",
+    "window1/exthost/extHostTelemetry.log",
+    "window1/exthost/exthost.log",
+    "window1/exthost/positron.dev-containers/Dev Containers.log",
+    "window1/fileWatcher.log",
+    "window1/network.log",
+    "window1/notebook.rendering.log",
+    "window1/output_20261012T225016/tasks.log",
+    "window1/renderer.log",
+    "window1/views.log"
+  ],
+  "status": "pass",
+  "limitations": [
+    "El smoke observa el arranque limpio; una extensión sin evento de arranque queda not-triggered y requiere una prueba específica de su función.",
+    "La ausencia de error de activación no demuestra equivalencia completa ni cubre comandos, vistas o flujos de usuario.",
+    "No se modifican el paquete, las fuentes ni el perfil persistente del usuario."
+  ],
+  "markers": {
+    "workspace": "NAPO_EXTENSION_STARTUP_SMOKE"
+  }
+}

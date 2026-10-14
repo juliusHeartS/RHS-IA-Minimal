@@ -99,3 +99,22 @@ dist
 .devcontainer/ci-arm/.env
 .devcontainer/ci-arm/license.txt
 # --- End Positron ---
+
+# Napo: Capibara is an integrated runtime artifact, not disposable build output.
+!extensions/rhs-agent4/dist/
+!extensions/rhs-agent4/dist/**
+extensions/rhs-agent4/dist/**/__pycache__/
+extensions/rhs-agent4/dist/**/*.pyc
+
+# Napo/Capibara workspace runtime state is local and must not enter the source repo.
+.capibara/
+
+# Napo ships the macOS native binding used by the built-in Git extension.
+# Keep the dependency tree ignored while preserving this required runtime file.
+!extensions/git/node_modules/
+extensions/git/node_modules/**
+!extensions/git/node_modules/@vscode/
+!extensions/git/node_modules/@vscode/fs-copyfile/
+!extensions/git/node_modules/@vscode/fs-copyfile/build/
+!extensions/git/node_modules/@vscode/fs-copyfile/build/Release/
+!extensions/git/node_modules/@vscode/fs-copyfile/build/Release/vscode_fs.node

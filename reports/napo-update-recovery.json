@@ -1,0 +1,33 @@
+{
+  "format": "napo-update-recovery/v1",
+  "package": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
+  "activeVersion": "1.130.0",
+  "checks": [
+    {
+      "name": "estado activo inicial",
+      "status": "pass",
+      "detail": "1.130.0 / ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e"
+    },
+    {
+      "name": "actualización válida activada",
+      "status": "pass",
+      "detail": "1.130.1 / 2fb43d79282cc3bcad53b92fb873a7c7f854f3d35680347c6d54ed360deea086"
+    },
+    {
+      "name": "candidato inseguro rechazado",
+      "status": "pass",
+      "detail": "telemetría no está desactivada"
+    },
+    {
+      "name": "rollback tras fallo de activación",
+      "status": "pass",
+      "detail": "1.130.1 / 2fb43d79282cc3bcad53b92fb873a7c7f854f3d35680347c6d54ed360deea086"
+    }
+  ],
+  "status": "pass",
+  "policy": "actualización manual, explícita, verificable y reversible; esta prueba no descarga ni instala nada",
+  "limitations": [
+    "La prueba valida el protocolo local de manifiesto, activación por puntero y rollback; no firma, notariza ni publica un instalador.",
+    "La activación real requiere un instalador/canal operado explícitamente por la persona usuaria."
+  ]
+}

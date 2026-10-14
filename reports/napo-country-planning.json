@@ -1,0 +1,38 @@
+{
+  "format": "napo-country-planning/v1",
+  "status": "pass",
+  "fixture": {
+    "country": "República de Andesia",
+    "fictional": true,
+    "policy": "AND-SALUD-2026-01",
+    "regions": 6
+  },
+  "project": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-country-planning-wgLhoi",
+  "artifacts": {
+    "data": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-country-planning-wgLhoi/data/regions.csv",
+    "policy": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-country-planning-wgLhoi/policy/national-health-policy.yml",
+    "graphic": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-country-planning-wgLhoi/report/coverage-scenarios.png",
+    "quarto": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-country-planning-wgLhoi/report/rendered/andesia-plan.html"
+  },
+  "checks": [
+    {
+      "name": "R: política, escenarios y gráfico",
+      "ok": true,
+      "output": "null device \n          1 \nNAPO_COUNTRY_R_OK baseline=0.6157 scenario=0.7515"
+    },
+    {
+      "name": "Python: réplica independiente del escenario",
+      "ok": true,
+      "output": "NAPO_COUNTRY_PYTHON_OK baseline=0.6157 scenario=0.7515"
+    },
+    {
+      "name": "Quarto: reporte nacional reproducible",
+      "ok": true,
+      "output": "processing file: andesia-plan.qmd\n1/5                  \n2/5 [unnamed-chunk-1]\n3/5                  \n4/5 [unnamed-chunk-2]\n5/5                  \noutput file: andesia-plan.knit.md\n\npandoc \n  to: html\n  output-file: andesia-plan.html\n  standalone: true\n  section-divs: true\n  html-math-method: mathjax\n  wrap: none\n  default-image-extension: png\n  \nmetadata\n  document-css: false\n  link-citations: true\n  date-format: long\n  lang: es\n  title: Plan nacional sintético — República de Andesia\n  subtitle: 'Prueba de aceptación de Napo: R, Python, gráficos y Quarto'\n  \nOutput created: ../../../../../../../../var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-country-planning-wgLhoi/report/rendered/andesia-plan.html"
+    }
+  ],
+  "limitations": [
+    "Todos los datos, políticas y resultados son sintéticos y no tienen autoridad institucional.",
+    "Esta prueba valida la cadena técnica R/Python/Quarto y no sustituye revisión humana de políticas reales."
+  ]
+}

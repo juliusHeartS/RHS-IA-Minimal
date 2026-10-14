@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "packageUnderTest": "/Users/julius3005/Documents/Github/VSCode-darwin-arm64/Napo.app",
+  "temporaryClone": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-reduction-C3P6TW/Napo.app",
+  "removedExtensions": [
+    "html"
+  ],
+  "reversibleArchive": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-reduction-C3P6TW/removed-extensions",
+  "validation": {
+    "command": "/Users/julius3005/.nvm/versions/node/v22.22.0/bin/node scripts/validate-napo.mjs --require-runtime --package /var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-reduction-C3P6TW/Napo.app",
+    "exitCode": 0,
+    "signal": null,
+    "lastOutput": [
+      "OK integridad PET: el descubridor PET de build debe coincidir con la copia integrada",
+      "OK PET ejecutable: el binario PET debe tener permiso de ejecución",
+      "OK integridad Ark: el kernel Ark de build debe coincidir con la copia integrada",
+      "OK Ark ejecutable: el kernel Ark debe tener permiso de ejecución",
+      "OK integridad Kallichore: el runtime Kallichore de build debe coincidir con la copia integrada",
+      "OK Kallichore ejecutable: el runtime Kallichore debe tener permiso de ejecución",
+      "OK Quarto ejecutable: el binario Quarto debe tener permiso de ejecución",
+      "OK Quarto operativo: el CLI empaquetado debe poder ejecutarse",
+      "OK versión Quarto: 1.10.18",
+      "OK R disponible: R version 4.5.3 (2026-03-11) -- \"Reassured Reassurer\"",
+      "OK Python disponible: Python 3.13.3",
+      "Validación estructural de Napo completada."
+    ]
+  },
+  "smoke": {
+    "command": "/Users/julius3005/.nvm/versions/node/v22.22.0/bin/node scripts/smoke-napo-runtime.mjs --package /var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-reduction-C3P6TW/Napo.app",
+    "exitCode": 0,
+    "signal": null,
+    "lastOutput": [
+      "  wrap: none",
+      "  default-image-extension: png",
+      "  ",
+      "metadata",
+      "  document-css: false",
+      "  link-citations: true",
+      "  date-format: long",
+      "  lang: en",
+      "  title: Napo runtime smoke test (Python)",
+      "  jupyter: python3",
+      "  ",
+      "Output created: python-smoke.html"
+    ]
+  },
+  "passed": true,
+  "limitations": [
+    "La clonación usa enlaces duros y la prueba no demuestra ausencia de contratos dinámicos del host.",
+    "La prueba no sustituye una sesión UI completa ni la revisión de licencias.",
+    "El clon temporal se conserva para inspección y recuperación; no se modifica el paquete original."
+  ]
+}

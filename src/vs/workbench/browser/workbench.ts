@@ -331,7 +331,11 @@ export class Workbench extends Layout {
 			}
 		}
 
-		FontMeasurements.readFontInfo(mainWindow, createBareFontInfoFromRawSettings(configurationService.getValue('editor'), PixelRatio.getInstance(mainWindow).value));
+		// A first-run profile can reach the workbench before the default
+		// configuration tree has been materialized. Keep the renderer alive with
+		// editor defaults instead of turning that transient state into a blank
+		// window.
+		FontMeasurements.readFontInfo(mainWindow, createBareFontInfoFromRawSettings(configurationService.getValue('editor') ?? {}, PixelRatio.getInstance(mainWindow).value));
 	}
 
 	private storeFontInfo(storageService: IStorageService): void {

@@ -1691,10 +1691,18 @@ export class CodeApplication extends Disposable {
 		}
 
 		// default: read paths from cli
+		// Napo opens into its welcome page when launched without an explicit file
+		// or folder. Explicit paths (including paths opened by macOS) still win.
+		const openEmptyWindowOnStartup = this.productService.openEmptyWindowOnStartup === true
+			&& !hasCliArgs
+			&& !hasFolderURIs
+			&& !hasFileURIs;
+
 		return windowsMainService.open({
 			context,
 			cli: args,
 			forceNewWindow: args['new-window'],
+			forceEmpty: openEmptyWindowOnStartup,
 			diffMode: args.diff,
 			mergeMode: args.merge,
 			noRecentEntry,

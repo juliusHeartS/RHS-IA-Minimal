@@ -1,0 +1,496 @@
+{
+  "format": "napo-extension-functional-coverage/v1",
+  "product": "Napo",
+  "package": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
+  "packageTreeSha256": "ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e",
+  "scope": "extensiones clasificadas como requiere-prueba y presentes en el artefacto",
+  "policy": "la evidencia funcional refuerza la aceptación; no autoriza retirar extensiones ni sustituye la revisión legal",
+  "checks": [
+    {
+      "name": "superficie presente",
+      "status": "pass",
+      "detail": "13/13 extensiones clasificadas como requiere-prueba tienen manifiesto físico"
+    },
+    {
+      "name": "evidencia UI ligada al release",
+      "status": "pass",
+      "detail": "UI=ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e; release=ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e"
+    },
+    {
+      "name": "vscode.debug-auto-launch UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.debug-auto-launch contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.debug-auto-launch arranque",
+      "status": "pass",
+      "detail": "status=startup-observed, errores=0"
+    },
+    {
+      "name": "vscode.diff UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.diff contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.diff arranque",
+      "status": "pass",
+      "detail": "status=not-triggered-resource, errores=0"
+    },
+    {
+      "name": "vscode.json UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.json contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.json arranque",
+      "status": "pass",
+      "detail": "status=not-triggered-resource, errores=0"
+    },
+    {
+      "name": "vscode.markdown UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.markdown contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.markdown arranque",
+      "status": "pass",
+      "detail": "status=not-triggered-resource, errores=0"
+    },
+    {
+      "name": "vscode.media-preview UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.media-preview contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.media-preview arranque",
+      "status": "pass",
+      "detail": "status=not-triggered-resource, errores=0"
+    },
+    {
+      "name": "vscode.merge-conflict UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.merge-conflict contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.merge-conflict arranque",
+      "status": "pass",
+      "detail": "status=startup-observed, errores=0"
+    },
+    {
+      "name": "vscode.mermaid-markdown-features UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.mermaid-markdown-features contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.mermaid-markdown-features arranque",
+      "status": "pass",
+      "detail": "status=startup-observed, errores=0"
+    },
+    {
+      "name": "ms-ceintl.vscode-language-pack-es UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "ms-ceintl.vscode-language-pack-es contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "ms-ceintl.vscode-language-pack-es arranque",
+      "status": "pass",
+      "detail": "status=not-triggered-resource, errores=0"
+    },
+    {
+      "name": "positron.positron-run-app UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "positron.positron-run-app contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "positron.positron-run-app arranque",
+      "status": "pass",
+      "detail": "status=startup-observed, errores=0"
+    },
+    {
+      "name": "vscode.prompt UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.prompt contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.prompt arranque",
+      "status": "pass",
+      "detail": "status=not-triggered-resource, errores=0"
+    },
+    {
+      "name": "paho.rhs-ia-documentation UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "paho.rhs-ia-documentation contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "paho.rhs-ia-documentation arranque",
+      "status": "pass",
+      "detail": "status=startup-observed, errores=0"
+    },
+    {
+      "name": "vscode.simple-browser UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.simple-browser contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.simple-browser arranque",
+      "status": "pass",
+      "detail": "status=startup-observed, errores=0"
+    },
+    {
+      "name": "vscode.yaml UI",
+      "status": "pass",
+      "detail": "status=pass"
+    },
+    {
+      "name": "vscode.yaml contrato",
+      "status": "pass",
+      "detail": "status=pass, issues=0"
+    },
+    {
+      "name": "vscode.yaml arranque",
+      "status": "pass",
+      "detail": "status=not-triggered-resource, errores=0"
+    }
+  ],
+  "extensions": [
+    {
+      "folder": "debug-auto-launch",
+      "name": "vscode.debug-auto-launch",
+      "packageManifest": "extensions/debug-auto-launch/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Ejecutar `Debug: Toggle Auto Attach` desde la paleta de comandos",
+        "marker": "Deshabilitado"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 0
+      },
+      "startup": {
+        "status": "startup-observed",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "diff",
+      "name": "vscode.diff",
+      "packageManifest": "extensions/diff/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Seleccionar `Diff` mediante `Change Language Mode`",
+        "marker": "Diff"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 0
+      },
+      "startup": {
+        "status": "not-triggered-resource",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "json",
+      "name": "vscode.json",
+      "packageManifest": "extensions/json/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Crear un editor sin título y seleccionar `JSON` mediante `Change Language Mode`",
+        "marker": "JSON"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 0
+      },
+      "startup": {
+        "status": "not-triggered-resource",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "markdown-basics",
+      "name": "vscode.markdown",
+      "packageManifest": "extensions/markdown-basics/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Seleccionar `Markdown` y ejecutar `Markdown: Open Preview to the Side`",
+        "marker": "[Vista previa] Untitled-1"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 0
+      },
+      "startup": {
+        "status": "not-triggered-resource",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "media-preview",
+      "name": "vscode.media-preview",
+      "packageManifest": "extensions/media-preview/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Abrir `screenshots/napo-playwright-electron.png` desde el destino Napo",
+        "marker": "Image Preview"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 1
+      },
+      "startup": {
+        "status": "not-triggered-resource",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "merge-conflict",
+      "name": "vscode.merge-conflict",
+      "packageManifest": "extensions/merge-conflict/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Pegar marcadores de conflicto en un editor sin título",
+        "marker": "Aceptar cambio actual"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 1
+      },
+      "startup": {
+        "status": "startup-observed",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "mermaid-markdown-features",
+      "name": "vscode.mermaid-markdown-features",
+      "packageManifest": "extensions/mermaid-markdown-features/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Abrir una referencia Markdown local, insertar un bloque Mermaid mediante pegado y ejecutar `Markdown: Open Preview`",
+        "marker": "Mermaid Diagram"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 1
+      },
+      "startup": {
+        "status": "startup-observed",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "ms-ceintl.vscode-language-pack-es",
+      "name": "ms-ceintl.vscode-language-pack-es",
+      "packageManifest": "extensions/ms-ceintl.vscode-language-pack-es/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Ejecutar `Configure Display Language`",
+        "marker": "español (es) (Actual)"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 0
+      },
+      "startup": {
+        "status": "not-triggered-resource",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "positron-run-app",
+      "name": "positron.positron-run-app",
+      "packageManifest": "extensions/positron-run-app/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Abrir un editor Python, ejecutar `Run Flask App in Terminal`, comprobar la creación de la terminal y abrir un servidor HTTP local detectado mediante `Terminal: Open Detected Link` en `Open in Viewer pane`",
+        "marker": "Directory listing for /?_positronRender=0"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 0
+      },
+      "startup": {
+        "status": "startup-observed",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "prompt-basics",
+      "name": "vscode.prompt",
+      "packageManifest": "extensions/prompt-basics/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Seleccionar `Prompt` mediante `Change Language Mode`",
+        "marker": "Prompt"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 0
+      },
+      "startup": {
+        "status": "not-triggered-resource",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "rhs-ia-documentation",
+      "name": "paho.rhs-ia-documentation",
+      "packageManifest": "extensions/rhs-ia-documentation/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Ejecutar `RHS-IA: Abrir documentación` desde la paleta de comandos",
+        "marker": "Documentación de RHS-IA"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 0
+      },
+      "startup": {
+        "status": "startup-observed",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "simple-browser",
+      "name": "vscode.simple-browser",
+      "packageManifest": "extensions/simple-browser/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Ejecutar `Explorador: Abrir explorador integrado` y navegar a `data:text/html,<h1>NAPO_BROWSER_OK</h1>`",
+        "marker": "NAPO_BROWSER_OK"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 1
+      },
+      "startup": {
+        "status": "startup-observed",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    },
+    {
+      "folder": "yaml",
+      "name": "vscode.yaml",
+      "packageManifest": "extensions/yaml/package.json",
+      "ui": {
+        "status": "pass",
+        "action": "Cerrar la preview, volver al editor fuente y seleccionar `YAML` mediante `Change Language Mode`",
+        "marker": "YAML"
+      },
+      "contract": {
+        "status": "pass",
+        "issueCount": 0,
+        "warningCount": 0
+      },
+      "startup": {
+        "status": "not-triggered-resource",
+        "activationObserved": true,
+        "startupErrorLines": []
+      },
+      "status": "pass"
+    }
+  ],
+  "limitations": [
+    "La UI proviene de evidencia manual ligada al digest; este informe no pretende convertirla en automatización completa de todos los comandos y vistas.",
+    "Las advertencias declaradas por contratos opcionales del host o web quedan conservadas y no se convierten en errores.",
+    "La revisión legal, firma, notarización y canal de distribución permanecen fuera de esta compuerta."
+  ],
+  "status": "pass"
+}

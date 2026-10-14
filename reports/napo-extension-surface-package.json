@@ -1,0 +1,1477 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "deterministic",
+  "root": "dist/Napo.app/Contents/Resources/app/extensions",
+  "artifactRoot": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app/Contents/Resources/app",
+  "policy": "clasificación orientativa; no autoriza eliminar extensiones",
+  "summary": {
+    "total": 59,
+    "conservar": 46,
+    "candidata-aplazar": 0,
+    "requiere-prueba": 13,
+    "candidatasAisladas": 0,
+    "recommendations": {
+      "conservar": 46,
+      "revisar": 13
+    },
+    "surfaceRoles": {
+      "host-contract-review": 52,
+      "product-contract": 7
+    }
+  },
+  "extensions": [
+    {
+      "folder": "authentication",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/authentication/package.json",
+      "name": "positron.authentication",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished",
+        "onAuthenticationRequest:anthropic-api",
+        "onAuthenticationRequest:posit-ai",
+        "onAuthenticationRequest:ms-foundry",
+        "onAuthenticationRequest:amazon-bedrock",
+        "onAuthenticationRequest:snowflake-cortex",
+        "onAuthenticationRequest:openai-api",
+        "onAuthenticationRequest:openai-compatible",
+        "onAuthenticationRequest:google",
+        "onAuthenticationRequest:google-cloud",
+        "onAuthenticationRequest:deepseek-api",
+        "onAuthenticationRequest:databricks",
+        "onAuthenticationRequest:positron-custom-provider",
+        "onCommand:authentication.configureProviders",
+        "onCommand:authentication.migrateSettingsToProvidersJson"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "authentication",
+        "commands",
+        "configuration"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "configuration-editing",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/configuration-editing/package.json",
+      "name": "vscode.configuration-editing",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onProfile",
+        "onProfile:github",
+        "onLanguage:json",
+        "onLanguage:jsonc"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "jsonValidation",
+        "languages"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "css-language-features",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/css-language-features/package.json",
+      "name": "vscode.css-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:css",
+        "onLanguage:less",
+        "onLanguage:scss"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "configurationDefaults",
+        "jsonValidation"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "debug-auto-launch",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/debug-auto-launch/package.json",
+      "name": "vscode.debug-auto-launch",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "product-contract",
+      "recommendation": "revisar",
+      "reviewRationale": "puede participar en el host, Capibara, documentación, preview o proyectos; requiere prueba específica",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "diff",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/diff/package.json",
+      "name": "vscode.diff",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "revisar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "emmet",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/emmet/package.json",
+      "name": "vscode.emmet",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onCommand:emmet.expandAbbreviation",
+        "onLanguage"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "git-base",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/git-base/package.json",
+      "name": "vscode.git-base",
+      "version": "10.0.0",
+      "activationEvents": [
+        "*"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "grammars",
+        "languages",
+        "menus"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "vscode.git"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "git",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/git/package.json",
+      "name": "vscode.git",
+      "version": "10.0.0",
+      "activationEvents": [
+        "*",
+        "onEditSession:file",
+        "onFileSystem:git",
+        "onFileSystem:git-show"
+      ],
+      "dependencies": [
+        "vscode.git-base"
+      ],
+      "contributes": [
+        "colors",
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "continueEditSession",
+        "keybindings",
+        "menus",
+        "submenus",
+        "viewsWelcome"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "html-language-features",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/html-language-features/package.json",
+      "name": "vscode.html-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:html",
+        "onLanguage:handlebars"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "configurationDefaults",
+        "jsonValidation"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "ipynb",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/ipynb/package.json",
+      "name": "vscode.ipynb",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onNotebook:jupyter-notebook",
+        "onNotebookSerializer:interactive",
+        "onNotebookSerializer:repl"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus",
+        "notebookRenderer",
+        "notebooks"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "json-language-features",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/json-language-features/package.json",
+      "name": "vscode.json-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:json",
+        "onLanguage:jsonc",
+        "onLanguage:snippets",
+        "onCommand:json.validate"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "jsonValidation"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "json",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/json/package.json",
+      "name": "vscode.json",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "revisar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "markdown-basics",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/markdown-basics/package.json",
+      "name": "vscode.markdown",
+      "version": "30.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "revisar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "markdown-language-features",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/markdown-language-features/package.json",
+      "name": "vscode.markdown-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:markdown",
+        "onLanguage:prompt",
+        "onLanguage:instructions",
+        "onLanguage:chatagent",
+        "onLanguage:skill",
+        "onCommand:markdown.api.render",
+        "onCommand:markdown.api.reloadPlugins",
+        "onWebviewPanel:markdown.preview"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "customEditors",
+        "jsonValidation",
+        "keybindings",
+        "markdown.previewScripts",
+        "markdown.previewStyles",
+        "menus",
+        "notebookRenderer"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "markdown-math",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/markdown-math/package.json",
+      "name": "vscode.markdown-math",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "grammars",
+        "languages",
+        "markdown.markdownItPlugins",
+        "markdown.previewStyles",
+        "notebookRenderer"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "media-preview",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/media-preview/package.json",
+      "name": "vscode.media-preview",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "customEditors",
+        "menus"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "product-contract",
+      "recommendation": "revisar",
+      "reviewRationale": "puede participar en el host, Capibara, documentación, preview o proyectos; requiere prueba específica",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "merge-conflict",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/merge-conflict/package.json",
+      "name": "vscode.merge-conflict",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "product-contract",
+      "recommendation": "revisar",
+      "reviewRationale": "puede participar en el host, Capibara, documentación, preview o proyectos; requiere prueba específica",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "mermaid-markdown-features",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/mermaid-markdown-features/package.json",
+      "name": "vscode.mermaid-markdown-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onWebviewPanel:vscode.mermaid-markdown-features.preview"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "chatOutputRenderers",
+        "commands",
+        "configuration",
+        "languageModelTools",
+        "markdown.markdownItPlugins",
+        "markdown.previewScripts",
+        "menus",
+        "notebookRenderer"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "product-contract",
+      "recommendation": "revisar",
+      "reviewRationale": "puede participar en el host, Capibara, documentación, preview o proyectos; requiere prueba específica",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "ms-ceintl.vscode-language-pack-es",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/ms-ceintl.vscode-language-pack-es/package.json",
+      "name": "ms-ceintl.vscode-language-pack-es",
+      "version": "1.111.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "localizations"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "revisar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "notebook-renderers",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/notebook-renderers/package.json",
+      "name": "vscode.builtin-notebook-renderers",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "notebookRenderer"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-catalog-explorer",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-catalog-explorer/package.json",
+      "name": "positron.positron-catalog-explorer",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:catalog-explorer",
+        "onCommand:posit.catalog-explorer.addCatalogProvider",
+        "onCommand:posit.catalog-explorer.removeCatalogProvider",
+        "onCommand:posit.catalog-explorer.refresh"
+      ],
+      "dependencies": [
+        "positron.positron-environment"
+      ],
+      "contributes": [
+        "commands",
+        "configuration",
+        "keybindings",
+        "menus",
+        "views",
+        "viewsWelcome"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-code-cells",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-code-cells/package.json",
+      "name": "positron.positron-code-cells",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "keybindings",
+        "menus"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-connections",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-connections/package.json",
+      "name": "positron.positron-connections",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [
+        "positron.positron-supervisor"
+      ],
+      "contributes": [
+        "commands",
+        "menus",
+        "views",
+        "viewsContainers",
+        "viewsWelcome"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-databricks",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-data-driver-databricks/package.json",
+      "name": "positron.positron-data-driver-databricks",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-duckdb",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-data-driver-duckdb/package.json",
+      "name": "positron.positron-data-driver-duckdb",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-odbc",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-data-driver-odbc/package.json",
+      "name": "positron.positron-data-driver-odbc",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-pins",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-data-driver-pins/package.json",
+      "name": "positron.positron-data-driver-pins",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-postgresql",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-data-driver-postgresql/package.json",
+      "name": "positron.positron-data-driver-postgresql",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-redshift",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-data-driver-redshift/package.json",
+      "name": "positron.positron-data-driver-redshift",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-snowflake",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-data-driver-snowflake/package.json",
+      "name": "positron.positron-data-driver-snowflake",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-sqlite",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-data-driver-sqlite/package.json",
+      "name": "positron.positron-data-driver-sqlite",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-duckdb",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-duckdb/package.json",
+      "name": "positron.positron-duckdb",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onPositronDataExplorerBackend:positron-duckdb"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-environment-modules",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-environment-modules/package.json",
+      "name": "positron.positron-environment-modules",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-environment",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-environment/package.json",
+      "name": "positron.positron-environment",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "positron.positron-catalog-explorer",
+        "positron.positron-supervisor"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "positron-file-transfer",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-file-transfer/package.json",
+      "name": "positron.positron-file-transfer",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-ipywidgets",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-ipywidgets/package.json",
+      "name": "positron.positron-ipywidgets",
+      "version": "0.0.1",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "notebookRenderer"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-notebook-export",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-notebook-export/package.json",
+      "name": "positron.notebook-export",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "menus"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-notebooks",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-notebooks/package.json",
+      "name": "positron.positron-notebooks-helpers",
+      "version": "1.0.0",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-pdf-server",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-pdf-server/package.json",
+      "name": "positron.positron-pdf-server",
+      "version": "1.0.0",
+      "activationEvents": [
+        "onCommand:positron.pdfServer.getViewerUrl",
+        "onCommand:positron.pdfServer.unregisterPdf"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "customEditors"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-proxy",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-proxy/package.json",
+      "name": "positron.positron-proxy",
+      "version": "1.0.0",
+      "activationEvents": [
+        "onCommand:positronProxy.startHelpProxyServer",
+        "onCommand:positronProxy.setHelpProxyServerStyles",
+        "onCommand:positronProxy.startHtmlProxyServer",
+        "onCommand:positronProxy.startHttpProxyServer",
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "menus"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-python",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-python/package.json",
+      "name": "ms-python.python",
+      "version": "2026.99.0-dev",
+      "activationEvents": [
+        "onCommand:python.createEnvironmentAndRegister",
+        "onCommand:python.getEnvironmentHealth",
+        "onStartupFinished",
+        "onPositronDataExplorerImport",
+        "onDebugInitialConfigurations",
+        "onLanguage:python",
+        "onDebugResolve:python",
+        "onCommand:python.copilotSetupTests",
+        "workspaceContains:mspythonconfig.json",
+        "workspaceContains:pyproject.toml",
+        "workspaceContains:Pipfile",
+        "workspaceContains:setup.py",
+        "workspaceContains:requirements.txt",
+        "workspaceContains:pylock.toml",
+        "workspaceContains:**/pylock.*.toml",
+        "workspaceContains:manage.py",
+        "workspaceContains:app.py",
+        "workspaceContains:.venv",
+        "workspaceContains:.conda",
+        "onLanguageModelTool:get_python_environment_details",
+        "onLanguageModelTool:get_python_executable_details",
+        "onLanguageModelTool:install_python_packages",
+        "onLanguageModelTool:configure_python_environment",
+        "onLanguageModelTool:create_virtual_environment",
+        "onTerminalShellIntegration:python"
+      ],
+      "dependencies": [
+        "positron.positron-supervisor"
+      ],
+      "contributes": [
+        "breakpoints",
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "debuggers",
+        "grammars",
+        "jsonValidation",
+        "keybindings",
+        "languageModelTools",
+        "languageRuntimes",
+        "languages",
+        "menus",
+        "problemMatchers",
+        "snippets",
+        "submenus",
+        "viewsWelcome",
+        "walkthroughs",
+        "yamlValidation"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "positron.positron-runtime-debugger"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "positron-r",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-r/package.json",
+      "name": "positron.positron-r",
+      "version": "0.0.2",
+      "activationEvents": [
+        "onStartupFinished",
+        "onLanguage:rdata",
+        "onLanguage:rds"
+      ],
+      "dependencies": [
+        "positron.positron-supervisor"
+      ],
+      "contributes": [
+        "breakpoints",
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "customEditors",
+        "debuggers",
+        "grammars",
+        "keybindings",
+        "languageModelTools",
+        "languageRuntimes",
+        "languages",
+        "menus",
+        "notebookRenderer",
+        "taskDefinitions",
+        "viewsWelcome",
+        "walkthroughs"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "positron.positron-runtime-debugger"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "positron-reticulate",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-reticulate/package.json",
+      "name": "positron.positron-reticulate",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-run-app",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-run-app/package.json",
+      "name": "positron.positron-run-app",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "product-contract",
+      "recommendation": "revisar",
+      "reviewRationale": "puede participar en el host, Capibara, documentación, preview o proyectos; requiere prueba específica",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-runtime-debugger",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-runtime-debugger/package.json",
+      "name": "positron.positron-runtime-debugger",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [
+        "ms-python.python",
+        "positron.positron-r"
+      ],
+      "contributes": [
+        "commands",
+        "debuggers",
+        "menus"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-supervisor",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-supervisor/package.json",
+      "name": "positron.positron-supervisor",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [
+        "positron.positron-environment"
+      ],
+      "contributes": [
+        "commands",
+        "configuration"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "ms-python.python",
+        "positron.positron-connections",
+        "positron.positron-r"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "positron-viewer",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/positron-viewer/package.json",
+      "name": "positron.positron-viewer",
+      "version": "1.0.0",
+      "activationEvents": [
+        "onOpenExternalUri:http",
+        "onOpenExternalUri:https"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "prompt-basics",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/prompt-basics/package.json",
+      "name": "vscode.prompt",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "revisar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "python",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/python/package.json",
+      "name": "vscode.python",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "r",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/r/package.json",
+      "name": "vscode.r",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "references-view",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/references-view/package.json",
+      "name": "vscode.references-view",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onCommand:references-view.find",
+        "onCommand:editor.action.showReferences"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "keybindings",
+        "menus",
+        "views",
+        "viewsContainers"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "rhs-agent4",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/rhs-agent4/package.json",
+      "name": "juliushearts.rhs-agent4",
+      "version": "4.0.0",
+      "activationEvents": [
+        "onView:capibara.SidebarProvider"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus",
+        "views",
+        "viewsContainers"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "rhs-ia-documentation",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/rhs-ia-documentation/package.json",
+      "name": "paho.rhs-ia-documentation",
+      "version": "0.0.5",
+      "activationEvents": [
+        "onCommand:rhs-ia.documentation.open",
+        "onView:rhs-ia.documentation.view",
+        "onCommand:rhs-ia.documentation.home",
+        "onCommand:rhs-ia.documentation.search"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "keybindings",
+        "views",
+        "viewsContainers"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "product-contract",
+      "recommendation": "revisar",
+      "reviewRationale": "puede participar en el host, Capibara, documentación, preview o proyectos; requiere prueba específica",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "search-result",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/search-result/package.json",
+      "name": "vscode.search-result",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:search-result"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "simple-browser",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/simple-browser/package.json",
+      "name": "vscode.simple-browser",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onCommand:simpleBrowser.api.open",
+        "onOpenExternalUri:http",
+        "onOpenExternalUri:https",
+        "onWebviewPanel:simpleBrowser.view"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "product-contract",
+      "recommendation": "revisar",
+      "reviewRationale": "puede participar en el host, Capibara, documentación, preview o proyectos; requiere prueba específica",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "sql",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/sql/package.json",
+      "name": "vscode.sql",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "terminal-suggest",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/terminal-suggest/package.json",
+      "name": "vscode.terminal-suggest",
+      "version": "1.0.1",
+      "activationEvents": [
+        "onTerminalShellIntegration:*"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "terminal"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "typescript-language-features",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/typescript-language-features/package.json",
+      "name": "vscode.typescript-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:javascript",
+        "onLanguage:javascriptreact",
+        "onLanguage:typescript",
+        "onLanguage:typescriptreact",
+        "onLanguage:jsx-tags",
+        "onCommand:typescript.tsserverRequest",
+        "onCommand:_typescript.configurePlugin",
+        "onCommand:_typescript.learnMoreAboutRefactorings",
+        "onCommand:typescript.fileReferences",
+        "onTaskType:typescript",
+        "onLanguage:jsonc",
+        "onWalkthrough:nodejsWelcome"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "breakpoints",
+        "commands",
+        "configuration",
+        "jsonValidation",
+        "menus",
+        "problemMatchers",
+        "problemPatterns",
+        "taskDefinitions",
+        "walkthroughs"
+      ],
+      "classification": "conservar",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "conservar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "yaml",
+      "manifest": "dist/Napo.app/Contents/Resources/app/extensions/yaml/package.json",
+      "name": "vscode.yaml",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "surfaceRole": "host-contract-review",
+      "recommendation": "revisar",
+      "reviewRationale": "no hay evidencia suficiente para retirar o aplazar este componente del receptor",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    }
+  ]
+}

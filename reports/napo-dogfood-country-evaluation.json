@@ -1,0 +1,31 @@
+{
+  "format": "napo-dogfood-country-evaluation/v1",
+  "date": "2026-10-13",
+  "package": "dist/Napo.app",
+  "workspace": "/var/folders/wf/kdl2fxs175v75dr1pcpwv4jc0000gn/T/napo-country-planning-wgLhoi",
+  "fixture": {"country": "República de Andesia", "regions": 6, "policy": "AND-SALUD-2026-01", "synthetic": true},
+  "capibara": {
+    "version": "4.0.0",
+    "policy": "sensitive",
+    "autoApprove": {"read": true, "write": true, "execute": true},
+    "newTaskApprovalEvents": 0,
+    "note": "Los eventos approval_required existentes pertenecen únicamente a la tarea antigua capibara-task-mv72j721-75tcmp."
+  },
+  "chats": [
+    {"name": "R: cobertura base", "status": "pass", "result": "0.615653", "approvals": 0},
+    {"name": "Python: réplica y gráfico", "status": "pass-with-fallback", "result": "outputs/python-coverage.png", "approvals": 0, "finding": "positron_execute_code falló dos veces; el fallback encontró python3 del sistema con pandas y matplotlib."},
+    {"name": "R: escenarios y Quarto", "status": "pass", "result": {"baseline": 0.615653, "accelerated": 0.751522, "delta": 0.135869, "deltaPercentagePoints": 13.59, "annualInvestmentMUSD": 132, "regionsAtOrAboveBaseline": "6/6"}, "artifacts": ["report/coverage-scenarios.png", "report/rendered/andesia-plan.html"], "approvals": 0, "finding": "Hubo un intento inicial de terminal fallido; el agente localizó el Quarto empaquetado y el render terminó correctamente."}
+  ],
+  "packageChecks": {"runtime": "pass", "modeling": "pass", "privacy": "pass-no-nonlocal-connections-observed", "extensionStartup": "pass-zero-startup-errors", "r": "pass", "pythonRuntime": "pass", "quarto": "pass"},
+  "performanceObservation": {
+    "stability": "Napo permaneció abierto durante tres tareas y mantuvo las sesiones R activas.",
+    "capibaraMemoryObservation": "aprox. 88.6–94.6 MB",
+    "hostMemoryObservation": "aprox. 2.1–2.4 GB reportados por el host Positron/Napo",
+    "latency": "La latencia dominante fue del modelo Ollama glm-5.3:cloud; hubo esperas de decenas de segundos, sin bloqueo del host."
+  },
+  "nextActions": [
+    "Investigar por qué positron_execute_code no confirma Python aunque python3 del sistema sí funciona.",
+    "Corregir el mensaje obsoleto de Bienvenida que indica que R/Python no están disponibles.",
+    "Mantener la política sensible como configuración operativa de desarrollo y documentar una política inicial reversible para distribución."
+  ]
+}

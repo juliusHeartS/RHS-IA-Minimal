@@ -3,6 +3,11 @@
 		{
 			"from": "resources/supervisor-wrapper.*",
 			"to": "resources"
+		},
+		{
+			"from": "resources/kallichore/kcserver",
+			"to": "resources/kallichore",
+			"platforms": ["darwin"]
 		}
 	]
 }

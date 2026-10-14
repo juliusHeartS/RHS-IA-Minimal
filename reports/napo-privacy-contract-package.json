@@ -1,0 +1,645 @@
+{
+  "format": "napo-privacy-contract/v1",
+  "package": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "telemetría del producto",
+      "ok": true,
+      "detail": "product.json debe fijar enableTelemetry=false"
+    },
+    {
+      "name": "actualización automática",
+      "ok": true,
+      "detail": "Napo no debe declarar URLs de actualización o descarga automática"
+    },
+    {
+      "name": "documentación LLM automática",
+      "ok": true,
+      "detail": "Napo no debe descargar documentación LLM al arrancar"
+    },
+    {
+      "name": "Marketplace",
+      "ok": true,
+      "detail": "Napo no debe declarar una galería ni endpoints de instalación"
+    },
+    {
+      "name": "authentication: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "authentication: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "configuration-editing: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "configuration-editing: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "css-language-features: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "css-language-features: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "debug-auto-launch: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "debug-auto-launch: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "diff: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "diff: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "emmet: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "emmet: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "git-base: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "git-base: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "git: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "git: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "html-language-features: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "html-language-features: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "ipynb: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "ipynb: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "json-language-features: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "json-language-features: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "json: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "json: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "markdown: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "markdown: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "markdown-language-features: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "markdown-language-features: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "markdown-math: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "markdown-math: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "media-preview: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "media-preview: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "merge-conflict: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "merge-conflict: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "mermaid-markdown-features: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "mermaid-markdown-features: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "vscode-language-pack-es: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "vscode-language-pack-es: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "builtin-notebook-renderers: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "builtin-notebook-renderers: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-catalog-explorer: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-catalog-explorer: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-code-cells: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-code-cells: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-connections: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-connections: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-data-driver-databricks: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-data-driver-databricks: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-data-driver-duckdb: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-data-driver-duckdb: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-data-driver-odbc: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-data-driver-odbc: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-data-driver-pins: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-data-driver-pins: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-data-driver-postgresql: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-data-driver-postgresql: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-data-driver-redshift: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-data-driver-redshift: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-data-driver-snowflake: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-data-driver-snowflake: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-data-driver-sqlite: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-data-driver-sqlite: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-duckdb: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-duckdb: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-environment-modules: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-environment-modules: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-environment: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-environment: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-file-transfer: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-file-transfer: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-ipywidgets: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-ipywidgets: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "notebook-export: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "notebook-export: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-notebooks-helpers: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-notebooks-helpers: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-pdf-server: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-pdf-server: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-proxy: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-proxy: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "python: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "python: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-r: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-r: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-reticulate: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-reticulate: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-run-app: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-run-app: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-runtime-debugger: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-runtime-debugger: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-supervisor: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-supervisor: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "positron-viewer: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "positron-viewer: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "prompt: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "prompt: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "python: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "python: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "r: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "r: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "references-view: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "references-view: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "rhs-agent4: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "rhs-agent4: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "rhs-ia-documentation: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "rhs-ia-documentation: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "search-result: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "search-result: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "simple-browser: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "simple-browser: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "sql: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "sql: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "terminal-suggest: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "terminal-suggest: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "typescript-language-features: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "typescript-language-features: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    },
+    {
+      "name": "yaml: sin instrumentation key",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no debe transportar aiKey"
+    },
+    {
+      "name": "yaml: telemetría declarativa apagada",
+      "ok": true,
+      "detail": "el manifiesto empaquetado no puede declarar enableTelemetry=true"
+    }
+  ],
+  "findings": [],
+  "explicitUserTriggeredUrls": [
+    [
+      "licencia",
+      "https://positron.posit.co/licensing"
+    ],
+    [
+      "reporte de problemas",
+      "https://github.com/juliusHeartS/RHS-IA/issues/new"
+    ],
+    [
+      "repositorio Node.js",
+      "https://nodejs.org"
+    ],
+    [
+      "webview externo declarado",
+      "https://{{uuid}}.vscode-cdn.net/insider/ef65ac1ba57f57f2a3961bfe94aa20481caca4c6/out/vs/workbench/contrib/webview/browser/pre/"
+    ],
+    [
+      "descarga de servidor remoto declarada",
+      "https://cdn.posit.co/positron/${quality}/reh/${arch-long}/positron-reh-${os}-${arch}-${version}.tar.gz"
+    ]
+  ],
+  "interpretation": {
+    "telemetry": "host-disabled-and-no-packaged-instrumentation-keys",
+    "externalServices": "no-mandatory-startup-service; listed URLs are retained only for explicit user actions or desktop/web compatibility",
+    "staticScope": "package product manifest and extension manifests"
+  }
+}

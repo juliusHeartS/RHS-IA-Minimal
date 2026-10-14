@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "format": "napo-completion-audit/v1",
+  "generatedAt": "2026-10-13T19:37:38.084Z",
+  "package": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
+  "packageTreeSha256": "ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e",
+  "distributionMode": "manual",
+  "status": "technical-accepted-with-external-gates",
+  "technicalPasses": 17,
+  "pendingGates": 2,
+  "failures": 0,
+  "requirements": [
+    {
+      "id": "identity-and-privacy",
+      "status": "pass",
+      "detail": "Napo, telemetría, actualizaciones automáticas, documentación LLM y Marketplace están gobernados por el producto empaquetado.",
+      "evidence": "Contents/Resources/app/product.json"
+    },
+    {
+      "id": "capibara-complete",
+      "status": "pass",
+      "detail": "Capibara conserva el manifiesto y el entrypoint completo de rhs-agent4 4.0.0.",
+      "evidence": "Contents/Resources/app/extensions/rhs-agent4/package.json"
+    },
+    {
+      "id": "data-extensions-unmodified",
+      "status": "pass",
+      "detail": "17 extensiones comparadas; diferencias funcionales: 0.",
+      "evidence": "reports/napo-data-extension-integrity.json"
+    },
+    {
+      "id": "quarto-and-analytical-capabilities",
+      "status": "pass",
+      "detail": "8/8 capacidades aprobadas; Quarto incluido.",
+      "evidence": "reports/napo-capability-surface.json"
+    },
+    {
+      "id": "architecture-and-host-contracts",
+      "status": "pass",
+      "detail": "Las capas de Napo, los contratos mínimos del host y las matrices de transferencia están reconciliados.",
+      "evidence": "reports/napo-architecture-audit.json; ARQUITECTURA_NAPO.md; MATRIZ_HOST_CAPIBARA.md; MATRIZ_TRANSFERENCIA_NAPO.md"
+    },
+    {
+      "id": "capibara-analytical-coordination",
+      "status": "pass",
+      "detail": "La evidencia disponible cubre coordinación Capibara→Positron→R/Python para análisis, sensibilidad y planificación.",
+      "evidence": "reports/napo-capibara-*-e2e.json"
+    },
+    {
+      "id": "analytical-runtime",
+      "status": "pass",
+      "detail": "R, Python, Quarto, modelación, simulación y planificación materializada tienen smoke reproducible.",
+      "evidence": "reports/napo-modeling-smoke.json; reports/napo-materialized-planning.json"
+    },
+    {
+      "id": "manual-update-channel",
+      "status": "pass",
+      "detail": "El canal de actualización es manual, explícito, localmente verificable y no automático.",
+      "evidence": "POLITICA_NAPO.md; scripts/verify-napo-update-candidate.mjs; scripts/test-napo-update-recovery.mjs"
+    },
+    {
+      "id": "privacy-runtime",
+      "status": "pass",
+      "detail": "El arranque limpio no observó conexiones no locales.",
+      "evidence": "reports/napo-privacy-smoke.json"
+    },
+    {
+      "id": "declared-extension-dependencies",
+      "status": "pass",
+      "detail": "15 raíces runtime observadas; no declaradas: 0.",
+      "evidence": "reports/napo-extension-dependency-roots.json"
+    },
+    {
+      "id": "extension-coverage",
+      "status": "pass",
+      "detail": "Las extensiones bajo revisión tienen cobertura UI, contrato y arranque reconciliados.",
+      "evidence": "reports/napo-extension-functional-coverage.json"
+    },
+    {
+      "id": "source-repositories-readonly",
+      "status": "pass",
+      "detail": "RHS-IA, Positron, rhs-agent3, rhs-agent4 y vscode conservan exactamente el baseline observado.",
+      "evidence": "scripts/audit-napo-source-readonly.mjs --verify"
+    },
+    {
+      "id": "reproducible-release-manifest",
+      "status": "pass",
+      "detail": "El manifiesto verifica 32904 archivos con digest ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e.",
+      "evidence": "reports/napo-release-manifest.json"
+    },
+    {
+      "id": "package-hygiene",
+      "status": "pass",
+      "detail": "No hay cachés Python ni reportes stats dentro del paquete.",
+      "evidence": "Contents/Resources/app"
+    },
+    {
+      "id": "document-consistency",
+      "status": "pass",
+      "detail": "8 documentos canónicos están ligados al manifiesto y distinguen históricos de vigentes.",
+      "evidence": "reports/napo-document-consistency.json"
+    },
+    {
+      "id": "destination-tests",
+      "status": "pass",
+      "detail": "typecheck-client y test:positron pasan: 415 archivos, 4949 pruebas, 3 expected-fail y 21 omitidas.",
+      "evidence": "reports/napo-destination-tests.json"
+    },
+    {
+      "id": "legal-human-review",
+      "status": "pending",
+      "detail": "30 casos requieren revisión humana; el auditor no infiere licencias.",
+      "evidence": "reports/napo-license-review-packet.json"
+    },
+    {
+      "id": "macos-distribution-signature",
+      "status": "pass",
+      "detail": "Distribución manual libre: hash y advertencia de macOS, sin afirmar firma ni notarización de Apple.",
+      "evidence": "reports/napo-macos-signature.json"
+    },
+    {
+      "id": "institutional-knowledge-source",
+      "status": "pending",
+      "detail": "La transferencia local está probada, pero todavía se requiere una fuente institucional real con revisión humana y jurisdicción documentada.",
+      "evidence": "NAPO_CONOCIMIENTO.md; reports/napo-materialized-planning.json"
+    }
+  ],
+  "interpretation": "La base técnica está aceptada para distribución manual libre; la revisión legal y la fuente institucional siguen siendo puertas externas pendientes."
+}

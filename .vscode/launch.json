@@ -830,6 +830,34 @@
 			"program": "${workspaceFolder}/positron/comms/generate-comms.ts",
 			"runtimeArgs": ["-r", "ts-node/register"],
 			"args": ["ui"]
+		},
+		{
+			"name": "Napo fixture: debug server ready",
+			"type": "python",
+			"request": "launch",
+			"python": "/opt/homebrew/bin/python3",
+			"program": "${workspaceFolder}/test/napo-fixtures/server_ready.py",
+			"console": "integratedTerminal",
+			"justMyCode": false,
+			"serverReadyAction": {
+				"action": "openInViewer",
+				"pattern": "listening on port ([0-9]+)",
+				"uriFormat": "http://127.0.0.1:%s",
+				"killOnServerStop": true
+			}
+		},
+		{
+			"name": "Napo fixture: debug server ready (node)",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceFolder}/test/napo-fixtures/server_ready.mjs",
+			"console": "integratedTerminal",
+			"serverReadyAction": {
+				"action": "openInViewer",
+				"pattern": "listening on port ([0-9]+)",
+				"uriFormat": "http://127.0.0.1:%s",
+				"killOnServerStop": true
+			}
 		}
 	],
 	"compounds": [

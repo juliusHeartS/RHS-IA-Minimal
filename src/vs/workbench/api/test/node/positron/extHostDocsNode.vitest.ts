@@ -48,7 +48,7 @@ describe('deriveBundleRequest', () => {
 		});
 	});
 
-	it('falls back to the product.json default when no env override is set', () => {
+	it('falls back to the product default when no env override is set', () => {
 		expect(deriveBundleRequest(initData(), {}).baseUrl)
 			.toBe('https://cdn.posit.co/positron/releases/docs');
 	});
@@ -97,7 +97,11 @@ describe('NodeExtHostDocs construction', () => {
 	// assertion would skip an inline dispose() and leak the scheduler and the
 	// config listener into whatever runs next.
 	const store = new DisposableStore();
-	afterEach(() => store.clear());
+	beforeEach(() => vi.stubEnv('POSITRON_LLMS_DOCS_URL', 'http://127.0.0.1:8099/docs'));
+	afterEach(() => {
+		store.clear();
+		vi.unstubAllEnvs();
+	});
 
 	// The one risk specific to hosting this on the extension host is a slow or
 	// hung download landing on an activation path. The constructor must only
@@ -132,9 +136,11 @@ describe('NodeExtHostDocs launch anchor', () => {
 		// still armed under fake time.
 		store.clear();
 		vi.useRealTimers();
+		vi.unstubAllEnvs();
 	});
 
 	function build(startupFinished: Promise<void>) {
+		vi.stubEnv('POSITRON_LLMS_DOCS_URL', 'http://127.0.0.1:8099/docs');
 		// Spying on the trigger rather than the ports: this asserts *when* the
 		// launch fetch fires, and running the real one would reach the network.
 		const runBackgroundFetch = vi.spyOn(PositronDocsTriggers.prototype, 'runBackgroundFetch')
@@ -181,12 +187,16 @@ describe('NodeExtHostDocs launch anchor', () => {
 
 describe('NodeExtHostDocs ai.enabled flip', () => {
 	const store = new DisposableStore();
-	afterEach(() => store.clear());
+	afterEach(() => {
+		store.clear();
+		vi.unstubAllEnvs();
+	});
 
 	// ai.enabled is WINDOW-scoped and toggles without a reload, so the false-to-true
 	// flip is the one in-session re-attempt the design allows. Spying on the trigger
 	// rather than the cache: what matters here is which config transitions reach it.
 	async function build(initiallyEnabled: boolean) {
+		vi.stubEnv('POSITRON_LLMS_DOCS_URL', 'http://127.0.0.1:8099/docs');
 		const onAiEnabledFlippedTrue = vi.spyOn(PositronDocsTriggers.prototype, 'onAiEnabledFlippedTrue')
 			.mockResolvedValue(undefined);
 		const changed = new Emitter<vscode.ConfigurationChangeEvent>();

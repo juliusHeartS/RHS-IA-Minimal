@@ -1,0 +1,2677 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "deterministic",
+  "root": "extensions",
+  "artifactRoot": "/Users/julius3005/Documents/Github/RHS-IA-Minimal",
+  "policy": "clasificación orientativa; no autoriza eliminar extensiones",
+  "summary": {
+    "total": 134,
+    "conservar": 50,
+    "candidata-aplazar": 38,
+    "requiere-prueba": 46,
+    "candidatasAisladas": 38
+  },
+  "extensions": [
+    {
+      "folder": "authentication",
+      "manifest": "extensions/authentication/package.json",
+      "name": "positron.authentication",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished",
+        "onAuthenticationRequest:anthropic-api",
+        "onAuthenticationRequest:posit-ai",
+        "onAuthenticationRequest:ms-foundry",
+        "onAuthenticationRequest:amazon-bedrock",
+        "onAuthenticationRequest:snowflake-cortex",
+        "onAuthenticationRequest:openai-api",
+        "onAuthenticationRequest:openai-compatible",
+        "onAuthenticationRequest:google",
+        "onAuthenticationRequest:google-cloud",
+        "onAuthenticationRequest:deepseek-api",
+        "onAuthenticationRequest:databricks",
+        "onAuthenticationRequest:positron-custom-provider",
+        "onCommand:authentication.configureProviders",
+        "onCommand:authentication.migrateSettingsToProvidersJson"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "authentication",
+        "commands",
+        "configuration"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "positron.next-edit-suggestions"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "bat",
+      "manifest": "extensions/bat/package.json",
+      "name": "vscode.bat",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "clojure",
+      "manifest": "extensions/clojure/package.json",
+      "name": "vscode.clojure",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "coffeescript",
+      "manifest": "extensions/coffeescript/package.json",
+      "name": "vscode.coffeescript",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "breakpoints",
+        "configurationDefaults",
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "configuration-editing",
+      "manifest": "extensions/configuration-editing/package.json",
+      "name": "vscode.configuration-editing",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onProfile",
+        "onProfile:github",
+        "onLanguage:json",
+        "onLanguage:jsonc"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "jsonValidation",
+        "languages"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "cpp",
+      "manifest": "extensions/cpp/package.json",
+      "name": "vscode.cpp",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "problemMatchers",
+        "problemPatterns",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "csharp",
+      "manifest": "extensions/csharp/package.json",
+      "name": "vscode.csharp",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "css-language-features",
+      "manifest": "extensions/css-language-features/package.json",
+      "name": "vscode.css-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:css",
+        "onLanguage:less",
+        "onLanguage:scss"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "configurationDefaults",
+        "jsonValidation"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "css",
+      "manifest": "extensions/css/package.json",
+      "name": "vscode.css",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "dart",
+      "manifest": "extensions/dart/package.json",
+      "name": "vscode.dart",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "debug-auto-launch",
+      "manifest": "extensions/debug-auto-launch/package.json",
+      "name": "vscode.debug-auto-launch",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "debug-server-ready",
+      "manifest": "extensions/debug-server-ready/package.json",
+      "name": "vscode.debug-server-ready",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onDebugResolve"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "debuggers"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "diff",
+      "manifest": "extensions/diff/package.json",
+      "name": "vscode.diff",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "docker",
+      "manifest": "extensions/docker/package.json",
+      "name": "vscode.docker",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "dotenv",
+      "manifest": "extensions/dotenv/package.json",
+      "name": "vscode.dotenv",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "emmet",
+      "manifest": "extensions/emmet/package.json",
+      "name": "vscode.emmet",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onCommand:emmet.expandAbbreviation",
+        "onLanguage"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "extension-editing",
+      "manifest": "extensions/extension-editing/package.json",
+      "name": "vscode.extension-editing",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:json",
+        "onLanguage:markdown"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "jsonValidation",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "fsharp",
+      "manifest": "extensions/fsharp/package.json",
+      "name": "vscode.fsharp",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "git-base",
+      "manifest": "extensions/git-base/package.json",
+      "name": "vscode.git-base",
+      "version": "10.0.0",
+      "activationEvents": [
+        "*"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "grammars",
+        "languages",
+        "menus"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "vscode.git",
+        "vscode.github"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "git",
+      "manifest": "extensions/git/package.json",
+      "name": "vscode.git",
+      "version": "10.0.0",
+      "activationEvents": [
+        "*",
+        "onEditSession:file",
+        "onFileSystem:git",
+        "onFileSystem:git-show"
+      ],
+      "dependencies": [
+        "vscode.git-base"
+      ],
+      "contributes": [
+        "colors",
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "continueEditSession",
+        "keybindings",
+        "menus",
+        "submenus",
+        "viewsWelcome"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "github-authentication",
+      "manifest": "extensions/github-authentication/package.json",
+      "name": "vscode.github-authentication",
+      "version": "0.0.2",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "authentication",
+        "configuration"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "github",
+      "manifest": "extensions/github/package.json",
+      "name": "vscode.github",
+      "version": "0.0.1",
+      "activationEvents": [
+        "*"
+      ],
+      "dependencies": [
+        "vscode.git-base"
+      ],
+      "contributes": [
+        "commands",
+        "configuration",
+        "continueEditSession",
+        "markdown.previewStyles",
+        "menus",
+        "viewsWelcome"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "go",
+      "manifest": "extensions/go/package.json",
+      "name": "vscode.go",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "groovy",
+      "manifest": "extensions/groovy/package.json",
+      "name": "vscode.groovy",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "grunt",
+      "manifest": "extensions/grunt/package.json",
+      "name": "vscode.grunt",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onTaskType:grunt"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "taskDefinitions"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "gulp",
+      "manifest": "extensions/gulp/package.json",
+      "name": "vscode.gulp",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onTaskType:gulp"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "taskDefinitions"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "handlebars",
+      "manifest": "extensions/handlebars/package.json",
+      "name": "vscode.handlebars",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "htmlLanguageParticipants",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "hlsl",
+      "manifest": "extensions/hlsl/package.json",
+      "name": "vscode.hlsl",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "html-language-features",
+      "manifest": "extensions/html-language-features/package.json",
+      "name": "vscode.html-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:html",
+        "onLanguage:handlebars"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "configurationDefaults",
+        "jsonValidation"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "html",
+      "manifest": "extensions/html/package.json",
+      "name": "vscode.html",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "ini",
+      "manifest": "extensions/ini/package.json",
+      "name": "vscode.ini",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "ipynb",
+      "manifest": "extensions/ipynb/package.json",
+      "name": "vscode.ipynb",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onNotebook:jupyter-notebook",
+        "onNotebookSerializer:interactive",
+        "onNotebookSerializer:repl"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus",
+        "notebookRenderer",
+        "notebooks"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "jake",
+      "manifest": "extensions/jake/package.json",
+      "name": "vscode.jake",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onTaskType:jake"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "taskDefinitions"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "java",
+      "manifest": "extensions/java/package.json",
+      "name": "vscode.java",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "javascript",
+      "manifest": "extensions/javascript/package.json",
+      "name": "vscode.javascript",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages",
+        "semanticTokenScopes",
+        "snippets"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "json-language-features",
+      "manifest": "extensions/json-language-features/package.json",
+      "name": "vscode.json-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:json",
+        "onLanguage:jsonc",
+        "onLanguage:snippets",
+        "onCommand:json.validate"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "jsonValidation"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "json",
+      "manifest": "extensions/json/package.json",
+      "name": "vscode.json",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "julia",
+      "manifest": "extensions/julia/package.json",
+      "name": "vscode.julia",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "latex",
+      "manifest": "extensions/latex/package.json",
+      "name": "vscode.latex",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "less",
+      "manifest": "extensions/less/package.json",
+      "name": "vscode.less",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "problemMatchers"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "log",
+      "manifest": "extensions/log/package.json",
+      "name": "vscode.log",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "lua",
+      "manifest": "extensions/lua/package.json",
+      "name": "vscode.lua",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "make",
+      "manifest": "extensions/make/package.json",
+      "name": "vscode.make",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "markdown-basics",
+      "manifest": "extensions/markdown-basics/package.json",
+      "name": "vscode.markdown",
+      "version": "30.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "markdown-language-features",
+      "manifest": "extensions/markdown-language-features/package.json",
+      "name": "vscode.markdown-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:markdown",
+        "onLanguage:prompt",
+        "onLanguage:instructions",
+        "onLanguage:chatagent",
+        "onLanguage:skill",
+        "onCommand:markdown.api.render",
+        "onCommand:markdown.api.reloadPlugins",
+        "onWebviewPanel:markdown.preview"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "customEditors",
+        "jsonValidation",
+        "keybindings",
+        "markdown.previewScripts",
+        "markdown.previewStyles",
+        "menus",
+        "notebookRenderer"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "markdown-math",
+      "manifest": "extensions/markdown-math/package.json",
+      "name": "vscode.markdown-math",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "grammars",
+        "languages",
+        "markdown.markdownItPlugins",
+        "markdown.previewStyles",
+        "notebookRenderer"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "media-preview",
+      "manifest": "extensions/media-preview/package.json",
+      "name": "vscode.media-preview",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "customEditors",
+        "menus"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "merge-conflict",
+      "manifest": "extensions/merge-conflict/package.json",
+      "name": "vscode.merge-conflict",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "mermaid-markdown-features",
+      "manifest": "extensions/mermaid-markdown-features/package.json",
+      "name": "vscode.mermaid-markdown-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onWebviewPanel:vscode.mermaid-markdown-features.preview"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "chatOutputRenderers",
+        "commands",
+        "configuration",
+        "languageModelTools",
+        "markdown.markdownItPlugins",
+        "markdown.previewScripts",
+        "menus",
+        "notebookRenderer"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "microsoft-authentication",
+      "manifest": "extensions/microsoft-authentication/package.json",
+      "name": "vscode.microsoft-authentication",
+      "version": "0.0.1",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "authentication",
+        "configuration"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "next-edit-suggestions",
+      "manifest": "extensions/next-edit-suggestions/package.json",
+      "name": "positron.next-edit-suggestions",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onAiEnabled",
+        "onAuthenticationRequest:posit-ai",
+        "onCommand:authentication.configureProviders"
+      ],
+      "dependencies": [
+        "positron.authentication"
+      ],
+      "contributes": [
+        "commands",
+        "configuration"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "notebook-renderers",
+      "manifest": "extensions/notebook-renderers/package.json",
+      "name": "vscode.builtin-notebook-renderers",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "notebookRenderer"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "npm",
+      "manifest": "extensions/npm/package.json",
+      "name": "vscode.npm",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onTaskType:npm",
+        "onLanguage:json",
+        "workspaceContains:package.json"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "jsonValidation",
+        "languages",
+        "menus",
+        "taskDefinitions",
+        "terminalQuickFixes",
+        "views"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "objective-c",
+      "manifest": "extensions/objective-c/package.json",
+      "name": "vscode.objective-c",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "open-remote-ssh",
+      "manifest": "extensions/open-remote-ssh/package.json",
+      "name": "jeanp413.open-remote-ssh",
+      "version": "0.0.49",
+      "activationEvents": [
+        "onResolveRemoteAuthority:ssh-remote"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus",
+        "resourceLabelFormatters",
+        "views"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "open-remote-wsl",
+      "manifest": "extensions/open-remote-wsl/package.json",
+      "name": "positron.open-remote-wsl",
+      "version": "0.0.5",
+      "activationEvents": [
+        "onCommand:openremotewsl.connect",
+        "onCommand:openremotewsl.connectInNewWindow",
+        "onCommand:openremotewsl.connectUsingDistro",
+        "onCommand:openremotewsl.connectUsingDistroInNewWindow",
+        "onCommand:openremotewsl.showLog",
+        "onResolveRemoteAuthority:wsl",
+        "onView:wslTargets"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus",
+        "resourceLabelFormatters",
+        "views"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "perl",
+      "manifest": "extensions/perl/package.json",
+      "name": "vscode.perl",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "php-language-features",
+      "manifest": "extensions/php-language-features/package.json",
+      "name": "vscode.php-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:php"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration",
+        "jsonValidation"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "php",
+      "manifest": "extensions/php/package.json",
+      "name": "vscode.php",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-catalog-explorer",
+      "manifest": "extensions/positron-catalog-explorer/package.json",
+      "name": "positron.positron-catalog-explorer",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:catalog-explorer",
+        "onCommand:posit.catalog-explorer.addCatalogProvider",
+        "onCommand:posit.catalog-explorer.removeCatalogProvider",
+        "onCommand:posit.catalog-explorer.refresh"
+      ],
+      "dependencies": [
+        "positron.positron-environment"
+      ],
+      "contributes": [
+        "commands",
+        "configuration",
+        "keybindings",
+        "menus",
+        "views",
+        "viewsWelcome"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-code-cells",
+      "manifest": "extensions/positron-code-cells/package.json",
+      "name": "positron.positron-code-cells",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "keybindings",
+        "menus"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-connections",
+      "manifest": "extensions/positron-connections/package.json",
+      "name": "positron.positron-connections",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [
+        "positron.positron-supervisor"
+      ],
+      "contributes": [
+        "commands",
+        "menus",
+        "views",
+        "viewsContainers",
+        "viewsWelcome"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-databricks",
+      "manifest": "extensions/positron-data-driver-databricks/package.json",
+      "name": "positron.positron-data-driver-databricks",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-duckdb",
+      "manifest": "extensions/positron-data-driver-duckdb/package.json",
+      "name": "positron.positron-data-driver-duckdb",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-odbc",
+      "manifest": "extensions/positron-data-driver-odbc/package.json",
+      "name": "positron.positron-data-driver-odbc",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-pins",
+      "manifest": "extensions/positron-data-driver-pins/package.json",
+      "name": "positron.positron-data-driver-pins",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-postgresql",
+      "manifest": "extensions/positron-data-driver-postgresql/package.json",
+      "name": "positron.positron-data-driver-postgresql",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-redshift",
+      "manifest": "extensions/positron-data-driver-redshift/package.json",
+      "name": "positron.positron-data-driver-redshift",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-snowflake",
+      "manifest": "extensions/positron-data-driver-snowflake/package.json",
+      "name": "positron.positron-data-driver-snowflake",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-driver-sqlite",
+      "manifest": "extensions/positron-data-driver-sqlite/package.json",
+      "name": "positron.positron-data-driver-sqlite",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onView:workbench.panel.positronDataConnections"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-explorer-duckdb",
+      "manifest": "extensions/positron-data-explorer-duckdb/package.json",
+      "name": "undefined.positron-data-explorer-duckdb",
+      "version": "0.0.1",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-explorer-formatting",
+      "manifest": "extensions/positron-data-explorer-formatting/package.json",
+      "name": "undefined.positron-data-explorer-formatting",
+      "version": "0.0.1",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-data-explorer-protocol",
+      "manifest": "extensions/positron-data-explorer-protocol/package.json",
+      "name": "undefined.positron-data-explorer-protocol",
+      "version": "0.0.1",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-dev-containers",
+      "manifest": "extensions/positron-dev-containers/package.json",
+      "name": "positron.dev-containers",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onDebugResolve:extensionHost",
+        "onResolveRemoteAuthority:attached-container",
+        "onResolveRemoteAuthority:dev-container",
+        "onStartupFinished",
+        "workspaceContains:.devcontainer.json",
+        "workspaceContains:.devcontainer/devcontainer.json"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus",
+        "views"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-duckdb",
+      "manifest": "extensions/positron-duckdb/package.json",
+      "name": "positron.positron-duckdb",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onPositronDataExplorerBackend:positron-duckdb"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-environment-modules",
+      "manifest": "extensions/positron-environment-modules/package.json",
+      "name": "positron.positron-environment-modules",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-environment",
+      "manifest": "extensions/positron-environment/package.json",
+      "name": "positron.positron-environment",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "positron.positron-catalog-explorer",
+        "positron.positron-supervisor"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "positron-file-transfer",
+      "manifest": "extensions/positron-file-transfer/package.json",
+      "name": "positron.positron-file-transfer",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-ipywidgets",
+      "manifest": "extensions/positron-ipywidgets/package.json",
+      "name": "positron.positron-ipywidgets",
+      "version": "0.0.1",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "notebookRenderer"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-javascript",
+      "manifest": "extensions/positron-javascript/package.json",
+      "name": "positron.positron-javascript",
+      "version": "0.0.1",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "languageRuntimes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-notebook-export",
+      "manifest": "extensions/positron-notebook-export/package.json",
+      "name": "positron.notebook-export",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "menus"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-notebooks",
+      "manifest": "extensions/positron-notebooks/package.json",
+      "name": "positron.positron-notebooks-helpers",
+      "version": "1.0.0",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-pdf-server",
+      "manifest": "extensions/positron-pdf-server/package.json",
+      "name": "positron.positron-pdf-server",
+      "version": "1.0.0",
+      "activationEvents": [
+        "onCommand:positron.pdfServer.getViewerUrl",
+        "onCommand:positron.pdfServer.unregisterPdf"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "customEditors"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-proxy",
+      "manifest": "extensions/positron-proxy/package.json",
+      "name": "positron.positron-proxy",
+      "version": "1.0.0",
+      "activationEvents": [
+        "onCommand:positronProxy.startHelpProxyServer",
+        "onCommand:positronProxy.setHelpProxyServerStyles",
+        "onCommand:positronProxy.startHtmlProxyServer",
+        "onCommand:positronProxy.startHttpProxyServer",
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "menus"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-python",
+      "manifest": "extensions/positron-python/package.json",
+      "name": "ms-python.python",
+      "version": "2026.99.0-dev",
+      "activationEvents": [
+        "onCommand:python.createEnvironmentAndRegister",
+        "onCommand:python.getEnvironmentHealth",
+        "onStartupFinished",
+        "onPositronDataExplorerImport",
+        "onDebugInitialConfigurations",
+        "onLanguage:python",
+        "onDebugResolve:python",
+        "onCommand:python.copilotSetupTests",
+        "workspaceContains:mspythonconfig.json",
+        "workspaceContains:pyproject.toml",
+        "workspaceContains:Pipfile",
+        "workspaceContains:setup.py",
+        "workspaceContains:requirements.txt",
+        "workspaceContains:pylock.toml",
+        "workspaceContains:**/pylock.*.toml",
+        "workspaceContains:manage.py",
+        "workspaceContains:app.py",
+        "workspaceContains:.venv",
+        "workspaceContains:.conda",
+        "onLanguageModelTool:get_python_environment_details",
+        "onLanguageModelTool:get_python_executable_details",
+        "onLanguageModelTool:install_python_packages",
+        "onLanguageModelTool:configure_python_environment",
+        "onLanguageModelTool:create_virtual_environment",
+        "onTerminalShellIntegration:python"
+      ],
+      "dependencies": [
+        "positron.positron-supervisor"
+      ],
+      "contributes": [
+        "breakpoints",
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "debuggers",
+        "grammars",
+        "jsonValidation",
+        "keybindings",
+        "languageModelTools",
+        "languageRuntimes",
+        "languages",
+        "menus",
+        "problemMatchers",
+        "snippets",
+        "submenus",
+        "viewsWelcome",
+        "walkthroughs",
+        "yamlValidation"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "positron.positron-runtime-debugger"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "positron-r",
+      "manifest": "extensions/positron-r/package.json",
+      "name": "positron.positron-r",
+      "version": "0.0.2",
+      "activationEvents": [
+        "onStartupFinished",
+        "onLanguage:rdata",
+        "onLanguage:rds"
+      ],
+      "dependencies": [
+        "positron.positron-supervisor"
+      ],
+      "contributes": [
+        "breakpoints",
+        "commands",
+        "configuration",
+        "configurationDefaults",
+        "customEditors",
+        "debuggers",
+        "grammars",
+        "keybindings",
+        "languageModelTools",
+        "languageRuntimes",
+        "languages",
+        "menus",
+        "notebookRenderer",
+        "taskDefinitions",
+        "viewsWelcome",
+        "walkthroughs"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "positron.positron-runtime-debugger"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "positron-reticulate",
+      "manifest": "extensions/positron-reticulate/package.json",
+      "name": "positron.positron-reticulate",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-run-app",
+      "manifest": "extensions/positron-run-app/package.json",
+      "name": "positron.positron-run-app",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-runtime-debugger",
+      "manifest": "extensions/positron-runtime-debugger/package.json",
+      "name": "positron.positron-runtime-debugger",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [
+        "ms-python.python",
+        "positron.positron-r"
+      ],
+      "contributes": [
+        "commands",
+        "debuggers",
+        "menus"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-skills",
+      "manifest": "extensions/positron-skills/package.json",
+      "name": "positron.positron-skills",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onAiEnabled"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-supervisor",
+      "manifest": "extensions/positron-supervisor/package.json",
+      "name": "positron.positron-supervisor",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [
+        "positron.positron-environment"
+      ],
+      "contributes": [
+        "commands",
+        "configuration"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [
+        "ms-python.python",
+        "positron.positron-connections",
+        "positron.positron-r"
+      ],
+      "dependencyTopology": "has-dependents"
+    },
+    {
+      "folder": "positron-viewer",
+      "manifest": "extensions/positron-viewer/package.json",
+      "name": "positron.positron-viewer",
+      "version": "1.0.0",
+      "activationEvents": [
+        "onOpenExternalUri:http",
+        "onOpenExternalUri:https"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configuration"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "positron-zed",
+      "manifest": "extensions/positron-zed/package.json",
+      "name": "positron.positron-zed",
+      "version": "1.0.0",
+      "activationEvents": [
+        "onStartupFinished"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "languageRuntimes",
+        "languages",
+        "menus",
+        "notebookRenderer"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "powershell",
+      "manifest": "extensions/powershell/package.json",
+      "name": "vscode.powershell",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "prompt-basics",
+      "manifest": "extensions/prompt-basics/package.json",
+      "name": "vscode.prompt",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "pug",
+      "manifest": "extensions/pug/package.json",
+      "name": "vscode.pug",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "python",
+      "manifest": "extensions/python/package.json",
+      "name": "vscode.python",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "r",
+      "manifest": "extensions/r/package.json",
+      "name": "vscode.r",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "razor",
+      "manifest": "extensions/razor/package.json",
+      "name": "vscode.razor",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "references-view",
+      "manifest": "extensions/references-view/package.json",
+      "name": "vscode.references-view",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onCommand:references-view.find",
+        "onCommand:editor.action.showReferences"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "keybindings",
+        "menus",
+        "views",
+        "viewsContainers"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "restructuredtext",
+      "manifest": "extensions/restructuredtext/package.json",
+      "name": "vscode.restructuredtext",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "rhs-agent4",
+      "manifest": "extensions/rhs-agent4/package.json",
+      "name": "juliushearts.rhs-agent4",
+      "version": "4.0.0",
+      "activationEvents": [
+        "onView:capibara.SidebarProvider"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus",
+        "views",
+        "viewsContainers"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "rhs-ia-documentation",
+      "manifest": "extensions/rhs-ia-documentation/package.json",
+      "name": "paho.rhs-ia-documentation",
+      "version": "0.0.5",
+      "activationEvents": [
+        "onCommand:rhs-ia.documentation.open",
+        "onView:rhs-ia.documentation.view",
+        "onCommand:rhs-ia.documentation.home",
+        "onCommand:rhs-ia.documentation.search"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "keybindings",
+        "views",
+        "viewsContainers"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "ruby",
+      "manifest": "extensions/ruby/package.json",
+      "name": "vscode.ruby",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "rust",
+      "manifest": "extensions/rust/package.json",
+      "name": "vscode.rust",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "scss",
+      "manifest": "extensions/scss/package.json",
+      "name": "vscode.scss",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "problemMatchers"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "search-result",
+      "manifest": "extensions/search-result/package.json",
+      "name": "vscode.search-result",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:search-result"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "shaderlab",
+      "manifest": "extensions/shaderlab/package.json",
+      "name": "vscode.shaderlab",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "shellscript",
+      "manifest": "extensions/shellscript/package.json",
+      "name": "vscode.shellscript",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "keybindings",
+        "languages"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "simple-browser",
+      "manifest": "extensions/simple-browser/package.json",
+      "name": "vscode.simple-browser",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onCommand:simpleBrowser.api.open",
+        "onOpenExternalUri:http",
+        "onOpenExternalUri:https",
+        "onWebviewPanel:simpleBrowser.view"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "sql",
+      "manifest": "extensions/sql/package.json",
+      "name": "vscode.sql",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "swift",
+      "manifest": "extensions/swift/package.json",
+      "name": "vscode.swift",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "terminal-suggest",
+      "manifest": "extensions/terminal-suggest/package.json",
+      "name": "vscode.terminal-suggest",
+      "version": "1.0.1",
+      "activationEvents": [
+        "onTerminalShellIntegration:*"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "terminal"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-abyss",
+      "manifest": "extensions/theme-abyss/package.json",
+      "name": "vscode.theme-abyss",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-defaults",
+      "manifest": "extensions/theme-defaults/package.json",
+      "name": "vscode.theme-defaults",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "iconThemes",
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-kimbie-dark",
+      "manifest": "extensions/theme-kimbie-dark/package.json",
+      "name": "vscode.theme-kimbie-dark",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-monokai-dimmed",
+      "manifest": "extensions/theme-monokai-dimmed/package.json",
+      "name": "vscode.theme-monokai-dimmed",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-monokai",
+      "manifest": "extensions/theme-monokai/package.json",
+      "name": "vscode.theme-monokai",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-quietlight",
+      "manifest": "extensions/theme-quietlight/package.json",
+      "name": "vscode.theme-quietlight",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-red",
+      "manifest": "extensions/theme-red/package.json",
+      "name": "vscode.theme-red",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-seti",
+      "manifest": "extensions/theme-seti/package.json",
+      "name": "vscode.vscode-theme-seti",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "iconThemes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-solarized-dark",
+      "manifest": "extensions/theme-solarized-dark/package.json",
+      "name": "vscode.theme-solarized-dark",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-solarized-light",
+      "manifest": "extensions/theme-solarized-light/package.json",
+      "name": "vscode.theme-solarized-light",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "theme-tomorrow-night-blue",
+      "manifest": "extensions/theme-tomorrow-night-blue/package.json",
+      "name": "vscode.theme-tomorrow-night-blue",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "themes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "tunnel-forwarding",
+      "manifest": "extensions/tunnel-forwarding/package.json",
+      "name": "vscode.tunnel-forwarding",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onTunnel"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "typescript-basics",
+      "manifest": "extensions/typescript-basics/package.json",
+      "name": "vscode.typescript",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "semanticTokenScopes",
+        "snippets"
+      ],
+      "classification": "candidata-aplazar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "typescript-language-features",
+      "manifest": "extensions/typescript-language-features/package.json",
+      "name": "vscode.typescript-language-features",
+      "version": "10.0.0",
+      "activationEvents": [
+        "onLanguage:javascript",
+        "onLanguage:javascriptreact",
+        "onLanguage:typescript",
+        "onLanguage:typescriptreact",
+        "onLanguage:jsx-tags",
+        "onCommand:typescript.tsserverRequest",
+        "onCommand:_typescript.configurePlugin",
+        "onCommand:_typescript.learnMoreAboutRefactorings",
+        "onCommand:typescript.fileReferences",
+        "onTaskType:typescript",
+        "onLanguage:jsonc",
+        "onWalkthrough:nodejsWelcome"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "breakpoints",
+        "commands",
+        "configuration",
+        "jsonValidation",
+        "menus",
+        "problemMatchers",
+        "problemPatterns",
+        "taskDefinitions",
+        "walkthroughs"
+      ],
+      "classification": "conservar",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "vb",
+      "manifest": "extensions/vb/package.json",
+      "name": "vscode.vb",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages",
+        "snippets"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "vscode-api-tests",
+      "manifest": "extensions/vscode-api-tests/package.json",
+      "name": "vscode.vscode-api-tests",
+      "version": "0.0.1",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "breakpoints",
+        "chatParticipants",
+        "configuration",
+        "configurationDefaults",
+        "debuggers",
+        "interactiveSession",
+        "languageModelChatProviders",
+        "languageModelTools",
+        "notebooks",
+        "statusBarItems",
+        "taskDefinitions",
+        "views"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "vscode-colorize-perf-tests",
+      "manifest": "extensions/vscode-colorize-perf-tests/package.json",
+      "name": "vscode.vscode-colorize-perf-tests",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onLanguage:json"
+      ],
+      "dependencies": [],
+      "contributes": [],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "vscode-colorize-tests",
+      "manifest": "extensions/vscode-colorize-tests/package.json",
+      "name": "vscode.vscode-colorize-tests",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onLanguage:json"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "productIconThemes",
+        "semanticTokenModifiers",
+        "semanticTokenScopes",
+        "semanticTokenTypes"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "vscode-test-resolver",
+      "manifest": "extensions/vscode-test-resolver/package.json",
+      "name": "vscode.vscode-test-resolver",
+      "version": "0.0.1",
+      "activationEvents": [
+        "onResolveRemoteAuthority:test",
+        "onCommand:vscode-testresolver.newWindow",
+        "onCommand:vscode-testresolver.currentWindow",
+        "onCommand:vscode-testresolver.newWindowWithError",
+        "onCommand:vscode-testresolver.showLog",
+        "onCommand:vscode-testresolver.openTunnel",
+        "onCommand:vscode-testresolver.startRemoteServer",
+        "onCommand:vscode-testresolver.toggleConnectionPause"
+      ],
+      "dependencies": [],
+      "contributes": [
+        "commands",
+        "configuration",
+        "menus",
+        "resourceLabelFormatters"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "xml",
+      "manifest": "extensions/xml/package.json",
+      "name": "vscode.xml",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    },
+    {
+      "folder": "yaml",
+      "manifest": "extensions/yaml/package.json",
+      "name": "vscode.yaml",
+      "version": "10.0.0",
+      "activationEvents": [],
+      "dependencies": [],
+      "contributes": [
+        "configurationDefaults",
+        "grammars",
+        "languages"
+      ],
+      "classification": "requiere-prueba",
+      "readError": null,
+      "unresolvedDependencies": [],
+      "dependents": [],
+      "dependencyTopology": "no-declared-dependents"
+    }
+  ]
+}

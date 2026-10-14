@@ -59,6 +59,7 @@ import { AuxiliaryBarPart } from './parts/auxiliarybar/auxiliaryBarPart.js';
 import { ITelemetryService } from '../../platform/telemetry/common/telemetry.js';
 import { IAuxiliaryWindowService } from '../services/auxiliaryWindow/browser/auxiliaryWindowService.js';
 import { CodeWindow, mainWindow } from '../../base/browser/window.js';
+import { IProductService } from '../../platform/product/common/productService.js';
 
 //#region Layout Implementation
 
@@ -337,6 +338,7 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 	private logService!: ILogService;
 	private telemetryService!: ITelemetryService;
 	private auxiliaryWindowService!: IAuxiliaryWindowService;
+	private productService!: IProductService;
 	// --- Start Positron ---
 	private positronTopActionBarService!: IPositronTopActionBarService;
 	// --- End Positron ---
@@ -366,6 +368,7 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 		this.logService = accessor.get(ILogService);
 		this.telemetryService = accessor.get(ITelemetryService);
 		this.auxiliaryWindowService = accessor.get(IAuxiliaryWindowService);
+		this.productService = accessor.get(IProductService);
 
 		// Parts
 		this.editorService = accessor.get(IEditorService);
@@ -799,7 +802,7 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 	private initLayoutState(lifecycleService: ILifecycleService, fileService: IFileService): void {
 		this._mainContainerDimension = getClientArea(this.parent, this.contextService.getWorkbenchState() === WorkbenchState.EMPTY ? DEFAULT_EMPTY_WINDOW_DIMENSIONS : DEFAULT_WORKSPACE_WINDOW_DIMENSIONS); // running with fallback to ensure no error is thrown (https://github.com/microsoft/vscode/issues/240242)
 
-		this.stateModel = new LayoutStateModel(this.storageService, this.configurationService, this.contextService, this.environmentService);
+		this.stateModel = new LayoutStateModel(this.storageService, this.configurationService, this.contextService, this.environmentService, this.productService);
 		this.stateModel.load({
 			mainContainerDimension: this._mainContainerDimension,
 			resetLayout: Boolean(this.layoutOptions?.resetLayout)
@@ -1269,7 +1272,10 @@ export abstract class Layout extends Disposable implements IWorkbenchLayoutServi
 
 		// Restore Zen Mode
 		const zenModeWasActive = this.isZenModeActive();
-		const restoreZenMode = getZenModeConfiguration(this.configurationService).restore;
+		// A first-run Napo profile may not have the complete layout settings tree
+		// yet. Treat Zen Mode restoration as disabled until that configuration is
+		// available instead of aborting the rest of workbench restoration.
+		const restoreZenMode = getZenModeConfiguration(this.configurationService)?.restore ?? false;
 
 		if (zenModeWasActive) {
 			this.setZenModeActive(!restoreZenMode);
@@ -3303,6 +3309,7 @@ class LayoutStateModel extends Disposable {
 		private readonly configurationService: IConfigurationService,
 		private readonly contextService: IWorkspaceContextService,
 		private readonly environmentService: IBrowserWorkbenchEnvironmentService,
+		private readonly productService: IProductService,
 	) {
 		super();
 
@@ -3613,6 +3620,17 @@ class LayoutStateModel extends Disposable {
 	}
 
 	private isActivityBarHidden(): boolean {
+		// Positron's default layout hides the Activity Bar. Napo uses Capibara as
+		// an integrated primary surface, so expose the bar in a fresh profile
+		// unless the user has explicitly configured it otherwise.
+		if (this.productService.applicationName === 'napo') {
+			const activityBarLocation = this.configurationService.inspect<ActivityBarPosition>(LayoutSettings.ACTIVITY_BAR_LOCATION);
+			const activityBarVisible = this.configurationService.inspect<boolean>(WorkbenchLayoutSettings.ACTIVITY_BAR_VISIBLE);
+			if (activityBarLocation?.userValue === undefined && activityBarVisible?.userValue === undefined) {
+				return false;
+			}
+		}
+
 		const oldValue = this.configurationService.getValue<boolean | undefined>(WorkbenchLayoutSettings.ACTIVITY_BAR_VISIBLE);
 		if (oldValue !== undefined) {
 			return !oldValue;

@@ -78,7 +78,12 @@ export class ExtHostLocalizationService implements ExtHostLocalizationShape {
 		let contents: { [key: string]: string } | undefined;
 		const bundleLocation = await this.getBundleLocation(extension);
 		if (!bundleLocation) {
-			this.logService.error(`No bundle location found for extension ${extension.identifier.value}`);
+			// Built-in extensions without an l10n declaration may legitimately have
+			// no local bundle when the active language pack does not provide one.
+			// The API falls back to the default strings, so this is not an error.
+			if (!(extension.isBuiltin && !extension.l10n)) {
+				this.logService.error(`No bundle location found for extension ${extension.identifier.value}`);
+			}
 			return;
 		}
 
@@ -108,13 +113,12 @@ export class ExtHostLocalizationService implements ExtHostLocalizationShape {
 			}
 
 			// --- Start Positron ---
-			// RHS-IA ships extension-local Spanish bundles for built-in extensions that
-			// are not represented in the upstream VS Code language pack.
-			if (extension.l10n) {
-				return {
-					uri: URI.joinPath(extension.extensionLocation, extension.l10n, `bundle.l10n.${this.currentLanguage}.json`),
-					fromLanguagePack: false
-				};
+			// Napo resolves extension-local bundles in the host after checking that
+			// the packaged file exists. This keeps inherited extension manifests
+			// unchanged while preserving the local-bundle fallback.
+			const localUri = await this._proxy.$fetchBuiltInExtensionBundleUri(extension.identifier.value, this.currentLanguage);
+			if (localUri) {
+				return { uri: URI.revive(localUri), fromLanguagePack: false };
 			}
 			// --- End Positron ---
 

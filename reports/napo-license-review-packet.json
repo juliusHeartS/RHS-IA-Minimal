@@ -1,0 +1,2240 @@
+{
+  "format": "napo-license-review-packet/v1",
+  "product": "Napo",
+  "scope": "macOS application package",
+  "package": "dist/Napo.app",
+  "release": {
+    "version": "1.130.0",
+    "treeSha256": "ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e",
+    "fileCount": 32904
+  },
+  "sourceRepositoriesReadOnly": [
+    "RHS-IA",
+    "positron",
+    "rhs-agent3",
+    "rhs-agent4",
+    "vscode"
+  ],
+  "decision": "human-review-required",
+  "summary": {
+    "approvedCases": 0,
+    "rejectedCases": 0,
+    "pendingCases": 30,
+    "withProvenanceCandidates": 30,
+    "licenseEvidence": {
+      "missing-manifest-and-local-file": 28,
+      "manifest-points-to-missing-file": 1,
+      "local-file-without-manifest-declaration": 1
+    }
+  },
+  "decisionRegistry": {
+    "path": "reports/napo-license-decisions.json",
+    "status": "stale-empty",
+    "releaseTreeSha256": "c568e2a7a1c9c3d4d9ee9e8254ec1e5d3c2cac2be7f9d8ae924ff1a8ec290321"
+  },
+  "limitations": [
+    "Los candidatos de procedencia son evidencia para revisión y no transfieren ni infieren una licencia.",
+    "El paquete no se modifica: ningún manifiesto de extensión recibe una licencia inventada.",
+    "La revisión debe considerar binarios, dependencias transitivas, modelos, datos, marcas y términos de servicio además de estos archivos."
+  ],
+  "cases": [
+    {
+      "caseId": "dist/Napo.app:extensions/authentication/package.json",
+      "packagePath": "extensions/authentication/package.json",
+      "name": "authentication",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": null,
+      "packageManifestSha256": "187fe63c035c62a5574394332e7fa160ad44825c6eaa446aef1fd8e4b0d068ce",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/authentication/package.json",
+          "packageName": "authentication",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/authentication/package.json",
+          "packageName": "authentication",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-catalog-explorer/package.json",
+      "packagePath": "extensions/positron-catalog-explorer/package.json",
+      "name": "positron-catalog-explorer",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": null,
+      "packageManifestSha256": "178250ad19f324d960a5bd63944b1bc5493d012ac27f74c4d0e22573fe7ace3b",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-catalog-explorer/package.json",
+          "packageName": "positron-catalog-explorer",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-catalog-explorer/package.json",
+          "packageName": "positron-catalog-explorer",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-code-cells/package.json",
+      "packagePath": "extensions/positron-code-cells/package.json",
+      "name": "positron-code-cells",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "80305d6c2a2e2f7abac8d9fd30b6d054d452f4bb44abae296fdba1a884437a76",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-code-cells/package.json",
+          "packageName": "positron-code-cells",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-code-cells/package.json",
+          "packageName": "positron-code-cells",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-connections/package.json",
+      "packagePath": "extensions/positron-connections/package.json",
+      "name": "positron-connections",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "2a8bbe018c0d34bfecea8cd87bc23aee62c56de82acb7a9ed1033ccbd50e1df7",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-connections/package.json",
+          "packageName": "positron-connections",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-connections/package.json",
+          "packageName": "positron-connections",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-data-driver-databricks/package.json",
+      "packagePath": "extensions/positron-data-driver-databricks/package.json",
+      "name": "positron-data-driver-databricks",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "332811061f74ed1460563b3ac3e26c0520f560fde2c7d0488ebb274a49e0b80f",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-data-driver-databricks/package.json",
+          "packageName": "positron-data-driver-databricks",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-data-driver-duckdb/package.json",
+      "packagePath": "extensions/positron-data-driver-duckdb/package.json",
+      "name": "positron-data-driver-duckdb",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "de17a9a72b530b7eefead38e434343bd4a8f3223b2adb1d35b6af049d0dec77f",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-data-driver-duckdb/package.json",
+          "packageName": "positron-data-driver-duckdb",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-data-driver-duckdb/package.json",
+          "packageName": "positron-data-driver-duckdb",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-data-driver-odbc/package.json",
+      "packagePath": "extensions/positron-data-driver-odbc/package.json",
+      "name": "positron-data-driver-odbc",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "075acc12f541c7edb6213a95f0e827e37cb136f83f441d772593093f3749efee",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-data-driver-odbc/package.json",
+          "packageName": "positron-data-driver-odbc",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-data-driver-pins/package.json",
+      "packagePath": "extensions/positron-data-driver-pins/package.json",
+      "name": "positron-data-driver-pins",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "f9b884831a7ad47e088d29ed158a8b4233f58c8caefb75829d7708ed69aec45c",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-data-driver-pins/package.json",
+          "packageName": "positron-data-driver-pins",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-data-driver-pins/package.json",
+          "packageName": "positron-data-driver-pins",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-data-driver-postgresql/package.json",
+      "packagePath": "extensions/positron-data-driver-postgresql/package.json",
+      "name": "positron-data-driver-postgresql",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "54183c700988620ccf8146bf398af2ce4a3249623073e87c883132224b903f7c",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-data-driver-postgresql/package.json",
+          "packageName": "positron-data-driver-postgresql",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-data-driver-postgresql/package.json",
+          "packageName": "positron-data-driver-postgresql",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-data-driver-redshift/package.json",
+      "packagePath": "extensions/positron-data-driver-redshift/package.json",
+      "name": "positron-data-driver-redshift",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "5076ffb622beb7cac3dfc73dd7aa1e031fd05ae4522b36eafe2212de663a76bd",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-data-driver-redshift/package.json",
+          "packageName": "positron-data-driver-redshift",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-data-driver-redshift/package.json",
+          "packageName": "positron-data-driver-redshift",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-data-driver-snowflake/package.json",
+      "packagePath": "extensions/positron-data-driver-snowflake/package.json",
+      "name": "positron-data-driver-snowflake",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "aaa40b0098e8a0c5f0989127cf45d661fe30c76785347709b35767659e32ff14",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-data-driver-snowflake/package.json",
+          "packageName": "positron-data-driver-snowflake",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-data-driver-sqlite/package.json",
+      "packagePath": "extensions/positron-data-driver-sqlite/package.json",
+      "name": "positron-data-driver-sqlite",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "1ed02f28384271dbfb7448325e183291ebc2563dd48ffe5edf9eaf9b9a472d79",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-data-driver-sqlite/package.json",
+          "packageName": "positron-data-driver-sqlite",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-data-driver-sqlite/package.json",
+          "packageName": "positron-data-driver-sqlite",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-duckdb/package.json",
+      "packagePath": "extensions/positron-duckdb/package.json",
+      "name": "positron-duckdb",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "8c5b1a06f1aace2da63c12d619ea5180108dc7d34b47b16316f4dad1c103a8dd",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-duckdb/package.json",
+          "packageName": "positron-duckdb",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-duckdb/package.json",
+          "packageName": "positron-duckdb",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-environment-modules/package.json",
+      "packagePath": "extensions/positron-environment-modules/package.json",
+      "name": "positron-environment-modules",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "b2d025fe401caed68f11940ac15139b0dfb1cad7a1cc51bf7d267fb9e441e4e0",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-environment-modules/package.json",
+          "packageName": "positron-environment-modules",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-environment-modules/package.json",
+          "packageName": "positron-environment-modules",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-environment/package.json",
+      "packagePath": "extensions/positron-environment/package.json",
+      "name": "positron-environment",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "7a419906dd6d6369793aa700c8bebd62eeef2edb7a81e6445e7117ffc7a0c6b9",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-environment/package.json",
+          "packageName": "positron-environment",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-environment/package.json",
+          "packageName": "positron-environment",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-file-transfer/package.json",
+      "packagePath": "extensions/positron-file-transfer/package.json",
+      "name": "positron-file-transfer",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "1a6d9f249c9358ee668e9c1f68f4b4ffdf7f3f113bedbe33346b5052558e3700",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-file-transfer/package.json",
+          "packageName": "positron-file-transfer",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-file-transfer/package.json",
+          "packageName": "positron-file-transfer",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-ipywidgets/package.json",
+      "packagePath": "extensions/positron-ipywidgets/package.json",
+      "name": "positron-ipywidgets",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": null,
+      "packageManifestSha256": "3ba66101935c57e109d2dde5f3e8517e26c61467030233b5b92065af9ca55b26",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-ipywidgets/package.json",
+          "packageName": "positron-ipywidgets",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-ipywidgets/package.json",
+          "packageName": "positron-ipywidgets",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-ipywidgets/renderer/package.json",
+      "packagePath": "extensions/positron-ipywidgets/renderer/package.json",
+      "name": "positron-ipywidgets-renderer",
+      "version": "0.0.1",
+      "publisher": null,
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": null,
+      "packageManifestSha256": "1e151c92b5750b79a1cc4a0a14e393cda8a9efd1142d99395d214032f34a3dfb",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-ipywidgets/renderer/package.json",
+          "packageName": "positron-ipywidgets-renderer",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-ipywidgets/renderer/package.json",
+          "packageName": "positron-ipywidgets-renderer",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-notebook-export/package.json",
+      "packagePath": "extensions/positron-notebook-export/package.json",
+      "name": "notebook-export",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": null,
+      "packageManifestSha256": "8182d2ef9d01f36d61365f1f82e51472920cd074601a84e558b9135c5eddd654",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-notebook-export/package.json",
+          "packageName": "notebook-export",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-notebook-export/package.json",
+          "packageName": "notebook-export",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-notebooks/package.json",
+      "packagePath": "extensions/positron-notebooks/package.json",
+      "name": "positron-notebooks-helpers",
+      "version": "1.0.0",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "c5af61dbc4099de9d1228ebfae3d74aa3631933b66aa142e60e7fa0f3f71079b",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-notebooks/package.json",
+          "packageName": "positron-notebooks-helpers",
+          "packageVersion": "1.0.0",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-notebooks/package.json",
+          "packageName": "positron-notebooks-helpers",
+          "packageVersion": "1.0.0",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-pdf-server/package.json",
+      "packagePath": "extensions/positron-pdf-server/package.json",
+      "name": "positron-pdf-server",
+      "version": "1.0.0",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron.git"
+      },
+      "packageManifestSha256": "c0b5954c1593de9868f5a9ad48cfc714f8e62ba1ff08db2fa5f3ad5466ecd645",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-pdf-server/package.json",
+          "packageName": "positron-pdf-server",
+          "packageVersion": "1.0.0",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-pdf-server/package.json",
+          "packageName": "positron-pdf-server",
+          "packageVersion": "1.0.0",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-proxy/package.json",
+      "packagePath": "extensions/positron-proxy/package.json",
+      "name": "positron-proxy",
+      "version": "1.0.0",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "52eaabb735c3033603a6f067388607e1932a14ed67ecc5b29357509160269abd",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-proxy/package.json",
+          "packageName": "positron-proxy",
+          "packageVersion": "1.0.0",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-proxy/package.json",
+          "packageName": "positron-proxy",
+          "packageVersion": "1.0.0",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-r/package.json",
+      "packagePath": "extensions/positron-r/package.json",
+      "name": "positron-r",
+      "version": "0.0.2",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "f5070351f565b06e8fd2843363144a15c5445422f3561047118f836f073ea8ea",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-r/package.json",
+          "packageName": "positron-r",
+          "packageVersion": "0.0.2",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-r/package.json",
+          "packageName": "positron-r",
+          "packageVersion": "0.0.2",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-reticulate/package.json",
+      "packagePath": "extensions/positron-reticulate/package.json",
+      "name": "positron-reticulate",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "bebf53e6e0a15c39dc647c9828c5946dc573420d8df268306e849bc2722a79fb",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-reticulate/package.json",
+          "packageName": "positron-reticulate",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-reticulate/package.json",
+          "packageName": "positron-reticulate",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-run-app/package.json",
+      "packagePath": "extensions/positron-run-app/package.json",
+      "name": "positron-run-app",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "3f210597a630cbb4906d14c32c7bd3508a24d60fed0b59448b1feae455fe70da",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-run-app/package.json",
+          "packageName": "positron-run-app",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-run-app/package.json",
+          "packageName": "positron-run-app",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-runtime-debugger/package.json",
+      "packagePath": "extensions/positron-runtime-debugger/package.json",
+      "name": "positron-runtime-debugger",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": null,
+      "packageManifestSha256": "3bb0abf7c2feac14619e2c9afa2fb2d31993a9dd7c689bef562b355e07dabe2d",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-runtime-debugger/package.json",
+          "packageName": "positron-runtime-debugger",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-runtime-debugger/package.json",
+          "packageName": "positron-runtime-debugger",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-supervisor/package.json",
+      "packagePath": "extensions/positron-supervisor/package.json",
+      "name": "positron-supervisor",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "packageManifestSha256": "70cabc096bc5001e5088384ef47cc6ee11019e7f831a4aeeed12761ba05c563d",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-supervisor/package.json",
+          "packageName": "positron-supervisor",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-supervisor/package.json",
+          "packageName": "positron-supervisor",
+          "packageVersion": "0.0.1",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/positron-viewer/package.json",
+      "packagePath": "extensions/positron-viewer/package.json",
+      "name": "positron-viewer",
+      "version": "1.0.0",
+      "publisher": "positron",
+      "declaredLicense": null,
+      "licenseEvidence": "missing-manifest-and-local-file",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron.git"
+      },
+      "packageManifestSha256": "34624e0eac054b9458ec0c7838cb5b614a6a3d53c9651492e93c14293a3ee18f",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/positron-viewer/package.json",
+          "packageName": "positron-viewer",
+          "packageVersion": "1.0.0",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        },
+        {
+          "repository": "positron",
+          "manifest": "../positron/extensions/positron-viewer/package.json",
+          "packageName": "positron-viewer",
+          "packageVersion": "1.0.0",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../positron/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../positron/NOTICE",
+              "size": 3172428,
+              "sha256": "b5b75c6ac7c919ad1c52f12bbda23cd627a4e0bbf7cec92239c1f2774096ddfe"
+            },
+            {
+              "path": "../positron/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/rhs-agent4/resources/rhs-okf/package.json",
+      "packagePath": "extensions/rhs-agent4/resources/rhs-okf/package.json",
+      "name": "rhs-okf",
+      "version": "0.1.0",
+      "publisher": null,
+      "declaredLicense": "SEE LICENSE",
+      "licenseEvidence": "manifest-points-to-missing-file",
+      "repository": null,
+      "packageManifestSha256": "994251b93f603fe74ba015d1238c9550beb20320d450079d82e7a23fe67c1dc7",
+      "packageLegalFiles": [],
+      "provenanceCandidates": [
+        {
+          "repository": "rhs-agent4",
+          "manifest": "../rhs-agent4/src/resources/rhs-okf/package.json",
+          "packageName": "rhs-okf",
+          "packageVersion": "0.1.0",
+          "declaredLicense": "SEE LICENSE",
+          "legalFilesNearManifest": [],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../rhs-agent4/LICENSE",
+              "size": 11339,
+              "sha256": "694dbf5b4cf4497b8f4c1fc81022f9f806dac728ce40f069fbee4f14c036aaca"
+            },
+            {
+              "path": "../rhs-agent4/THIRD_PARTY_NOTICES.md",
+              "size": 2272,
+              "sha256": "02e0ba13b5880eccd5a22c53c4f55c621085c83bf5eae666a46aca486b5a226a"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    },
+    {
+      "caseId": "dist/Napo.app:extensions/rhs-ia-documentation/package.json",
+      "packagePath": "extensions/rhs-ia-documentation/package.json",
+      "name": "rhs-ia-documentation",
+      "version": "0.0.5",
+      "publisher": "paho",
+      "declaredLicense": null,
+      "licenseEvidence": "local-file-without-manifest-declaration",
+      "repository": null,
+      "packageManifestSha256": "0a4faa437662387de97b68e2ab7a2dea8cb3c2297bf6bf68ce4749e01467d1e9",
+      "packageLegalFiles": [
+        {
+          "path": "extensions/rhs-ia-documentation/LICENSE.txt",
+          "size": 5848,
+          "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+        }
+      ],
+      "provenanceCandidates": [
+        {
+          "repository": "RHS-IA",
+          "manifest": "../RHS-IA/extensions/rhs-ia-documentation/package.json",
+          "packageName": "rhs-ia-documentation",
+          "packageVersion": "0.0.5",
+          "declaredLicense": null,
+          "legalFilesNearManifest": [
+            {
+              "path": "../RHS-IA/extensions/rhs-ia-documentation/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            }
+          ],
+          "legalFilesAtRepositoryRoot": [
+            {
+              "path": "../RHS-IA/LICENSE.txt",
+              "size": 5848,
+              "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+            },
+            {
+              "path": "../RHS-IA/NOTICE",
+              "size": 3419378,
+              "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+            },
+            {
+              "path": "../RHS-IA/ThirdPartyNotices.txt",
+              "size": 214255,
+              "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+            }
+          ]
+        }
+      ],
+      "decision": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "basis": null,
+      "notes": null,
+      "reviewChecklist": [
+        "confirmar la licencia aplicable al componente exacto empaquetado",
+        "confirmar avisos, dependencias transitivas, binarios, modelos y datos redistribuidos",
+        "confirmar compatibilidad de marcas y términos de servicio con la distribución de Napo",
+        "registrar decisión, persona revisora, fecha y fundamento documental en el registro lateral"
+      ]
+    }
+  ]
+}

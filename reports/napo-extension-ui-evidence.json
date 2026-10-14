@@ -1,0 +1,147 @@
+{
+  "format": "napo-extension-ui-evidence/v1",
+  "observedAt": "2026-10-12T23:28:00-05:00",
+  "package": "dist/Napo.app",
+  "packageTreeSha256": "ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e",
+  "revalidatedAt": "2026-10-13T14:32:57-05:00",
+  "revalidation": "El paquete fue reconstruido por cambios exclusivos del host Napo: estabilidad del caché de extensiones del sistema, entorno Python inmutable, puente Node relativo para el CLI OKF y apertura automática de la vista Capibara en una ventana vacía. La auditoría de integridad de extensiones registró 0 diferencias funcionales y el runtime empaquetado de Capibara coincide con la copia integrada; la prueba visual con open -n mostró RHS-Agent v4.0.0 junto a la Bienvenida sin abrir una carpeta.",
+  "profile": "perfil de usuario y workspace temporales de Napo; sin tráfico externo",
+  "observations": [
+    {
+      "extension": "paho.rhs-ia-documentation",
+      "action": "Ejecutar `RHS-IA: Abrir documentación` desde la paleta de comandos",
+      "result": "Se abrió la vista `Documentación de RHS-IA`; el webview mostró el encabezado, contenido de inicio y la declaración de disponibilidad sin conexión.",
+      "marker": "Documentación de RHS-IA",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.simple-browser",
+      "action": "Ejecutar `Explorador: Abrir explorador integrado` y navegar a `data:text/html,<h1>NAPO_BROWSER_OK</h1>`",
+      "result": "El editor del navegador integrado mostró el encabezado `NAPO_BROWSER_OK`.",
+      "marker": "NAPO_BROWSER_OK",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.media-preview",
+      "action": "Abrir `screenshots/napo-playwright-electron.png` desde el destino Napo",
+      "result": "Se abrió `Image Preview` dentro del workbench y la interfaz mostró el archivo, tamaño 78.99 KB y dimensiones 2374x1676.",
+      "marker": "Image Preview",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.json",
+      "action": "Crear un editor sin título y seleccionar `JSON` mediante `Change Language Mode`",
+      "result": "El workbench mostró `JSON` en la barra de estado y el estado de validación JSON sin esquema configurado.",
+      "marker": "JSON",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.make",
+      "action": "Seleccionar `Makefile` mediante `Change Language Mode` en un editor sin título",
+      "result": "El workbench mostró `Makefile` en la barra de estado y conservó el editor sin errores de contrato del lenguaje.",
+      "marker": "Makefile",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.markdown",
+      "action": "Seleccionar `Markdown` y ejecutar `Markdown: Open Preview to the Side`",
+      "result": "El workbench mostró `Markdown`, abrió las acciones de preview y creó la pestaña `[Vista previa] Untitled-1` con contenido local.",
+      "marker": "[Vista previa] Untitled-1",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.yaml",
+      "action": "Cerrar la preview, volver al editor fuente y seleccionar `YAML` mediante `Change Language Mode`",
+      "result": "El workbench mostró `YAML` en la barra de estado con indentación predeterminada de dos espacios.",
+      "marker": "YAML",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.html",
+      "action": "Seleccionar `HTML` mediante `Change Language Mode`",
+      "result": "El workbench mostró `HTML` en la barra de estado del editor.",
+      "marker": "HTML",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.javascript",
+      "action": "Seleccionar `JavaScript` mediante `Change Language Mode`",
+      "result": "El workbench mostró `JavaScript` y su estado de lenguaje, sin exigir red ni un proyecto externo.",
+      "marker": "JavaScript",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.diff",
+      "action": "Seleccionar `Diff` mediante `Change Language Mode`",
+      "result": "El workbench mostró `Diff` en la barra de estado del editor.",
+      "marker": "Diff",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.prompt",
+      "action": "Seleccionar `Prompt` mediante `Change Language Mode`",
+      "result": "El workbench mostró `Prompt`, sus acciones de preview y la acción de guardar como archivo de indicación deshabilitada para el editor sin título.",
+      "marker": "Prompt",
+      "status": "pass"
+    },
+    {
+      "extension": "ms-ceintl.vscode-language-pack-es",
+      "action": "Ejecutar `Configure Display Language`",
+      "result": "El selector de idioma mostró `español (es) (Actual)` y la interfaz completa de Napo permaneció localizada en español.",
+      "marker": "español (es) (Actual)",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.mermaid-markdown-features",
+      "action": "Abrir una referencia Markdown local, insertar un bloque Mermaid mediante pegado y ejecutar `Markdown: Open Preview`",
+      "result": "La preview local mostró el encabezado `Mermaid`, el diagrama visible con los nodos `NAPO` y `OK`, y controles de zoom, paneo y reinicio.",
+      "marker": "Mermaid Diagram",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.debug-auto-launch",
+      "action": "Ejecutar `Debug: Toggle Auto Attach` desde la paleta de comandos",
+      "result": "El flujo abrió el selector local de asociación automática y mostró el estado vigente `Deshabilitado`, junto con las opciones Siempre, Inteligente y Solo con marca. No se inició ningún proceso ni se cambió la configuración.",
+      "marker": "Deshabilitado",
+      "status": "pass"
+    },
+    {
+      "extension": "vscode.merge-conflict",
+      "action": "Pegar marcadores de conflicto en un editor sin título",
+      "result": "Napo detectó el conflicto y mostró `Previous Conflict`, `Next Conflict`, `Aceptar cambio actual`, `Aceptar cambio entrante`, `Aceptar ambos cambios` y `Comparar cambios`. El contenido no se guardó.",
+      "marker": "Aceptar cambio actual",
+      "status": "pass"
+    },
+    {
+      "extension": "positron.positron-run-app",
+      "action": "Abrir un editor Python, ejecutar `Run Flask App in Terminal`, comprobar la creación de la terminal y abrir un servidor HTTP local detectado mediante `Terminal: Open Detected Link` en `Open in Viewer pane`",
+      "result": "Napo mostró el botón `Run Flask App in Terminal`, creó la terminal y armó el comando Flask. El intérprete no tenía Flask instalado y devolvió un error claro sin instalar paquetes. Como prueba local sin dependencias, `python3 -m http.server` produjo `http://127.0.0.1:8765/`; Napo detectó el enlace, ofreció `Open in Viewer pane` y el Viewer mostró `Directory listing for /?_positronRender=0`. El proceso se detuvo limpiamente al terminar la prueba.",
+      "marker": "Directory listing for /?_positronRender=0",
+      "status": "pass",
+      "interpretation": "El contrato del receptor, la detección de URL local y la apertura en el Viewer pasan. El éxito de una aplicación Flask real depende de que la persona usuaria tenga Flask en el intérprete seleccionado; Napo no lo instala silenciosamente."
+    },
+    {
+      "extension": "paho.rhs-ia-environment-health",
+      "action": "Abrir la bienvenida de Napo después de confiar el workspace temporal `/tmp/napo-rea-workspace`",
+      "result": "La confianza habilitó las funciones del entorno. R apareció como configurado correctamente; Python detectó `/opt/homebrew/bin/python3` y pasó 2 de 4 comprobaciones, pero el perfil actual no tiene un `ipykernel` utilizable. La prueba no instaló paquetes ni alteró el entorno del usuario.",
+      "marker": "R se configuró correctamente",
+      "status": "partial",
+      "interpretation": "La observación corresponde a la configuración del perfil y no demuestra una ausencia en el paquete. El smoke reproducible del paquete con un entorno preparado valida Python/Jupyter."
+    },
+    {
+      "extension": "juliushearts.rhs-agent4",
+      "action": "Abrir la vista RHS-Agent en un perfil limpio de Napo y esperar la activación de Capibara.",
+      "result": "La vista web persistió después del arranque y de la validación del caché de extensiones; mostró `RHS-Agent v4.0.0`, el selector de modos, el flujo `/build-okf` y la documentación `/pdfstruct`.",
+      "marker": "RHS-Agent v4.0.0",
+      "status": "pass",
+      "interpretation": "La prueba cubre la entrega del HTML host–extensión y la persistencia de la interfaz. La ejecución CLI de pdfstruct y rhs-okf se verificó por separado con el entorno PATH mínimo de Finder."
+    }
+  ],
+  "limitations": [
+    "Esta es evidencia manual de 16 flujos pass y una observación partial, ligada al digest del paquete; no sustituye una prueba automatizada de todos los comandos y vistas.",
+    "`vscode.debug-server-ready` fue excluida del artefacto después de una reducción reversible que pasó validación estructural y smoke de R/Python/Quarto. La prueba histórica del receptor no se presenta como pass y no se instala ningún proveedor externo; la fuente de VS Code permanece intacta.",
+    "La prueba de Flask usó el intérprete del perfil y encontró el paquete ausente; la prueba alternativa usó solo el servidor HTTP estándar y loopback, sin instalar paquetes ni contactar servicios externos.",
+    "La comprobación visual de Python depende de que el perfil de usuario tenga `ipykernel`; Napo no lo instala de forma silenciosa. La verificación de runtime empaquetado se conserva en `smoke-napo-runtime`."
+  ],
+  "status": "pass"
+}

@@ -1,0 +1,18 @@
+{
+  "format": "napo-materialized-planning/v1",
+  "status": "pass",
+  "fixture": "test-fixture-only",
+  "materialization": "applied",
+  "source": {
+    "id": "TEST-MATERIALIZED-PLANNING",
+    "version": "2026.01",
+    "jurisdiction": "Ecuador"
+  },
+  "runtime": "Rscript",
+  "marker": "NAPO_MATERIALIZED_PLANNING_OK",
+  "limitations": [
+    "La fuente es un fixture local y no tiene autoridad legal.",
+    "La prueba demuestra transferencia y lectura reproducible en R; no sustituye la ruta UI Capibara ni la revisión institucional.",
+    "No se sigue sourceUri ni se realiza tráfico de red."
+  ]
+}

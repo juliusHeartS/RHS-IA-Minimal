@@ -131,14 +131,14 @@ describe('RHS-IA startup state', () => {
 		};
 		const spanishPack = product.builtInExtensions.find(extension => extension.name === 'ms-ceintl.vscode-language-pack-es');
 
-		expect(product.nameShort).toBe('RHS-IA');
-		expect(product.applicationName).toBe('rhs-ia');
-		expect(product.dataFolderName).toBe('.rhs-ia');
-		expect(product.serverApplicationName).toBe('rhs-ia-server');
-		expect(product.serverDataFolderName).toBe('.rhs-ia-server');
-		expect(product.darwinBundleIdentifier).toBe('co.posit.positron');
-		expect(product.linuxIconName).toBe('org.paho.rhsia');
-		expect(product.urlProtocol).toBe('rhs-ia');
+		expect(product.nameShort).toBe('Napo');
+		expect(product.applicationName).toBe('napo');
+		expect(product.dataFolderName).toBe('.napo');
+		expect(product.serverApplicationName).toBe('napo-server');
+		expect(product.serverDataFolderName).toBe('.napo-server');
+		expect(product.darwinBundleIdentifier).toBe('org.rhsia.napo');
+		expect(product.linuxIconName).toBe('org.rhsia.napo');
+		expect(product.urlProtocol).toBe('napo');
 		expect(product.rhsIaUseMockKeychain).toBe(true);
 		expect(product.nativeChatSetupEnabled).toBe(false);
 		expect(product.builtInExtensionsEnabledWithAutoUpdates).toEqual([]);

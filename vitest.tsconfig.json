@@ -31,6 +31,10 @@
 		"src/typings",
 		"src/positron-dts/positron.d.ts",
 		"src/positron-dts/ui-comm.d.ts",
+		// Include the workbench's ambient declarations used by Vitest files.
+		// The main tsconfig reaches these through its broader source include,
+		// but this test-only config intentionally narrows that list.
+		"src/vs/**/*.d.ts",
 		"src/vscode-dts/vscode.proposed.*.d.ts",
 		"src/vscode-dts/vscode.d.ts"
 	],

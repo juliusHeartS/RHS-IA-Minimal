@@ -1,3 +1,7 @@
 # Ignore ark binaries
 ark/
 
+# Napo ships the complete Ark kernel used by the R runtime integration.
+!ark/
+!ark/ark
+

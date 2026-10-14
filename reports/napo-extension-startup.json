@@ -1,0 +1,175 @@
+{
+  "format": "napo-extension-startup/v1",
+  "package": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
+  "waitMs": 10000,
+  "reviewedExtensionCount": 13,
+  "checks": [
+    {
+      "name": "vscode.debug-auto-launch",
+      "folder": "debug-auto-launch",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onStartupFinished"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.diff",
+      "folder": "diff",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.json",
+      "folder": "json",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.markdown",
+      "folder": "markdown-basics",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.media-preview",
+      "folder": "media-preview",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "vscode.merge-conflict",
+      "folder": "merge-conflict",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onStartupFinished"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.mermaid-markdown-features",
+      "folder": "mermaid-markdown-features",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onWebviewPanel:vscode.mermaid-markdown-features.preview"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "ms-ceintl.vscode-language-pack-es",
+      "folder": "ms-ceintl.vscode-language-pack-es",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "positron.positron-run-app",
+      "folder": "positron-run-app",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onStartupFinished"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.prompt",
+      "folder": "prompt-basics",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    },
+    {
+      "name": "paho.rhs-ia-documentation",
+      "folder": "rhs-ia-documentation",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onCommand:rhs-ia.documentation.open",
+        "onView:rhs-ia.documentation.view",
+        "onCommand:rhs-ia.documentation.home",
+        "onCommand:rhs-ia.documentation.search"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.simple-browser",
+      "folder": "simple-browser",
+      "surfaceRole": "product-contract",
+      "staticActivationEvents": [
+        "onCommand:simpleBrowser.api.open",
+        "onOpenExternalUri:http",
+        "onOpenExternalUri:https",
+        "onWebviewPanel:simpleBrowser.view"
+      ],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "startup-observed"
+    },
+    {
+      "name": "vscode.yaml",
+      "folder": "yaml",
+      "surfaceRole": "host-contract-review",
+      "staticActivationEvents": [],
+      "activationObserved": true,
+      "startupErrorLines": [],
+      "status": "not-triggered-resource"
+    }
+  ],
+  "startupErrors": [],
+  "logFiles": [
+    "editSessions.log",
+    "main.log",
+    "mcpGateway.log",
+    "network-shared.log",
+    "remoteTunnelService.log",
+    "sharedprocess.log",
+    "terminal.log",
+    "tunnelHostService.log",
+    "userDataSync.log",
+    "window1/exthost/extHostTelemetry.log",
+    "window1/exthost/exthost.log",
+    "window1/fileWatcher.log",
+    "window1/network.log",
+    "window1/notebook.rendering.log",
+    "window1/output_20261013T225530/tasks.log",
+    "window1/renderer.log",
+    "window1/views.log"
+  ],
+  "cleanedRuntimeArtifacts": [
+    "quarto/share/jupyter/__pycache__"
+  ],
+  "status": "pass",
+  "limitations": [
+    "El smoke observa el arranque limpio; una extensión sin evento de arranque queda not-triggered y requiere una prueba específica de su función.",
+    "La ausencia de error de activación no demuestra equivalencia completa ni cubre comandos, vistas o flujos de usuario.",
+    "El smoke no modifica código funcional del paquete, las fuentes ni el perfil persistente; elimina únicamente directorios __pycache__ generados por la propia prueba dentro del árbol de la aplicación para conservar un artefacto verificable."
+  ],
+  "markers": {
+    "workspace": "NAPO_EXTENSION_STARTUP_SMOKE"
+  }
+}

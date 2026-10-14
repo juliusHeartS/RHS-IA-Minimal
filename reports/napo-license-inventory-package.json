@@ -1,0 +1,1229 @@
+{
+  "format": 1,
+  "product": "Napo",
+  "scope": "macOS application package",
+  "root": "dist/Napo.app",
+  "manifestCount": 64,
+  "manifests": [
+    {
+      "path": "extensions/authentication/package.json",
+      "name": "authentication",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/configuration-editing/package.json",
+      "name": "configuration-editing",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/css-language-features/package.json",
+      "name": "css-language-features",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/css-language-features/server/package.json",
+      "name": "vscode-css-languageserver",
+      "version": "10.0.0",
+      "publisher": null,
+      "license": "MIT",
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/debug-auto-launch/package.json",
+      "name": "debug-auto-launch",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/diff/package.json",
+      "name": "diff",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/emmet/package.json",
+      "name": "emmet",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/git-base/package.json",
+      "name": "git-base",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/git/package.json",
+      "name": "git",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/html-language-features/package.json",
+      "name": "html-language-features",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/html-language-features/server/package.json",
+      "name": "vscode-html-languageserver",
+      "version": "10.0.0",
+      "publisher": null,
+      "license": "MIT",
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/ipynb/package.json",
+      "name": "ipynb",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/json-language-features/package.json",
+      "name": "json-language-features",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/json-language-features/server/package.json",
+      "name": "vscode-json-languageserver",
+      "version": "1.3.4",
+      "publisher": null,
+      "license": "MIT",
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/json/package.json",
+      "name": "json",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/markdown-basics/package.json",
+      "name": "markdown",
+      "version": "30.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/markdown-language-features/package.json",
+      "name": "markdown-language-features",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/markdown-math/package.json",
+      "name": "markdown-math",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/media-preview/package.json",
+      "name": "media-preview",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/merge-conflict/package.json",
+      "name": "merge-conflict",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/mermaid-markdown-features/package.json",
+      "name": "mermaid-markdown-features",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [
+        {
+          "path": "extensions/mermaid-markdown-features/ThirdPartyNotices.txt",
+          "size": 15300,
+          "sha256": "a42d48519a03963f6379d8c962bc6e94939bb07e887c9880a4b6a295e8c7e12c"
+        }
+      ],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/ms-ceintl.vscode-language-pack-es/package.json",
+      "name": "vscode-language-pack-es",
+      "version": "1.111.0",
+      "publisher": "ms-ceintl",
+      "license": "SEE MIT LICENSE IN LICENSE.md",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Microsoft/vscode-loc"
+      },
+      "legalFiles": [
+        {
+          "path": "extensions/ms-ceintl.vscode-language-pack-es/LICENSE.md",
+          "size": 1133,
+          "sha256": "d8428ce0697ff754457dbebb25ff82da1a7f95b281f4fef4cc0cd2fa4586a144"
+        }
+      ],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/notebook-renderers/package.json",
+      "name": "builtin-notebook-renderers",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/positron-catalog-explorer/package.json",
+      "name": "positron-catalog-explorer",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-code-cells/package.json",
+      "name": "positron-code-cells",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-connections/package.json",
+      "name": "positron-connections",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-data-driver-databricks/package.json",
+      "name": "positron-data-driver-databricks",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-data-driver-duckdb/package.json",
+      "name": "positron-data-driver-duckdb",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-data-driver-odbc/package.json",
+      "name": "positron-data-driver-odbc",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-data-driver-pins/package.json",
+      "name": "positron-data-driver-pins",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-data-driver-postgresql/package.json",
+      "name": "positron-data-driver-postgresql",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-data-driver-redshift/package.json",
+      "name": "positron-data-driver-redshift",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-data-driver-snowflake/package.json",
+      "name": "positron-data-driver-snowflake",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-data-driver-sqlite/package.json",
+      "name": "positron-data-driver-sqlite",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-duckdb/package.json",
+      "name": "positron-duckdb",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-environment-modules/package.json",
+      "name": "positron-environment-modules",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-environment/package.json",
+      "name": "positron-environment",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-file-transfer/package.json",
+      "name": "positron-file-transfer",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-ipywidgets/package.json",
+      "name": "positron-ipywidgets",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-ipywidgets/renderer/package.json",
+      "name": "positron-ipywidgets-renderer",
+      "version": "0.0.1",
+      "publisher": null,
+      "license": null,
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-notebook-export/package.json",
+      "name": "notebook-export",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-notebooks/package.json",
+      "name": "positron-notebooks-helpers",
+      "version": "1.0.0",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-pdf-server/package.json",
+      "name": "positron-pdf-server",
+      "version": "1.0.0",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-proxy/package.json",
+      "name": "positron-proxy",
+      "version": "1.0.0",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-python/package.json",
+      "name": "python",
+      "version": "2026.99.0-dev",
+      "publisher": "ms-python",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [
+        {
+          "path": "extensions/positron-python/LICENSE",
+          "size": 1095,
+          "sha256": "ad0cf28f3381ca9bb0bf101d127402d44c17bfa0991e1a00bff7ae6679e9dada"
+        },
+        {
+          "path": "extensions/positron-python/ThirdPartyNotices-Repository.txt",
+          "size": 56225,
+          "sha256": "399f11786590cd6fa239045dfe074ee0235515697f45f3dbf80c3d84a6ddba46"
+        }
+      ],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/positron-r/package.json",
+      "name": "positron-r",
+      "version": "0.0.2",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-reticulate/package.json",
+      "name": "positron-reticulate",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-run-app/package.json",
+      "name": "positron-run-app",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-runtime-debugger/package.json",
+      "name": "positron-runtime-debugger",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-supervisor/package.json",
+      "name": "positron-supervisor",
+      "version": "0.0.1",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/positron-viewer/package.json",
+      "name": "positron-viewer",
+      "version": "1.0.0",
+      "publisher": "positron",
+      "license": null,
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/posit-dev/positron.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "missing-manifest-and-local-file"
+    },
+    {
+      "path": "extensions/prompt-basics/package.json",
+      "name": "prompt",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/python/package.json",
+      "name": "python",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/r/package.json",
+      "name": "r",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/references-view/package.json",
+      "name": "references-view",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/Microsoft/vscode-references-view"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/rhs-agent4/package.json",
+      "name": "rhs-agent4",
+      "version": "4.0.0",
+      "publisher": "juliushearts",
+      "license": "Apache-2.0",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/juliushearts/rhs-agent4"
+      },
+      "legalFiles": [
+        {
+          "path": "extensions/rhs-agent4/dist/LICENSES/Cuy-Apache-2.0.txt",
+          "size": 11339,
+          "sha256": "694dbf5b4cf4497b8f4c1fc81022f9f806dac728ce40f069fbee4f14c036aaca"
+        },
+        {
+          "path": "extensions/rhs-agent4/dist/LICENSES/Goose-Apache-2.0.txt",
+          "size": 11341,
+          "sha256": "44459b86c2e96fdbfd8a6b5c33d30d4b04b5293fcb2ec96fe4dcc4e0f90b8962"
+        },
+        {
+          "path": "extensions/rhs-agent4/dist/LICENSES/Hermes-MIT.txt",
+          "size": 1070,
+          "sha256": "821556e6336796450ab852d375117b48a4887e71d255794fd6318d99982a5ab6"
+        },
+        {
+          "path": "extensions/rhs-agent4/LICENSE.txt",
+          "size": 11339,
+          "sha256": "694dbf5b4cf4497b8f4c1fc81022f9f806dac728ce40f069fbee4f14c036aaca"
+        }
+      ],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/rhs-agent4/resources/rhs-okf/package.json",
+      "name": "rhs-okf",
+      "version": "0.1.0",
+      "publisher": null,
+      "license": "SEE LICENSE",
+      "repository": null,
+      "legalFiles": [],
+      "licenseEvidence": "manifest-points-to-missing-file"
+    },
+    {
+      "path": "extensions/rhs-ia-documentation/package.json",
+      "name": "rhs-ia-documentation",
+      "version": "0.0.5",
+      "publisher": "paho",
+      "license": null,
+      "repository": null,
+      "legalFiles": [
+        {
+          "path": "extensions/rhs-ia-documentation/LICENSE.txt",
+          "size": 5848,
+          "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+        }
+      ],
+      "licenseEvidence": "local-file-without-manifest-declaration"
+    },
+    {
+      "path": "extensions/search-result/package.json",
+      "name": "search-result",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/simple-browser/package.json",
+      "name": "simple-browser",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/sql/package.json",
+      "name": "sql",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/terminal-suggest/package.json",
+      "name": "terminal-suggest",
+      "version": "1.0.1",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [
+        {
+          "path": "extensions/terminal-suggest/ThirdPartyNotices.txt",
+          "size": 1833,
+          "sha256": "875fb70e4eb54f1fa9987d6bd16cc5472ef3b75fc5758a5f897494f58753c489"
+        }
+      ],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/typescript-language-features/package.json",
+      "name": "typescript-language-features",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    },
+    {
+      "path": "extensions/yaml/package.json",
+      "name": "yaml",
+      "version": "10.0.0",
+      "publisher": "vscode",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/microsoft/vscode.git"
+      },
+      "legalFiles": [],
+      "licenseEvidence": "manifest-declared"
+    }
+  ],
+  "legalFiles": [
+    {
+      "path": "extensions/mermaid-markdown-features/ThirdPartyNotices.txt",
+      "size": 15300,
+      "sha256": "a42d48519a03963f6379d8c962bc6e94939bb07e887c9880a4b6a295e8c7e12c"
+    },
+    {
+      "path": "extensions/ms-ceintl.vscode-language-pack-es/LICENSE.md",
+      "size": 1133,
+      "sha256": "d8428ce0697ff754457dbebb25ff82da1a7f95b281f4fef4cc0cd2fa4586a144"
+    },
+    {
+      "path": "extensions/positron-python/LICENSE",
+      "size": 1095,
+      "sha256": "ad0cf28f3381ca9bb0bf101d127402d44c17bfa0991e1a00bff7ae6679e9dada"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/attrs-26.1.0.dist-info/licenses/LICENSE",
+      "size": 1109,
+      "sha256": "882115c95dfc2af1eeb6714f8ec6d5cbcabf667caff8729f42420da63f714e9f"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/cattrs-24.1.3.dist-info/licenses/LICENSE",
+      "size": 1074,
+      "sha256": "f5fb9d1ede37a88ca47f420c499dca0f4a05bc993e12c77d23520aad291c01bf"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/docstring_to_markdown-0.13.dist-info/LICENSE",
+      "size": 26526,
+      "sha256": "20c17d8b8c48a600800dfd14f95d5cb9ff47066a9641ddeab48dc54aec96e331"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/exceptiongroup-1.3.1.dist-info/licenses/LICENSE",
+      "size": 3704,
+      "sha256": "6e5070d765031e0ad403a1cbf90ae6d19a0228f802e320b7acff460aa72ed47c"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/lsprotocol-2025.0.0.dist-info/licenses/LICENSE",
+      "size": 1141,
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/markdown_it_py-3.0.0.dist-info/LICENSE",
+      "size": 1078,
+      "sha256": "4a2260d6e2cd0f5a151a1e86dbfe7d3ed552b1e2beabf9941c1ba5c49cbce484"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/markdown_it_py-3.0.0.dist-info/LICENSE.markdown-it",
+      "size": 1073,
+      "sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/mdurl-0.1.2.dist-info/LICENSE",
+      "size": 2338,
+      "sha256": "7c605df6e28667a9603118e98274f64a49ce3eed0d26fccce9534a345e0ef955"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/pydantic-1.10.26.dist-info/licenses/LICENSE",
+      "size": 1127,
+      "sha256": "9e3946690ac88b6b73e8f001a0586af13568be8852fd514e4393f39761764387"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/pygls-2.1.1.dist-info/licenses/LICENSE.txt",
+      "size": 11367,
+      "sha256": "6f4915c6bf1a75bc611c318cf2de93de358b31b409ed02eb9e0c245a79d60a5f"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/pygments-2.20.0.dist-info/licenses/LICENSE",
+      "size": 1331,
+      "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+    },
+    {
+      "path": "extensions/positron-python/python_files/posit/positron/_vendor/typing_extensions-4.10.0.dist-info/LICENSE",
+      "size": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "path": "extensions/positron-python/ThirdPartyNotices-Repository.txt",
+      "size": 56225,
+      "sha256": "399f11786590cd6fa239045dfe074ee0235515697f45f3dbf80c3d84a6ddba46"
+    },
+    {
+      "path": "extensions/positron-r/resources/testing/LICENSE",
+      "size": 94,
+      "sha256": "65ade3d09cabd585bb03e81c02bc4876a008e5be4e49775a44c4768a7edca724"
+    },
+    {
+      "path": "extensions/positron-r/resources/testing/LICENSE.md",
+      "size": 1130,
+      "sha256": "1d66815db120f72d16b26fe0e47071c6b8117e73ca3e340d2a157d8d8c5c83b6"
+    },
+    {
+      "path": "extensions/positron-r/resources/testing/r.pkg.test.explorer.fixture/LICENSE",
+      "size": 65,
+      "sha256": "37ba1bcaddc7fb055ce37963d243af9ad44a3b50f259ca91bd4e9cab53a5476f"
+    },
+    {
+      "path": "extensions/positron-r/resources/testing/r.pkg.test.explorer.fixture/LICENSE.md",
+      "size": 1094,
+      "sha256": "f591c91c38f710e9f69da1354391a4f4e2f0af026654edc562517ab93c460610"
+    },
+    {
+      "path": "extensions/positron-r/resources/testing/vscodereporter/LICENSE",
+      "size": 94,
+      "sha256": "65ade3d09cabd585bb03e81c02bc4876a008e5be4e49775a44c4768a7edca724"
+    },
+    {
+      "path": "extensions/positron-r/resources/testing/vscodereporter/LICENSE.md",
+      "size": 1130,
+      "sha256": "1d66815db120f72d16b26fe0e47071c6b8117e73ca3e340d2a157d8d8c5c83b6"
+    },
+    {
+      "path": "extensions/positron-r/syntaxes/LICENSE.md",
+      "size": 1076,
+      "sha256": "7e61d40bbe348836052c3d61415e5cea11b4f0065b6a10d2a82c3c78f2fbcf9b"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/LICENSES/Cuy-Apache-2.0.txt",
+      "size": 11339,
+      "sha256": "694dbf5b4cf4497b8f4c1fc81022f9f806dac728ce40f069fbee4f14c036aaca"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/LICENSES/Goose-Apache-2.0.txt",
+      "size": 11341,
+      "sha256": "44459b86c2e96fdbfd8a6b5c33d30d4b04b5293fcb2ec96fe4dcc4e0f90b8962"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/LICENSES/Hermes-MIT.txt",
+      "size": 1070,
+      "sha256": "821556e6336796450ab852d375117b48a4887e71d255794fd6318d99982a5ab6"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/runtime/capibara/LICENSE",
+      "size": 1070,
+      "sha256": "821556e6336796450ab852d375117b48a4887e71d255794fd6318d99982a5ab6"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/runtime/capibara/plugins/security-guidance/LICENSE",
+      "size": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/runtime/capibara/plugins/security-guidance/NOTICE",
+      "size": 1230,
+      "sha256": "b06caa5478771125235c78d2f150227f7b0ccef43290f62b14f48deaa4c8ad51"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/runtime/capibara/skills/productivity/docx/LICENSE",
+      "size": 1070,
+      "sha256": "8aa3c7717d57a68490c31eef4b57b6887e892f0566ff866078ebd76113d357e2"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/runtime/capibara/skills/productivity/pdf/LICENSE",
+      "size": 1070,
+      "sha256": "8aa3c7717d57a68490c31eef4b57b6887e892f0566ff866078ebd76113d357e2"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/runtime/capibara/skills/productivity/powerpoint/LICENSE",
+      "size": 1070,
+      "sha256": "8aa3c7717d57a68490c31eef4b57b6887e892f0566ff866078ebd76113d357e2"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/runtime/capibara/skills/productivity/xlsx/LICENSE",
+      "size": 1070,
+      "sha256": "8aa3c7717d57a68490c31eef4b57b6887e892f0566ff866078ebd76113d357e2"
+    },
+    {
+      "path": "extensions/rhs-agent4/dist/THIRD_PARTY_NOTICES.md",
+      "size": 2272,
+      "sha256": "02e0ba13b5880eccd5a22c53c4f55c621085c83bf5eae666a46aca486b5a226a"
+    },
+    {
+      "path": "extensions/rhs-agent4/LICENSE.txt",
+      "size": 11339,
+      "sha256": "694dbf5b4cf4497b8f4c1fc81022f9f806dac728ce40f069fbee4f14c036aaca"
+    },
+    {
+      "path": "extensions/rhs-ia-documentation/LICENSE.txt",
+      "size": 5848,
+      "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+    },
+    {
+      "path": "extensions/terminal-suggest/ThirdPartyNotices.txt",
+      "size": 1833,
+      "sha256": "875fb70e4eb54f1fa9987d6bd16cc5472ef3b75fc5758a5f897494f58753c489"
+    },
+    {
+      "path": "LICENSE.txt",
+      "size": 5848,
+      "sha256": "072ac8545e29b203ea5a447765cf0a41d98fdd17606325c087036a0d22350c25"
+    },
+    {
+      "path": "NOTICE",
+      "size": 3419378,
+      "sha256": "503aac0ebf00e55ea5f2449c3cdf2ba1775c0b44ba9c9a835283c0af949013bb"
+    },
+    {
+      "path": "ThirdPartyNotices.txt",
+      "size": 214255,
+      "sha256": "e044bde9ce0f3080020936dfce2bd168b59374832d20dbca4b72f1a6d53d2054"
+    }
+  ],
+  "unresolved": [
+    {
+      "path": "extensions/authentication/package.json",
+      "name": "authentication",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-catalog-explorer/package.json",
+      "name": "positron-catalog-explorer",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-code-cells/package.json",
+      "name": "positron-code-cells",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-connections/package.json",
+      "name": "positron-connections",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-data-driver-databricks/package.json",
+      "name": "positron-data-driver-databricks",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-data-driver-duckdb/package.json",
+      "name": "positron-data-driver-duckdb",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-data-driver-odbc/package.json",
+      "name": "positron-data-driver-odbc",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-data-driver-pins/package.json",
+      "name": "positron-data-driver-pins",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-data-driver-postgresql/package.json",
+      "name": "positron-data-driver-postgresql",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-data-driver-redshift/package.json",
+      "name": "positron-data-driver-redshift",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-data-driver-snowflake/package.json",
+      "name": "positron-data-driver-snowflake",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-data-driver-sqlite/package.json",
+      "name": "positron-data-driver-sqlite",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-duckdb/package.json",
+      "name": "positron-duckdb",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-environment-modules/package.json",
+      "name": "positron-environment-modules",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-environment/package.json",
+      "name": "positron-environment",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-file-transfer/package.json",
+      "name": "positron-file-transfer",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-ipywidgets/package.json",
+      "name": "positron-ipywidgets",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-ipywidgets/renderer/package.json",
+      "name": "positron-ipywidgets-renderer",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-notebook-export/package.json",
+      "name": "notebook-export",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-notebooks/package.json",
+      "name": "positron-notebooks-helpers",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-pdf-server/package.json",
+      "name": "positron-pdf-server",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-proxy/package.json",
+      "name": "positron-proxy",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-r/package.json",
+      "name": "positron-r",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-reticulate/package.json",
+      "name": "positron-reticulate",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-run-app/package.json",
+      "name": "positron-run-app",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-runtime-debugger/package.json",
+      "name": "positron-runtime-debugger",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-supervisor/package.json",
+      "name": "positron-supervisor",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/positron-viewer/package.json",
+      "name": "positron-viewer",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/rhs-agent4/resources/rhs-okf/package.json",
+      "name": "rhs-okf",
+      "reason": "license no declarada o remite a archivo"
+    },
+    {
+      "path": "extensions/rhs-ia-documentation/package.json",
+      "name": "rhs-ia-documentation",
+      "reason": "license no declarada o remite a archivo"
+    }
+  ],
+  "licenseEvidenceSummary": {
+    "missing-manifest-and-local-file": 28,
+    "manifest-declared": 34,
+    "manifest-points-to-missing-file": 1,
+    "local-file-without-manifest-declaration": 1
+  },
+  "decision": "human-review-required",
+  "review": {
+    "decisionsPath": "reports/napo-license-decisions.json",
+    "decisionsStatus": "stale-empty",
+    "approvedCases": 0,
+    "rejectedCases": 0,
+    "pendingCases": 30
+  }
+}

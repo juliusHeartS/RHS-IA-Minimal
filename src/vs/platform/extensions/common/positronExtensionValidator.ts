@@ -60,7 +60,7 @@ function isVersionValid(currentVersion: string, date: ProductDate, requestedVers
 	}
 
 	if (!isValidVersion(currentVersion, date, desiredVersion)) {
-		notices.push(nls.localize('versionMismatch', "Extension is not compatible with RHS-IA {0}. Extension requires: {1}.", currentVersion, requestedVersion));
+		notices.push(nls.localize('versionMismatch', "Extension is not compatible with Napo {0}. Extension requires: {1}.", currentVersion, requestedVersion));
 		return false;
 	}
 

@@ -1,0 +1,111 @@
+{
+  "format": "napo-extension-contracts/v1",
+  "package": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
+  "reviewedExtensionCount": 13,
+  "checks": [
+    {
+      "folder": "debug-auto-launch",
+      "name": "vscode.debug-auto-launch",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 0
+    },
+    {
+      "folder": "diff",
+      "name": "vscode.diff",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 0
+    },
+    {
+      "folder": "json",
+      "name": "vscode.json",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 0
+    },
+    {
+      "folder": "markdown-basics",
+      "name": "vscode.markdown",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 0
+    },
+    {
+      "folder": "media-preview",
+      "name": "vscode.media-preview",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 1
+    },
+    {
+      "folder": "merge-conflict",
+      "name": "vscode.merge-conflict",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 1
+    },
+    {
+      "folder": "mermaid-markdown-features",
+      "name": "vscode.mermaid-markdown-features",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 1
+    },
+    {
+      "folder": "ms-ceintl.vscode-language-pack-es",
+      "name": "ms-ceintl.vscode-language-pack-es",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 0
+    },
+    {
+      "folder": "positron-run-app",
+      "name": "positron.positron-run-app",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 0
+    },
+    {
+      "folder": "prompt-basics",
+      "name": "vscode.prompt",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 0
+    },
+    {
+      "folder": "rhs-ia-documentation",
+      "name": "paho.rhs-ia-documentation",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 0
+    },
+    {
+      "folder": "simple-browser",
+      "name": "vscode.simple-browser",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 1
+    },
+    {
+      "folder": "yaml",
+      "name": "vscode.yaml",
+      "status": "pass",
+      "issueCount": 0,
+      "warningCount": 0
+    }
+  ],
+  "issues": [],
+  "warnings": [
+    "media-preview: browser opcional no materializado en el paquete de escritorio: ./dist/browser/extension.js",
+    "merge-conflict: browser opcional no materializado en el paquete de escritorio: ./dist/browser/mergeConflictMain",
+    "mermaid-markdown-features: browser opcional no materializado en el paquete de escritorio: ./dist/browser/extension",
+    "simple-browser: browser opcional no materializado en el paquete de escritorio: ./dist/browser/extension"
+  ],
+  "status": "pass",
+  "limitations": [
+    "La auditoría verifica contratos declarados y recursos empaquetados; no prueba la ejecución de cada comando, vista o flujo de usuario.",
+    "Una referencia de menú sin comando local se conserva como advertencia porque puede pertenecer al host o a otra extensión.",
+    "La ausencia de errores aquí no sustituye las pruebas UI específicas de las 21 extensiones."
+  ]
+}
