@@ -96,7 +96,7 @@ function validatePackagedExtensionDependencies(packageAppRoot) {
 	);
 }
 
-check('identidad de producto', product.applicationName === 'napo' && product.nameShort === 'Napo', 'se esperaba applicationName/nameShort=napo/Napo');
+check('identidad de producto', product.applicationName === 'napo' && product.nameShort === 'RHS-IA', 'se esperaba applicationName/nameShort=napo/RHS-IA');
 check('telemetría', product.enableTelemetry === false, 'se esperaba enableTelemetry=false');
 check('actualizaciones silenciosas', !product.updateUrl && !product.downloadUrl, 'se esperaban updateUrl y downloadUrl vacíos');
 check('documentación LLM sin descarga automática', product.positronLlmsDocsUrl === '', 'se esperaba positronLlmsDocsUrl vacío para impedir tráfico automático');
@@ -155,7 +155,7 @@ if (packagePath) {
 
 	if (existsSync(packageProductPath)) {
 		const packageProduct = JSON.parse(readFileSync(packageProductPath, 'utf8'));
-		check('identidad del paquete', packageProduct.applicationName === 'napo' && packageProduct.nameShort === 'Napo', 'se esperaba napo/Napo en el paquete');
+		check('identidad del paquete', packageProduct.applicationName === 'napo' && packageProduct.nameShort === 'RHS-IA', 'se esperaba napo/RHS-IA en el paquete');
 		check('telemetría del paquete', packageProduct.enableTelemetry === false, 'se esperaba enableTelemetry=false en el paquete');
 		check('documentación LLM del paquete', packageProduct.positronLlmsDocsUrl === '', 'se esperaba positronLlmsDocsUrl vacío en el paquete');
 		check('Marketplace desactivado en el paquete', !packageProduct.extensionsGallery?.serviceUrl && !packageProduct.extensionsGallery?.resourceUrlTemplate && !packageProduct.extensionsGallery?.extensionUrlTemplate, 'Napo no debe declarar una galería de extensiones en el paquete');
@@ -187,7 +187,7 @@ if (packagePath) {
 
 	if (existsSync(packageQuartoBinaryPath)) {
 		const packageQuartoVersion = commandVersion(packageQuartoBinaryPath, ['--version']);
-		check('Quarto operativo en paquete', Boolean(packageQuartoVersion), 'el CLI de Quarto debe poder ejecutarse desde Napo.app');
+		check('Quarto operativo en paquete', Boolean(packageQuartoVersion), 'el CLI de Quarto debe poder ejecutarse desde RHS-IA.app');
 		if (packageQuartoVersion) {
 			checks.push({ name: 'versión Quarto en paquete', ok: true, detail: packageQuartoVersion });
 		}

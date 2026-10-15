@@ -16,7 +16,7 @@ function argumentValue(name) {
 	return value;
 }
 
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const auditScript = join(root, 'scripts', 'audit-napo-macos-signature.mjs');
 const temporaryRoot = mkdtempSync(join(tmpdir(), 'napo-signature-test-'));
 const reportPath = join(temporaryRoot, 'signature.json');

@@ -9,7 +9,7 @@ function argumentValue(name) {
 	return index === -1 ? undefined : process.argv[index + 1];
 }
 
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const evidencePath = resolve(argumentValue('--evidence') || join(root, 'reports', 'napo-extension-ui-evidence.json'));
 const releasePath = resolve(argumentValue('--manifest') || join(root, 'reports', 'napo-release-manifest.json'));
 

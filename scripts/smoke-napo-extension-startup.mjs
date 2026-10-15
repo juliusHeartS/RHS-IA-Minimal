@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const reportPath = resolve(argumentValue('--out') || join(root, 'reports', 'napo-extension-startup.json'));
 const waitMs = Number(argumentValue('--wait-ms') || 12000);
 
@@ -84,7 +84,7 @@ async function stopProcessTree(handle) {
 }
 
 if (process.platform !== 'darwin') throw new Error('El smoke de extensiones requiere macOS.');
-const executable = join(packagePath, 'Contents', 'MacOS', 'Napo');
+const executable = join(packagePath, 'Contents', 'MacOS', 'RHS-IA');
 if (!existsSync(executable)) throw new Error(`No existe el ejecutable: ${executable}`);
 if (!Number.isFinite(waitMs) || waitMs < 3000) throw new Error('--wait-ms debe ser mayor o igual a 3000');
 

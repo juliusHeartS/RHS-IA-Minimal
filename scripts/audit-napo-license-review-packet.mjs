@@ -83,7 +83,7 @@ function sourceCandidates(relativeManifestPath, packageName) {
 	return candidates;
 }
 
-const packagePath = resolve(root, argument('--package') ?? 'dist/Napo.app');
+const packagePath = resolve(root, argument('--package') ?? 'dist/RHS-IA.app');
 const inventoryPath = resolve(root, argument('--inventory') ?? 'reports/napo-license-inventory-package.json');
 const outputPath = resolve(root, argument('--out') ?? 'reports/napo-license-review-packet.json');
 const releasePath = resolve(root, argument('--release') ?? 'reports/napo-release-manifest.json');
@@ -136,7 +136,7 @@ const evidenceSummary = cases.reduce((summary, item) => {
 
 const report = {
 	format: 'napo-license-review-packet/v1',
-	product: 'Napo',
+	product: 'RHS-IA',
 	scope: inventory.scope,
 	package: relativePosix(root, packagePath),
 	release: release ? {

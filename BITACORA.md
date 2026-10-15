@@ -1427,3 +1427,13 @@ Capibara (`rhs-agent4`) queda establecido como la extensión primaria prevista p
 - Privacidad y arranque de extensiones pasaron: cero conexiones no locales observadas y cero errores de arranque.
 - Se observó un texto obsoleto en Bienvenida que dice que R y Python no están disponibles, pese a que R inició y las extensiones están dentro del paquete. Debe corregirse en la siguiente iteración.
 
+## 2026-10-15 - Identidad publica RHS-IA y RHS-Agent
+
+- Se formalizo la regla de nombres: RHS-IA es el nombre publico de la aplicacion y RHS-Agent es el nombre publico del agente.
+- Napo y Capibara quedan solo como nombres clave internos. Se conservan en rutas, scripts, reportes, comandos y namespaces tecnicos cuando son necesarios para compatibilidad, pero no en la identidad visible del producto ni del agente.
+- `product.json` ahora presenta RHS-IA, usa el protocolo publico `rhs-ia`, mantiene `applicationName=napo`, `.napo`, `.napo-shared`, `.napo-server` y `org.rhsia.napo` como compatibilidad tecnica y conserva `defaultLocale=es` y `enableTelemetry=false`.
+- La extension integrada `extensions/rhs-agent4` no fue modificada. Su prompt y su paquete ya identifican al agente como RHS-Agent y establecen el espanol como idioma inicial.
+- `npm run typecheck-client`, la reconstruccion macOS arm64, `validate-napo-package`, la prueba de arranque/localizacion (11/11), la firma ad hoc y la verificacion del DMG pasaron.
+- La app reconstruida es `dist/RHS-IA.app`. El instalador paralelo es `dist/RHS-IA-Preview-macOS-arm64.dmg` y contiene `RHS-IA-Preview.app`, sin reemplazar la RHS-IA instalada.
+- Los repositorios fuente de estudio no fueron alterados por esta correccion. `rhs-agent3` y `positron` ya tenian cambios locales previos y se preservaron.
+

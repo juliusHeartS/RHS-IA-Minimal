@@ -11,7 +11,7 @@ function optionValue(flag) {
 	return index === -1 ? null : process.argv[index + 1];
 }
 
-const packagePath = path.resolve(optionValue('--package') || path.join(root, 'dist', 'Napo.app'));
+const packagePath = path.resolve(optionValue('--package') || path.join(root, 'dist', 'RHS-IA.app'));
 const extensionArgumentIndex = process.argv.indexOf('--extensions');
 const requested = extensionArgumentIndex === -1
 	? []
@@ -46,7 +46,7 @@ for (const folder of requested) {
 }
 
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'napo-reduction-'));
-const reducedPackage = path.join(tempRoot, 'Napo.app');
+const reducedPackage = path.join(tempRoot, 'RHS-IA.app');
 const copy = spawnSync('cp', ['-al', packagePath, reducedPackage], { encoding: 'utf8' });
 if (copy.status !== 0) {
 	fail(`no se pudo crear el clon por enlaces duros: ${copy.stderr || copy.stdout}`);

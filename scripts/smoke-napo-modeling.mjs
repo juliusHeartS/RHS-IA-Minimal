@@ -16,7 +16,7 @@ function argumentValue(name, fallback) {
 	return value;
 }
 
-const packagePath = resolve(argumentValue('--package', join(root, 'dist', 'Napo.app')));
+const packagePath = resolve(argumentValue('--package', join(root, 'dist', 'RHS-IA.app')));
 const outputPath = resolve(argumentValue('--out', join(root, 'reports', 'napo-modeling-smoke.json')));
 const quarto = join(packagePath, 'Contents', 'Resources', 'app', 'quarto', 'bin', 'quarto');
 const work = mkdtempSync(join(tmpdir(), 'napo-modeling-smoke-'));

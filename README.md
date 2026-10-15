@@ -1,40 +1,40 @@
-# Napo (RHS-IA Minimal)
+# RHS-IA (Minimal distribution)
 
-Napo is a desktop platform for data analysis, modelling, simulation, and planning. It is based on [Positron](https://github.com/posit-dev/positron), which is built on [Code OSS](https://github.com/microsoft/vscode). It combines an editor, R and Python runtime support, notebooks, Quarto, data tools, and the integrated Capibara agent. New application profiles default to Spanish; an explicit English language choice is preserved.
+RHS-IA is a desktop platform for data analysis, modelling, simulation, and planning. It is based on [Positron](https://github.com/posit-dev/positron), which is built on [Code OSS](https://github.com/microsoft/vscode). It combines an editor, R and Python runtime support, notebooks, Quarto, data tools, and the integrated RHS-Agent. New application profiles default to Spanish; an explicit English language choice is preserved.
 
-![Napo interface with Capibara, a health workforce chart, and an R session](assets/interfaz_agent.png)
+![RHS-IA interface with RHS-Agent, a health workforce chart, and an R session](assets/interfaz_agent.png)
 
-*Napo with integrated Capibara, showing simulated health workforce data.*
+*RHS-IA with integrated RHS-Agent, showing simulated health workforce data.*
 
 ## Project status
 
-The source is being prepared for a **Napo** handover. The underlying Code OSS package version and Positron base version are independent of that release name. The current macOS arm64 package has technical acceptance and a reproducible release manifest. A local drag-and-drop installer is generated as `dist/Napo-macOS-arm64.dmg`; this repository does not publish a download channel. Source-build instructions below are for maintainers; public distribution remains subject to human legal review and the institutional knowledge-source gate. The update channel itself is decided: manual, explicit, hash-verified, signed, and reversible.
+The source is being prepared for an **RHS-IA** handover. The underlying Code OSS package version and Positron base version are independent of that release identity. The current macOS arm64 package has technical acceptance and a reproducible release manifest. A local drag-and-drop parallel installer is generated as `dist/RHS-IA-Preview-macOS-arm64.dmg`; this repository does not publish a download channel. Source-build instructions below are for maintainers; public distribution remains subject to human legal review and the institutional knowledge-source gate. The update channel itself is decided: manual, explicit, hash-verified, signed, and reversible.
 
 Current limitations that affect deployment:
 
-- Development macOS builds use a temporary mock Keychain and the Napo bundle identifier `org.rhsia.napo`. Do not store real credentials in test builds. Signing, notarization, and a safe credential migration need a separate release decision.
-- Automatic application updates are disabled. Napo accepts only manually delivered candidates after local manifest, hash, and signature verification, retaining the previous version for rollback; it does not discover, download, or install updates automatically.
-- Capibara is integrated as a complete extension from `extensions/rhs-agent4`; its provider configuration remains explicit and user-controlled.
+- Development macOS builds use a temporary mock Keychain and the RHS-IA technical bundle identifier `org.rhsia.napo`. Do not store real credentials in test builds. Signing, notarization, and a safe credential migration need a separate release decision.
+- Automatic application updates are disabled. RHS-IA accepts only manually delivered candidates after local manifest, hash, and signature verification, retaining the previous version for rollback; it does not discover, download, or install updates automatically.
+- RHS-Agent is integrated as a complete extension from `extensions/rhs-agent4`; its provider configuration remains explicit and user-controlled.
 - Remote server installation still refers to a Posit-hosted artifact. That dependency has not been validated as an RHS-IA release channel.
-- The executable Positron test suite passes. `npm run audit-napo-positron-typecheck` reports any inherited test-typing debt explicitly and fails if a diagnostic reaches a Napo-modified file.
+- The executable Positron test suite passes. `npm run audit-napo-positron-typecheck` reports any inherited test-typing debt explicitly and fails if a diagnostic reaches an RHS-IA-modified file.
 
 See the [customization ledger](docs/upgrades/rhs-customizations.md) for implemented behavior and validation obligations, and the [branding audit](docs/upgrades/rhs-ia-branding-audit.md) for remaining references and release gates.
 
 The current implementation and remaining release gates are summarized in [`AUDITORIA_CIERRE_NAPO.md`](AUDITORIA_CIERRE_NAPO.md) and the requirement-by-requirement [`MATRIZ_CUMPLIMIENTO_NAPO.md`](MATRIZ_CUMPLIMIENTO_NAPO.md). Historical validation notes remain in [`BITACORA.md`](BITACORA.md).
 
-The packaged Capibara capability surface is checked with `npm run audit-napo-capabilities`; the report covers analytical programming, simulations, predictive modelling, Quarto, reproducible reports, grounded citations, project knowledge, and institutional planning.
+The packaged RHS-Agent capability surface is checked with `npm run audit-napo-capabilities`; the report covers analytical programming, simulations, predictive modelling, Quarto, reproducible reports, grounded citations, project knowledge, and institutional planning.
 
 The deterministic engine smoke is `npm run smoke-napo-modeling`; it checks R and Python model fitting, simulation, scenario comparison, and a reproducible Quarto report.
 
-The focused UI evidence for the canonical live-analysis route is `reports/napo-capibara-positron-e2e.json`: Capibara uses `positron_execute_code`, Napo requests visible approval, and the live R session executes the model, simulation, and scenario contract.
+The focused UI evidence for the canonical live-analysis route is `reports/napo-capibara-positron-e2e.json`: RHS-Agent uses `positron_execute_code`, RHS-IA requests visible approval, and the live R session executes the model, simulation, and scenario contract.
 
 Sensitivity coordination is recorded in `reports/napo-capibara-sensitivity-e2e.json`: three shocks are evaluated in the live R session with the same approval and provenance path.
 
-Versioned-source planning coordination is recorded in `reports/napo-capibara-planning-e2e.json`: Capibara requests visible approval, the live R session reads `Docs/planning-policy.md`, and Napo calculates a 20-unit capacity gap with a 15/5 staffing and training allocation. This is local-source coordination evidence, not a declaration of legal validity.
+Versioned-source planning coordination is recorded in `reports/napo-capibara-planning-e2e.json`: RHS-Agent requests visible approval, the live R session reads `Docs/planning-policy.md`, and RHS-IA calculates a 20-unit capacity gap with a 15/5 staffing and training allocation. This is local-source coordination evidence, not a declaration of legal validity.
 
 Institutional or legal source roots use lateral `*.source.json` manifests. `npm run audit-napo-knowledge-bundle -- --root PATH --require-approved` validates the complete root, detects duplicate identities and blocks planning until human approval is present; it never downloads `sourceUri` or infers legal authority.
 
-To make an already approved local bundle visible to Capibara through a workspace's `Docs/`, run `npm run prepare-napo-knowledge-bundle -- --root PATH --workspace PATH --require-approved` first as a dry-run, then repeat with `--apply` after reviewing the report. The transfer preserves sidecar manifests, refuses pending sources, collisions, and destination symlinks, and writes a provenance receipt under `.napo/knowledge/`.
+To make an already approved local bundle visible to RHS-Agent through a workspace's `Docs/`, run `npm run prepare-napo-knowledge-bundle -- --root PATH --workspace PATH --require-approved` first as a dry-run, then repeat with `--apply` after reviewing the report. The transfer preserves sidecar manifests, refuses pending sources, collisions, and destination symlinks, and writes a provenance receipt under `.napo/knowledge/`.
 
 ## Source setup
 
@@ -58,13 +58,13 @@ rtk npm run gulp core-ci
 rtk npm run gulp vscode-darwin-arm64-min-ci
 ```
 
-After the Napo app has been built in `dist/Napo.app`, create the parallel-install DMG:
+After the RHS-IA app has been built in `dist/RHS-IA.app`, create the parallel-install DMG:
 
 ```sh
 npm run package-napo-macos-installer
 ```
 
-The result is [`dist/Napo-macOS-arm64.dmg`](dist/Napo-macOS-arm64.dmg) locally. Open the DMG and drag `Napo.app` to `Applications`; it can coexist with `/Applications/RHS-IA.app` because Napo uses the distinct bundle identifier `org.rhsia.napo`, URL protocol `napo`, and data folders `.napo`/`.napo-shared`. The generated evidence and SHA-256 are recorded in [`reports/napo-macos-installer.json`](reports/napo-macos-installer.json). This is a freely distributed, ad-hoc-sealed app and is not Apple-signed or notarized; macOS may require the user to approve it under their own responsibility.
+The result is [`dist/RHS-IA-Preview-macOS-arm64.dmg`](dist/RHS-IA-Preview-macOS-arm64.dmg) locally. Open the DMG and drag `RHS-IA-Preview.app` to `Applications`; its visible product name remains RHS-IA, while the Preview filename prevents it from overwriting an existing `/Applications/RHS-IA.app`. The generated evidence and SHA-256 are recorded in [`reports/napo-macos-installer.json`](reports/napo-macos-installer.json). This is a freely distributed, ad-hoc-sealed app and is not Apple-signed or notarized; macOS may require the user to approve it under their own responsibility.
 
 Linux DEB/RPM packaging additionally requires `RHS_IA_LINUX_MAINTAINER` to contain the approved maintainer in `Name <email>` form. The build deliberately has no upstream contact fallback. Windows Store/AppX packaging is not supported.
 
@@ -88,24 +88,24 @@ rtk npm run valid-layers-check
 
 For changes under `build/`, also run `rtk npm run typecheck` from that directory. The [offline documentation extension](extensions/rhs-ia-documentation/README.md) documents its own generate, build, audit, test, and bundle sequence. The [hygiene guide](docs/hygiene-guide-for-agents.md) covers source formatting and precommit checks. Use disposable profiles for startup, settings, and credential migration tests.
 
-For the Napo package acceptance gate, run:
+For the RHS-IA package acceptance gate, run:
 
 ```sh
 npm run validate-napo-package -- --require-runtime
-npm run smoke-napo-runtime -- --package dist/Napo.app
-npm run smoke-napo-privacy -- --package dist/Napo.app
-npm run audit-napo-macos-signature -- --package dist/Napo.app
-npm run validate-napo-gate -- --package dist/Napo.app
+npm run smoke-napo-runtime -- --package dist/RHS-IA.app
+npm run smoke-napo-privacy -- --package dist/RHS-IA.app
+npm run audit-napo-macos-signature -- --package dist/RHS-IA.app
+npm run validate-napo-gate -- --package dist/RHS-IA.app
 npm run audit-napo-data-integrity
 npm run audit-napo-license-inventory
 npm run audit-napo-extension-surface
-npm run audit-napo-extension-functional-coverage -- --package dist/Napo.app
-node scripts/audit-napo-extension-surface.mjs --package dist/Napo.app --out reports/napo-extension-surface-package.json
+npm run audit-napo-extension-functional-coverage -- --package dist/RHS-IA.app
+node scripts/audit-napo-extension-surface.mjs --package dist/RHS-IA.app --out reports/napo-extension-surface-package.json
 node scripts/test-napo-surface-reduction.mjs --extensions bat
-node scripts/audit-napo-license-inventory.mjs --package dist/Napo.app --out reports/napo-license-inventory-package.json
+node scripts/audit-napo-license-inventory.mjs --package dist/RHS-IA.app --out reports/napo-license-inventory-package.json
 ```
 
-La reducción de extensiones ajenas al flujo R/Python/Quarto/datos o a Capibara está aplicada únicamente al empaquetado de Napo: el paquete actual contiene 59 extensiones, con 46 conservadas y 13 clasificadas como `requiere-prueba`. `debug-server-ready`, `make`, `javascript` y `html` fueron retiradas después de pruebas reversibles; sus carpetas fuente siguen presentes para mantener una ruta reversible. La evidencia estructural y de runtime está en [`reports/napo-extension-surface-package.json`](reports/napo-extension-surface-package.json), y el manifiesto vigente registra 32.904 archivos con digest `ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e`.
+La reducción de extensiones ajenas al flujo R/Python/Quarto/datos o a RHS-Agent está aplicada únicamente al empaquetado de RHS-IA: el paquete actual contiene 59 extensiones, con 46 conservadas y 13 clasificadas como `requiere-prueba`. `debug-server-ready`, `make`, `javascript` y `html` fueron retiradas después de pruebas reversibles; sus carpetas fuente siguen presentes para mantener una ruta reversible. La evidencia estructural y de runtime está en [`reports/napo-extension-surface-package.json`](reports/napo-extension-surface-package.json), y el manifiesto vigente registra 32.904 archivos con digest `ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e`.
 
 El inventario también clasifica la superficie por rol. Las 13 extensiones que permanecen bajo revisión conservadora tienen cobertura funcional reconciliada en [`reports/napo-extension-functional-coverage.json`](reports/napo-extension-functional-coverage.json): presencia física, evidencia UI `pass`, contrato sin errores y arranque sin errores. Este informe no autoriza retirar extensiones ni sustituye revisión legal.
 
@@ -113,7 +113,7 @@ La auditoría de contratos declarados (`npm run audit-napo-extension-contracts`)
 
 La evidencia UI manual está en [`reports/napo-extension-ui-evidence.json`](reports/napo-extension-ui-evidence.json): documentación local, navegador integrado con contenido local, visor de imágenes y flujos de las extensiones bajo revisión. `npm run validate-napo-extension-ui-evidence` comprueba que esa evidencia corresponde al digest vigente y `npm run audit-napo-extension-functional-coverage` reconcilia su cobertura con contratos y arranque.
 
-El receptor configura el host de extensiones de Napo con resolución IPv4-first para que las extensiones Positron conserven su comprobación estándar de `localhost` y, al mismo tiempo, Napo pueda coexistir con una instancia de RHS-IA ya abierta.
+El receptor configura el host de extensiones de RHS-IA con resolución IPv4-first para que las extensiones Positron conserven su comprobación estándar de `localhost` y, al mismo tiempo, RHS-IA pueda coexistir con una instancia instalada anteriormente.
 
 El empaquetado macOS arm64 construye automáticamente el binding nativo local de `policy-watcher` cuando falta. Para reconstruirlo de manera explícita antes de empaquetar, usa `NAPO_FORCE_POLICY_WATCHER_BUILD=1 npm run build-napo-policy-watcher`; el flujo normal `npm run gulp vscode-darwin-arm64` lo ejecuta como parte de la preparación del artefacto.
 
@@ -141,6 +141,6 @@ Review the [customization ledger](docs/upgrades/rhs-customizations.md) and its [
 
 RHS-IA modifies Positron by Posit Software, PBC, and Code OSS by Microsoft. It is not an official Positron distribution. Preserve the notices in [`LICENSE.txt`](LICENSE.txt), [`NOTICE`](NOTICE), and [`ThirdPartyNotices.txt`](ThirdPartyNotices.txt), along with the licenses and attribution supplied by individual extensions and submodules. Positron trademarks and copyright remain with their owners. The offline documentation extension has its own [license and provenance](extensions/rhs-ia-documentation/LICENSE.txt).
 
-### Revalidación vigente de Napo — 2026-10-13
+### Revalidación vigente de RHS-IA — 2026-10-13
 
-El paquete `dist/Napo.app` vigente contiene 32.904 archivos y tiene el digest de árbol `ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e`. Esta reconstrucción incorpora en el host de Napo el override que mantiene Capibara disponible al abrir carpetas de proyecto no confiables; no modifica el código, manifiesto ni runtime de Capibara.
+El paquete `dist/RHS-IA.app` vigente contiene 32.904 archivos y tiene el digest de árbol `ea4efbd9a3144e0f58fc2c32d1dd7605e00e92a54cd16618a33c09487e83a53e`. Esta reconstrucción incorpora en el host de RHS-IA el override que mantiene RHS-Agent disponible al abrir carpetas de proyecto no confiables; no modifica el código, manifiesto ni runtime de RHS-Agent.

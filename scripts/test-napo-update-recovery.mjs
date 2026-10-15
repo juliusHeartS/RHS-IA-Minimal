@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const reportPath = resolve(argumentValue('--out') || join(root, 'reports', 'napo-update-recovery.json'));
 const releaseScript = join(root, 'scripts', 'napo-release-manifest.mjs');
 
@@ -83,11 +83,11 @@ function replaceProduct(appPath, update) {
 function verifyCandidate({ currentProduct, candidatePath, candidateManifest }) {
 	const candidate = readProduct(candidatePath);
 	const failures = [];
-	if (candidate.applicationName !== 'napo' || candidate.nameShort !== 'Napo') failures.push('identidad de producto inválida');
+	if (candidate.applicationName !== 'napo' || candidate.nameShort !== 'RHS-IA') failures.push('identidad de producto inválida');
 	if (candidate.enableTelemetry !== false) failures.push('telemetría no está desactivada');
 	if (candidate.updateUrl || candidate.downloadUrl || candidate.positronLlmsDocsUrl) failures.push('el candidato declara un endpoint automático');
 	if (compareVersions(candidate.version, currentProduct.version) <= 0) failures.push('la versión candidata no es posterior a la versión activa');
-	if (candidateManifest.product?.applicationName !== 'napo' || candidateManifest.product?.nameShort !== 'Napo') failures.push('el manifiesto no corresponde a Napo');
+	if (candidateManifest.product?.applicationName !== 'napo' || candidateManifest.product?.nameShort !== 'RHS-IA') failures.push('el manifiesto no corresponde a RHS-IA');
 	if (candidateManifest.product?.version !== candidate.version) failures.push('la versión del manifiesto no coincide con product.json');
 	if (!candidateManifest.treeSha256 || candidateManifest.fileCount <= 0) failures.push('el manifiesto no contiene un árbol verificable');
 	return { ok: failures.length === 0, failures, product: candidate, treeSha256: candidateManifest.treeSha256 };
@@ -97,16 +97,16 @@ function assert(condition, message) {
 	if (!condition) throw new Error(message);
 }
 
-if (process.platform !== 'darwin') throw new Error('La prueba de actualización requiere macOS por usar Napo.app.');
+if (process.platform !== 'darwin') throw new Error('La prueba de actualización requiere macOS por usar RHS-IA.app.');
 if (!existsSync(packagePath)) throw new Error(`No existe el paquete: ${packagePath}`);
 
 const temporaryRoot = mkdtempSync(join(tmpdir(), 'napo-update-recovery-'));
 const statePath = join(temporaryRoot, 'state', 'current.json');
 const stateDirectory = join(temporaryRoot, 'state');
-const activeClone = join(temporaryRoot, 'active', 'Napo.app');
-const validCandidate = join(temporaryRoot, 'candidate-valid', 'Napo.app');
-const invalidCandidate = join(temporaryRoot, 'candidate-invalid', 'Napo.app');
-const rollbackCandidate = join(temporaryRoot, 'candidate-rollback', 'Napo.app');
+const activeClone = join(temporaryRoot, 'active', 'RHS-IA.app');
+const validCandidate = join(temporaryRoot, 'candidate-valid', 'RHS-IA.app');
+const invalidCandidate = join(temporaryRoot, 'candidate-invalid', 'RHS-IA.app');
+const rollbackCandidate = join(temporaryRoot, 'candidate-rollback', 'RHS-IA.app');
 const currentManifestPath = join(temporaryRoot, 'current-manifest.json');
 const validManifestPath = join(temporaryRoot, 'valid-manifest.json');
 const invalidManifestPath = join(temporaryRoot, 'invalid-manifest.json');

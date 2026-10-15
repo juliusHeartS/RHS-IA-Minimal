@@ -32,7 +32,7 @@ function assert(condition, message) {
 	if (!condition) throw new Error(message);
 }
 
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const inventoryPath = join(root, 'reports', 'napo-license-inventory-package.json');
 const releasePath = join(root, 'reports', 'napo-release-manifest.json');
 const release = JSON.parse(readFileSync(releasePath, 'utf8'));
@@ -50,7 +50,7 @@ try {
 	const registry = {
 		schemaVersion: 1,
 		format: 'napo-license-decisions/v1',
-		product: 'Napo',
+		product: 'RHS-IA',
 		release: { version: release.product.version, treeSha256: release.treeSha256 },
 		decisions: {},
 	};

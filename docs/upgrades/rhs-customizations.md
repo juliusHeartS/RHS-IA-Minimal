@@ -115,7 +115,7 @@ Hygiene note: the conflict-marker findings in `.claude/skills/merge-upstream-vsc
 
 | ID | Area | Status | Integration rule | Upgrade intent |
 | --- | --- | --- | --- | --- |
-| `RHS-ID-001` | Product identity | Active | Preserve | Keep RHS-IA names, protocols, storage roots, and installer identity; do not silently relabel unresolved Posit-owned metadata. |
+| `RHS-ID-001` | Product identity | Active | Preserve | Keep RHS-IA as the public product name and RHS-Agent as the public agent name; retain the internal `napo` compatibility namespace and do not expose Napo or Capibara in user-facing surfaces. |
 | `RHS-ID-002` | Legacy profile migration | Active | Preserve | Keep early, narrow migration of `argv.json`; do not bulk-migrate credentials or extension state. |
 | `RHS-MAC-001` | macOS credentials | Active, temporary | Preserve | Keep mock-keychain until an explicit signed/notarized credential-migration plan replaces it. |
 | `RHS-L10N-001` | Spanish startup | Active | Preserve | Keep Spanish as the new-profile default and bundle the pinned offline language pack. |
@@ -138,15 +138,19 @@ Hygiene note: the conflict-marker findings in `.claude/skills/merge-upstream-vsc
 
 ## Authoritative details
 
-### `RHS-ID-001` — RHS-IA identity and namespaces
+### `RHS-ID-001` — RHS-IA identity and internal namespaces
 
 `product.json`, `src/vs/platform/product/common/product.ts`, `package.json`, packaging scripts, resources, and server manifests establish the RHS-IA family:
 
-- desktop/product name `RHS-IA`, application name `rhs-ia`;
-- local data `.rhs-ia`, shared data `.rhs-ia-shared`;
-- server executable `rhs-ia-server`, server data `.rhs-ia-server`;
-- URL protocol `rhs-ia` and Linux icon `org.paho.rhsia`;
+- public desktop/product name `RHS-IA`, public agent name `RHS-Agent`;
+- internal application namespace `napo`, local data `.napo`, shared data `.napo-shared`;
+- internal server executable `napo-server`, server data `.napo-server`;
+- URL protocol `rhs-ia` and technical macOS bundle identifier `org.rhsia.napo`;
 - Windows AppUserModelId `PAHO.RHSIA` and fork-owned installer GUIDs.
+
+`Napo` and `Capibara` are development codenames only. They may remain in source paths, command identifiers, scripts, reports, and compatibility gates, but must not be used as the product or agent name in the application interface, packaging labels, startup copy, or agent responses. The technical `napo` namespace is intentionally preserved so existing host gates, profile migration, extension contracts, and parallel installation behavior continue to work.
+
+The 2026-10-15 working-tree identity correction changes visible product metadata, macOS executable naming, installer labels, and developer-facing package defaults to `RHS-IA` while keeping the technical namespace above. `extensions/rhs-agent4` is not modified: its existing public prompt already identifies the agent as `RHS-Agent` and defaults to Spanish.
 
 This is not yet a total legal/distribution-identity migration. As of 2026-10-01, `companyName` is `RHS-IA`, `licenseName` is `Elastic License 2.0`, and release-notes/download URLs point to the RHS-IA repository. License URLs, trusted domains, extension-gallery endpoints, and some remote distribution fields still point to Posit/upstream. Repository and issue-reporting URLs also target RHS-IA. PAHO must still confirm legal and distribution ownership; preserve actual upstream dependency URLs until there is a working replacement.
 

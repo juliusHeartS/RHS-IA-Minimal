@@ -154,11 +154,12 @@
       "title": "RHS-IA product identity and storage namespaces",
       "status": "active",
       "integrationRule": "preserve",
-      "purpose": "Present the desktop, CLI, server, protocols, user-data folders, and installers as RHS-IA while retaining explicitly documented upstream-owned metadata that has not yet been migrated.",
+      "purpose": "Present RHS-IA as the public product and RHS-Agent as the public agent while retaining the internal napo compatibility namespace required by the host, profiles, extension contracts, and parallel installation.",
       "userVisibleBehavior": [
-        "The product and executable family are named RHS-IA/rhs-ia.",
-        "New local and remote state uses .rhs-ia, .rhs-ia-shared, and .rhs-ia-server namespaces.",
-        "The URL protocol is rhs-ia and Linux desktop identity is org.paho.rhsia.",
+        "The public product and executable family are named RHS-IA, and the integrated agent is named RHS-Agent.",
+        "The internal compatibility namespace remains napo, with .napo, .napo-shared, and .napo-server storage roots.",
+        "The URL protocol is rhs-ia and the technical macOS bundle identity remains org.rhsia.napo for parallel installation.",
+        "Napo and Capibara are development codenames only and are not public product or agent names.",
         "The product's issue-reporting action targets the RHS-IA repository."
       ],
       "implementation": [
@@ -238,12 +239,14 @@
           ]
         }
       ],
-      "evidenceCommits": [
+    "evidenceCommits": [
         "bd7aa74f73ff9dc7cff0a5e5244fe7b788ed335c",
         "6ac104d1173c0f4ed1de408fc9315de8887fd496",
         "4d20fd5689b12a5f99995cd5e8c4e819d56ceaa8"
       ],
-      "dependenciesAndProvenance": [
+    "dependenciesAndProvenance": [
+      "2026-10-15 working-tree correction: visible product metadata and macOS packaging use RHS-IA; the napo namespace remains technical compatibility state. Commit evidence is pending until validation and commit.",
+      "RHS-Agent is the public name of the integrated agent; Capibara is retained only as a development codename in source and evidence paths.",
         "Windows installer GUIDs and PAHO.RHSIA AppUserModelId are RHS-owned identifiers.",
         "2026-10-08 pending working-tree README screenshot addition: copy the user-supplied RHS-IA image into assets/interfaz_agent.png without altering its bytes; reference it with a repository-relative path. No new commit evidence is claimed.",
         "2026-10-08 pending working-tree documentation update: describe RHS-IA as based on Positron; preserve exact historical backup-tag names, upstream component descriptions, copyright notices, and compatibility identifiers. No runtime behavior or new commit evidence is claimed.",

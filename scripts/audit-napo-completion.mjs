@@ -40,7 +40,7 @@ function walkVolatileFiles(directory, result = []) {
 	return result;
 }
 
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const outputPath = resolve(argumentValue('--out') || join(root, 'reports', 'napo-completion-audit.json'));
 const requireComplete = process.argv.includes('--require-complete');
 const manualRisk = process.argv.includes('--manual-risk');
@@ -78,7 +78,7 @@ const destinationTests = existsSync(destinationTestsPath) ? loadJson(destination
 add(
 	'identity-and-privacy',
 	product.applicationName === 'napo'
-		&& product.nameShort === 'Napo'
+		&& product.nameShort === 'RHS-IA'
 		&& product.enableTelemetry === false
 		&& !product.updateUrl
 		&& !product.downloadUrl

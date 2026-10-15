@@ -10,7 +10,7 @@ function argument(name, fallback) {
 	return index >= 0 ? process.argv[index + 1] : fallback;
 }
 
-const packagePath = resolve(argument('--package', join(root, 'dist', 'Napo.app')));
+const packagePath = resolve(argument('--package', join(root, 'dist', 'RHS-IA.app')));
 const packageAppRoot = resolve(packagePath, 'Contents', 'Resources', 'app');
 const outputPath = resolve(root, argument('--out', 'reports/napo-extension-dependency-roots.json'));
 if (!existsSync(packageAppRoot)) {

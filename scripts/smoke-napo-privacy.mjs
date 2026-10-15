@@ -20,8 +20,8 @@ function argumentValue(name) {
 	return value;
 }
 
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
-const executable = join(packagePath, 'Contents', 'MacOS', 'Napo');
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
+const executable = join(packagePath, 'Contents', 'MacOS', 'RHS-IA');
 const reportPath = resolve(argumentValue('--out') || join(root, 'reports', 'napo-privacy-smoke.json'));
 const waitMs = Number(argumentValue('--wait-ms') || 12000);
 
@@ -30,7 +30,7 @@ if (!Number.isFinite(waitMs) || waitMs < 1000) {
 }
 
 if (process.platform !== 'darwin') {
-	throw new Error('El smoke de privacidad requiere macOS porque inspecciona Napo.app y lsof.');
+	throw new Error('El smoke de privacidad requiere macOS porque inspecciona RHS-IA.app y lsof.');
 }
 if (!existsSync(executable)) {
 	throw new Error(`No existe el ejecutable empaquetado: ${executable}`);

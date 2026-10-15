@@ -20,7 +20,7 @@ function fail(message) {
 	process.exitCode = 1;
 }
 
-const packagePath = resolve(root, argument('--package', 'dist/Napo.app'));
+const packagePath = resolve(root, argument('--package', 'dist/RHS-IA.app'));
 const surfacePath = resolve(root, argument('--surface', 'reports/napo-extension-surface-package.json'));
 const uiPath = resolve(root, argument('--ui', 'reports/napo-extension-ui-evidence.json'));
 const contractsPath = resolve(root, argument('--contracts', 'reports/napo-extension-contracts-package.json'));
@@ -80,7 +80,7 @@ const extensions = reviewExtensions.map((extension) => {
 
 const report = {
 	format: 'napo-extension-functional-coverage/v1',
-	product: 'Napo',
+	product: 'RHS-IA',
 	package: packagePath,
 	packageTreeSha256: release.treeSha256 ?? null,
 	scope: 'extensiones clasificadas como requiere-prueba y presentes en el artefacto',

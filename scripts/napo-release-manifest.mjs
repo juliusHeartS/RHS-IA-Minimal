@@ -30,7 +30,7 @@ function parseArgs(argv) {
 }
 
 async function readProduct(packageRoot) {
-	const appRoot = path.basename(packageRoot) === 'Napo.app'
+	const appRoot = path.basename(packageRoot) === 'RHS-IA.app'
 		? path.join(packageRoot, 'Contents', 'Resources', 'app')
 		: packageRoot;
 	const productPath = path.join(appRoot, 'product.json');

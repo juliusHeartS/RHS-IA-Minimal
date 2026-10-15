@@ -10,7 +10,7 @@ function argumentValue(name) {
 	return index >= 0 ? process.argv[index + 1] : undefined;
 }
 
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const appRoot = join(packagePath, 'Contents', 'Resources', 'app');
 const productPath = join(appRoot, 'product.json');
 const outputPath = resolve(argumentValue('--out') || join(root, 'reports', 'napo-privacy-contract-package.json'));

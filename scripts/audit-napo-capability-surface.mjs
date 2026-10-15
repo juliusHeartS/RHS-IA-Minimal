@@ -18,7 +18,7 @@ function argumentValue(name, fallback) {
 	return value;
 }
 
-const packagePath = resolve(argumentValue('--package', join(root, 'dist', 'Napo.app')));
+const packagePath = resolve(argumentValue('--package', join(root, 'dist', 'RHS-IA.app')));
 const packageSkills = join(packagePath, 'Contents', 'Resources', 'app', 'extensions', 'rhs-agent4', 'assets', 'skills');
 const integratedSkills = join(root, 'extensions', 'rhs-agent4', 'assets', 'skills');
 const outputPath = resolve(argumentValue('--out', join(root, 'reports', 'napo-capability-surface.json')));
@@ -141,7 +141,7 @@ const failures = capabilities.filter(capability => capability.status !== 'pass')
 const report = {
 	format: 'napo-capability-surface/v1',
 	generatedAt: 'deterministic',
-	product: 'Napo',
+	product: 'RHS-IA',
 	package: packagePath,
 	sourceRoot: integratedSkills,
 	packageRoot: packageSkills,

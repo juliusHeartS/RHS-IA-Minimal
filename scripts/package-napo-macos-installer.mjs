@@ -5,9 +5,10 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 const root = path.resolve(import.meta.dirname, '..');
-const appPath = path.resolve(process.argv[2] ?? path.join(root, 'dist', 'Napo.app'));
+const appPath = path.resolve(process.argv[2] ?? path.join(root, 'dist', 'RHS-IA.app'));
 const outDir = path.resolve(process.argv[3] ?? path.join(root, 'dist'));
-const installerName = process.argv[4] ?? 'Napo-macOS-arm64.dmg';
+const installerName = process.argv[4] ?? 'RHS-IA-Preview-macOS-arm64.dmg';
+const stagedAppName = 'RHS-IA-Preview.app';
 const artifactPath = path.join(outDir, installerName);
 
 function fail(message) {
@@ -46,7 +47,7 @@ function validateApp() {
 	}
 	const plistPath = path.join(appPath, 'Contents', 'Info.plist');
 	const productPath = path.join(appPath, 'Contents', 'Resources', 'app', 'product.json');
-	const executablePath = path.join(appPath, 'Contents', 'MacOS', 'Napo');
+	const executablePath = path.join(appPath, 'Contents', 'MacOS', 'RHS-IA');
 	if (!fs.existsSync(plistPath) || !fs.existsSync(productPath) || !fs.existsSync(executablePath)) {
 		fail(`La aplicación no tiene una estructura Napo válida: ${appPath}`);
 	}
@@ -66,16 +67,16 @@ function validateApp() {
 	};
 
 	const expected = {
-		nameShort: 'Napo',
-		nameLong: 'Napo',
+		nameShort: 'RHS-IA',
+		nameLong: 'RHS-IA',
 		applicationName: 'napo',
 		dataFolderName: '.napo',
 		sharedDataFolderName: '.napo-shared',
 		darwinBundleIdentifier: 'org.rhsia.napo',
 		enableTelemetry: false,
 		bundleIdentifier: 'org.rhsia.napo',
-		displayName: 'Napo',
-		executable: 'Napo'
+		displayName: 'RHS-IA',
+		executable: 'RHS-IA'
 	};
 	for (const [key, value] of Object.entries(expected)) {
 		if (identity[key] !== value) {
@@ -107,14 +108,14 @@ async function main() {
 	}
 
 	const stageRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'napo-installer-'));
-	const stagedAppPath = path.join(stageRoot, 'Napo.app');
+	const stagedAppPath = path.join(stageRoot, stagedAppName);
 	try {
 		console.log(`Preparando instalador desde ${appPath}`);
 		run('ditto', [appPath, stagedAppPath]);
 		fs.symlinkSync('/Applications', path.join(stageRoot, 'Applications'));
 		run('hdiutil', [
 			'create',
-			'-volname', 'Napo',
+			'-volname', 'RHS-IA Preview',
 			'-srcfolder', stageRoot,
 			'-ov',
 			'-format', 'UDZO',
@@ -141,9 +142,9 @@ async function main() {
 		identity,
 		parallelInstall: {
 			installedRhsIa: installedRhsIaIdentity(),
-			appName: 'Napo.app',
+			appName: stagedAppName,
 			applicationDirectory: '/Applications',
-			coexistence: 'Napo uses a distinct app name, bundle identifier, URL protocol and data folders.'
+			coexistence: 'RHS-IA Preview uses a distinct application bundle filename, bundle identifier and data folders.'
 		},
 		notarization: 'notarized: false; the user must approve opening the freely distributed app in macOS if Gatekeeper asks.'
 	};

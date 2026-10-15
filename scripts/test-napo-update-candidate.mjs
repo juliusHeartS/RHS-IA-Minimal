@@ -11,7 +11,7 @@ const manifestScript = join(root, 'scripts', 'napo-release-manifest.mjs');
 const verifierScript = join(root, 'scripts', 'verify-napo-update-candidate.mjs');
 const testRoot = mkdtempSync(join(tmpdir(), 'napo-update-candidate-'));
 
-function appPath(name) { return join(testRoot, name, 'Napo.app'); }
+function appPath(name) { return join(testRoot, name, 'RHS-IA.app'); }
 function writeProduct(app, product) {
 	const appRoot = join(app, 'Contents', 'Resources', 'app');
 	mkdirSync(appRoot, { recursive: true });
@@ -34,7 +34,7 @@ try {
 	const current = appPath('current');
 	const candidate = appPath('candidate');
 	const insecure = appPath('insecure');
-	const currentProduct = { applicationName: 'napo', nameShort: 'Napo', version: '1.0.0', commit: 'current', date: 'test', enableTelemetry: false, updateUrl: '', downloadUrl: '', positronLlmsDocsUrl: '' };
+	const currentProduct = { applicationName: 'napo', nameShort: 'RHS-IA', version: '1.0.0', commit: 'current', date: 'test', enableTelemetry: false, updateUrl: '', downloadUrl: '', positronLlmsDocsUrl: '' };
 	const candidateProduct = { ...currentProduct, version: '1.1.0', commit: 'candidate' };
 	writeProduct(current, currentProduct);
 	writeProduct(candidate, candidateProduct);

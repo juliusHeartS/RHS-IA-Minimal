@@ -19,10 +19,10 @@ function argumentValue(name) {
 	return value;
 }
 
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const reportPath = resolve(argumentValue('--out') || join(root, 'reports', 'napo-macos-signature.json'));
 const requireDistribution = process.argv.includes('--require-distribution');
-const executable = join(packagePath, 'Contents', 'MacOS', 'Napo');
+const executable = join(packagePath, 'Contents', 'MacOS', 'RHS-IA');
 
 if (process.platform !== 'darwin') {
 	throw new Error('La auditoría de firma de Napo requiere macOS.');

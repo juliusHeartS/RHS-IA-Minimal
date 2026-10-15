@@ -19,7 +19,7 @@ function argumentValue(name) {
 	return value;
 }
 
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const requireDistribution = process.argv.includes('--require-distribution');
 const manualRisk = process.argv.includes('--manual-risk');
 const releaseManifest = resolve(argumentValue('--manifest') || join(root, 'reports', 'napo-release-manifest.json'));

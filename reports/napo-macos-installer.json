@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-10-14T05:08:55.968Z",
+  "generatedAt": "2026-10-15T20:28:26.234Z",
   "platform": "darwin",
   "architecture": "arm64",
-  "application": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo.app",
-  "installer": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/Napo-macOS-arm64.dmg",
-  "installerName": "Napo-macOS-arm64.dmg",
-  "installerBytes": 1627459862,
-  "installerSha256": "ab0dc917f5976fde9debfe585b1ed80b4147827d73290eaf481ca082fc180f97",
+  "application": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/RHS-IA.app",
+  "installer": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/RHS-IA-Preview-macOS-arm64.dmg",
+  "installerName": "RHS-IA-Preview-macOS-arm64.dmg",
+  "installerBytes": 1631433150,
+  "installerSha256": "520521e42b00781f0d017b0fdc2eab537b67e6898721550f42b8e57ff3fe84b8",
   "identity": {
-    "nameShort": "Napo",
-    "nameLong": "Napo",
+    "nameShort": "RHS-IA",
+    "nameLong": "RHS-IA",
     "applicationName": "napo",
     "dataFolderName": ".napo",
     "sharedDataFolderName": ".napo-shared",
     "darwinBundleIdentifier": "org.rhsia.napo",
     "enableTelemetry": false,
     "bundleIdentifier": "org.rhsia.napo",
-    "displayName": "Napo",
-    "executable": "Napo"
+    "displayName": "RHS-IA",
+    "executable": "RHS-IA"
   },
   "parallelInstall": {
     "installedRhsIa": {
@@ -25,9 +25,9 @@
       "bundleIdentifier": "co.posit.positron",
       "displayName": "RHS-IA"
     },
-    "appName": "Napo.app",
+    "appName": "RHS-IA-Preview.app",
     "applicationDirectory": "/Applications",
-    "coexistence": "Napo uses a distinct app name, bundle identifier, URL protocol and data folders."
+    "coexistence": "RHS-IA Preview uses a distinct application bundle filename, bundle identifier and data folders."
   },
   "notarization": "notarized: false; the user must approve opening the freely distributed app in macOS if Gatekeeper asks."
 }

@@ -838,3 +838,12 @@ El flujo oficial de empaquetado macOS arm64 generó `../VSCode-darwin-arm64/Napo
 - Identidad verificada: RHS-IA instalada `co.posit.positron`; Napo `org.rhsia.napo`, `napo`, `.napo` y `.napo-shared`. El DMG se montó en solo lectura, se inspeccionó y se desmontó correctamente.
 - Artefacto probado: ARM64, firma ad hoc coherente (`codesign --verify --deep --strict`), arranque directo exitoso con `open -n`. No hay firma Apple ni notarización, de acuerdo con la política de distribución libre y aprobación manual del usuario.
 - SHA-256 del instalador: `ab0dc917f5976fde9debfe585b1ed80b4147827d73290eaf481ca082fc180f97`; informe: `reports/napo-macos-installer.json`.
+
+## 2026-10-15 - Regla vigente de identidad
+
+- Nombre publico de la aplicacion: RHS-IA.
+- Nombre publico del agente integrado: RHS-Agent.
+- Napo y Capibara son nombres clave internos, no nombres para la interfaz, el instalador ni las respuestas del agente.
+- El namespace tecnico `napo` se conserva deliberadamente para no romper gates del host, perfiles, contratos de extensiones y coexistencia de instalaciones.
+- La correccion vive solamente en RHS-IA-Minimal. No editar los repositorios fuente de estudio.
+- Verificado: `dist/RHS-IA.app`, `dist/RHS-IA-Preview-macOS-arm64.dmg`, producto visible RHS-IA, `defaultLocale=es`, telemetria desactivada, RHS-Agent completo y 11 pruebas de arranque/localizacion pasadas.

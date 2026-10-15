@@ -6,10 +6,10 @@
 set -eu
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-helper="$script_dir/../../../Frameworks/Napo Helper (Plugin).app/Contents/MacOS/Napo Helper (Plugin)"
+helper="$script_dir/../../../Frameworks/RHS-IA Helper (Plugin).app/Contents/MacOS/RHS-IA Helper (Plugin)"
 
 if [ ! -x "$helper" ]; then
-	printf '%s\n' "Napo Node runtime not found: $helper" >&2
+	printf '%s\n' "RHS-IA Node runtime not found: $helper" >&2
 	exit 127
 fi
 

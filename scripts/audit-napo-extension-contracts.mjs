@@ -16,7 +16,7 @@ function argumentValue(name) {
 	return index === -1 ? undefined : process.argv[index + 1];
 }
 
-const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'Napo.app'));
+const packagePath = resolve(argumentValue('--package') || join(root, 'dist', 'RHS-IA.app'));
 const artifactRoot = join(packagePath, 'Contents', 'Resources', 'app');
 const extensionsRoot = join(artifactRoot, 'extensions');
 const surfaceReportPath = resolve(argumentValue('--surface-report') || join(root, 'reports', 'napo-extension-surface-package.json'));

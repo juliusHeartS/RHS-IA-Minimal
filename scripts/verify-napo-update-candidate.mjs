@@ -59,7 +59,7 @@ function check(name, ok, detail) {
 	checks.push({ name, status: ok ? 'pass' : 'fail', detail });
 }
 
-check('identidad', candidate.applicationName === 'napo' && candidate.nameShort === 'Napo', 'applicationName/nameShort deben ser napo/Napo');
+check('identidad', candidate.applicationName === 'napo' && candidate.nameShort === 'RHS-IA', 'applicationName/nameShort deben ser napo/RHS-IA');
 check('telemetría', candidate.enableTelemetry === false, 'enableTelemetry debe ser false');
 check('endpoints automáticos', !candidate.updateUrl && !candidate.downloadUrl && candidate.positronLlmsDocsUrl === '', 'updateUrl, downloadUrl y positronLlmsDocsUrl deben estar vacíos');
 
@@ -92,7 +92,7 @@ if (currentPath) {
 const manifestCheck = run(process.execPath, [manifestScript, '--package', candidatePath, '--verify', manifestPath]);
 check('manifiesto y digest', manifestCheck.ok, manifestCheck.ok ? 'el manifiesto coincide con el árbol del candidato' : manifestCheck.output.trim());
 if (manifestCheck.ok) {
-	check('identidad del manifiesto', expectedManifest.product?.applicationName === 'napo' && expectedManifest.product?.nameShort === 'Napo', 'el manifiesto debe identificar Napo');
+	check('identidad del manifiesto', expectedManifest.product?.applicationName === 'napo' && expectedManifest.product?.nameShort === 'RHS-IA', 'el manifiesto debe identificar RHS-IA');
 	check('versión del manifiesto', expectedManifest.product?.version === candidate.version, 'la versión del manifiesto debe coincidir con product.json');
 	check('árbol verificable', expectedManifest.fileCount > 0 && Boolean(expectedManifest.treeSha256), 'el manifiesto debe contener archivos y digest');
 }

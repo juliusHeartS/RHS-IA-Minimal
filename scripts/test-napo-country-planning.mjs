@@ -115,7 +115,7 @@ const r = run('Rscript', ['plan.R'], analysisDir);
 checks.push({ name: 'R: política, escenarios y gráfico', ok: r.status === 0 && r.stdout.includes('NAPO_COUNTRY_R_OK') && existsSync(join(reportDir, 'coverage-scenarios.png')), output: `${r.stdout}${r.stderr}`.trim() });
 const python = run('python3', ['plan.py'], analysisDir);
 checks.push({ name: 'Python: réplica independiente del escenario', ok: python.status === 0 && python.stdout.includes('NAPO_COUNTRY_PYTHON_OK') && existsSync(join(reportDir, 'python-results.json')), output: `${python.stdout}${python.stderr}`.trim() });
-const quarto = join(root, 'dist', 'Napo.app', 'Contents', 'Resources', 'app', 'quarto', 'bin', 'quarto');
+const quarto = join(root, 'dist', 'RHS-IA.app', 'Contents', 'Resources', 'app', 'quarto', 'bin', 'quarto');
 const rendered = run(quarto, ['render', 'andesia-plan.qmd', '--execute', '--output-dir', outputDir], reportDir);
 checks.push({ name: 'Quarto: reporte nacional reproducible', ok: rendered.status === 0 && existsSync(join(outputDir, 'andesia-plan.html')), output: `${rendered.stdout}${rendered.stderr}`.trim().slice(-4000) });
 
