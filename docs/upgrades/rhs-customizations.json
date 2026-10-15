@@ -179,6 +179,22 @@
           ]
         },
         {
+          "path": "src/main.ts",
+          "status": "current",
+          "symbols": [
+            "userDataPath",
+            "getUserDataPath"
+          ]
+        },
+    {
+      "path": "src/vs/platform/environment/node/environmentService.ts",
+      "status": "current",
+      "symbols": [
+        "NativeEnvironmentService",
+        "userDataDir"
+      ]
+    },
+        {
           "path": "src/vs/platform/product/common/product.ts",
           "status": "current",
           "symbols": [
@@ -247,6 +263,7 @@
       ],
     "dependenciesAndProvenance": [
       "2026-10-15 identity correction committed as 898b5af75d7c5f2c861b1e7221bcd25130a3288c: visible product metadata and macOS packaging use RHS-IA; the napo namespace remains technical compatibility state.",
+      "2026-10-15 profile isolation fix: src/main.ts and NativeEnvironmentService derive Electron and extension-host user-data storage from the technical applicationName so the parallel RHS-IA build does not share webview, service-worker, extension, or Capibara runtime state with an installed RHS-IA build.",
       "RHS-Agent is the public name of the integrated agent; Capibara is retained only as a development codename in source and evidence paths.",
         "Windows installer GUIDs and PAHO.RHSIA AppUserModelId are RHS-owned identifiers.",
         "2026-10-08 pending working-tree README screenshot addition: copy the user-supplied RHS-IA image into assets/interfaz_agent.png without altering its bytes; reference it with a repository-relative path. No new commit evidence is claimed.",
@@ -258,6 +275,7 @@
         "For the README screenshot addition, verify the image is not ignored, matches the user-supplied original byte for byte, and resolves from README.md without referencing an external workspace directory.",
         "Inspect packaged product.json and platform metadata, not only source product.json.",
         "Launch desktop and CLI with a disposable profile and confirm RHS-IA names and new storage roots.",
+        "Confirm the extension host and Capibara runtime start under the technical napo profile namespace and that the integrated and packaged extension hashes remain identical.",
         "Confirm an existing .positron profile follows RHS-ID-002 migration rules."
       ],
       "risks": [

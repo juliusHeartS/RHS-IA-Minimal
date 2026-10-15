@@ -140,7 +140,7 @@ Hygiene note: the conflict-marker findings in `.claude/skills/merge-upstream-vsc
 
 ### `RHS-ID-001` — RHS-IA identity and internal namespaces
 
-`product.json`, `src/vs/platform/product/common/product.ts`, `package.json`, packaging scripts, resources, and server manifests establish the RHS-IA family:
+`product.json`, `src/main.ts`, `src/vs/platform/environment/node/environmentService.ts`, `src/vs/platform/product/common/product.ts`, `package.json`, packaging scripts, resources, and server manifests establish the RHS-IA family:
 
 - public desktop/product name `RHS-IA`, public agent name `RHS-Agent`;
 - internal application namespace `napo`, local data `.napo`, shared data `.napo-shared`;
@@ -152,13 +152,15 @@ Hygiene note: the conflict-marker findings in `.claude/skills/merge-upstream-vsc
 
 The 2026-10-15 identity correction changes visible product metadata, macOS executable naming, installer labels, and developer-facing package defaults to `RHS-IA` while keeping the technical namespace above. It is recorded in commit `898b5af7`. `extensions/rhs-agent4` is not modified: its existing public prompt already identifies the agent as `RHS-Agent` and defaults to Spanish.
 
+The 2026-10-15 Capibara regression fix keeps the technical `applicationName` as the Electron and extension-host user-data namespace in `src/main.ts` and `environmentService.ts`. This prevents the distributed RHS-IA build from sharing webview, service-worker, extension, and Capibara runtime state with another installed RHS-IA build that uses the same public name. The behavior is host-level profile isolation; it does not rename, copy, or alter Capibara.
+
 This is not yet a total legal/distribution-identity migration. As of 2026-10-01, `companyName` is `RHS-IA`, `licenseName` is `Elastic License 2.0`, and release-notes/download URLs point to the RHS-IA repository. License URLs, trusted domains, extension-gallery endpoints, and some remote distribution fields still point to Posit/upstream. Repository and issue-reporting URLs also target RHS-IA. PAHO must still confirm legal and distribution ownership; preserve actual upstream dependency URLs until there is a working replacement.
 
 The 2026-10-08 working-tree wording update describes RHS-IA as a PAHO-oriented application based on Positron in `README.md` and `CONTRIBUTING.md`. The translation guide and upgrade records use the same provenance wording or refer to product-identity cleanup. Exact historical backup-tag names, upstream component descriptions, copyright notices, and compatibility identifiers remain accurate. This is a documentation-only change; verification consists of a tracked-text wording scan, JSON parsing, targeted hygiene, and `git diff --check`.
 
 The subsequent 2026-10-08 README screenshot addition copies the user-supplied RHS-IA interface image into the repository at `assets/interfaz_agent.png` and embeds it beneath the introduction using that relative path. The caption identifies the optional RHS-Agent extension and simulated data shown. Verify that the asset is not ignored, matches the supplied image byte for byte, and resolves from the README within the repository; no external workspace asset path is published.
 
-Verification: inspect final platform manifests and packaged `product.json`, launch desktop and CLI with disposable profiles, and test the storage migration in `RHS-ID-002`.
+Verification: inspect final platform manifests and packaged `product.json`, launch desktop and CLI with disposable profiles, confirm both the extension host and Capibara runtime start under the technical `napo` profile namespace, and test the storage migration in `RHS-ID-002`.
 
 ### `RHS-ID-002` — narrow early profile migration
 

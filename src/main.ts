@@ -78,8 +78,9 @@ if (args['sandbox'] &&
 	app.commandLine.appendSwitch('disable-gpu-sandbox');
 }
 
-// Set userData path before app 'ready' event
-const userDataPath = getUserDataPath(args, product.nameShort ?? 'code-oss-dev');
+// Keep the technical application namespace as the Electron profile root so the
+// parallel RHS-IA build does not share webview state with an installed RHS-IA.
+const userDataPath = getUserDataPath(args, product.applicationName ?? product.nameShort ?? 'code-oss-dev');
 if (process.platform === 'win32') {
 	const userDataUNCHost = getUNCHost(userDataPath);
 	if (userDataUNCHost) {

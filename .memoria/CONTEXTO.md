@@ -847,3 +847,9 @@ El flujo oficial de empaquetado macOS arm64 generó `../VSCode-darwin-arm64/Napo
 - El namespace tecnico `napo` se conserva deliberadamente para no romper gates del host, perfiles, contratos de extensiones y coexistencia de instalaciones.
 - La correccion vive solamente en RHS-IA-Minimal. No editar los repositorios fuente de estudio.
 - Verificado: `dist/RHS-IA.app`, `dist/RHS-IA-Preview-macOS-arm64.dmg`, producto visible RHS-IA, `defaultLocale=es`, telemetria desactivada, RHS-Agent completo y 11 pruebas de arranque/localizacion pasadas.
+
+## 2026-10-15 - Regresion de Capibara por colision de perfiles
+
+- El cambio de nombre publico a RHS-IA hizo que el host y el extension host usaran el mismo perfil que otra instalacion RHS-IA. El efecto visible fue un fallo de registro del service worker en la vista de Capibara.
+- La correccion esta en `src/main.ts` y `src/vs/platform/environment/node/environmentService.ts`: el nombre publico sigue siendo RHS-IA, pero las dos capas de perfil usan `applicationName=napo`.
+- Capibara no fue modificada; la extension integrada y la empaquetada conservan el mismo SHA-256. El DMG ya fue regenerado y el arranque normal con `open -n` mostro la interfaz completa sin error de service worker.

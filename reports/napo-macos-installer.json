@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-15T20:28:26.234Z",
+  "generatedAt": "2026-10-15T21:00:07.069Z",
   "platform": "darwin",
   "architecture": "arm64",
   "application": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/RHS-IA.app",
   "installer": "/Users/julius3005/Documents/Github/RHS-IA-Minimal/dist/RHS-IA-Preview-macOS-arm64.dmg",
   "installerName": "RHS-IA-Preview-macOS-arm64.dmg",
-  "installerBytes": 1631433150,
-  "installerSha256": "520521e42b00781f0d017b0fdc2eab537b67e6898721550f42b8e57ff3fe84b8",
+  "installerBytes": 1628503167,
+  "installerSha256": "61a77a36de29d06c13d57dea28f4d712250791345c0a91f8d889474d2cb93856",
   "identity": {
     "nameShort": "RHS-IA",
     "nameLong": "RHS-IA",

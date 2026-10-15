@@ -6,12 +6,12 @@
     "applicationName": "napo",
     "nameShort": "RHS-IA",
     "version": "1.130.0",
-    "commit": "4603341f53ced11771180bccefca269001fb98e8",
-    "date": "2026-10-14T00:10:21-05:00"
+    "commit": "ecf7dd835ce5c19f1e7de36461f33abefcae753a",
+    "date": "2026-10-15T15:31:31-05:00"
   },
   "fileCount": 33818,
-  "totalBytes": 3442419015,
-  "treeSha256": "f65f9d7b27f10ea74043f56591c2b5878241a261d1c2ba9f8d6b33cf2c664b69",
+  "totalBytes": 3442419596,
+  "treeSha256": "f806c3d465ca347db51a0fb2a2b7fa47179e5a3f4edb72cdda8a08873d75afb1",
   "files": [
     {
       "relative": "bin/code",
@@ -213133,7 +213133,7 @@
       "mode": 420,
       "size": 486159695,
       "type": "file",
-      "sha256": "3132fbbee02464488ef6c7de0864a31fbd25912e7bbd75164e4796ba15917dbb"
+      "sha256": "7dbfd8e9e87f25f2478cfb63b339fbae0d3bca71325a686667746dc1479269fa"
     },
     {
       "relative": "node_modules.asar.unpacked/@ai-sdk/amazon-bedrock/node_modules/undici/lib/llhttp/llhttp_simd.wasm",
@@ -213168,7 +213168,7 @@
       "mode": 493,
       "size": 8963759,
       "type": "file",
-      "sha256": "e90c97005e3cedd6618647e4bb372b7a5cea621e331225d39dfe09a7416c8f51"
+      "sha256": "4f51f3dfb393efce1f7a9cdafa1647def5c1f42b4ec2a773240572a4ac2b624d"
     },
     {
       "relative": "node_modules.asar.unpacked/@github/copilot-darwin-arm64/builtin-skills/customize-cloud-agent/SKILL.md",
@@ -213693,7 +213693,7 @@
       "mode": 420,
       "size": 2837940,
       "type": "file",
-      "sha256": "6c22bd2aebc1a759bf091203be07e2388d5e348594f89c3410f5c12832174a08"
+      "sha256": "f6456b855ce319e722ff35c3490881f3107a0e747d2a59b6b52edf2023f84e85"
     },
     {
       "relative": "node_modules.asar.unpacked/@github/copilot-darwin-arm64/sea-loader.js",
@@ -213840,21 +213840,21 @@
       "mode": 420,
       "size": 109325,
       "type": "file",
-      "sha256": "dff141502f670ffd03d00837040ca5256b29ce86bb7b7bc820e0521a8037bfc6"
+      "sha256": "954a7a71c09ea914309256a668511ef1e378d9104e06065eb8758defb69eab73"
     },
     {
       "relative": "node_modules.asar.unpacked/@github/copilot-darwin-arm64/voice-installer.worker.js",
       "mode": 420,
       "size": 10598,
       "type": "file",
-      "sha256": "5b80767a779670809dce83b35113b8b5c0cbca73a8c6964f35c3d02d31ede9a2"
+      "sha256": "9041ea7aa13c9c0e3859a5ce170c3f9a849d4d9db1c42291b5d3d0f59c08214c"
     },
     {
       "relative": "node_modules.asar.unpacked/@github/copilot-darwin-arm64/voice-server.js",
       "mode": 420,
       "size": 131980,
       "type": "file",
-      "sha256": "a6089be855cf079744c470a2789c015df300c855a7c682db2f08df74ff2a9ffe"
+      "sha256": "a164bf7102ae6b68691e33e7ba33dea3ee324a9045b06eea709f6eeff8aad583"
     },
     {
       "relative": "node_modules.asar.unpacked/@microsoft/mxc-sdk/bin/arm64/linux-test-proxy",
@@ -214099,14 +214099,14 @@
       "mode": 420,
       "size": 434,
       "type": "file",
-      "sha256": "5b0a10e2eee92542f6a9afeb007f53f0e69d46b9f9c3404500110420a49896a4"
+      "sha256": "4b30d1c5fc91fb8f40d86d0ee68993dd1d91018e7572770354d60a880f2ccb88"
     },
     {
       "relative": "node_modules.asar.unpacked/node-pty/lib/worker/conoutSocketWorker.js",
       "mode": 420,
       "size": 990,
       "type": "file",
-      "sha256": "4432e8599f2ddb887944b8c2b38f7df1917fabef2ee6caf78351e8c26c905b00"
+      "sha256": "c055f3be2434fb72b97036e1b0a32f4acd4c3d029d8ba47d38fb585669929406"
     },
     {
       "relative": "node_modules.asar.unpacked/node-pty/package.json",
@@ -214295,7 +214295,7 @@
       "mode": 493,
       "size": 6838,
       "type": "file",
-      "sha256": "db51789867e6118d4bbf44c6ae3b8b6134089441273646f189e264083de307e8"
+      "sha256": "a0da75032bf01e7bced066057fd31d7840ed25b1877c87bd1c292cf717f0e3a0"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/cli.js.map",
@@ -214316,7 +214316,7 @@
       "mode": 420,
       "size": 648,
       "type": "file",
-      "sha256": "3a55d780bc4fadbed0c99a0d67a35423d36cd6a7931a824ea974d27d8b59b2ae"
+      "sha256": "7f8b6676509922508769edfdc45e23a5d3ddee9fe087ed8a79fa71abaff10c1b"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/index.js.map",
@@ -214337,7 +214337,7 @@
       "mode": 420,
       "size": 7566,
       "type": "file",
-      "sha256": "95f327984adb730bde28645eb7319521a6b398c265e8288e52a8cdb3e443d53c"
+      "sha256": "eb245015cabdc9732db05b1690132df5e314d5efc3624f8b0597267902960649"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/generate-seccomp-filter.js.map",
@@ -214358,7 +214358,7 @@
       "mode": 420,
       "size": 10366,
       "type": "file",
-      "sha256": "7194e97e373f1fec1da00b32f6340156ca2c530293d2d126ddced28f8f1885f8"
+      "sha256": "162f8370cc7d8499e6f9a2c411d1cc0b3df601f8006a2ed159b5361b028070d0"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/http-proxy.js.map",
@@ -214379,7 +214379,7 @@
       "mode": 420,
       "size": 46782,
       "type": "file",
-      "sha256": "65ee4a107ccc0b4785244b57bb2afc81df428808bd951024b094338c03ddaebc"
+      "sha256": "5f6261a94dd9f7814996f70af8d92775ce05261a65f59c9c1746139d150d7780"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/linux-sandbox-utils.js.map",
@@ -214400,7 +214400,7 @@
       "mode": 420,
       "size": 30682,
       "type": "file",
-      "sha256": "37ed2977606a8244cbd42ab3d8291ff03728803b87f9ca031d09ccc737813927"
+      "sha256": "fed5a11f0a9a6817913625f71463ba6d4b4d227ba84a64ad66d4e3125fa48a0d"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/macos-sandbox-utils.js.map",
@@ -214421,7 +214421,7 @@
       "mode": 420,
       "size": 17302,
       "type": "file",
-      "sha256": "c4458b1658925b4a6b5b146a3ab4c61f54e285f95eab0b1653a9729a2342dda6"
+      "sha256": "dc868767bd66f575af4cd9a981ea735941c5d7cb8bb27741dcf9002b16c56baf"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/parent-proxy.js.map",
@@ -214442,7 +214442,7 @@
       "mode": 420,
       "size": 10154,
       "type": "file",
-      "sha256": "8e566af695c11d7e36513a06d275236c4eac65793fb972765963cd892b09828d"
+      "sha256": "17c2987082caa40280396486a7ca5512287deb7511a7bf04409afc51091d6b86"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-config.js.map",
@@ -214463,7 +214463,7 @@
       "mode": 420,
       "size": 34067,
       "type": "file",
-      "sha256": "46a6940cf007b0d12c196aef900e94c15feb527dd3a23d3de1f16986901c6ea2"
+      "sha256": "5363d412d6d75bb62b278ac2ad7c318999fd170093c4a184b03cb55b1ea1a92d"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-manager.js.map",
@@ -214484,7 +214484,7 @@
       "mode": 420,
       "size": 267,
       "type": "file",
-      "sha256": "930be92c2c6711158bda721fa155a3b52e8ca53deaa74675f7f4d0bbbb2db3f1"
+      "sha256": "3bb8ee78eded578bfc043357b9391f66c730150c343c15cd0fc5ba980692e325"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-schemas.js.map",
@@ -214505,7 +214505,7 @@
       "mode": 420,
       "size": 19281,
       "type": "file",
-      "sha256": "8790bfef10a448896e2846cf222b4adf7d9ec25f211a2bbc23ee70ba1d1baab5"
+      "sha256": "5a88b13f1b1fa8006767d8e792fdf8a09d1b8be1f2b87333b509be08f1c60100"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-utils.js.map",
@@ -214526,7 +214526,7 @@
       "mode": 420,
       "size": 1767,
       "type": "file",
-      "sha256": "9e28c3610fdde5a141b32f7700cf2bdcd59e4156d04e49d5b96011384f3415ba"
+      "sha256": "53e4b4afe4d0558bb64281f5f82596363cdc039a46e57f5c9bd9dfcc0471c83e"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-violation-store.js.map",
@@ -214547,7 +214547,7 @@
       "mode": 420,
       "size": 6876,
       "type": "file",
-      "sha256": "2bb4d24484e6336ab254a351bf18e90a0e216f369092651ed9de96dcb045703b"
+      "sha256": "b126efe8e498e16f47f2f06d3a0bde02f0de49545092941054065f82ce23c7e9"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/sandbox/socks-proxy.js.map",
@@ -214568,7 +214568,7 @@
       "mode": 420,
       "size": 1971,
       "type": "file",
-      "sha256": "4881466c3b571aa719559234b862ba9c2bedb49d2a4f5b6d58e9ed01c7a1f3c6"
+      "sha256": "bfa15f5863aca4970e57f87bd04ac07523ac0985ac21bf7de567bf39beb08fa0"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/utils/config-loader.js.map",
@@ -214589,7 +214589,7 @@
       "mode": 420,
       "size": 952,
       "type": "file",
-      "sha256": "8047a368553864892e341a9e3134e426117329f0262355ae96c24a49afe863f2"
+      "sha256": "0f6907e3f5bb2f3176ceec8d8c8fe913572e17ea6dcb6544ea35b9db15e7a65a"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/utils/debug.js.map",
@@ -214610,7 +214610,7 @@
       "mode": 420,
       "size": 1660,
       "type": "file",
-      "sha256": "49cc815aad5c1912d45fb6cd9d6eb135e0f7edddb6b85dca8d99a720ffb62d24"
+      "sha256": "9d78cb953f97a3230a41df81f2d3d8376aeeb6b95bc101ad830510e552897ff6"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/utils/platform.js.map",
@@ -214631,7 +214631,7 @@
       "mode": 420,
       "size": 1763,
       "type": "file",
-      "sha256": "9f31e262c3ebdd1e3881c859a785fb49a9dad5f727290a29e02a15d4ef1472e4"
+      "sha256": "7b84580641df2b7577e76ded4af179d58e622e87267cf679aef77df13c966862"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/utils/ripgrep.js.map",
@@ -214652,7 +214652,7 @@
       "mode": 420,
       "size": 947,
       "type": "file",
-      "sha256": "8d33837fbca09feda6ff53dfb1300288fab4d1567b93f347d61c748a78c92c4f"
+      "sha256": "7b7bb81c91679f04fb7136d6925faddc1ce34e0ee84759d1889a778e86f2d20f"
     },
     {
       "relative": "node_modules/@vscode/sandbox-runtime/dist/utils/which.js.map",
@@ -216731,21 +216731,21 @@
       "mode": 420,
       "size": 607775,
       "type": "file",
-      "sha256": "c5ad222966b6d7b2fb9cafb4a326f817144be3e1b26ecba7e19b18be683bd721"
+      "sha256": "a53ecc9933dde3f2b2d0317ec7ff4fc8f006af68a8956688bef6bce9e6453287"
     },
     {
       "relative": "out/cli.js.map",
       "mode": 420,
       "size": 1307174,
       "type": "file",
-      "sha256": "a53675ad8a217d39aaa38802b8c7a1ef367eba602f173a462397e6d6bb3d0625"
+      "sha256": "864cdc4520c39748d1cab6cd9607055ba44225b029f8f0390b4dd42ba381ff98"
     },
     {
       "relative": "out/date",
       "mode": 420,
       "size": 25,
       "type": "file",
-      "sha256": "b0622c0ca32553e2e99be6cdcd098a892786d1c8578ecdef84480ba4f0a19032"
+      "sha256": "697a69e3d7ee45040156047e51b90f12363fd50fb8a82bf87d3ab8d502725b51"
     },
     {
       "relative": "out/esm-package-dependencies/@dnd-kit/core.js",
@@ -216855,16 +216855,16 @@
     {
       "relative": "out/main.js",
       "mode": 420,
-      "size": 2838202,
+      "size": 2838263,
       "type": "file",
-      "sha256": "d8914c2e1bc9fa474fc76180bac7a61328bc619fefa4d030f98956e4627a92f2"
+      "sha256": "b429f09b0876e69b2ce4d47775561fcbd3cf0ee7894323593473bed286f7dd45"
     },
     {
       "relative": "out/main.js.map",
       "mode": 420,
-      "size": 6309301,
+      "size": 6309501,
       "type": "file",
-      "sha256": "a024e1447984ab7e810e4c92f020e1f3ae205272f6cee35b43daedf4e02857e8"
+      "sha256": "81bd15675e6d0bbd82630a491a4f1ce3c8b622f89862f19d58c6d5c7c1a2c1a4"
     },
     {
       "relative": "out/media/apple-dark.svg",
@@ -217177,30 +217177,30 @@
     {
       "relative": "out/vs/code/electron-utility/sharedProcess/sharedProcessMain.js",
       "mode": 420,
-      "size": 2204224,
+      "size": 2204258,
       "type": "file",
-      "sha256": "f893ecee7c6aa85d898ee0ef369e306d6fea0b8ef7ce65a253dbd128efca2cae"
+      "sha256": "8ec3602952ef444390814ffe804ac9576c2c573539da644c08278e9e2650ce8d"
     },
     {
       "relative": "out/vs/code/electron-utility/sharedProcess/sharedProcessMain.js.map",
       "mode": 420,
-      "size": 5161038,
+      "size": 5161084,
       "type": "file",
-      "sha256": "71d5a8949d7bfa4a74123a472f4a355a72e3fee3e4a0dd70b42da1cf3af9d1f5"
+      "sha256": "1d646c0f9ae74d315ac395d487adf01ea51c83719c97f52092302e6a4cd65f00"
     },
     {
       "relative": "out/vs/code/node/cliProcessMain.js",
       "mode": 420,
-      "size": 1408493,
+      "size": 1408527,
       "type": "file",
-      "sha256": "5309cc1bed35267f84a90fc585cef45cb08f71e073d6a62230863fd2133dc06a"
+      "sha256": "98c7bb407fc9595d4da1c1daf6559842e222428a3be9e6126673595b2c2a21e2"
     },
     {
       "relative": "out/vs/code/node/cliProcessMain.js.map",
       "mode": 420,
-      "size": 3383269,
+      "size": 3383315,
       "type": "file",
-      "sha256": "e745f621279f572ba30449f0eccf172eed1b4087353c52e95ca8dcc9ead3e059"
+      "sha256": "2d14fe77267138e70340f8f22458eaf8df83dae444a49e6d18ab2c7a9297e971"
     },
     {
       "relative": "out/vs/editor/common/languages/highlights/css.scm",
@@ -217471,16 +217471,16 @@
     {
       "relative": "out/vs/platform/agentHost/node/agentHostMain.js",
       "mode": 420,
-      "size": 3268440,
+      "size": 3268474,
       "type": "file",
-      "sha256": "4e147f75c0ad16da4da96a0389279ee2efb8f83c35cacc95fc93a1cf7326cad9"
+      "sha256": "5f3f46939fc7d2ab20ee2b297d86874902f634ddc82976fcd8ba80467dc60698"
     },
     {
       "relative": "out/vs/platform/agentHost/node/agentHostMain.js.map",
       "mode": 420,
-      "size": 7950978,
+      "size": 7951024,
       "type": "file",
-      "sha256": "46bb03c81ee1775fa3fcce6c5061252cba19ec2afd811df9e4d179f1c2e93e74"
+      "sha256": "4d824706dcd9ac49aacc48fa6104469b3144e56f149e42cfaada13539bfbd0d4"
     },
     {
       "relative": "out/vs/platform/agentHost/node/diffWorkerMain.js",
@@ -217555,16 +217555,16 @@
     {
       "relative": "out/vs/platform/terminal/node/ptyHostMain.js",
       "mode": 420,
-      "size": 680141,
+      "size": 680175,
       "type": "file",
-      "sha256": "6af7dbaf60a72124c2a5a891d5faeab3f69c2bdf1fbdf09cc23b51f22b5ae737"
+      "sha256": "c3cfde0df63f14b9134d2222b84e8757969557e64ec99a9d936860c3a604d750"
     },
     {
       "relative": "out/vs/platform/terminal/node/ptyHostMain.js.map",
       "mode": 420,
-      "size": 1752007,
+      "size": 1752053,
       "type": "file",
-      "sha256": "90bbb7f33b4ad966b95e5deb990e455a548565f193338e2bf1d16e1db3c2c4d0"
+      "sha256": "3115a8c864d151e5fc55fdbcab76cc75cfcb736651879309a6d95254fdf5e816"
     },
     {
       "relative": "out/vs/sessions/contrib/chat/browser/media/letterpress-sessions-dark.svg",
@@ -217620,14 +217620,14 @@
       "mode": 420,
       "size": 36481702,
       "type": "file",
-      "sha256": "60ff86c526b060ee730813c80cc6fefb6c3bd7f32e8e846af2d7f6c8ef75e3ba"
+      "sha256": "944414629bec30bf7d6d3e76380be2fe447b8cdbb4c9b937269d190d330c7ef0"
     },
     {
       "relative": "out/vs/sessions/sessions.desktop.main.js.map",
       "mode": 420,
       "size": 77437176,
       "type": "file",
-      "sha256": "dc1c3de9d9173fcf15ece69ffb2af4fc7a3030e0007781e9613271389a0266eb"
+      "sha256": "b6dcd6ab5fdaad886f3b1583f507b9a3e4c4b9c2a484f921bd74eab8da85a37d"
     },
     {
       "relative": "out/vs/sessions/skills/act-on-feedback/SKILL.md",
@@ -217725,28 +217725,28 @@
       "mode": 420,
       "size": 4498660,
       "type": "file",
-      "sha256": "0c569bcf9cae5c719c5808c1e7004c8b51c292489d16a2520bded2ceb4dc3cef"
+      "sha256": "2031ed5da303c15a5e91b66b1cd0f703419100b66034d3912d36e9191ec1df5f"
     },
     {
       "relative": "out/vs/workbench/api/node/extensionHostProcess.js.map",
       "mode": 420,
       "size": 11584891,
       "type": "file",
-      "sha256": "c1d150134327e5699704dd5ea20c10dd4cc7128a2c5dd2b3a5f2cbfa54831967"
+      "sha256": "24d42a958e75770c90189709baef14cddf47fdd486f79b606d4b78ead1be876c"
     },
     {
       "relative": "out/vs/workbench/api/worker/extensionHostWorkerMain.js",
       "mode": 420,
       "size": 3923586,
       "type": "file",
-      "sha256": "10b6fcc82d1e5914820b59810a4c2af16f5aa787b5a94ba061452bf8bd647400"
+      "sha256": "7f8ea9fff26580c3a2277898fdec14b9b58ab72ff0463d96bbe90f08e84b19de"
     },
     {
       "relative": "out/vs/workbench/api/worker/extensionHostWorkerMain.js.map",
       "mode": 420,
       "size": 10302459,
       "type": "file",
-      "sha256": "fc6cf788ae263d1d4adf33f54bdd6fc6c718ce989fa44268461743fde7dd5bbc"
+      "sha256": "3e93c68f347afb4b67433847645ac3e7cacff9368d1d692ffe4e293f9955bc43"
     },
     {
       "relative": "out/vs/workbench/browser/media/code-icon.svg",
@@ -217900,14 +217900,14 @@
       "mode": 420,
       "size": 369014,
       "type": "file",
-      "sha256": "9944374a6295d6bcb67ca4420011ea783dd3f5313163de6cc41d97c89d0d8a05"
+      "sha256": "9dd51b48df826d354ec266b6beddc1e531a1ebc7841f5e3007e453281f463f6c"
     },
     {
       "relative": "out/vs/workbench/contrib/debug/node/telemetryApp.js.map",
       "mode": 420,
       "size": 1054056,
       "type": "file",
-      "sha256": "961c4a258f665a837f65703ae41799e841a9a3be4252fc991e219aa31e1320cd"
+      "sha256": "e636fe838eeae03f30be6c0c874f1d0503332870e90db82c25edeb44659059e3"
     },
     {
       "relative": "out/vs/workbench/contrib/extensions/browser/media/language-icon.svg",
@@ -218572,14 +218572,14 @@
       "mode": 420,
       "size": 40927180,
       "type": "file",
-      "sha256": "d861206db7d0a7ab94969e575d248bb0dcab70a3a1f1dd7ce8e45be6766dcbfb"
+      "sha256": "0fe605c86f94e6e62d165ab19664faf3530e707ee780be8f250e0e9fc892d737"
     },
     {
       "relative": "out/vs/workbench/workbench.desktop.main.js.map",
       "mode": 420,
       "size": 86200148,
       "type": "file",
-      "sha256": "27ce765bd8c576e737461b500c3123039249130e7eda5ea26722fdabfcb0365a"
+      "sha256": "e9d3fe406f9e0dd499d03494db9fc769e808456471794c94ecd8a3d0e3158451"
     },
     {
       "relative": "out/vscode-dts/vscode.d.ts",
@@ -218600,7 +218600,7 @@
       "mode": 420,
       "size": 20089,
       "type": "file",
-      "sha256": "d1bdc231a95c4bab0ab533f444a04ab1826c96eae7a9e440691c2444fb8752ad"
+      "sha256": "af6b459f4e919dd872654e01d8e7cc0f2d11c32ca63aaa7873ddabe905399dd3"
     },
     {
       "relative": "quarto/bin/quarto",

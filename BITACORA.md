@@ -1437,3 +1437,10 @@ Capibara (`rhs-agent4`) queda establecido como la extensión primaria prevista p
 - La app reconstruida es `dist/RHS-IA.app`. El instalador paralelo es `dist/RHS-IA-Preview-macOS-arm64.dmg` y contiene `RHS-IA-Preview.app`, sin reemplazar la RHS-IA instalada.
 - Los repositorios fuente de estudio no fueron alterados por esta correccion. `rhs-agent3` y `positron` ya tenian cambios locales previos y se preservaron.
 
+## 2026-10-15 - Correccion de regresion de perfil despues del cambio de nombres
+
+- La regresion no estaba en Capibara: el cambio de `product.nameShort` a `RHS-IA` hizo que `src/main.ts` y el servicio de entorno calcularan el perfil con el nombre publico.
+- Ese perfil colisiono con otra instalacion de RHS-IA y mezclo estado de webview/service worker, extensiones y runtime; por eso la vista de Capibara podia aparecer con `Could not register service worker`.
+- Napo mantiene ahora `applicationName=napo` como raiz tecnica tanto para Electron como para el extension host, mientras `RHS-IA` sigue siendo el nombre publico. La correccion esta solo en Minimal y no toca Capibara ni los repositorios fuente.
+- El rebuild, la verificacion de paquete, la firma ad hoc, los hashes de Capibara, el arranque con `open -n` y el DMG regenerado pasan.
+
