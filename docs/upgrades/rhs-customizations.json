@@ -242,10 +242,11 @@
     "evidenceCommits": [
         "bd7aa74f73ff9dc7cff0a5e5244fe7b788ed335c",
         "6ac104d1173c0f4ed1de408fc9315de8887fd496",
-        "4d20fd5689b12a5f99995cd5e8c4e819d56ceaa8"
+        "4d20fd5689b12a5f99995cd5e8c4e819d56ceaa8",
+        "898b5af75d7c5f2c861b1e7221bcd25130a3288c"
       ],
     "dependenciesAndProvenance": [
-      "2026-10-15 working-tree correction: visible product metadata and macOS packaging use RHS-IA; the napo namespace remains technical compatibility state. Commit evidence is pending until validation and commit.",
+      "2026-10-15 identity correction committed as 898b5af75d7c5f2c861b1e7221bcd25130a3288c: visible product metadata and macOS packaging use RHS-IA; the napo namespace remains technical compatibility state.",
       "RHS-Agent is the public name of the integrated agent; Capibara is retained only as a development codename in source and evidence paths.",
         "Windows installer GUIDs and PAHO.RHSIA AppUserModelId are RHS-owned identifiers.",
         "2026-10-08 pending working-tree README screenshot addition: copy the user-supplied RHS-IA image into assets/interfaz_agent.png without altering its bytes; reference it with a repository-relative path. No new commit evidence is claimed.",
